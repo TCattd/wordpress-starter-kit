@@ -150,12 +150,9 @@ function picostrap_get_active_scss_variables_array(){
 }
 
 
-/// TODO /// Upon theme activate, compila da backend
-
-// FORCE CSS REBUILD UPON ENABLING CHILD THEME. deve esse triggertata cambiando anche da pico a un child
-add_action( 'after_switch_theme', 'picostrap_force_css_rebuild', 10, 2 ); 
-function picostrap_force_css_rebuild() { 
+// FORCE CSS REBUILD UPON ENABLING CHILD THEME 
+add_action( 'after_switch_theme', 'picostrap_force_css_rebuilding', 10, 2 ); 
+function picostrap_force_css_rebuilding() { 
     set_theme_mod("picostrap_css_bundle_wp_relative_upload_path",0);
     set_theme_mod("picostrap_scss_last_filesmod_timestamp",0);
-    
 }

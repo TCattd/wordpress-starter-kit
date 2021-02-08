@@ -22,7 +22,8 @@ $picostrap_includes = array(
 	'/editor.php',                          // Load Editor functions. 
 	'/customizer-assets/customizer.php',	//Defines Customizer options
 	'/customizer-assets/scss-compiler.php', //To interface the Customizer with the SCSS php compiler	 
-	'/customizer-assets/livereload.php', //To automatically trigger SCSS compiling when source sass changes	  
+	'/customizer-assets/livereload.php', //To automatically trigger SCSS compiling when source sass changes	 
+	//'/theme-options-page.php',                  // Load theme options page. 
 
 );
 
