@@ -11,7 +11,7 @@
 5. [EditorConfig](https://editorconfig.org/) file to follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 
 ## How to
-* Download this repository. Code -> Download Zip. Use this files in your new project.
+* Download this repository (don't clone it). Code -> Download Zip. Use this files in your new project.
 * If you don't use any of the included plugins, delete them from your project.
 * Picostrap already included auto-compilation for it's SCSS files and a live-reload feature built in. You don't need to install anything.
 * Use your local dev enviroment to develop your new theme. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
