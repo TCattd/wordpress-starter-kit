@@ -1,0 +1,19 @@
+
+#wpadminbar .ab-top-menu>.menupop#wp-admin-bar-edit-tpl .ab-sub-wrapper {
+    max-height: 90vh;
+    min-width:10px;
+}
+
+#wpadminbar .quicklinks .menupop#wp-admin-bar-edit-tpl ul li .ab-item {
+    min-width:10px;
+}
+
+
+#wpadminbar .quicklinks .menupop#wp-admin-bar-edit-tpl .ab-icon::before {
+    content: "\f100";
+    top: 3px;
+}
+
+#wpadminbar .quicklinks .menupop#wp-admin-bar-edit-tpl .dashicons {
+    font-family: dashicons;
+}

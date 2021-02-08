@@ -1,0 +1,166 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Template Debugger\n"
+"POT-Creation-Date: 2016-04-07 10:00+0100\n"
+"PO-Revision-Date: 2016-04-07 10:19+0100\n"
+"Last-Translator: \n"
+"Language-Team: ChubbyNinja <danny@chubbyninja.co.uk>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: quick-edit-template-link.php:250 quick-edit-template-link.php:509
+msgid "General"
+msgstr "General"
+
+#: quick-edit-template-link.php:252
+msgid "Plugins"
+msgstr "Plugins"
+
+#: quick-edit-template-link.php:255
+msgid "Show Plugins in Dropdown"
+msgstr "Show Plugins in Dropdown"
+
+#: quick-edit-template-link.php:257
+msgid "Exclude From Dropdown"
+msgstr "Exclude From Dropdown"
+
+#: quick-edit-template-link.php:259
+msgid "Maximum recursive depth"
+msgstr "Maximum recursive depth"
+
+#: quick-edit-template-link.php:263
+msgid "Select Parent Theme"
+msgstr "Select Parent Theme"
+
+#: quick-edit-template-link.php:265
+msgid "Child Theme Name"
+msgstr "Child Theme Name"
+
+#: quick-edit-template-link.php:267
+msgid "Author Name"
+msgstr "Author Name"
+
+#: quick-edit-template-link.php:269
+msgid "Author URI"
+msgstr "Author URI"
+
+#: quick-edit-template-link.php:271
+msgid "Child Theme Version"
+msgstr "Child Theme Version"
+
+#: quick-edit-template-link.php:298
+msgid "The parent theme, name, author and version must not be blank"
+msgstr "The parent theme, name, author and version must not be blank"
+
+#: quick-edit-template-link.php:331
+msgid "I could not create your theme directory, please make sure "
+msgstr "I could not create your theme directory, please make sure "
+
+#: quick-edit-template-link.php:366
+msgid "Select Theme"
+msgstr "Select Theme"
+
+#: quick-edit-template-link.php:441
+msgid "unlimited"
+msgstr "unlimited"
+
+#: quick-edit-template-link.php:471
+msgid ""
+"This plugin appends the clone bar with a dropdown showing you what files are "
+"being included on that specific page"
+msgstr ""
+"This plugin appends the clone bar with a dropdown showing you what files are "
+"being included on that specific page"
+
+#: quick-edit-template-link.php:482
+msgid ""
+"If you want to exclude specific plugins from the dropdown, select them here"
+msgstr ""
+"If you want to exclude specific plugins from the dropdown, select them here"
+
+#: quick-edit-template-link.php:504 quick-edit-template-link.php:594
+#, php-format
+msgid ""
+"If you find this plugin useful or would like to see something added, please "
+"take a minute to <a href=\"%s\" target=\"_blank\">Rate &amp; Review</a> the "
+"plugin."
+msgstr ""
+"If you find this plugin useful or would like to see something added, please "
+"take a minute to <a href=\"%s\" target=\"_blank\">Rate &amp; Review</a> the "
+"plugin."
+
+#: quick-edit-template-link.php:510
+msgid "Create a Child Theme"
+msgstr "Create a Child Theme"
+
+#: quick-edit-template-link.php:540
+msgid "Advert"
+msgstr "Advert"
+
+#: quick-edit-template-link.php:542
+msgid "This advert is to help contribute to development costs."
+msgstr "This advert is to help contribute to development costs."
+
+#: quick-edit-template-link.php:563
+msgid ""
+"When you download a theme and want to modify it, you should always do so in "
+"a child theme, this ensures your changes are not lost when the theme is "
+"updated by the author."
+msgstr ""
+"When you download a theme and want to modify it, you should always do so in "
+"a child theme, this ensures your changes are not lost when the theme is "
+"updated by the author."
+
+#: quick-edit-template-link.php:565
+msgid "Using the form below, you can easily create the child theme"
+msgstr "Using the form below, you can easily create the child theme"
+
+#: quick-edit-template-link.php:582
+#, php-format
+msgid ""
+"Your Child theme has been created, head over to <a href=\"%s\" target="
+"\"_blank\">Themes</a> to activate it."
+msgstr ""
+"Your Child theme has been created, head over to <a href=\"%s\" target="
+"\"_blank\">Themes</a> to activate it."
+
+#: quick-edit-template-link.php:602
+msgid "Create Child Theme"
+msgstr "Create Child Theme"
+
+#: quick-edit-template-link.php:612
+msgid "Template Debugger"
+msgstr "Template Debugger"
+
+#: quick-edit-template-link.php:625
+msgid "Page Template(s)"
+msgstr "Page Template(s)"
+
+#: quick-edit-template-link.php:629
+msgid "You must save this item before options are available"
+msgstr "You must save this item before options are available"
+
+#: quick-edit-template-link.php:648
+#, php-format
+msgid "This page uses <strong>%s</strong>"
+msgstr "This page uses <strong>%s</strong>"
+
+#: quick-edit-template-link.php:653
+msgid "Your themes directory is not writable"
+msgstr "Your themes directory is not writable"
+
+#: quick-edit-template-link.php:657
+msgid "Create a page specific template"
+msgstr "Create a page specific template"
+
+#: quick-edit-template-link.php:659
+msgid "Select Template"
+msgstr "Select Template"
