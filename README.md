@@ -12,7 +12,7 @@
 6. Several recommended [WordPress plugins for theme development](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/). For use during development.
 
 ## How to
-* Download this repository (don't clone it). Code -> Download Zip. Use this files in your new project.
+* Download this repository (don't clone it). Download it using the button: Code -> Download Zip. Use this files in your new project.
 * If you don't use any of the included plugins, delete them from your project.
 * Picostrap already included auto-compilation for it's SCSS files and a live-reload feature built in. You don't need to install anything.
 * Use your local dev enviroment to develop your new theme. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
