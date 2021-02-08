@@ -4,7 +4,7 @@
 **Don't clone this repository.**
 
 ## What's included
-1. [Picostrap](https://picostrap.com/) theme v1.2.0
+1. [Picostrap](https://picostrap.com/) theme v1.2.1
 2. [Picostrap](https://picostrap.com/) child theme v1.1.0
 3. [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro/) v5.9.4
 4. [Gravity Forms](https://www.gravityforms.com/) v2.4.22.4
