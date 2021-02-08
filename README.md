@@ -22,6 +22,8 @@
 * You must use [SCSS](https://sass-lang.com/) for your CSS, and [Bootstrap 4 o 5](https://getbootstrap.com/). Theme already include Bootstrap v4 (and soon it will include v5).
 * If you need to generate a form for the site (any purpose), you must use the included plugin for it, Gravity Forms. No other contact form plugin is allowed.
 * If you need to generate [post metaboxes](https://www.advancedcustomfields.com/resources/adding-fields-posts/), an [Options Page](https://www.advancedcustomfields.com/resources/options-page/) or [Gutenberg Blocks](https://www.advancedcustomfields.com/resources/blocks/), use the included plugin Advanced Custom Fields Pro.
+* Use the proper WP's functions and methods to work in a theme or plugin. Again, [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) are a must. So you need to know the [Template Hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/), use the proper calls to [include styles and scripts](https://developer.wordpress.org/themes/basics/including-css-javascript/) in your theme, know [the loop](https://developer.wordpress.org/themes/basics/the-loop/), use [get_stylesheet_directory_uri()](https://developer.wordpress.org/reference/functions/get_stylesheet_directory_uri/) to call the proper URL to include an image, etc.
+* Don't hard-code URLs in your theme or plugins. Ever.
 
 ## Questions?
 Please, ask at #devs in Slack.
