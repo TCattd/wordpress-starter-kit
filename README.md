@@ -39,7 +39,7 @@
 * If you used Advanced Custom Fields Pro, then enable [Local JSON caching](https://www.advancedcustomfields.com/resources/local-json/).
 * Don't forget to change any email (sender/"from" and recipient/"to" addresses) in your forms and WooCommerce if was used. Recipient should be pointing to the correct client's email address.
 * Check that the emails are properly configured. Use [Stop WP Emails Going to Spam](https://wordpress.org/plugins/stop-wp-emails-going-to-spam/) to set the correct email address for the email sent from WP (anything@thefinaldomain.tld), and make sure the correct SPF records exists and are valid for the final domain/server. Send a test email with [Check & Log Email](https://wordpress.org/plugins/check-email/) to verify everything is set up correctly.
-* Create a different administrator user for the final client. Don't give the client the same user as Agency is using.
+* Create a different administrator user for the final client. Don't give the client the same user as the Agency is using.
 * Done.
 
 ## Questions?
