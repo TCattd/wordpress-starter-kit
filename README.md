@@ -11,7 +11,7 @@
 5. [EditorConfig](https://editorconfig.org/) file to follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 6. Several recommended [WordPress plugins for theme development](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/). For use during development.
 
-## Quick Docs
+## Quick Docs: How to start & develop with this kit
 * Download this repository (don't clone it). Download it using the button: Code -> Download Zip. Use this files in your new project.
 * If you don't use any of the included plugins, delete them from your project.
 * Picostrap already included auto-compilation for it's SCSS files and a live-reload feature built in. You don't need to install anything extra.
@@ -22,6 +22,7 @@
 * Use your local dev enviroment to develop your new theme. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
 * Configure your local WordPress instance with [WP_DEBUG enabled](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/#wp_debug).
 * Update any development plugin included. Then enable the ones you want to use during development.
+* Start coding.
 
 ## Don't forget
 * You must follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/). That's why we include the .editorconfig file. Use it. There's support for it on many code editors and IDEs. [Check it out](https://editorconfig.org/).
