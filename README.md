@@ -12,10 +12,14 @@
 6. Several recommended [WordPress plugins for theme development](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/). For use during development.
 
 ## Quick Docs: How to start & develop with this kit
+
+Beside the [official WordPress developer resources](https://developer.wordpress.org/), this is what you should know to begin:
+
 * Download this repository (don't clone it). Download it using the button: Code -> Download Zip. Use this files in your new project.
-* If you don't use any of the included plugins, delete them from your project.
+* If you will not use any of the included plugins, delete them from your project.
 * Picostrap already included auto-compilation for it's SCSS files and a live-reload feature built in. You don't need to install anything extra.
-* Use the /sass/ folder (inside the child-theme) to host your SCSS. Don't use simple and plain CSS. Don't touch the style.css (main or child theme). Always use SCSS inside the existing folder structure. You can add and import as many SCSS files as you need, for order.
+* Use the /sass/ folder (inside the child-theme) to host your SCSS. Don't use simple and plain CSS. Don't touch the style.css (main or child theme). Always use SCSS (Sassy CSS, not SASS) inside the existing folder structure. You can add and import as many SCSS files as you need, for order.
+* Remember to use [Bootstrap](https://getbootstrap.com/) classes and utilities. Don't reinvent the wheel.
 * Use the /js/ folder (inside the child-theme) to host your Javascript. [Enqueue your JS files](https://developer.wordpress.org/themes/basics/including-css-javascript/) properly from within your theme. You can add and enqueue as many JS files as you need, for order and logic separation.
 * Use the /images/ folder (inside the child-theme) to host your images.
 * Use the /fonts/ folder (inside the child-theme) to host your custom fonts.
@@ -25,9 +29,9 @@
 * Start coding.
 
 ## Don't forget
-* You must follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/). That's why we include the .editorconfig file. Use it. There's support for it on many code editors and IDEs. [Check it out](https://editorconfig.org/).
+* You must follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/). That's why we include the .editorconfig file. Use it. There's support for it on many code editors and IDEs. [Check it out](https://editorconfig.org/). Make your code editor or IDE honor the included [EditorConfig](https://editorconfig.org/) rules included in this kit.
 * You must use the included theme, [Picostrap](https://picostrap.com/). **Use the [child theme](https://developer.wordpress.org/themes/advanced-topics/child-themes/)** for your modifications. **Don't edit the main theme** nor add or remove files from it. Don't touch the main theme folder. Your work must be done inside the [child theme](https://developer.wordpress.org/themes/advanced-topics/child-themes/).
-* You must use [SCSS](https://sass-lang.com/) for your CSS, and [Bootstrap 4 o 5](https://getbootstrap.com/). Theme already include Bootstrap v4 (and soon it will include v5).
+* You must use [SCSS](https://sass-lang.com/) (SCSS, not SASS) for your CSS, and [Bootstrap 4 o 5](https://getbootstrap.com/). Theme already include Bootstrap v4 (and soon it will include v5). Don't use plain CSS.
 * If you need to generate a form for the site (any purpose), you must use the included plugin for it, Gravity Forms. No other contact form plugin is allowed.
 * If you need to generate [post metaboxes](https://www.advancedcustomfields.com/resources/adding-fields-posts/), an [Options Page](https://www.advancedcustomfields.com/resources/options-page/) or [Gutenberg Blocks](https://www.advancedcustomfields.com/resources/blocks/), use the included plugin Advanced Custom Fields Pro.
 * Use the proper WP's functions and methods to work in a theme or plugin. Again, [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/) are a must. So you need to know the [Template Hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/), use the proper calls to [include styles and scripts](https://developer.wordpress.org/themes/basics/including-css-javascript/) in your theme, know [the loop](https://developer.wordpress.org/themes/basics/the-loop/), use [get_stylesheet_directory_uri()](https://developer.wordpress.org/reference/functions/get_stylesheet_directory_uri/) to call the proper URL to include an image, etc. If WordPress provides a way to work with something, doing that "something" in a non-WordPress way is not ok.
