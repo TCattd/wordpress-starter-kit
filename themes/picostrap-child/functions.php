@@ -3,14 +3,16 @@
 defined( 'ABSPATH' ) || exit;
 
 // Picostrap's includes
-$picostrap_includes = array(
+$picostrap_includes = [
     //'/your-file.php',
     //'/another-file.php',
     //'/yet-another-file.php',
-);
+];
 
-foreach ( $picostrap_includes as $file ) {
-    require_once get_stylesheet_directory() . '/includes' . $file;
+if ( is_array( $picostrap_includes ) && ! empty( $picostrap_includes ) ) {
+    foreach ( $picostrap_includes as $file ) {
+        require_once get_stylesheet_directory() . '/includes' . $file;
+    }
 }
 
 // LOAD CHILD THEME TEXTDOMAIN
