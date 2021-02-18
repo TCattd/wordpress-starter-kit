@@ -1,5 +1,18 @@
 <?php
- 
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
+
+// Picostrap's includes
+$picostrap_includes = array(
+    //'/your-file.php',
+    //'/another-file.php',
+    //'/yet-another-file.php',
+);
+
+foreach ( $picostrap_includes as $file ) {
+    require_once get_stylesheet_directory() . '/includes' . $file;
+}
+
 // LOAD CHILD THEME TEXTDOMAIN
 //add_action( 'after_setup_theme', function() { load_child_theme_textdomain( 'picostrap-child', get_stylesheet_directory() . '/languages' ); } );
 
@@ -28,5 +41,3 @@ add_action("wp_head",function(){ ?>
  <link href="https://fonts.googleapis.com/css?family=Hanalei+Fill" rel="stylesheet">
 <?php }); 
 */
-
-
