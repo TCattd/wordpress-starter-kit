@@ -1,8 +1,13 @@
 
 /* ============ ADD HERE YOUR CUSTOM SCSS or  plain CSS CODE. ============ 
 
-Save, view page as admin, and style will be AUTOMATICALLY recompiled 
-when file is edited 
+HOW DOES IT WORK?
+
+    Edit this file, save, 
+    view page as admin:
+    The style will be AUTOMATICALLY recompiled and 
+    your new CSS bundle will be reloaded via ajax to show 
+    the new styling edits.
 
 NOTICE for beginners: 
 
@@ -14,11 +19,21 @@ NOTICE for beginners:
     Then learn to use Bootstrap 4 Classes and utilities.
     If you come from the CSS world, take some time to study the basic of SASS. It's very powerful.
     With great powers...you are warned
+
+HOW TO REFERENCE ASSETS AND IMAGES 
+    .sample-selector {
+        background: url('../screenshot.png');  //and you're in the child theme root folder
+
+        OR
+
+        background: url('../your-subfolder/anything.whatever');  //to use a custom subfolder in the child theme
+    }
+
 		
 ************************************************		*/
+//a demo statement - uncomment to see page tun red and blush
+//body { background: red; opacity: 0.3;} 
 
-
+//open menus on hover
+//.dropdown:hover>.dropdown-menu { display: block;}
  
-//body { background:red}
-
-

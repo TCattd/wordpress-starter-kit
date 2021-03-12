@@ -62,14 +62,36 @@ function picostrap_get_scss_variables_array(){
 			
 			'$spacer' => array('type' => 'text','placeholder' => '1rem'),
 			
-			'$border-width' => array('type' => 'text','placeholder' => '1px'),
+			//Borders
+			
+			'$border-width' => array('type' => 'text','placeholder' => '1px', 'newgroup' => 'Borders'),
 			'$border-color' => array('type' => 'color' ),
 			'$border-radius' => array('type' => 'text','placeholder' => '.25rem'),
 			'$border-radius-lg' => array('type' => 'text','placeholder' => '.3rem'),
 			'$border-radius-sm' => array('type' => 'text','placeholder' => '.2rem'),
 			'$rounded-pill' => array('type' => 'text','placeholder' => '50rem'),
-			 
+			
 
+			'$btn-border-radius' => array('type' => 'text','placeholder' => '$border-radius', 'newgroup' => 'Button Border Radius & more'),
+			'$btn-border-radius-lg' => array('type' => 'text','placeholder' => '$border-radius'),
+			'$btn-border-radius-sm' => array('type' => 'text','placeholder' => '$border-radius'),
+
+			'$badge-border-radius' => array('type' => 'text','placeholder' => '$border-radius'),
+			'$badge-pill-border-radius' => array('type' => 'text','placeholder' => '$border-radius'),
+			
+			'$thumbnail-border-radius' => array('type' => 'text','placeholder' => '$border-radius'),
+			
+			'$card-border-radius' => array('type' => 'text','placeholder' => '$border-radius'),
+			'$progress-border-radius' => array('type' => 'text','placeholder' => '$border-radius'),
+			'$nav-pills-border-radius' => array('type' => 'text','placeholder' => '$border-radius'),
+			
+
+			
+ 
+
+
+			
+			
 			),
 		
 		
@@ -850,8 +872,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
     ));
 	
 	
-	
-	/*
 	//LIGHTBOX
 	$wp_customize->add_setting("enable_lightbox", array(
         "default" => "",
@@ -867,7 +887,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
             'type'     => 'checkbox',
 			)
 	));
-	*/
+	
 	
 	
 	// SINGLE POST & ARCHIVES SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////

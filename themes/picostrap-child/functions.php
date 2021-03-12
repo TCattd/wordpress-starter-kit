@@ -2,6 +2,12 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// SET A SPECIFIC DESTINATION FOLDER FOT THE COMPILED CSS BUNDLES
+function picostrap_get_css_optional_subfolder_name() { return "css-output/"; }
+
+// SET A CUSTOM NAME FOR THE CSS BUNDLE FILE
+function picostrap_get_base_css_filename() { return "bundle.css"; }
+
 // Picostrap's includes
 $picostrap_includes = [
     //'/your-file.php',
@@ -15,21 +21,22 @@ if ( is_array( $picostrap_includes ) && ! empty( $picostrap_includes ) ) {
     }
 }
 
+// DISABLE APPLICATION PASSWORDS for security
+add_filter( 'wp_is_application_passwords_available', '__return_false' );
+
 // LOAD CHILD THEME TEXTDOMAIN
 //add_action( 'after_setup_theme', function() { load_child_theme_textdomain( 'picostrap-child', get_stylesheet_directory() . '/languages' ); } );
 
-// OPTIONAL ADDITIONAL CSS FILE - [NOT RECOMMENDED]: USE the /sass folder!
+// OPTIONAL ADDITIONAL CSS FILE - [NOT RECOMMENDED]: USE the /sass folder, add your css code to /sass/_custom.sass
 //add_action( 'wp_enqueue_scripts',  function  () {	wp_enqueue_style( 'custom', get_stylesheet_directory_uri().'/custom.css' ); });
 
 // OPTIONAL ADDITIONAL JS FILE - just uncomment the row below
 //add_action( 'wp_enqueue_scripts', function() {	wp_enqueue_script('custom', get_stylesheet_directory_uri() . '/js/custom.js', array(/* 'jquery' */), null, true); });
  
 // OPTIONAL: ADD FONTAWESOME FROM CDN IN FOOTER 
-
 /* 
 add_action("wp_footer",function(){ ?> <link rel='stylesheet' id='fontawesome-css'  href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' media='all' /> <?php }); 
 */
-
 
 //OPTIONAL: ADD ANOTHER CUSTOM GOOGLE FONT, EXAMPLE: Hanalei Fill
 // After uncommenting the following code, you will also need to set the font in the BS variable. Here's how:
@@ -43,3 +50,8 @@ add_action("wp_head",function(){ ?>
  <link href="https://fonts.googleapis.com/css?family=Hanalei+Fill" rel="stylesheet">
 <?php }); 
 */
+
+// OPTIONAL: ADD MORE NAV MENUS
+//register_nav_menus( array( 'third' => __( 'Third Menu', 'picostrap' ), 'fourth' => __( 'Fourth Menu', 'picostrap' ), 'fifth' => __( 'Fifth Menu', 'picostrap' ), ) );
+// THEN USE SHORTCODE:  [lc_nav_menu theme_location="third" container_class="" container_id="" menu_class="navbar-nav"]
+

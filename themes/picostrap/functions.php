@@ -23,7 +23,7 @@ $picostrap_includes = array(
 	'/customizer-assets/customizer.php',	//Defines Customizer options
 	'/customizer-assets/scss-compiler.php', //To interface the Customizer with the SCSS php compiler	 
 	'/customizer-assets/livereload.php', //To automatically trigger SCSS compiling when source sass changes	 
-	//'/theme-options-page.php',                  // Load theme options page. 
+	'/options-page.php',                  // Load theme options page. 
 
 );
 
@@ -31,10 +31,14 @@ foreach ( $picostrap_includes as $file ) {
 	require_once get_template_directory() . '/inc' . $file;
 }
 
+//PURELY OPT-IN FEATURES
 //OPTIONAL: DISABLE WORDPRESS COMMENTS
 if (get_theme_mod("singlepost_disable_comments") ) require_once locate_template('/inc/disable-comments.php'); 
 
 //OPTIONAL: BACK TO TOP
 if (get_theme_mod("enable_back_to_top") ) require_once locate_template('/inc/back-to-top.php');
 
+//OPTIONAL: LIGHTBOX  
+if (get_theme_mod("enable_lightbox") ) require_once locate_template('/inc/lightbox.php');
+	
 

@@ -1,10 +1,23 @@
 <?php
+ 
+add_action( 'wp_head', function  () {
+	if (!current_user_can('administrator') or !isset($_GET['customize_theme'])  ) return; //exit if not admin
+    ?>
+    <script>
 
-//ADD THE FOOTER CODE to trigger live reload
-add_action( 'wp_footer', function  () {
+       // alert("Please Publish the theme change so the first CSS bundle is generated");
+    </script>
+    <?php
+});
+
+
+add_action( 'wp_head', function  () {
 	if (!current_user_can('administrator') or isset($_GET['customize_theme']) or get_theme_mod("picostrap_disable_livereload")) return; //exit if not admin
     ?>
     <script>
+
+        //alert("Livereload yo");
+    
         var picostrap_livereload_timeout=1500;
         
         function picostrap_livereload_woodpecker(){
@@ -29,14 +42,10 @@ add_action( 'wp_footer', function  () {
                 }); 
         } //end function
         
-        //trigger on dom loaded
-        document.addEventListener('DOMContentLoaded', function(event) {
-            document.querySelector("html").insertAdjacentHTML("afterbegin","<div id='scss-compiler-output' style=' position: fixed; z-index: 99999999;'></div>");
-            picostrap_livereload_woodpecker();
-        })
+
 
         function picostrap_recompile_sass(){
-            //console.log("picostrap_recompile_sass start");
+            console.log("picostrap_recompile_sass start");
             //document.querySelector("#wp-admin-bar-my-account").innerHTML("Compiling SCSS....");
             fetch("<?php echo admin_url() ?>?ps_compile_scss&ps_compiler_api=1")
                 .then(function(response) {
@@ -63,6 +72,22 @@ add_action( 'wp_footer', function  () {
                 }); 
         } //end function
 
+        function picostrap_check_css_exists() {
+            if (
+                getComputedStyle(document.documentElement).getPropertyValue('--primary')=="" && 
+                getComputedStyle(document.documentElement).getPropertyValue('--bs-primary')==""
+               ) picostrap_recompile_sass();   
+        }
+
+        //END FUNCTIONS
+
+        //ON DOMContentLoaded START THE ENGINE / Like document ready :)
+        document.addEventListener('DOMContentLoaded', function(event) {
+            
+            document.querySelector("html").insertAdjacentHTML("afterbegin","<div id='scss-compiler-output' style=' position: fixed; z-index: 99999999;'></div>");
+            picostrap_check_css_exists();
+            picostrap_livereload_woodpecker();
+        });
 
     </script>
     <?php
@@ -78,13 +103,13 @@ add_action("admin_init", function (){
 	if (isset($_GET['ps_check_sass_changes'])) {
         
         //onboarding
-        if(get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)==0) { echo "Y"; die(); } //set_theme_mod("picostrap_scss_last_filesmod_timestamp",picostrap_scss_last_filesmod_timestamp());
+        if(get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)==0) { echo "Y"; die(); } //set_theme_mod("picostrap_scss_last_filesmod_timestamp",picostrap_get_scss_last_filesmod_timestamp());
         
         //DEBUG 
-        //echo get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)."<br>".picostrap_scss_last_filesmod_timestamp();die;
+        //echo get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)."<br>".picostrap_get_scss_last_filesmod_timestamp();die;
 
         //check if timestamps differ 
-        if (get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)!=picostrap_scss_last_filesmod_timestamp()) echo "Y"; else echo ("N");
+        if (get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)!=picostrap_get_scss_last_filesmod_timestamp()) echo "Y"; else echo ("N");
         die();
     } 
 });
@@ -93,12 +118,15 @@ add_action("admin_init", function (){
 
 
 //FUNCTION TO MAKE A TIMESTAMP OF CHILD THEME SASS DIRECTORY
-function picostrap_scss_last_filesmod_timestamp () {
-	
-	$the_directory=WP_CONTENT_DIR.'/themes/'.sanitize_title(wp_get_theme()).'/sass/';
+function picostrap_get_scss_last_filesmod_timestamp() {
+
+	//get current sass folder directory listing
+	$the_directory=WP_CONTENT_DIR.'/themes/'.get_stylesheet().'/sass/';
     $files_listing = scandir($the_directory, 1);
+    
     if (!$files_listing) die("<div id='compile-error' style='font-size:20px;background:#212337;color:lime;font-family:courier;border:8px solid red;padding:15px;display:block'> Cannot find SASS folder. Are you sure child theme name is coherent with folder name? </div>");
-	$mod_time_total=0;
+	
+    $mod_time_total=0;
 	foreach($files_listing as $file_name):
 		if ((strpos($file_name, '.scss') !== false) or (strpos($file_name, '.css') !== false)):
 			//echo $file_name."<br>";
@@ -106,6 +134,32 @@ function picostrap_scss_last_filesmod_timestamp () {
 			$mod_time_total+= $file_stats['mtime'];
 		endif;
 	endforeach;
+
 	return $mod_time_total; 
 }
  
+//FUTURE
+/*
+function dirToArray($dir) {
+  
+    $result = array();
+ 
+    $cdir = scandir($dir);
+    foreach ($cdir as $key => $value)
+    {
+       if (!in_array($value,array(".","..")))
+       {
+          if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
+          {
+             $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
+          }
+          else
+          {
+             $result[] = $value;
+          }
+       }
+    }
+   
+    return $result;
+ }
+ */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Blank Page Template
+ * Template Name: Blank NoFooter Page Template
  *
 
  */
@@ -36,5 +36,13 @@ defined( 'ABSPATH' ) || exit;
       else :
           _e( 'Sorry, no posts matched your criteria.', 'textdomain' );
       endif;
-      
-      get_footer();
+      ?>
+
+    </main>
+	 
+	<?php wp_footer(); ?>
+
+	</body>
+</html>
+
+
