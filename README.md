@@ -29,7 +29,7 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 * Update any development plugin included. Then enable the ones you want to use during development.
 * Start coding.
 
-## Don't forget
+## Rules and Guidelines
 * You must follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/). That's why we include the .editorconfig file. Use it. There's support for it on many code editors and IDEs. [Check it out](https://editorconfig.org/). Make your code editor or IDE honor the included [EditorConfig](https://editorconfig.org/) rules included in this kit.
 * You must use the included theme, [Picostrap](https://picostrap.com/). **Use the [child theme](https://developer.wordpress.org/themes/advanced-topics/child-themes/)** for your modifications. **Don't edit the main theme** nor add or remove files from it. Don't touch the main theme folder. Your work must be done inside the [child theme](https://developer.wordpress.org/themes/advanced-topics/child-themes/).
 * You must use [SCSS](https://sass-lang.com/) (SCSS, not SASS) for your CSS, and [Bootstrap 4 o 5](https://getbootstrap.com/). Theme already include Bootstrap v4 (and soon it will include v5). Don't use plain CSS.
