@@ -7,7 +7,7 @@
 1. [Picostrap](https://picostrap.com/) theme v1.3.1
 2. [Picostrap](https://picostrap.com/) child theme v1.3.0
 3. [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro/) v5.9.4
-4. [Gravity Forms](https://www.gravityforms.com/) v2.4.22.4
+4. [Piotnet Forms Pro](https://piotnetforms.com/) v1.0.78
 5. [EditorConfig](https://editorconfig.org/) file to follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
 6. Several recommended [WordPress plugins for theme development](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/). For use during development.
 
