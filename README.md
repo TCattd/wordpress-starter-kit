@@ -24,7 +24,7 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 * Use the /js/ folder (inside the child-theme) to host your Javascript. [Enqueue your JS files](https://developer.wordpress.org/themes/basics/including-css-javascript/) properly from within your theme. You can add and enqueue as many JS files as you need, for order and logic separation.
 * Use the /images/ folder (inside the child-theme) to host your images.
 * Use the /fonts/ folder (inside the child-theme) to host your custom fonts.
-* Use your local dev enviroment to develop your new theme. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
+* Use your local dev enviroment to develop your new site. If you don't have a local dev enviroment, we recommend [Local WP](https://localwp.com/).
 * Configure your local WordPress instance with [WP_DEBUG enabled](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/#wp_debug).
 * Update any development plugin included. Then enable the ones you want to use during development.
 * Start coding.
