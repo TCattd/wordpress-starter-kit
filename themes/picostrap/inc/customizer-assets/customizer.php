@@ -99,7 +99,7 @@ function picostrap_get_scss_variables_array(){
 		//add another section
 		"typography" => array( // $variable_name => $variable_props
 			 
-			'$enable-responsive-font-sizes' => array('type' => 'boolean'),
+			'$enable-responsive-font-sizes' => array('type' => 'boolean', 'default' => 'true'),
 						 
 			'$font-family-base' => array('type' => 'text', 'placeholder' => '$font-family-sans-serif ', 'newgroup' => 'Font Families', ), 
 			'$font-family-sans-serif' => array('type' => 'text', 'placeholder' => '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" '),

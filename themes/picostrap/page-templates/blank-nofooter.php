@@ -36,6 +36,8 @@ defined( 'ABSPATH' ) || exit;
       else :
           _e( 'Sorry, no posts matched your criteria.', 'textdomain' );
       endif;
+      
+      //start microfooter
       ?>
 
     </main>

@@ -10,7 +10,7 @@ function picostrap_get_css_url (){
     if(get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)==0) return get_stylesheet_directory_uri() . '/'. picostrap_get_css_optional_subfolder_name() . picostrap_get_base_css_filename(); 
 
     //standard case
-    return get_stylesheet_directory_uri() . '/'. picostrap_get_css_optional_subfolder_name() . picostrap_get_complete_css_filename(); 
+    return get_stylesheet_directory_uri() . '/' . picostrap_get_css_optional_subfolder_name() . picostrap_get_complete_css_filename(); 
 
 }
 
@@ -76,7 +76,7 @@ function picostrap_add_header_chrome_color() {
 }
 
 
-//NEW JS ASYNC ENQUEUE: add an async load option as per https://ikreativ.com/async-with-wordpress-enqueue/
+//JS ASYNC ENQUEUE: add an async load option as per https://ikreativ.com/async-with-wordpress-enqueue/
 function picostrap_async_scripts($url){
     if ( strpos( $url, '#asyncload') === false )
         return $url;

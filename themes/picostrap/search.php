@@ -13,7 +13,7 @@ get_header();
     <h1><?php 
 								printf(
 									/* translators: %s: query term */
-									esc_html__( 'Search Results for: %s', 'understrap' ),
+									esc_html__( 'Search Results for: %s', 'picostrap' ),
 									'<span class="text-muted">"' . get_search_query() . '"</span>'
 								);
 								?></h1>

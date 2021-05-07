@@ -8,12 +8,12 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-add_action( 'after_setup_theme', 'understrap_woocommerce_support' );
-if ( ! function_exists( 'understrap_woocommerce_support' ) ) {
+add_action( 'after_setup_theme', 'picostrap_woocommerce_support' );
+if ( ! function_exists( 'picostrap_woocommerce_support' ) ) {
 	/**
 	 * Declares WooCommerce theme support.
 	 */
-	function understrap_woocommerce_support() {
+	function picostrap_woocommerce_support() {
 		add_theme_support( 'woocommerce' );
 
 		// Add Product Gallery support.
@@ -22,8 +22,8 @@ if ( ! function_exists( 'understrap_woocommerce_support' ) ) {
 		add_theme_support( 'wc-product-gallery-slider' );
 
 		// Add Bootstrap classes to form fields.
-		add_filter( 'woocommerce_form_field_args', 'understrap_wc_form_field_args', 10, 3 );
-		add_filter( 'woocommerce_quantity_input_classes', 'understrap_quantity_input_classes' );
+		add_filter( 'woocommerce_form_field_args', 'picostrap_wc_form_field_args', 10, 3 );
+		add_filter( 'woocommerce_quantity_input_classes', 'picostrap_quantity_input_classes' );
 	}
 }
 
@@ -32,15 +32,15 @@ remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wr
 remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10 );
 
 // Then hook in your own functions to display the wrappers your theme requires.
-add_action( 'woocommerce_before_main_content', 'understrap_woocommerce_wrapper_start', 10 );
-add_action( 'woocommerce_after_main_content', 'understrap_woocommerce_wrapper_end', 10 );
+add_action( 'woocommerce_before_main_content', 'picostrap_woocommerce_wrapper_start', 10 );
+add_action( 'woocommerce_after_main_content', 'picostrap_woocommerce_wrapper_end', 10 );
 
-if ( ! function_exists( 'understrap_woocommerce_wrapper_start' ) ) {
+if ( ! function_exists( 'picostrap_woocommerce_wrapper_start' ) ) {
 	/**
 	 * Display the theme specific start of the page wrapper.
 	 */
-	function understrap_woocommerce_wrapper_start() {
-		//$container = get_theme_mod( 'understrap_container_type' );
+	function picostrap_woocommerce_wrapper_start() {
+		//$container = get_theme_mod( 'picostrap_container_type' );
 		echo '<div class="" id="woocommerce-wrapper">';
 		//echo '<div class="' . esc_attr( $container ) . '" id="content" tabindex="-1">';
 		echo '<div class="container">';
@@ -51,11 +51,11 @@ if ( ! function_exists( 'understrap_woocommerce_wrapper_start' ) ) {
 	}
 }
 
-if ( ! function_exists( 'understrap_woocommerce_wrapper_end' ) ) {
+if ( ! function_exists( 'picostrap_woocommerce_wrapper_end' ) ) {
 	/**
 	 * Display the theme specific end of the page wrapper.
 	 */
-	function understrap_woocommerce_wrapper_end() {
+	function picostrap_woocommerce_wrapper_end() {
 		//echo '</main><!-- #main -->';
 		//get_template_part( 'global-templates/right-sidebar-check' );
 		echo '</div> ';
@@ -66,7 +66,7 @@ if ( ! function_exists( 'understrap_woocommerce_wrapper_end' ) ) {
 	
 }
 
-if ( ! function_exists( 'understrap_wc_form_field_args' ) ) {
+if ( ! function_exists( 'picostrap_wc_form_field_args' ) ) {
 	/**
 	 * Filter hook function monkey patching form classes
 	 * Author: Adriano Monecchi http://stackoverflow.com/a/36724593/307826
@@ -77,7 +77,7 @@ if ( ! function_exists( 'understrap_wc_form_field_args' ) ) {
 	 *
 	 * @return mixed
 	 */
-	function understrap_wc_form_field_args( $args, $key, $value = null ) {
+	function picostrap_wc_form_field_args( $args, $key, $value = null ) {
 		// Start field type switch case.
 		switch ( $args['type'] ) {
 			// Targets all select input type elements, except the country and state select input types.
@@ -170,14 +170,14 @@ if ( ! is_admin() && ! function_exists( 'wc_review_ratings_enabled' ) ) {
 	}
 }
 
-if ( ! function_exists( 'understrap_quantity_input_classes' ) ) {
+if ( ! function_exists( 'picostrap_quantity_input_classes' ) ) {
 	/**
 	 * Add Bootstrap class to quantity input field.
 	 *
 	 * @param array $classes Array of quantity input classes.
 	 * @return array
 	 */
-	function understrap_quantity_input_classes( $classes ) {
+	function picostrap_quantity_input_classes( $classes ) {
 		$classes[] = 'form-control';
 		return $classes;
 	}

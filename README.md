@@ -4,7 +4,7 @@
 **Don't clone this repository.**
 
 ## What's included
-1. [Picostrap](https://picostrap.com/) theme v1.3.1
+1. [Picostrap](https://picostrap.com/) theme v1.3.2
 2. [Picostrap](https://picostrap.com/) child theme v1.3.0
 3. [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro/) v5.9.4
 4. [Piotnet Forms Pro](https://piotnetforms.com/) v1.0.78
