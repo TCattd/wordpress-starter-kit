@@ -1,0 +1,45 @@
+// Use this file to overwrite the basic Bootstrap variables and add your own variables
+// To overwrite a Bootstrap variable you don´t have to touch the Bootstrap folder.
+// Just copy a variable from /sass/bootstrap5/_variables.scss, paste it here and edit the value.
+
+ 
+// SOME EXPERIMENTS:
+//$navbar-dark-toggler-icon-bg: url('data:image/svg+xml, <svg class="bi bi-app-indicator" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">  <path fill-rule="evenodd" d="M5.5 2A3.5 3.5 0 002 5.5v5A3.5 3.5 0 005.5 14h5a3.5 3.5 0 003.5-3.5V8a.5.5 0 011 0v2.5a4.5 4.5 0 01-4.5 4.5h-5A4.5 4.5 0 011 10.5v-5A4.5 4.5 0 015.5 1H8a.5.5 0 010 1H5.5z" clip-rule="evenodd"/><path d="M16 3a3 3 0 11-6 0 3 3 0 016 0z"/></svg>') !default;
+//$navbar-brand-font-size:            3rem;
+
+
+//SOME CUSTOMIZATION FOR PICOSTRAP & LC
+
+//CUSTOM SPACING UP TO 8
+$spacer: 1rem !default;
+$spacers: (
+  0: 0,
+  1: $spacer / 4,
+  2: $spacer / 2,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: ($spacer * 4.5),  //added
+  7: ($spacer * 6), //added
+  8: ($spacer * 7.5), //added
+
+) !default;
+
+//ENABLE NEGATIVE MARGIN UTILITY CLASSES
+$enable-negative-margins: true;
+ 
+//DISPLAY FONTS CUSTOMIZATION
+/*
+$display-font-sizes: (
+  1: 5rem,
+  2: 4.5rem,
+  3: 4rem,
+  4: 3.5rem,
+  5: 3rem,
+  6: 2.5rem
+) !default;
+
+$display-font-weight: 300 !default;
+$display-line-height: $headings-line-height !default;
+
+*/
