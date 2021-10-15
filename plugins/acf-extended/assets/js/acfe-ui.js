@@ -109,20 +109,6 @@
 
             }
 
-            // RankMath
-            var $rankMath = this.$('> form .rank-math-metabox-frame');
-
-            if ($rankMath.length) {
-
-                var rankMathTitle = $rankMath.find('h2').text();
-
-                $rankMath.find('h2').remove();
-                $rankMath.wrapAll('<div class="postbox acf-postbox rankmath"><div class="acf-fields -left"><div class="acf-field"><div class="acf-input"></div></div></div></div>');
-                $rankMath.closest('.acf-field').prepend('<div class="acf-label"><label>' + rankMathTitle + '</label></div>');
-                $rankMath.closest('.postbox').prepend('<div class="postbox-header"><h2>' + rankMathTitle + '</h2></div>');
-
-            }
-
             // User Role Editor
             var $userRoleEditor = this.$('#ure_select_other_roles');
 
@@ -211,19 +197,8 @@
 
             }
 
-            // RankMath
-            var $rankMath = this.$('> form .rank-math-metabox-frame');
-
-            if ($rankMath.length) {
-
-                var rankMathTitle = $rankMath.find('h2').text();
-
-                $rankMath.find('h2').remove();
-                $rankMath.wrapAll('<div class="postbox acf-postbox rankmath"><div class="acf-fields -left"><div class="acf-field"><div class="acf-input"></div></div></div></div>');
-                $rankMath.closest('.acf-field').prepend('<div class="acf-label"><label>' + rankMathTitle + '</label></div>');
-                $rankMath.closest('.postbox').prepend('<div class="postbox-header"><h2>' + rankMathTitle + '</h2></div>');
-
-            }
+            // Add Class to submitdiv to let rankmath save changes
+            $('#submitdiv #publishing-action').addClass('edit-tag-actions');
 
         },
 
@@ -267,6 +242,10 @@
 
     var enhancedListUI = acf.Model.extend({
 
+        data: {
+            taxonomy: false,
+        },
+
         setup: function(props) {
 
             // Extend data
@@ -301,10 +280,10 @@
             $nativeTitle.remove();
 
             // ACF class
-            var $fields = $('.acfe-bt .inside .form-field, .acfe-bt .inside .submit');
-            $fields.addClass('acf-field');
+            $('.acfe-bt .inside .form-field').addClass('acf-field');
+            $('.acfe-bt .inside .submit').addClass('form-field');
 
-            $fields.each(function() {
+            $('.acfe-bt .inside .form-field').each(function() {
 
                 var $this = $(this);
 
@@ -340,10 +319,11 @@
                 e.preventDefault();
                 var $wrap = $('.acfe-bt');
 
-                if ($wrap.is(':visible'))
+                if ($wrap.is(':visible')) {
                     $wrap.hide();
-                else
+                } else {
                     $wrap.show();
+                }
 
             });
 
@@ -372,8 +352,27 @@
 
                 $wpmlWidget.wrapAll('<div class="form-field acf-field"><div class="acf-input"></div></div>').parent().parent().prepend('<div class="acf-label"><label>' + wpmlTitle + '</label></div>');
 
-
             }
+
+            this.addAction('ready', 'ready');
+
+        },
+
+        ready: function() {
+
+            // LearnDash taxonomies buttons
+            $('.global-new-entity-button').click(function(e) {
+
+                e.preventDefault();
+                var $wrap = $('.acfe-bt');
+
+                if ($wrap.is(':visible')) {
+                    $wrap.hide();
+                } else {
+                    $wrap.show();
+                }
+
+            });
 
         }
 

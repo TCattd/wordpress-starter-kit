@@ -807,31 +807,33 @@ class ACFE_Field_Groups{
      * Seamless Metabox
      */
     function seamless_metabox($post_type, $post, $field_groups){
-    
-        $current_screen = get_current_screen();
-        $is_gutenberg = false;
-    
-        if(method_exists($current_screen, 'is_block_editor') && $current_screen->is_block_editor())
-            $is_gutenberg = true;
+        
+        // check gutenberg
+        $is_gutenberg = acfe_is_block_editor();
         
         foreach($field_groups as $field_group){
             
             add_filter("postbox_classes_{$post_type}_acf-{$field_group['key']}", function($classes) use($field_group, $is_gutenberg){
                 
+                // default
                 $classes[] = 'acf-postbox';
                 
-                // Seamless
-                if(!$is_gutenberg && $field_group['style'] === 'seamless')
+                // seamless
+                if(!$is_gutenberg && $field_group['style'] === 'seamless'){
                     $classes[] = 'seamless';
+                }
                 
-                // Left
-                if($field_group['label_placement'] === 'left')
+                // left
+                if($field_group['label_placement'] === 'left'){
                     $classes[] = 'acfe-postbox-left';
+                }
                 
-                // Top
-                if($field_group['label_placement'] === 'top')
+                // top
+                if($field_group['label_placement'] === 'top'){
                     $classes[] = 'acfe-postbox-top';
+                }
                 
+                // return
                 return $classes;
                 
             });

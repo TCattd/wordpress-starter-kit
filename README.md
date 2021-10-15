@@ -4,12 +4,7 @@
 **Don't clone this repository.**
 
 ## What's included
-1. [Picostrap5](https://picostrap.com/) theme v1.0.0
-2. [Picostrap5](https://picostrap.com/) child theme v1.0.0
-3. [Advanced Custom Fields Pro](https://www.advancedcustomfields.com/pro/) v5.9.4
-4. [Piotnet Forms Pro](https://piotnetforms.com/) v1.0.78
-5. [EditorConfig](https://editorconfig.org/) file to follow [WordPress codings standars](https://make.wordpress.org/core/handbook/best-practices/coding-standards/).
-6. Several recommended [WordPress plugins for theme development](https://developer.wordpress.org/themes/getting-started/setting-up-a-development-environment/). For use during development.
+Open the ```/plugins/``` and ```/themes/``` folders to check the included plugins and theme.
 
 ## Quick Docs: How to start & develop with this kit
 
