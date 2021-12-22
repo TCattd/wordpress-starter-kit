@@ -1,23 +1,11 @@
 <?php
  
 add_action( 'wp_head', function  () {
-	if (!current_user_can('administrator') or !isset($_GET['customize_theme'])  ) return; //exit if not admin
-    ?>
-    <script>
-
-       // alert("Please Publish the theme change so the first CSS bundle is generated");
-    </script>
-    <?php
-});
-
-
-add_action( 'wp_head', function  () {
 	if (!current_user_can('administrator') or isset($_GET['customize_theme']) or get_theme_mod("picostrap_disable_livereload")) return; //exit if not admin
     ?>
     <script>
 
         //alert("Livereload yo");
-    
         var picostrap_livereload_timeout=1500;
         
         function picostrap_livereload_woodpecker(){
@@ -46,25 +34,29 @@ add_action( 'wp_head', function  () {
 
         function picostrap_recompile_sass(){
             console.log("picostrap_recompile_sass start");
-            //document.querySelector("#wp-admin-bar-my-account").innerHTML("Compiling SCSS....");
+            document.querySelector("#scss-compiler-output").innerHTML = "<div style='font-size:30px;background:#212337;color:lime;font-family:courier;border:8px solid red;padding:15px;display:block;user-select: none;'>Compiling SCSS....</div>";
             fetch("<?php echo admin_url() ?>?ps_compile_scss&ps_compiler_api=1")
                 .then(function(response) {
                     return response.text();
                 }).then(function(text) {
-                    //console.log(text);
+                    //console.log(text); //but we don't need it anymore, just needs to include "New CSS bundle"
                     if (text.includes("New CSS bundle")) {
                         //SUCCESS
-                        document.querySelector("#scss-compiler-output").innerHTML = ''; //as there are no errors  
-                        var split = text.split(": ");
-                        var url = split[1];
-                        //console.log(url);
+
+                        //as there are no errors, clear the output feedback
+                        document.querySelector("#scss-compiler-output").innerHTML = ''; 
+                        
+                        //un-cache the frontend css
+                        url = document.getElementById('picostrap-styles-css').href;
                         document.getElementById('picostrap-styles-css').href = url;
+
+                        //retrigger the woodpecker
                         setTimeout(function(){ picostrap_livereload_woodpecker(); }, picostrap_livereload_timeout);
                     }
                     else {
                         //COMPILE ERRORS
                         document.querySelector("#scss-compiler-output").innerHTML = text; //display errors
-                        setTimeout(function(){ picostrap_recompile_sass(); }, picostrap_livereload_timeout);
+                        setTimeout(function(){ picostrap_livereload_woodpecker(); }, picostrap_livereload_timeout);
                     }
                     
                 }).catch(function(err) {
@@ -114,52 +106,64 @@ add_action("admin_init", function (){
     } 
 });
 
+/**
+ * Returns unique lists of folders containing files to be compiled
+ *
+ * @return void
+ */
+/*
+function picostrap_get_scss_files_paths() {
+    $files = picostrap_get_scss_files_list();
+    $results = [];
+    foreach($files as $file) {
+        $results[] = dirname($file);
+    }
+    return array_unique($results);
+}
+*/
 
 
+/**
+ * Returns a list of scass and css files to be compiled
+ *
+ * @return void
+ */
+function picostrap_get_scss_files_list($includeRootFolder = true, $excludeBs5 = true) {
+    //get current sass folder directory listing
+    $the_directory = WP_CONTENT_DIR . '/themes/' . get_stylesheet() . '/sass/';
+    $extPattern = '*.{scss,css}';
+    $currentFiles = [];
+
+    //Get all files in rootDir if allowed
+    if($includeRootFolder) {
+        $currentFiles = glob($the_directory . $extPattern, GLOB_BRACE);
+    }
+
+    //Get all subdirs
+    foreach (glob($the_directory . '*', GLOB_ONLYDIR|GLOB_NOSORT) as $curdir) {
+
+        //skip default bs5 dir
+        if ($curdir == $the_directory . 'bootstrap5' && $excludeBs5) continue;
+        
+        $currentGlob = glob($curdir . '/' . $extPattern, GLOB_BRACE);
+        $currentFiles = array_merge(array_values($currentFiles), array_values($currentGlob));
+    }
+
+    return $currentFiles;
+}
 
 //FUNCTION TO MAKE A TIMESTAMP OF CHILD THEME SASS DIRECTORY
 function picostrap_get_scss_last_filesmod_timestamp() {
 
-	//get current sass folder directory listing
-	$the_directory=WP_CONTENT_DIR.'/themes/'.get_stylesheet().'/sass/';
-    $files_listing = scandir($the_directory, 1);
-    
-    if (!$files_listing) die("<div id='compile-error' style='font-size:20px;background:#212337;color:lime;font-family:courier;border:8px solid red;padding:15px;display:block'> Cannot find SASS folder. Are you sure child theme name is coherent with folder name? </div>");
+	$files_listing = picostrap_get_scss_files_list(true, false);
+
+    if (!count($files_listing)) die("<div id='compile-error' style='font-size:20px;background:#212337;color:lime;font-family:courier;border:8px solid red;padding:15px;display:block'> Cannot find SASS folder. Are you sure child theme name is coherent with folder name? </div>");
 	
     $mod_time_total=0;
 	foreach($files_listing as $file_name):
-		if ((strpos($file_name, '.scss') !== false) or (strpos($file_name, '.css') !== false)):
-			//echo $file_name."<br>";
-			$file_stats = stat( $the_directory. $file_name );
+			$file_stats = stat( $file_name );
 			$mod_time_total+= $file_stats['mtime'];
-		endif;
 	endforeach;
 
 	return $mod_time_total; 
 }
- 
-//FUTURE
-/*
-function dirToArray($dir) {
-  
-    $result = array();
- 
-    $cdir = scandir($dir);
-    foreach ($cdir as $key => $value)
-    {
-       if (!in_array($value,array(".","..")))
-       {
-          if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
-          {
-             $result[$value] = dirToArray($dir . DIRECTORY_SEPARATOR . $value);
-          }
-          else
-          {
-             $result[] = $value;
-          }
-       }
-    }
-   
-    return $result;
- }
- */

@@ -17,14 +17,13 @@ add_action("admin_init", function (){
 
 // USE LEAFO's SCSSPHP LIBRARY
 use ScssPhp\ScssPhp\Compiler; //https://scssphp.github.io/scssphp/docs/
-
+use ScssPhp\ScssPhp\ValueConverter;
 
 //SOME UTILITIES
 function picostrap_get_active_parent_theme_slug(){ $style_parent_theme = wp_get_theme(get_template()); $theme_name = $style_parent_theme->get('Name'); return sanitize_title($theme_name);}
 
 //function picostrap_get_upload_dir( $param, $subfolder = '' ) {    $upload_dir = wp_upload_dir();    $url = $upload_dir[ $param ];    if ( $param === 'baseurl' && is_ssl() )  $url = str_replace( 'http://', 'https://', $url );return $url . $subfolder; }
 //function picostrap_get_active_theme_slug(){ return get_stylesheet(); } 
-
 
 /////FUNCTION TO GET ACTIVE SCSS CODE FROM FILE ///////
 function picostrap_get_active_scss_code(){
@@ -45,10 +44,14 @@ function picostrap_get_active_scss_code(){
 	return $the_scss_code;
 }
 
+
  
 /////FUNCTION TO RECOMPILE THE CSS ///////
 function picostrap_generate_css(){
 	
+	//SET TIMESTAMP
+	set_theme_mod("picostrap_scss_last_filesmod_timestamp",picostrap_get_scss_last_filesmod_timestamp());
+		
 	//INITIALIZE COMPILER
 	require_once "scssphp/scss.inc.php";
 	$scss = new Compiler();
@@ -63,17 +66,16 @@ function picostrap_generate_css(){
 		//add extra path for style packages
 		if(function_exists("picostrap_add_scss_import_path")) $scss->addImportPath(picostrap_add_scss_import_path());
 		
-		//SET OUTPUT FORMATTING
-		$scss->setFormatter('ScssPhp\ScssPhp\Formatter\Crunched');
+		//SET OUTPUT FORMATTING 
+		$scss->setOutputStyle(ScssPhp\ScssPhp\OutputStyle::COMPRESSED);
 		
 		// ENABLE SOURCE MAP // ADD OPTION
-		//$scss->setSourceMap(Compiler::SOURCE_MAP_INLINE);
 		
-		//SET SCSS VARIABLES
-		$scss->setVariables(picostrap_get_active_scss_variables_array());
-		
+		//SET SCSS VARIABLES 
+		$scss->replaceVariables(picostrap_get_active_scss_variables_array());
+
 		//NOW COMPILE
-		$compiled_css = $scss->compile(picostrap_get_active_scss_code());
+		$compiled_css = $scss->compileString(picostrap_get_active_scss_code())->getCss();
 	
 	} catch (Exception $e) {
 		//COMPILER ERROR: TYPICALLY INVALID SCSS CODE
@@ -97,9 +99,6 @@ function picostrap_generate_css(){
 	$saving_operation = $wp_filesystem->put_contents('../wp-content/themes/'.get_stylesheet() . '/' . picostrap_get_css_optional_subfolder_name() . picostrap_get_complete_css_filename(), $compiled_css, FS_CHMOD_FILE ); // , 0644 ?
 	
 	if ($saving_operation) { // IF UPLOAD WAS SUCCESSFUL 
-
-		//SET TIMESTAMP
-		set_theme_mod("picostrap_scss_last_filesmod_timestamp",picostrap_get_scss_last_filesmod_timestamp());
 
 		//GIVE POSITIVE FEEDBACK	
 		if (isset($_GET['ps_compiler_api'])) {
@@ -128,22 +127,27 @@ function picostrap_generate_css(){
 
 /////FUNCTION TO GET VARIABLES USED IN CUSTOMIZER /////
 function picostrap_get_active_scss_variables_array(){
+
 	$output_array=array();
 	if (get_theme_mods()) foreach(get_theme_mods() as $theme_mod_name => $theme_mod_value):
 		
 		//check we are treating a scss variable, or skip
 		if(substr($theme_mod_name,0,8) != "SCSSvar_") continue;
 		
-		//skip empty values, unless checkboxes that default to true
-		if($theme_mod_value=="" && $theme_mod_name!='SCSSvar_enable-rounded') continue;
+		//handle empty boolean values as false in flags
+		if( strpos($theme_mod_name, 'enable-') !== false  && $theme_mod_value=="" ) $theme_mod_value="false"; 
+
+		//skip empty values to prevent compiler error
+		if($theme_mod_value=="" ) continue;
 		
+		//rename variable name to suit syntax
 		$variable_name=str_replace("SCSSvar_","$",$theme_mod_name);
 		
 		//add to output array
-		$output_array[$variable_name] = $theme_mod_value;
+		$output_array[$variable_name] = ValueConverter::parseValue($theme_mod_value);
 		
 	endforeach;
-
+	
 	return $output_array; 
 }
 

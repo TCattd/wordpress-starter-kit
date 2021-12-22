@@ -17,7 +17,7 @@ $picostrap_includes = array(
 	//'/customizer.php',                      // Customizer additions.
 	'/custom-comments.php',                 // Custom Comments file.
 	//'/jetpack.php',                         // Load Jetpack compatibility file.
-	'/class-wp-bootstrap-navwalker.php',    // Load custom WordPress nav walker. Trying to get deeper navigation? Check out: https://github.com/picostrap/picostrap/issues/567
+	'/bootstrap-navwalker.php',    			// Load custom WordPress nav walker. 
 	'/woocommerce.php',                     // Load WooCommerce functions.
 	'/editor.php',                          // Load Editor functions. 
 	'/customizer-assets/customizer.php',	//Defines Customizer options
@@ -41,4 +41,6 @@ if (get_theme_mod("enable_back_to_top") ) require_once locate_template('/inc/bac
 //OPTIONAL: LIGHTBOX  
 if (get_theme_mod("enable_lightbox") ) require_once locate_template('/inc/lightbox.php');
 	
+//OPTIONAL: DETECT PAGE SCROLL
+if (get_theme_mod("enable_detect_page_scroll") ) require_once locate_template('/inc/detect-page-scroll.php');
 

@@ -2,26 +2,8 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-/*
-//ADD THE CSS BUNDLE
-function picostrap_enqueue_styles() {
-    
-    ////// IF  RECOMPILED STYLE IS PRESENT, DISABLE THE ORDINARY STYLE AND ENQUEUE THE RECOMPILED ///
-    $compiled_style_url=picostrap_get_compiled_css_url();
-    //die($compiled_style_url);
-    if($compiled_style_url) {
-        wp_enqueue_style( 'picostrap-styles',  $compiled_style_url);
-    } else {
-        wp_enqueue_style( 'picostrap-styles',  "https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css");
-    }
-
-
-}
-add_action( 'wp_enqueue_scripts', 'picostrap_enqueue_styles' );
-*/
 
 //SUPPORT FUNCTIONS FOR DETERMINING THE RIGHT CSS BUNDLE FILENAME AND LOCATION
-
 function picostrap_get_css_url (){
     //onboarding
     if(get_theme_mod("picostrap_scss_last_filesmod_timestamp",0)==0) return get_stylesheet_directory_uri() . '/'. picostrap_get_css_optional_subfolder_name() . picostrap_get_base_css_filename(); 
@@ -48,8 +30,6 @@ if (!function_exists('picostrap_get_complete_css_filename')):
 endif;
 
 
-
-
 //ADD THE MAIN CSS FILE
 add_action( 'wp_enqueue_scripts',  function  () {
 
@@ -58,14 +38,14 @@ add_action( 'wp_enqueue_scripts',  function  () {
         $version = intval((get_theme_mod("picostrap_scss_last_filesmod_timestamp")) % 999); 
     
     //ENQUEUE THE CSS FILE
-    wp_enqueue_style( 'picostrap-styles', picostrap_get_css_url(), array(), $version); //would be more elegant
+    wp_enqueue_style( 'picostrap-styles', picostrap_get_css_url(), array(), $version); 
     
 });
 
 ///ADD THE MAIN JS FILE
 //enqueue js in footer, async
 add_action( 'wp_enqueue_scripts', function() {
-	wp_enqueue_script( 'bootstrap5',  "https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js#asyncload", array(), null, true );
+	wp_enqueue_script( 'bootstrap5',  "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js#asyncload", array(), null, true );
 } ,100);
 
   
@@ -73,7 +53,7 @@ add_action( 'wp_enqueue_scripts', function() {
 //ADD THE CUSTOM HEADER CODE (SET IN CUSTOMIZER)
 add_action( 'wp_head', 'picostrap_add_header_code' );
 function picostrap_add_header_code() {
-      if(! get_theme_mod("picostrap_fonts_header_code_disable")) echo get_theme_mod("picostrap_fonts_header_code")." ";
+      if (!get_theme_mod("picostrap_fonts_header_code_disable")) echo get_theme_mod("picostrap_fonts_header_code")." ";
 	  echo get_theme_mod("picostrap_header_code");
 }
 

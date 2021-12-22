@@ -123,7 +123,8 @@ if ( ! function_exists( 'picostrap_wc_form_field_args' ) ) {
 			case 'tel':
 			case 'number':
 				$args['class'][]     = 'form-group';
-				$args['input_class'] = array( 'form-control' );
+				//$args['input_class'] = array( 'form-control' );
+				$args['input_class'][] = 'form-control'; // Thank you Dan
 				break;
 			case 'textarea':
 				$args['input_class'] = array( 'form-control' );

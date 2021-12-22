@@ -190,6 +190,63 @@ function picostrap_get_scss_variables_array(){
 		
 		
 		//add another section
+		"buttons" => array( // $variable_name => $variable_props
+			
+						
+			'$btn-padding-y' => array('type' => 'text','placeholder' => '.375rem'),
+			'$btn-padding-x' => array('type' => 'text','placeholder' => '.75rem'),
+			'$btn-font-family' => array('type' => 'text','placeholder' => 'null'),
+			'$btn-font-size' => array('type' => 'text','placeholder' => '$font-size-base'),
+			'$btn-line-height' => array('type' => 'text','placeholder' => '$line-height-base'),
+			'$btn-white-space' => array('type' => 'text','placeholder' => 'null (Set to `nowrap` to prevent text wrapping)'),
+
+ 
+			'$btn-padding-y-sm' => array('type' => 'text','placeholder' => '.25rem'),
+			'$btn-padding-x-sm' => array('type' => 'text','placeholder' => '.5rem'),
+			'$btn-font-size-sm' => array('type' => 'text','placeholder' => '$font-size-sm'),
+ 
+			'$btn-padding-y-lg' => array('type' => 'text','placeholder' => '.5rem'),
+			'$btn-padding-x-lg' => array('type' => 'text','placeholder' => '1rem'),
+			'$btn-font-size-lg' => array('type' => 'text','placeholder' => '$font-size-lg'),
+ 
+			'$btn-border-width' => array('type' => 'text','placeholder' => '$border-width'),
+			
+
+
+			'$btn-font-weight' => array('type' => 'text','placeholder' => '             $font-weight-normal !default'),
+			'$btn-box-shadow' => array('type' => 'text','placeholder' => '              inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075) !default'),
+			'$btn-focus-width' => array('type' => 'text','placeholder' => '             $input-btn-focus-width !default'),
+			'$btn-focus-box-shadow' => array('type' => 'text','placeholder' => '        $input-btn-focus-box-shadow !default'),
+			'$btn-disabled-opacity' => array('type' => 'text','placeholder' => '        .65 !default'),
+			'$btn-active-box-shadow' => array('type' => 'text','placeholder' => '       inset 0 3px 5px rgba($black, .125) !default'),
+
+			'$btn-link-color' => array('type' => 'text','placeholder' => '              $link-color !default','newgroup' => 'Button Colors',),
+			'$btn-link-hover-color' => array('type' => 'text','placeholder' => '        $link-hover-color !default'),
+			'$btn-link-disabled-color' => array('type' => 'text','placeholder' => '     $gray-600 !default'),
+			
+			// Allows for customizing button radius independently from global border radius
+			'$btn-border-radius' => array('type' => 'text','placeholder' => '           $border-radius !default','newgroup' => 'Buttons Border Radius',),
+			'$btn-border-radius-sm' => array('type' => 'text','placeholder' => '        $border-radius-sm !default'),
+			'$btn-border-radius-lg' => array('type' => 'text','placeholder' => '        $border-radius-lg !default'),
+			
+			'$btn-transition' => array( 'newgroup' => 'Buttons Extras', 'type' => 'text','placeholder' => '              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default'),
+			
+			'$btn-hover-bg-shade-amount' => array('type' => 'text','placeholder' => '       15% !default'),
+			'$btn-hover-bg-tint-amount' => array('type' => 'text','placeholder' => '        15% !default'),
+			'$btn-hover-border-shade-amount' => array('type' => 'text','placeholder' => '   20% !default'),
+			'$btn-hover-border-tint-amount' => array('type' => 'text','placeholder' => '    10% !default'),
+			'$btn-active-bg-shade-amount' => array('type' => 'text','placeholder' => '      20% !default'),
+			'$btn-active-bg-tint-amount' => array('type' => 'text','placeholder' => '       20% !default'),
+			'$btn-active-border-shade-amount' => array('type' => 'text','placeholder' => '  25% !default'),
+			'$btn-active-border-tint-amount' => array('type' => 'text','placeholder' => '   10% !default'),
+
+
+
+
+			),
+		
+		
+		//add another section
 		
 		
 		
@@ -311,6 +368,14 @@ function picostrap_register_main_partials( WP_Customize_Manager $wp_customize ) 
 	));
 
 	
+	//GLOBAL: enable_detect_page_scroll
+	$wp_customize->selective_refresh->add_partial( 'enable_detect_page_scroll', array(
+		'selector' => 'body',
+		'settings' => array( 'enable_detect_page_scroll' ),
+		'render_callback' => '__return_false'    
+	));
+	
+
      
 }
 add_action( 'customize_register', 'picostrap_register_main_partials' );
@@ -367,24 +432,29 @@ add_action("customize_register","picostrap_theme_customize_register_extras");
 	
 function picostrap_theme_customize_register_extras($wp_customize) {
 	
-	///ADDD SECTIONS:
+	///ADDITIONAL SECTIONS:
 	//COLORS is already default
 	
-	//BOOTSTRAP TYPE  OPTIONS
+	 
 	$wp_customize->add_section("typography", array(
         "title" => __("Typography", "picostrap"),
         "priority" => 50,
     ));
 	
-	//BOOTSTRAP BORDER OPTIONS
+ 
 	$wp_customize->add_section("options", array(
         "title" => __("Components", "picostrap"),
         "priority" => 50,
     ));
 	
-	//BOOTSTRAP BORDER OPTIONS
+	 
 	$wp_customize->add_section("buttons+forms", array(
         "title" => __("Buttons + Forms", "picostrap"),
+        "priority" => 50,
+    ));
+
+	$wp_customize->add_section("buttons", array(
+        "title" => __("Buttons", "picostrap"),
         "priority" => 50,
     ));
 	
@@ -500,11 +570,35 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 	
     //   NAVBAR SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$wp_customize->add_section("nav", array(
-        "title" => __("Main Navigation", "picostrap"),
+        "title" => __("Main Navigation Bar", "picostrap"),
         "priority" => 60,
     ));
+	
+	// HEADER NAVBAR EXPAND ON BREAKPOINT
+	$wp_customize->add_setting("picostrap_header_navbar_expand", array(
+        "default" => "navbar-expand-md",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_header_navbar_expand",
+        array(
+            'label' => __('Navbar Expansion', 'picostrap'),
+            'section' => 'nav',
+            'type'     => 'radio',
+			'description' => __('Navbar is Collapsed on mobile, and expands to a full blown menubar on chosen breakpoint', 'picostrap'),
+			'choices'  => array(
+				'navbar-expand-none'  => 'Never expand, keep always collapsed', 
+				'navbar-expand-sm'  => 'Expand on SM and upper',
+				'navbar-expand-md'  => 'Expand on MD and upper',
+				'navbar-expand-lg'  => 'Expand on LG and upper',
+				'navbar-expand-xl'  => 'Expand on XL and upper',
+				'navbar-expand-xxl'  => 'Expand on XXL and upper',
+				)
+        )
+    ));
 
-	// HEADER NAVBAR CHOICE
+	// HEADER NAVBAR POSITION
 	$wp_customize->add_setting("picostrap_header_navbar_position", array(
         "default" => "",
         "transport" => "refresh",
@@ -573,6 +667,27 @@ function picostrap_theme_customize_register_extras($wp_customize) {
         )
     ));
 	
+
+
+	//SEARCH FORM
+	$wp_customize->add_setting("enable_search_form", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "enable_search_form",
+        array(
+            "label" => __("Enable Search Form", "picostrap"),
+            "section" => "nav", 
+            'type'     => 'checkbox',
+			)
+	));
+
+
+
+
+
 	//  TOPBAR SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$wp_customize->add_section("topbar", array(
         "title" => __("Optional Topbar", "picostrap"),
@@ -870,6 +985,21 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 	));
 	
 	
+	//DETECT PAGE SCROLL
+	$wp_customize->add_setting("enable_detect_page_scroll", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "enable_detect_page_scroll",
+        array(
+            "label" => __("Enable Page Scrolling Detection", "picostrap"),
+			"description" => __("Publish and exit the Customizer to see the effect. Adds a scroll-position-at-top / scroll-position-not-at-top class to the BODY element according to scroll position. Customize via CSS. Useful for custom menus <a target='_blank' href='#'>Tutorial Coming Soon</a> ", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+	));
 	
 	// SINGLE POST & ARCHIVES SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$wp_customize->add_section("singleposts", array(

@@ -16,7 +16,7 @@ NOTICE for beginners:
     It can save you a lot of time,
     eg. to standardize project colors, or fully customize typography.
     First of all, have a ride in the WordPress Customizer.
-    Then learn to use Bootstrap 4 Classes and utilities.
+    Then learn to use Bootstrap 5 Classes and utilities.
     If you come from the CSS world, take some time to study the basic of SASS. It's very powerful.
     With great powers...you are warned
 
@@ -25,11 +25,19 @@ HOW TO REFERENCE ASSETS AND IMAGES
     so relative paths work as expected on a standard WordPress Theme.
     So it's not like before.
 
- 
+  
 ************************************************		*/
 //a demo statement - uncomment to see page turn red and blush
-//body { background: red; opacity: 0.3;} 
+//body { background: lime; opacity: 0.3;} 
 
 //open menus on hover
 //.dropdown:hover>.dropdown-menu { display: block;}
+  
+
+//PAGE HAS SCROLLED: From the Customizer, enable the "Scroll Detection" feature to be able to use the classes:
+
+//body.scroll-position-at-top  {background:lime}
+//body.scroll-position-not-at-top {background:red}
+
  
+

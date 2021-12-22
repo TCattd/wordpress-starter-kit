@@ -40,7 +40,7 @@ if ( have_posts() ) :
                 
                 <?php if (!get_theme_mod("singlepost_disable_entry_meta") ): ?>
                     <div class="post-meta" id="single-post-meta">
-                        <p class="display-5 text-secondary">
+                        <p class="lead text-secondary">
                             <span class="post-date"><?php the_date(); ?> </span>
                             <span class="text-secondary post-author"> <?php _e( 'by', 'picostrap' ) ?> <?php the_author(); ?></span>
                         </p>

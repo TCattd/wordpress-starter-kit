@@ -55,3 +55,33 @@ add_action("wp_head",function(){ ?>
 //register_nav_menus( array( 'third' => __( 'Third Menu', 'picostrap' ), 'fourth' => __( 'Fourth Menu', 'picostrap' ), 'fifth' => __( 'Fifth Menu', 'picostrap' ), ) );
 // THEN USE SHORTCODE:  [lc_nav_menu theme_location="third" container_class="" container_id="" menu_class="navbar-nav"]
 
+
+
+//ADD CUSTOM SECTIONS AND BLOCKS FROM THE THEME
+add_filter('lc_load_cpt_lc_section', function (array $sections) {
+    foreach (glob(get_stylesheet_directory() . '/template-livecanvas-sections/*.html') as $section) {
+        $pathInfo = pathinfo($section);
+        $name = ucwords(str_replace('-', ' ', $pathInfo['filename']));
+        $sections[] = [
+            'id' => 'section-' . rand(),
+            'name' => $name,
+            'description' => $name,
+            'template' => file_get_contents($section)
+        ];
+    }
+    return $sections;
+}, PHP_INT_MAX);
+
+add_filter('lc_load_cpt_lc_block', function (array $blocks) {
+    foreach (glob(get_stylesheet_directory() . '/template-livecanvas-blocks/*.html') as $block) {
+        $pathInfo = pathinfo($block);
+        $name = ucwords(str_replace('-', ' ', $pathInfo['filename']));
+        $blocks[] = [
+            'id' => 'block-' . rand(),
+            'name' => $name,
+            'description' => $name,
+            'template' => file_get_contents($block)
+        ];
+    }
+    return $blocks;
+}, PHP_INT_MAX);

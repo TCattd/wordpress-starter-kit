@@ -90,18 +90,21 @@ add_filter( 'the_generator', 'picostrap_no_generator' );
 
 // FILTERS TO REMOVE IDS AND CLASSES FROM MENU ITEMS
 // http://stackoverflow.com/questions/5222140/remove-li-class-id-for-menu-items-and-pages-list
-// If you wish to not use these filters, then simply ucomment them.
+// If you wish to not use these filters, then simply comment them.
 //add_filter('nav_menu_css_class', 'my_css_attributes_filter', 100, 1); //dont use this as breaks hierchical menus
 add_filter('nav_menu_item_id', 'my_css_attributes_filter', 100, 1);
-add_filter('page_css_class', 'my_css_attributes_filter', 100, 1);
+//add_filter('page_css_class', 'my_css_attributes_filter', 100, 1); //this removes stuff like 'page_item page-item-5139 current_page_item' from wp_list_pages, not always a good idea
 function my_css_attributes_filter($var) {  return is_array($var) ? array() : ''; }
 
 
 
 /// REMOVE GUTENBERG BLOCKS CSS - if classic editor plugin is active
-//if (  class_exists( 'Classic_Editor' ) )  
 add_action( 'wp_print_styles', 'picostrap_deregister_gstyles', 100 );
 function picostrap_deregister_gstyles() {
+
+    //if user wants to use Gutenberg along with LC editor, exit.... OR we could add a switch in customizer...or //if (  class_exists( 'Classic_Editor' ) )  
+    if (function_exists('lc_plugin_option_is_set') && lc_plugin_option_is_set('gtblocks')) return;
+    
     wp_dequeue_style( 'wp-block-library' );
 }
 

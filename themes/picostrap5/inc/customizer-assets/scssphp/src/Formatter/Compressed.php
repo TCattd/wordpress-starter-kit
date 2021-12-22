@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SCSSPHP
  *
@@ -12,14 +13,15 @@
 namespace ScssPhp\ScssPhp\Formatter;
 
 use ScssPhp\ScssPhp\Formatter;
-use ScssPhp\ScssPhp\Formatter\OutputBlock;
 
 /**
  * Compressed formatter
  *
  * @author Leaf Corcoran <leafot@gmail.com>
+ *
+ * @internal
  */
-class Compressed extends Formatter
+final class Compressed extends Formatter
 {
     /**
      * {@inheritdoc}
@@ -39,7 +41,7 @@ class Compressed extends Formatter
     /**
      * {@inheritdoc}
      */
-    public function blockLines(OutputBlock $block)
+    protected function blockLines(OutputBlock $block): void
     {
         $inner = $this->indentStr();
 
@@ -65,8 +67,10 @@ class Compressed extends Formatter
      *
      * @param \ScssPhp\ScssPhp\Formatter\OutputBlock $block
      */
-    protected function blockSelectors(OutputBlock $block)
+    protected function blockSelectors(OutputBlock $block): void
     {
+        assert(! empty($block->selectors));
+
         $inner = $this->indentStr();
 
         $this->write(

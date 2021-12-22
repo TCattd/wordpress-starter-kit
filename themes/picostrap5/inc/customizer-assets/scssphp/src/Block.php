@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SCSSPHP
  *
@@ -15,8 +16,10 @@ namespace ScssPhp\ScssPhp;
  * Block
  *
  * @author Anthon Pang <anthon.pang@gmail.com>
+ *
+ * @internal
  */
-class Block
+final class Block
 {
     /**
      * @var string
@@ -49,7 +52,7 @@ class Block
     public $sourceColumn;
 
     /**
-     * @var array
+     * @var array|null
      */
     public $selectors;
 
@@ -64,7 +67,7 @@ class Block
     public $children;
 
     /**
-     * @var \ScssPhp\ScssPhp\Block
+     * @var \ScssPhp\ScssPhp\Block|null
      */
     public $selfParent;
 }

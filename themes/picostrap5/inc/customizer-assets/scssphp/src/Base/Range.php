@@ -1,4 +1,5 @@
 <?php
+
 /**
  * SCSSPHP
  *
@@ -15,10 +16,19 @@ namespace ScssPhp\ScssPhp\Base;
  * Range
  *
  * @author Anthon Pang <anthon.pang@gmail.com>
+ *
+ * @internal
  */
-class Range
+final class Range
 {
+    /**
+     * @var float|int
+     */
     public $first;
+
+    /**
+     * @var float|int
+     */
     public $last;
 
     /**
@@ -40,7 +50,7 @@ class Range
      *
      * @return boolean
      */
-    public function includes($value)
+    public function includes($value): bool
     {
         return $value >= $this->first && $value <= $this->last;
     }
