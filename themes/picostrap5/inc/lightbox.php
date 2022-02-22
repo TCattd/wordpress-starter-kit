@@ -9,13 +9,15 @@ add_action( 'wp_enqueue_scripts', function() {
 } ,100);
 
 //add inline js in footer, defer execution
-add_action( 'wp_footer', function(){ ?>
+add_action( 'wp_footer', function(){ 
+	if (isset($_GET['lc_page_editing_mode'])) return;
+	?>
 	<script>
 		//picostrap gLightbox integration
 		window.onload = function() { //after all page els are loaded 
 			
 			//find elements that need to be 'lightboxed'
-			var matches = document.querySelectorAll('main#theme-main a img');
+			var matches = document.querySelectorAll('main#theme-main a:not(.nolightbox) img');
 
 			//iterate and add the class
 			for (i=0; i<matches.length; i++) {
