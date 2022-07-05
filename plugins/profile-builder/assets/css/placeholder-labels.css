@@ -1,0 +1,66 @@
+#wppb-recover-password ul li.wppb-form-field label,
+.wppb-user-forms #wppb-loginform .login-username label,
+.wppb-user-forms #wppb-loginform .login-password label,
+.wppb-user-forms #wppb-loginform .wppb-recaptcha label,
+.wppb-form-field.pbpl-class label {
+    text-indent: -99999px;
+    position: absolute;
+    left: -99999px;
+}
+
+.wppb-form-field.wppb-campaign-monitor-subscribe.pbpl-class label,
+.wppb-form-field.wppb-mailchimp-subscribe.pbpl-class label,
+.wppb-form-field.wppb-mailpoet-subscribe.pbpl-class label,
+.wppb-form-field.wppb-checkbox-terms-and-conditions.pbpl-class label,
+.wppb-form-field.wppb-gdpr-checkbox.pbpl-class label,
+.wppb-form-field.wppb-upload.pbpl-class label,
+.wppb-form-field.wppb-select-multiple.pbpl-class label,
+.wppb-form-field.wppb-timepicker.pbpl-class label,
+.wppb-form-field.wppb-avatar.pbpl-class label,
+.wppb-form-field.wppb-gdpr-communication-preferences.pbpl-class label{
+    text-indent: 0;
+    position: relative;
+    left: 0;
+    width: 100%;
+}
+
+.wppb-form-field.pbpl-class .wppb-radios li label,
+.wppb-form-field.wppb-radio.pbpl-class label,
+.wppb-form-field.pbpl-class .wppb-checkboxes li label,
+.wppb-form-field.wppb-checkbox.pbpl-class label {
+    text-indent: 0;
+    position: relative;
+    left: 0;
+    width: auto;
+}
+
+.wppb-user-forms #wppb-loginform .login-username input[type="text"],
+.wppb-user-forms #wppb-loginform .login-password input[type="password"],
+.wppb-form-field.pbpl-class input[type="text"],
+.wppb-form-field.pbpl-class input[type="email"],
+.wppb-form-field.pbpl-class input[type="url"],
+.wppb-form-field.pbpl-class input[type="password"],
+.wppb-form-field.pbpl-class input[type="search"],
+.wppb-form-field.pbpl-class input[type="number"],
+.wppb-form-field.pbpl-class select,
+.wppb-form-field.pbpl-class textarea,
+.wppb-form-field.pbpl-class .wppb-checkboxes,
+.wppb-form-field.pbpl-class .wppb-radios,
+.wppb-form-field.wppb-wysiwyg.pbpl-class .wp-editor-wrap,
+#wppb-login-wrap.pbpl-class .login-username input,
+#wppb-login-wrap.pbpl-class .login-password input,
+#wppb-recover-password ul li.wppb-form-field input {
+    width: 100%;
+}
+
+.wppb-form-field.pbpl-class .wppb-description-delimiter,
+.wppb-form-field.wppb-html.pbpl-class span.custom_field_html {
+    margin-left: auto;
+}
+
+.wppb-form-field.wppb-select2.pbpl-class span.select2.select2-container,
+.wppb-form-field.wppb-select-cpt.pbpl-class span.select2.select2-container,
+.wppb-form-field.wppb-select2-multiple.pbpl-class span.select2.select2-container {
+    width: 100% !important;
+    margin-left: 0 !important;
+}

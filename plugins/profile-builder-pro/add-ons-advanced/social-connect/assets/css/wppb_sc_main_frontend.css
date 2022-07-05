@@ -1,0 +1,326 @@
+/* Social Connect buttons style */
+@font-face {
+    font-family: 'wppb_social_connect_font';
+    src: url('../font/wppb_social_connect_font.eot?1332366');
+    src: url('../font/wppb_social_connect_font.eot?1332366#iefix') format('embedded-opentype'),
+    url('../font/wppb_social_connect_font.woff2?1332366') format('woff2'),
+    url('../font/wppb_social_connect_font.woff?1332366') format('woff'),
+    url('../font/wppb_social_connect_font.ttf?1332366') format('truetype'),
+    url('../font/wppb_social_connect_font.svg?1332366#fontello') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+[class^="wppb-sc-icon-"]:before, [class*=" wppb-sc-icon-"]:before {
+    font-family: "wppb_social_connect_font";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.wppb-sc-icon-twitter:before { content: '\f099'; } /* '' */
+.wppb-sc-icon-facebook:before { content: '\f09a'; } /* '' */
+.wppb-sc-icon-google-plus:before { content: '\f1a0'; } /* '' */
+.wppb-sc-icon-google-plus-new:before { content: ''; } /* '' */
+.wppb-sc-icon-spinner:before { content: '\f110'; } /* '' */
+.wppb-sc-icon-linkedin:before { content: '\f0e1'; } /* '' */
+
+.wppb-sc-buttons-container .wppb-sc-button,
+.wppb-sc-button-wp-default {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+    border-radius: 2px;
+    box-shadow: none;
+}
+
+.wppb-sc-button {
+    padding: 7px 11px;
+}
+
+.wppb-sc-button-wp-default {
+    padding: 8px 11px;
+}
+
+.wppb-sc-facebook-login {
+    background-color: #3b5998;
+}
+
+.wppb-sc-facebook-login:hover {
+    background-color: #4c70ba;
+}
+
+.wppb-sc-google-login-new {
+    background-image: url('../images/btn_google_signin_dark_normal_web.png');
+    background-repeat: no-repeat;
+    width: 191px;
+    height: auto;
+}
+
+.wppb-sc-google-login {
+    background-color: #c53829;
+}
+
+.wppb-sc-google-login:hover {
+    background-color: #dc4e41;
+}
+
+.wppb-sc-google-login-new:hover {
+    background-image: url('../images/btn_google_signin_dark_focus_web.png');
+}
+
+.wppb-sc-google-login-new:active {
+    background-image: url('../images/btn_google_signin_dark_pressed_web.png');
+}
+
+.wppb-sc-google-login-new:disabled {
+    background-image: url('../images/btn_google_signin_dark_disabled_web.png');
+}
+
+.wppb-sc-twitter-login {
+    background-color: #0084b4;
+}
+
+.wppb-sc-twitter-login:hover {
+    background-color: #4099ff;
+}
+
+.wppb-sc-linkedin-login {
+    background-color: #007bb5;
+}
+
+.wppb-sc-linkedin-login:hover {
+    background-color: #0098d8;
+}
+
+.wppb-sc-icon {
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+.wppb-sc-button-text,
+.wppb-sc-button-wp-default-text {
+    display: inline-block;
+    border-radius: 2px;
+    font-size: 13px;
+}
+
+.wppb-sc-button-text {
+    padding: 4px 10px 4px 4px;
+    margin-bottom: 5px;
+    min-width: 191px;
+}
+
+.wppb-sc-button-wp-default-text {
+    padding: 8px 0;
+    margin-bottom: 10px;
+    width: 191px;
+}
+
+.wppb-sc-button-text:link, .wppb-sc-button-text:visited, .wppb-sc-button-text:hover, .wppb-sc-button-text:active,
+.wppb-sc-button-wp-default-text:link, .wppb-sc-button-wp-default-text:visited, .wppb-sc-button-wp-default-text:hover, .wppb-sc-button-text:active {
+    font-family: "Arial", sans-serif;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.wppb-sc-button-text .wppb-sc-icon,
+.wppb-sc-button-wp-default-text .wppb-sc-icon {
+    margin: 0 5px;
+}
+
+[id^="wppb-login-widget"] .wppb-sc-button-text {
+    width: 100%;
+}
+
+@media only screen and ( max-width: 650px ) {
+    .wppb-sc-button-text {
+        width: 50%;
+    }
+}
+
+@media only screen and ( max-width: 530px ) {
+    .wppb-sc-button-text {
+        width: 100%;
+    }
+}
+
+.wppb-sc-heading-before-reg-buttons-wp-default,
+.wppb-sc-heading-before-reg-buttons h3 {
+    margin: 10px 0;
+}
+
+.wppb-sc-buttons-container {
+    padding-bottom: 20px;
+}
+
+.wppb-sc-disabled-btn,
+.wppb-sc-in-disabled-btn {
+    background-color: #808080;
+    pointer-events: none;
+    cursor: default;
+}
+
+/* Animate the spinner icon */
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+.wppb-sc-icon-spinner:before {
+    -webkit-animation: rotating 2s linear infinite;
+    -moz-animation: rotating 2s linear infinite;
+    -ms-animation: rotating 2s linear infinite;
+    -o-animation: rotating 2s linear infinite;
+    animation: rotating 2s linear infinite;
+}
+
+
+/* ThickBox style */
+#TB_ajaxContent {
+    text-align: center;
+}
+
+#TB_ajaxContent p {
+    padding: 10px 0;
+    font-size: 20px;
+    margin: 0;
+}
+
+#wppb_sc_account_connect,
+#wppb_sc_new_account,
+#wppb_sc_gdpr_submit {
+    border-radius: 5px;
+    margin: 5px 10px;
+}
+
+#wppb_sc_submit_account_password,
+#wppb_sc_submit_account_email,
+#wppb_sc_submit_twitter_your_email,
+#wppb_sc_submit_facebook_your_email {
+    border-bottom-right-radius: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    -moz-border-radius-topright: 5px;
+    -webkit-border-top-right-radius: 5px;
+}
+
+#wppb_sc_account_connect,
+#wppb_sc_new_account,
+#wppb_sc_gdpr_submit,
+#wppb_sc_submit_account_password,
+#wppb_sc_submit_account_email,
+#wppb_sc_submit_twitter_your_email,
+#wppb_sc_submit_facebook_your_email {
+    background-color: #c53829;
+    border: none;
+    color: white;
+    padding: 6px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    height: 35px;
+}
+
+#wppb_sc_account_email,
+#wppb_sc_account_password,
+#wppb_sc_twitter_your_email,
+#wppb_sc_facebook_your_email {
+    -moz-border-radius-topleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+    border-top-left-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 1px solid #848484;
+    outline:0;
+    height: 35px;
+    width: 75%;
+    padding-left: 10px;
+    font-size: 16px;
+    margin-right: 0;
+}
+
+.wppb_sc_form {
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    padding: 0 !important;
+    background: 0 !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: none !important;
+}
+
+.wppb-error {
+    padding: 6px 9px;
+    margin: 0 auto 25px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffebe8;
+    border: 1px solid #C00;
+    color:#222222 !important;
+}
+
+.wppb-required{
+    margin-left:5px;
+    color: red;
+}

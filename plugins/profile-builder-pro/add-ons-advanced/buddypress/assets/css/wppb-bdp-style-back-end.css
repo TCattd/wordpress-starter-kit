@@ -1,0 +1,24 @@
+/*
+ * Hide BuddyPress Extended Profile
+ */
+#profile-nav{
+    display: none;
+}
+div#profile-page.wrap form#your-profile {
+    padding-top: 0px;
+}
+
+/*
+ * Set width for BuddyPress Settings page
+ */
+.wppb-select.wppb-bdp-settings{
+    width: 250px;
+}
+
+a.wppb-bdp-reset-template{
+    color: #a00;
+}
+
+a.wppb-bdp-reset-template:hover{
+    color: red;
+}

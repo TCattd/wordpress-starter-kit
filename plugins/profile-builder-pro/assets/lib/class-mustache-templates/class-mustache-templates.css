@@ -1,0 +1,193 @@
+/* Mustache Library for Creating */
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 - Basic Structure
+2.0 - Textarea Codemirror Styling
+3.0 - Other Form Elements
+4.0 - Save Button
+5.0 - Media Queries
+6.0 - Other
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+1.0 Basic Structure
+--------------------------------------------------------------*/
+
+.side .form-table th {
+    width: 20%;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 0;
+}
+
+.wck-post-body{
+    clear: left;
+    float: left;
+    margin-right: -2000px;
+    width: 100%;
+}
+
+.metabox-holder .column-1 {
+    margin-right:300px;
+}
+.metabox-holder .column-2 {
+    float: right;
+    width: 280px;
+    clear:right;
+    position:relative;
+}
+.metabox-holder .column-3 {
+    clear: both;
+    margin-right:300px;
+}
+/*--------------------------------------------------------------
+2.0 Textarea Codemirror styling
+--------------------------------------------------------------*/
+.textarea .stp-extra{
+    border:1px solid #ccc;
+    border-left:0;
+    float: left;
+    overflow: auto;
+    width: 39%;
+    height:400px;
+}
+.textarea  .stp-extra h4 {
+    height: 20px;
+    margin: 1px 0;
+    padding:10px 20px;
+    overflow: hidden;
+    cursor:pointer;
+    background:#F1F1F1;
+}
+.textarea  .stp-extra h4:hover{
+    background:#FCFCFC;
+}
+.textarea  .stp-extra pre {
+    display: block;
+    height: 253px;
+    margin: 12px 0;
+    max-height: 253px;
+    overflow: auto;
+    padding-left: 20px;
+    vertical-align: top;
+    width: auto;
+}
+.textarea label.wppb_mustache_label {
+    display: none;
+}
+.cm-s-default.CodeMirror {
+    border: 1px solid #CCCCCC;
+    float: left;
+    font-family: Monaco,Menlo,"Andale Mono","lucida console","Courier New",monospace !important;
+    line-height: 1.4em !important;
+    width: 60%;
+}
+.cm-s-default {
+    min-height: 400px;
+}
+.mustache-box{
+    table-layout:fixed;
+}
+/*--------------------------------------------------------------
+3.0 Other Form Elements
+--------------------------------------------------------------*/
+.text label.wppb_mustache_label {
+    display: inline-block;
+    min-width: 150px;
+    font-weight: bold;
+}
+
+.checkbox label.wppb_mustache_label {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.mustache-box input[type="text"]{
+    width:400px;
+    min-width: auto;
+}
+
+.mustache-box .description{
+    display: block;
+}
+
+.mustache-box.form-table td.header{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/*--------------------------------------------------------------
+4.0 Save Button
+--------------------------------------------------------------*/
+.mustache-save{
+    width: 100%;
+    text-align: center;
+}
+
+#page-save-metabox .hndle{
+    background: #333333;
+    color: #fff;
+}
+#page-save-metabox .inside{
+    padding: 30px;
+}
+
+/*--------------------------------------------------------------
+5.0 Media Queries
+--------------------------------------------------------------*/
+@media screen and ( max-width: 878px ) {
+    .wck-post-body{
+        float:none;
+        margin-right: 0;
+    }
+
+    .metabox-holder .column-2{
+        float:none;
+        width:100%;
+    }
+
+    .metabox-holder .column-1{
+        margin-right:0;
+    }
+
+    .textarea .stp-extra{
+        float:none;
+        width:auto;
+        border:1px solid #ccc;
+        border-top:0;
+    }
+    .cm-s-default.CodeMirror{
+        float:none;
+        width: auto;
+    }
+    #page-save-metabox .inside{
+        text-align: right;
+    }
+    .mustache-save{
+        width: auto;
+        text-align: center;
+    }
+
+}
+
+/*--------------------------------------------------------------
+6.0 Other
+--------------------------------------------------------------*/
+/* show email toggle checkbox inline for User/Admin Email Customizers */
+.profile-builder_page_user-email-customizer .wck-post-body .postbox:not(:first-child) tr:nth-child(1), .profile-builder_page_admin-email-customizer .wck-post-body .postbox:not(:first-child) tr:nth-child(1) {
+    width: 50%;
+    display: inline-block;
+}
+
+.profile-builder_page_user-email-customizer .wck-post-body .postbox:not(:first-child) tr:nth-child(2), .profile-builder_page_admin-email-customizer .wck-post-body .postbox:not(:first-child) tr:nth-child(2) {
+    text-align: left;
+    width: 50%;
+    display: inline-block;
+}
+
+.profile-builder_page_user-email-customizer .wck-post-body .postbox:not(:first-child) tr:nth-child(2) td, .profile-builder_page_admin-email-customizer .wck-post-body .postbox:not(:first-child) tr:nth-child(2) td {
+    float: right;
+    padding-right: 20px;
+}

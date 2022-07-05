@@ -1,0 +1,197 @@
+/*
+ * Beautify the display of PB Edit Profile forms under BuddyPress "Edit" user profile tab
+ */
+#buddypress .wppb-user-forms,
+#buddypress #select_user_to_edit_form{
+    padding-top: 14px;
+    padding-right: 14px;
+    overflow: auto;
+}
+
+#buddypress .wppb-user-forms .wppb-form-field > ul {
+    margin-left: 0;
+}
+
+#buddypress .wppb-user-forms ul li.wppb-repeater {
+    margin-bottom: 24px;
+}
+
+#buddypress .wppb-repeater > ul {
+    padding: 30px 20px;
+}
+
+.wppb-bdp-activity-read-more{
+    padding-left: 5px;
+}
+
+
+/*
+ * Visibility options
+ */
+
+.wppb_bdp_visibility_settings{
+    clear: both;
+}
+
+.wppb-visibility-toggle-link{
+    cursor: pointer;
+}
+
+.wppb-visibility-close {
+    text-decoration: underline;
+}
+
+.wppb-visibility-toggle-link:hover{
+    color: #000;
+}
+
+.wppb-field-visibility-settings-toggle, .wppb-field-visibility-settings-notoggle, .wppb-field-visibility-settings{
+    color: #707070;
+    font-style: italic;
+}
+
+.wppb-current-visibility-level{
+    font-style: normal;
+    font-weight: bold;
+}
+
+.wppb-visibility-toggle-link{
+    padding-left: 10px;
+    font-size: 80%;
+}
+
+.wppb-field-visibility-settings span{
+    font-style: normal;
+    padding-left: 5px;
+}
+
+.wppb-field-visibility-settings input{
+    float: none;
+    width: auto;
+}
+
+.wppb-field-visibility-settings label{
+    float:none;
+    width: auto;
+    padding-left: 20px;
+}
+
+.wppb-field-visibility-settings legend{
+    font-weight: bold;
+}
+
+
+/*
+ * Userlisting tags
+ */
+.wppb-userlisting-container .friendship-button a{
+    background: #fff; /* Old browsers */
+    border: 1px solid #ccc;
+    color: #767676;
+    font-size: small;
+    cursor: pointer;
+    outline: none;
+    padding: 4px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.wppb-userlisting-container .friendship-button a:hover {
+    background: #ededed;
+    border: 1px solid #bbb;
+    color: #555;
+    outline: none;
+    text-decoration: none;
+}
+
+.wppb-userlisting-container a{
+    border-bottom: 0px;
+}
+
+ul.wppb_bdp_members_and_friends_tab{
+    background-color: #f7f7f7;
+    border-bottom: 1px solid rgba(234,234,234,.9);
+    border-top: 1px solid rgba(234,234,234,.9);
+    overflow: hidden;
+    padding: 5px 0;
+}
+
+.wppb_bdp_members_and_friends_tab li {
+    float: left;
+    margin: 0;
+    list-style: none;
+}
+
+.wppb_bdp_members_and_friends_tab li a,
+.wppb_bdp_members_and_friends_tab li span {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.wppb_bdp_members_and_friends_tab li a span {
+    background: #eee;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    color: #6c6c6c;
+    display: inline;
+    font-size: 70%;
+    margin-left: 2px;
+    padding: 3px 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.wppb_bdp_members_and_friends_tab li.wppb-bdp-active-tab a{
+    background-color: #e6e6e6;
+    color: #333;
+    font-weight: bold;
+}
+
+.wppb_bdp_members_and_friends_tab li.wppb-bdp-active-tab a span,
+.wppb_bdp_members_and_friends_tab li a:hover span {
+    background-color: #eee;
+}
+
+.wppb_bdp_members_and_friends_tab li.wppb-bdp-active-tab a span{
+    background-color: #fff;
+}
+
+
+/*
+ * Userlisting table beautifier
+ */
+.wppb-buddypress-avatar{
+    width: 75px;
+    vertical-align: middle
+}
+
+.wppb-buddypress-friends{
+    text-align: right;
+    vertical-align: middle;
+    width: 250px;
+}
+
+.wppb-buddypress-sort-by{
+    display: inline-block;
+}
+
+.wppb-buddypress-sort-by li{
+    float: left;
+    list-style-type: none;
+}
+
+.wppb-buddypress-sort-by li + li:before {
+    content: "|";
+}
+
+.wppb-buddypress-sort-by-text{
+    float: left;
+    padding-right: 5px;
+}
+.wppb-buddypress-table th,
+.wppb-buddypress-table td,
+table.wppb-buddypress-table{
+    border-right: 0;
+    border-left: 0;
+}

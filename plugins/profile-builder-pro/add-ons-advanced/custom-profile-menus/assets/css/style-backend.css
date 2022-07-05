@@ -1,0 +1,55 @@
+.menu-item-settings .wppb-cpm-url,
+.menu-item-settings .wppb-cpm-loginout-navigation-label,
+.menu-item-settings .wppb-cpm-iframe-title {
+    width: 97%;
+}
+
+.wppb-cpm-iframe-size p.description {
+    margin-top: 10px;
+}
+
+.wppb-cpm-menu-item-iframe-height {
+    float: left;
+    width: 45%;
+    font-style: italic;
+}
+
+.wppb-cpm-menu-item-iframe-width {
+    float: right;
+    width: 45%;
+    margin-right: 3%;
+    font-style: italic;
+}
+
+.wppb-cpm_logged_in_out_field,
+.wppb-cpm_role_field {
+    margin: 5px 0;
+}
+
+.wppb-cpm_logged_in_out_field .wppb-cpm-logged-input-holder {
+    float: left;
+    width: 35%;
+}
+
+.wppb-cpm_logged_in_out_field .wppb-cpm-logged-input-holder.wppb-cpm-everyone {
+    width: 30%;
+}
+
+.wppb-cpm-field .description {
+    display: block;
+}
+
+.wppb-cpm_logged_in_out_field .description {
+    margin-bottom: 6px;
+    margin-top: 2px;
+}
+
+.wppb-cpm-iframe-size .description {
+    margin-bottom: 2px;
+}
+
+.wppb-cpm-role-input-holder {
+    float: left;
+    width: 33.3%;
+    margin: 2px 0;
+}

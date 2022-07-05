@@ -1,0 +1,44 @@
+#wppb-recover-password ul li.wppb-form-field label,
+.wppb-user-forms #loginform .login-username label,
+.wppb-user-forms #loginform .login-password label,
+.wppb-form-field.pbpl-class label {
+    left: 0;
+    right: -99999px;
+}
+
+.wppb-form-field.pbpl-class .wppb-checkboxes li label,
+.wppb-form-field.pbpl-class .wppb-radios li label,
+.wppb-form-field.wppb-radio.pbpl-class label,
+.wppb-form-field.wppb-checkbox.pbpl-class label,
+.wppb-form-field.wppb-campaign-monitor-subscribe.pbpl-class label,
+.wppb-form-field.wppb-mailchimp-subscribe.pbpl-class label,
+.wppb-form-field.wppb-mailpoet-subscribe.pbpl-class label,
+.wppb-form-field.wppb-checkbox-terms-and-conditions.pbpl-class label,
+.wppb-form-field.wppb-upload.pbpl-class label,
+.wppb-form-field.wppb-select-multiple.pbpl-class label,
+.wppb-form-field.wppb-timepicker.pbpl-class label,
+.wppb-form-field.wppb-avatar.pbpl-class label,
+.wppb-form-field.wppb-gdpr-communication-preferences.pbpl-class label {
+    right: 0;
+}
+
+.wppb-form-field.wppb-checkbox.pbpl-class .wppb-checkboxes li input[type="checkbox"],
+.wppb-form-field.wppb-radio.pbpl-class .wppb-radios li input[type="radio"],
+.wppb-form-field.wppb-campaign-monitor-subscribe.pbpl-class input[type="checkbox"].extra_field_campaign_monitor,
+.wppb-form-field.wppb-mailchimp-subscribe.pbpl-class input[type="checkbox"].extra_field_mailchimp,
+.wppb-form-field.wppb-mailpoet-subscribe.pbpl-class input[type="checkbox"].extra_field_mailpoet,
+.wppb-form-field.wppb-checkbox-terms-and-conditions.pbpl-class input[type="checkbox"].custom_field_toa,
+.wppb-form-field.wppb-send-credentials-checkbox input[type="checkbox"]#send_credentials_via_email {
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+.wppb-form-field.wppb-checkbox.pbpl-class .wppb-checkboxes li,
+.wppb-form-field.wppb-radio.pbpl-class .wppb-radios li {
+    padding: 0 0 0 20px;
+}
+
+.wppb-required {
+    margin-left: 0;
+    margin-right: 5px;
+}

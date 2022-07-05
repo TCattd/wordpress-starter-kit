@@ -1,0 +1,11 @@
+.wppb-select-cpt span.select2-container{
+	clear: none;
+	width: 69.9% !important;
+}
+
+@media screen and (max-width: 400px){
+	.wppb-select-cpt span.select2-container{
+		clear: none;
+		width: 100% !important;
+	}
+}

@@ -1,0 +1,22 @@
+/*--------------------------------------------------------------
+Map Field
+--------------------------------------------------------------*/
+input.wppb-map-search-box {
+    position: absolute;
+    top: 9px !important;
+    height: 30px;
+    width: 50%;
+    min-width: 250px;
+    background: #fff;
+    border: 0;
+    border-radius: 1px;
+    padding: 0 10px;
+    box-shadow: 0 1px 1px 0 #c1c1c1;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+}
+
+/* Map markers info */
+.marker-content-info {position: absolute; top: -400px; left: -400px; display: none;}
+.wppb-map-container .marker-content {min-width: 320px; max-width: 100%;}
+.wppb-map-container .marker-content .marker-info-avatar_or_gravatar {float: left; margin-right: 10px;}

@@ -1,0 +1,488 @@
+@font-face {
+    font-family: 'wppb_re_font';
+    src: url('../font/wppb_re_font.eot?45804157');
+    src: url('../font/wppb_re_font.eot?45804157#iefix') format('embedded-opentype'),
+    url('../font/wppb_re_font.woff2?45804157') format('woff2'),
+    url('../font/wppb_re_font.woff?45804157') format('woff'),
+    url('../font/wppb_re_font.ttf?45804157') format('truetype'),
+    url('../font/wppb_re_font.svg?45804157#wppb_re_font') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'wppb_re_font';
+    src: url('../font/wppb_re_font.svg?45804157#wppb_re_font') format('svg');
+  }
+}
+*/
+
+[class^="icon-wppb-re-"]:before, [class*=" icon-wppb-re-"]:before {
+    font-family: "wppb_re_font";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* you can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-wppb-re-users:before { content: '\e801'; } /* '' */
+.icon-wppb-re-slug:before { content: '\e802'; } /* '' */
+.icon-wppb-re-caps:before { content: '\e803'; } /* '' */
+.icon-wppb-re-spinner:before { content: '\e838'; } /* '' */
+
+.post-type-wppb-roles-editor .table-role-info {
+    font-size: 13px;
+}
+
+.post-type-wppb-roles-editor #post-query-submit {
+    display: none;
+}
+
+.post-type-wppb-roles-editor .column-role {
+    width: 25%;
+}
+
+.post-type-wppb-roles-editor .column-role .wppb-role-slug-input{
+    width:90%;
+}
+
+.post-type-wppb-roles-editor .column-capabilities {
+    width: 15%;
+    text-align: center;
+}
+
+.post-type-wppb-roles-editor .column-users {
+    width: 10%;
+    text-align: center;
+}
+
+.post-type-wppb-roles-editor .wppb-delete-capability-disabled,
+.post-type-wppb-roles-editor .row-actions span.delete_notify {
+    color: #a00;
+    cursor: not-allowed;
+}
+
+.post-type-wppb-roles-editor .misc-pub-section .icon-wppb-re-users,
+.post-type-wppb-roles-editor .misc-pub-section .icon-wppb-re-slug,
+.post-type-wppb-roles-editor .misc-pub-section .icon-wppb-re-caps {
+    font-size: 20px;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-add-caps {
+    height: 100px;
+}
+
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities .select2 .select2-container {
+    padding: 0 5px 5px 0 !important;
+}
+
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities a.button-primary {
+    vertical-align: top;
+    margin: 1px 0 0 10px;
+    height: 32px;
+    line-height: 30px;
+}
+
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities #wppb-add-new-cap-link {
+    margin: 10px 5px;
+}
+
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities #wppb-add-new-cap-link a:link,
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities #wppb-add-new-cap-link a:hover,
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities #wppb-add-new-cap-link a:visited,
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities #wppb-add-new-cap-link a:active {
+    text-decoration: none;
+    box-shadow: none;
+}
+
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities .wppb-add-new-cap-input {
+    display: none;
+    vertical-align: middle;
+    width: 40%;
+    line-height: 20px;
+    padding-bottom: 10px;
+    border: 1px solid #AAAAAA;
+    border-radius: 4px;
+    outline: none;
+    box-shadow: none;
+    font-size: 13px;
+    margin: 0;
+}
+
+.post-type-wppb-roles-editor #wppb_edit_role_capabilities .wppb-add-new-cap-input:focus {
+    border: 1px solid #000;
+    outline: none;
+    box-shadow: none;
+}
+
+.post-type-wppb-roles-editor #wppb-duplicate-capability-error,
+.post-type-wppb-roles-editor #wppb-hidden-capability-error,
+.post-type-wppb-roles-editor #wppb-add-capability-error {
+    border-left: 3px solid #a00;
+    display: none;
+    color: #a00;
+    font-size: 14px;
+    margin-left: 6px;
+    padding: 5px 10px;
+    line-height: 35px;
+    vertical-align: top;
+}
+
+.post-type-wppb-roles-editor #wppb-capabilities-tabs {
+    float: left;
+    width: 11%;
+    min-width: 150px;
+    padding: 20px 0 0 5px;
+    margin: 0;
+}
+
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title {
+    margin: 5px 0.5% 5px 0.5%;
+    /*padding: 10px 0 10px 10px;*/
+    background-color: #f7f7f7;
+}
+
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title i {
+    margin-right: 10px;
+    line-height: 25px;
+}
+
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 10px 0 10px 10px;
+    height: 24px;
+    line-height: 24px;
+}
+
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title a:active,
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title a:focus,
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title a:hover {
+    text-decoration: none;
+    color: #a00;
+    box-shadow: none;
+}
+
+.post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title.wppb-role-editor-tab-active {
+    color: #a00;
+    font-weight: bold;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table {
+    padding: 20px 5px 0 5px;
+    float: right;
+    width: 84%;
+}
+
+.post-type-wppb-roles-editor .wppb-re-spinner-container {
+    margin: 5px 3px 0 2px;
+    padding: 11px 0;
+    width: 100%;
+}
+
+.post-type-wppb-roles-editor .wppb-re-spinner-container i.icon-wppb-re-spinner {
+    font-size: 35px;
+    margin-left: 45%;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry {
+    width: 32.3%;
+    float: left;
+    margin: 5px 3px 0 2px;
+    padding: 6px 0;
+    background-color: #f7f7f7;
+    display: block;
+    height: 32px;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry.wppb-new-capability-highlight {
+    background-color: #e6e6e6;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-capability {
+    padding: 0 10px;
+    width: 70%;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+    display: inline-block;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-capability.wppb-new-capability {
+    color: #0085ba;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-delete-capability {
+    float: right;
+    padding-right: 5px;
+    display: inline-block;
+    width: 15%;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-delete-capability a:link {
+    text-decoration: none;
+    color: #a00;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-delete-capability a:active,
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-delete-capability a:hover,
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry .wppb-delete-capability a:visited {
+    text-decoration: none;
+    color: #FF0000;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry.wppb-role-edit-no-cap {
+    background-color: inherit;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry.wppb-role-edit-no-cap span {
+    color: #a00;
+}
+
+.post-type-wppb-roles-editor #wppb-role-edit-table #wppb-role-edit-caps-clear,
+.post-type-wppb-roles-editor #wppb-role-edit-caps-div #wppb-role-edit-divs-clear {
+    width: 100%;
+    clear: both;
+}
+
+.post-type-wppb-roles-editor .misc-pub-section #wppb-role-slug {
+    width: 59%;
+    margin-left: 5px;
+    text-transform: lowercase;
+}
+
+.post-type-wppb-roles-editor .misc-pub-section.misc-pub-section-users,
+.post-type-wppb-roles-editor .misc-pub-section.misc-pub-section-capabilities,
+.post-type-wppb-roles-editor .misc-pub-section.misc-pub-section-edit-slug {
+    padding-top: 10px;
+    margin: 5px 0;
+}
+
+.post-type-wppb-roles-editor .misc-pub-section.misc-pub-section-users span,
+.post-type-wppb-roles-editor .misc-pub-section.misc-pub-section-capabilities span,
+.post-type-wppb-roles-editor .misc-pub-section.misc-pub-section-edit-slug span {
+    font-size: 14px;
+    bottom: 1px;
+    position: relative;
+}
+
+.post-type-wppb-roles-editor .wppb-re-cap-perm-delete {
+    color: #a00;
+    font-size: 13px;
+    float: right;
+    position: relative;
+    z-index: 1;
+}
+
+.post-type-wppb-roles-editor .wppb-re-cap-perm-delete:active,
+.post-type-wppb-roles-editor .wppb-re-cap-perm-delete:focus,
+.post-type-wppb-roles-editor .wppb-re-cap-perm-delete:hover {
+    color: #000000;
+    cursor: pointer;
+}
+
+.post-type-wppb-roles-editor #wpbody .wrap .wp-heading-inline, .post-type-wppb-roles-editor #wpbody .wrap .page-title-action {
+    display: inline-block !important;
+}
+
+@media screen and ( max-width: 1600px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry {
+        width: 49%;
+    }
+
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 80%;
+    }
+}
+
+@media screen and ( max-width: 1400px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 76%;
+    }
+}
+
+@media screen and ( max-width: 1350px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table .wppb-role-edit-table-entry {
+        width: 100%;
+    }
+}
+
+@media screen and ( max-width: 1250px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 72%;
+    }
+}
+
+@media screen and ( max-width: 1150px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 68%;
+    }
+}
+
+@media screen and ( max-width: 1100px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 62%;
+    }
+}
+
+@media screen and ( max-width: 850px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 70%;
+    }
+}
+
+@media screen and ( max-width: 782px ) {
+    .post-type-wppb-roles-editor .column-role input.wppb-role-slug-input {
+        height: 25px;
+    }
+
+    .post-type-wppb-roles-editor .column-capabilities,
+    .post-type-wppb-roles-editor .column-users {
+        text-align: inherit;
+    }
+}
+
+@media screen and ( max-width: 650px ) {
+    .post-type-wppb-roles-editor #wppb-role-edit-table {
+        width: 100%;
+    }
+
+    .post-type-wppb-roles-editor #wppb-capabilities-tabs {
+        width: 100%;
+        padding: 20px 0 0 0;
+    }
+
+    .post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title {
+        padding: 0 25px 0 5px;
+        margin: 2px 0;
+        display: inline-block;
+        min-width: 40%;
+    }
+}
+
+@media screen and ( max-width: 450px ) {
+    .post-type-wppb-roles-editor #wppb-capabilities-tabs .wppb-role-editor-tab-title {
+        min-width: 91%;
+    }
+}
+
+.post-type-wppb-roles-editor .wppb-re-spin {
+    -moz-animation: wppb_re_spin 2s infinite linear;
+    -o-animation: wppb_re_spin 2s infinite linear;
+    -webkit-animation: wppb_re_spin 2s infinite linear;
+    animation: wppb_re_spin 2s infinite linear;
+    display: inline-block;
+}
+@-moz-keyframes wppb_re_spin {
+    0% {
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+        -o-transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@-webkit-keyframes wppb_re_spin {
+    0% {
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+        -o-transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@-o-keyframes wppb_re_spin {
+    0% {
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+        -o-transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@-ms-keyframes wppb_re_spin {
+    0% {
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+        -o-transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+@keyframes wppb_re_spin {
+    0% {
+        -moz-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -moz-transform: rotate(359deg);
+        -o-transform: rotate(359deg);
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
+}
+

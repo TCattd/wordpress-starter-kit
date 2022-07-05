@@ -1,0 +1,115 @@
+.wppb-user-forms.wppb-edit-user *[data-wppb-epaa-approval-action="true"], .wppb-user-forms.wppb-edit-user *[data-wppb-epaa-requires-approval="true"]{
+    background:#ffffb8;
+}
+
+.wppb-epaa-warning {
+    padding: 6px 9px;
+    margin: 0 auto 25px;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    background: #ffffb8;
+    border: 1px solid #b6cc16;
+}
+
+
+#wppb-epaa-approve-all:disabled{
+    opacity:0.8;
+}
+
+.wppb-epaa-actions{
+    padding-left: 30%;
+    padding-top:10px;
+    padding-bottom:10px;
+    width: 100%;
+    float: left;
+}
+.wppb-epaa-actions > *{
+    vertical-align: middle;
+}
+
+.wppb-epaa-actions span{
+    font-size:12px;
+    font-weight: bold;
+}
+
+.wppb-epaa-actions label{
+    display: inline-block;
+    margin:0 5px;
+}
+
+.wppb-user-forms.wppb-edit-user label.wppb-epaa-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    float:none;
+}
+
+.wppb-epaa-switch input {display:none;}
+
+.wppb-epaa-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.wppb-epaa-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .wppb-epaa-slider {
+    background-color: #2196F3;
+}
+
+input:focus + .wppb-epaa-slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .wppb-epaa-slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.wppb-epaa-slider.wppb-round {
+    border-radius: 24px;
+}
+
+.wppb-epaa-slider.wppb-round:before {
+    border-radius: 50%;
+}
+
+#wppb-epaa-admin-review-links{
+    font-size:13px;
+    margin-bottom:15px;
+}
+
+
+
+
+
+
+/* Backend styling for field properties */
+#container_wppb_manage_fields .wppb-manage-fields-dashicon { display: block; float: left; width: auto; font-size: 17px; cursor: pointer; }
+
+@media screen and ( max-width: 1125px ) {
+    #container_wppb_manage_fields .wppb-manage-fields-dashicon { display: inline; float: none; width: auto; vertical-align: middle; }
+}
+
+

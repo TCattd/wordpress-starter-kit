@@ -1,0 +1,171 @@
+/* Front-end Billing and Shipping fields styling */
+
+ul.wppb-woo-checkout-fields,
+ul.wppb-woo-checkout-fields ul{
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    list-style-type: none !important;
+}
+
+ul.wppb-woo-checkout-fields li{
+    margin-bottom: 1rem;
+    list-style-type: none;
+}
+
+.wppb-edit-user.wppb-user-forms .wppb-form-field.wppb-woocommerce-customer-billing-address.wppb-field-error,
+.wppb-register-user.wppb-user-forms .wppb-form-field.wppb-woocommerce-customer-billing-address.wppb-field-error,
+.wppb-edit-user.wppb-user-forms .wppb-form-field.wppb-woocommerce-customer-shipping-address.wppb-field-error,
+.wppb-register-user.wppb-user-forms .wppb-form-field.wppb-woocommerce-customer-shipping-address.wppb-field-error {
+    background-color: transparent !important;
+    border: 0px !important;
+    padding: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+.wppb-woocommerce-customer-billing-address > span.wppb-form-error,
+.wppb-woocommerce-customer-shipping-address > span.wppb-form-error{
+    display:none;
+}
+
+#container_wppb_manage_fields .element_type_woocommerce-customer-shipping-address li.row-meta-name pre,
+#container_wppb_manage_fields .element_type_woocommerce-customer-billing-address li.row-meta-name pre{
+    visibility: hidden;
+}
+
+input#woo_different_shipping_address {
+    float:none;
+    margin-right:10px;
+    width: auto;
+}
+.wppb-shipping-different-address label {
+    width: auto;
+}
+
+/* Backend display of WooCommerce individual Billing and Shipping Address fields */
+
+.wck-woocheckboxes input.wck-woocheckbox-field-label {
+    border: none;
+    width: auto;
+    display: inline-block;
+    box-shadow:none;
+    font-size: 13px;
+    line-height: 1.2em;
+    border: 1px solid transparent;
+    transition: 0.2s ease-in-out all;
+}
+
+.wck-woocheckboxes input.wck-woocheckbox-field-label:hover, .wck-woocheckboxes input.wck-woocheckbox-field-label:focus{
+    background: #f7f7f7;
+    border-radius: 2px;
+    border: 1px solid #e6e6e6;
+}
+
+.wck-woocheckboxes .dashicons {
+    opacity: 0;
+    transition: 0.2s ease-in-out opacity;
+    margin:0 2px 0 3px;
+}
+
+.wck-woocheckboxes div > label:first-of-type{
+    margin-right: 20px;
+}
+
+.wck-woocheckboxes div > label:first-of-type:hover .dashicons {
+    opacity:0.6;
+}
+
+.wck-woocheckboxes-heading {
+    display: inline-block;
+    width: 245px;
+    font-weight: bold;
+    padding-left: 2px;
+}
+
+
+.woocommerce-checkout .wppb-form-field label, .woocommerce-checkout #wppb-login-wrap .login-username label, .woocommerce-checkout #wppb-login-wrap .login-password label{
+    width: 100%;
+    float: none;
+}
+
+.woocommerce-checkout .wppb-form-field input,
+.woocommerce-checkout .wppb-form-field input[type="text"],
+.woocommerce-checkout .wppb-form-field input[type="number"],
+.woocommerce-checkout .wppb-form-field input[type="email"],
+.woocommerce-checkout .wppb-form-field input[type="url"],
+.woocommerce-checkout .wppb-form-field input[type="password"],
+.woocommerce-checkout .wppb-form-field input[type="search"],
+.woocommerce-checkout .wppb-form-field select,
+.woocommerce-checkout .wppb-form-field textarea,
+.woocommerce-checkout .wppb-checkboxes,
+.woocommerce-checkout .wppb-radios,
+.woocommerce-checkout #wppb-login-wrap .login-username input,
+.woocommerce-checkout #wppb-login-wrap .login-password input{
+    width: 100%;
+    float: none;
+}
+
+.woocommerce-checkout .wppb-form-field .quicktags-toolbar input{
+    width: auto;
+}
+
+.woocommerce-checkout .wppb-form-field .wppb-checkbox-terms-and-conditions input,
+.woocommerce-checkout .wppb-form-field .wppb-checkboxes li input,
+.woocommerce-checkout .wppb-form-field .wppb-radios li input{
+    min-width: 0;
+    float: none;
+    width: auto;
+}
+
+.woocommerce-checkout .wppb-form-field .wppb-checkboxes label,
+.woocommerce-checkout .wppb-form-field .wppb-radios label {
+    float: none;
+    min-width: 0;
+    padding-left: 5px;
+    width: auto;
+    display: inline-block;
+}
+
+.woocommerce-checkout .wppb-form-field .wppb-checkboxes li,
+.woocommerce-checkout .wppb-form-field .wppb-radios li {
+    display: inline-block;
+    padding: 0 20px 0 0;
+}
+
+.woocommerce-checkout .wppb-form-field.wppb-mailchimp-subscribe input,
+.woocommerce-checkout .wppb-form-field.wppb-mailchimp-subscribe label{
+    width: auto;
+    float: none;
+}
+
+.woocommerce-checkout .wppb-form-field > span{
+    margin-left: 0;
+}
+
+.woocommerce-checkout .wppb-form-field.wppb-timepicker select {
+    width: auto;
+    margin-right: 5px;
+}
+
+.woocommerce-checkout .wppb-form-field.wppb-timepicker > span.wppb-timepicker-separator {
+    display: inline-block;
+    float: none;
+    clear: none;
+    margin-left: 0;
+    margin-right: 5px;
+    font-size: 100%;
+    font-style: normal;
+}
+
+.woocommerce-checkout .wppb-form-field.wppb-timepicker label{
+    width: auto;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+ul.wppb-woo-checkout-fields .wppb-repeater > ul{
+    padding: 30px 20px !important;
+}
+
+ul.wppb-woo-checkout-fields .wppb-checkboxes li input.custom_field_checkbox {
+    min-width: 25px;
+}

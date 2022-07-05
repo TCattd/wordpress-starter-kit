@@ -1,0 +1,191 @@
+/* Page wrapper */
+.wppb-cmi-wrap {
+    max-width: 1200px;
+    padding-right: 25px;
+}
+
+
+/* Page - API key */
+#wppb-cmi-page-api-key {
+    margin: 30px auto;
+}
+
+#wppb-cmi-page-api-key .wppb-text {
+    margin-right: 5px; min-width: 350px;
+}
+
+#wppb-cmi-page-api-key label {
+    display: inline-block; width: 185px; vertical-align: top; margin-top: 5px
+}
+
+#wppb-cmi-page-api-key .description {
+    margin-left: 185px;
+}
+
+
+/* Page - Client Selector */
+#wppb-cmi-page-client-selector {
+    margin: 30px auto;
+}
+
+#wppb-cmi-page-client-selector label {
+    display: inline-block; width: 185px; vertical-align: top; margin-top: 5px
+}
+
+#wppb-cmi-page-client-selector .description {
+    margin-left: 185px;
+}
+
+.wppb-cmi-page-client-selector-select-wrapper {
+    position: relative;
+    display: inline-block;
+    max-width: 350px;
+    width: 100%;
+}
+
+.wppb-cmi-page-client-selector-select-wrapper .spinner {
+    position: absolute;
+    top: 0;
+    right: -32px;
+}
+
+
+/* Page - Client Details */
+#wppb-cmi-page-client-details {
+    margin: 30px auto;
+}
+
+#wppb-cmi-page-client-details label {
+    display: inline-block; width: 185px; vertical-align: top; margin-top: 5px
+}
+
+#wppb-cmi-page-client-details .description {
+    margin-left: 185px;
+}
+
+#wppb-cmi-page-client-details-wrapper {
+    position: relative;
+    display: inline-block;
+    max-width: 350px;
+    width: 100%;
+}
+
+#wppb-cmi-page-client-details-wrapper .spinner {
+    position: absolute;
+    top: 0;
+    right: -32px;
+}
+
+#wppb-cmi-page-client-details-name {
+    display: block;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+}
+
+
+/* Page - Client lists tables */
+.wppb-cmi-list-table {
+    margin-bottom: 2em;
+}
+
+.wppb-cmi-list-table .wppb-cmi-list {
+    background: #fafafa;
+}
+
+.wppb-cmi-list-table tbody {
+    position: relative;
+}
+
+.wppb-cmi-list-table td {
+    position: relative;
+    padding: 12px 16px;
+}
+
+.wppb-cmi-table-caption {
+    position: relative;
+    padding: 10px 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: left;
+}
+
+.wppb-cmi-table-caption .spinner {
+    position: absolute;
+    top: 10px;
+    right: -30px;
+}
+
+.wppb-cmi-list-table .add-new-h2 {
+    display: inline-block;
+    top: 0;
+    margin-left: 8px;
+}
+
+.wppb-cmi-list-table .add-new-h2:focus {
+    top: 0;
+    box-shadow: none;
+    margin-left: 8px;
+}
+
+
+.wppb-cmi-list-table .wppb-cmi-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    opacity: 0;
+}
+
+
+/* Page - Client list settings */
+.wppb-cmi-list-settings-section {
+    position: relative;
+    padding: 15px 0 15px 200px;
+}
+
+.wppb-cmi-list-settings-section-title {
+    position: absolute;
+    top: 15px;
+    left: 0;
+}
+
+.wppb-cmi-list-field-wrapper {
+    position: relative;
+    padding-left: 180px;
+    min-height: 40px;
+}
+
+.wppb-cmi-list-field-wrapper label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 180px;
+}
+
+
+/* Widget */
+.wppb-cmi-widget-wrapper {
+    margin: 1em 0;
+}
+
+.wppb-cmi-widget-label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.wppb-cmi-widget-checkbox-label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.wppb-cmi-widget-input-wrapper {
+    margin: 0.2em 0 1.6em 0;
+}
+
+#widgets-right .wppb-cmi-widget-input-wrapper .description {
+    padding-left: 21px;
+    margin-top: 5px;
+    font-style: italic;
+}

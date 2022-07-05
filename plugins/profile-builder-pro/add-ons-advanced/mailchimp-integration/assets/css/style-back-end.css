@@ -1,0 +1,100 @@
+.wppb-wrap-mailchimp {
+    max-width: 1200px;
+}
+
+#wppb-mailchimp-api-key {
+    margin: 30px auto;
+}
+
+#wppb-mailchimp-api-key .wppb-text {
+    margin-right: 5px; min-width: 350px;
+}
+
+#wppb-mailchimp-api-key label {
+    display: inline-block; width: 150px; vertical-align: top; margin-top: 5px
+}
+
+#wppb-mailchimp-api-key .description {
+    margin-left: 150px;
+}
+
+#wppb-mci-add-new-form {
+    max-width: 500px;
+}
+
+.wppb-mci-merge-field-var {
+    position: relative;
+    padding-left: 200px;
+    min-height: 40px;
+}
+.wppb-mci-merge-field-var label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+}
+.wppb-mci-merge-field-var .wppb-mci-required {
+    margin: 0 5px;
+}
+
+#wppb-mci-list-table {
+    margin: 20px 0;
+}
+
+#wppb-mci-list-table .wppb-mci-list {
+    background: #fafafa;
+}
+
+.wppb-mci-list-settings {
+    display: none;
+    background: #fff;
+}
+
+.wppb-mci-list-settings-section {
+    position: relative;
+    padding: 15px 0 15px 200px;
+}
+
+.wppb-mci-list-settings-section-title {
+    position: absolute;
+    top: 15px;
+    left: 0;
+}
+
+.wppb-mci-list-settings .wppb-mci-list-settings-cancel {
+    margin-bottom: 10px;
+}
+
+.wppb-mci-widget-wrapper {
+    margin: 1em 0;
+}
+
+.wppb-mci-widget-label {
+    margin-right: 10px;
+}
+
+.wppb_mci_widget_list_fields {
+    min-height: 20px;
+}
+
+.wppb-mci-widget-label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.wppb-mci-widget-input-wrapper {
+    margin: 0.2em 0 1.6em 0;
+}
+
+#widgets-right .wppb-mci-widget-input-wrapper .description {
+    padding-left: 21px;
+    margin-top: 5px;
+    font-style: italic;
+}
+
+.wppb-mci-widget-span-message {
+    display: block;
+    padding: 5px;
+    background: #f7f7f7;
+    border: 1px solid #d7d7d7;
+}

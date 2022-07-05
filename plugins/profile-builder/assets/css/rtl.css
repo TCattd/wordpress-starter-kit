@@ -1,0 +1,60 @@
+.wppb-user-forms .wppb-wysiwyg .wp-editor-wrap { 
+    float:right;
+}
+#wppb-search-fields{
+    float:right;
+}
+.wppb-form-field label,
+#wppb-login-wrap .login-username label,
+#wppb-login-wrap .login-password label{
+    float:right;
+}
+.wppb-form-field input,
+.wppb-form-field input[type="text"], .wppb-form-field input[type="email"], .wppb-form-field input[type="url"], .wppb-form-field input[type="password"], .wppb-form-field input[type="search"],
+.wppb-form-field select,
+.wppb-form-field textarea,
+.wppb-checkboxes,
+.wppb-radios,
+#wppb-login-wrap .login-username input,
+#wppb-login-wrap .login-password input{
+    float:right;
+}
+.wppb-table th{
+    text-align: right;
+}
+ul.wppb-profile li label{
+    float:right;
+}
+ul.wppb-profile li span{
+    float:right;
+}
+
+@media screen and ( max-width: 720px ) {
+    .wppb-table td {
+        text-align: right;
+    }
+    .wppb-table .wppb-posts,
+    .wppb-table .wppb-moreinfo{
+        text-align: left;
+    }
+    .wppb-table td:before {
+        float: right;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .wppb-form-field input,
+    .wppb-form-field select,
+    .wppb-form-field textarea,
+    .wppb-checkboxes,
+    .wppb-radios,
+    #wppb-login-wrap .login-username input,
+    #wppb-login-wrap .login-password input,
+    ul.wppb-profile li span{
+        float:right;
+    }
+}
+
+#pass-strength-result {
+    float: right;
+}

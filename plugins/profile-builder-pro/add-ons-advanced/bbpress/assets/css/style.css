@@ -1,0 +1,20 @@
+/*
+* Beautify the display of PB Edit Profile forms under bbPress "Edit" user profile tab
+*/
+
+#bbp-user-wrapper .wppb-user-forms{
+    padding-right:14px;
+    overflow: auto;
+}
+
+#bbp-user-wrapper .wppb-user-forms .wppb-form-field > ul {
+    margin-left: 0;
+}
+
+#bbp-user-wrapper .wppb-user-forms ul li.wppb-repeater {
+    margin-bottom: 24px;
+}
+
+#bbp-user-wrapper .wppb-repeater > ul {
+    padding: 30px 20px;
+}

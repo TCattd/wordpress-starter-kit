@@ -1,0 +1,15 @@
+/* Backend styling for field properties */
+#manage-fields .row-visibility .wck-radiobuttons > div,
+#manage-fields .row-user-role-visibility .wck-checkboxes > div,
+#manage-fields .row-location-visibility .wck-checkboxes > div{ display: inline-block; margin-right: 10px; }
+
+#container_wppb_manage_fields .wck-content pre { width: 26%; }
+#container_wppb_manage_fields .wck-content pre.wppb-mb-head-required,
+#container_wppb_manage_fields .wck-content li.row-required pre { width: 12%; text-align: left; margin-right: 1%; }
+#container_wppb_manage_fields .wck-content pre.wppb-mb-head-visibility { width: 6%; }
+
+#container_wppb_manage_fields .wppb-manage-fields-dashicon { display: block; float: left; width: auto; font-size: 17px; cursor: pointer; }
+
+@media screen and ( max-width: 1125px ) {
+    #container_wppb_manage_fields .wppb-manage-fields-dashicon { display: inline; float: none; width: auto; vertical-align: middle; }
+}

@@ -1,0 +1,8 @@
+.iris-slider {
+    width: 15px !important;
+}
+
+.iris-picker {
+    z-index: 999 !important;
+    position: absolute !important;
+}

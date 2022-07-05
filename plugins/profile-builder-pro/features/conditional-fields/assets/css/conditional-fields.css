@@ -1,0 +1,87 @@
+.wck-content .row-conditional-logic-enabled {
+    display: list-item !important;
+}
+
+tr.added_fields_list .row-conditional-logic-enabled{
+	float:right;
+}
+
+#container_wppb_manage_fields .row-conditional-logic-enabled .wppb-manage-fields-dashicon {
+    display: inline-block;
+    float: none;
+    width: auto;
+    font-size: 17px;
+    cursor: pointer;
+	padding-right:15px;
+}
+
+#container_wppb_manage_fields .wck-content li.row-required pre {
+    width: 8%;
+    text-align: left;
+    margin-right: 1%;
+}
+
+.wppb-cf-separator {
+	display: inline-block;
+	margin: 0 7px;
+}
+
+.wppb-cf-rule {
+	position: relative;
+	padding-right: 60px;
+	margin-top: 10px;
+	max-width: 600px;
+}
+
+.wppb-cf-rule select {
+	width: 15%;
+}
+
+.wppb-cf-rule select.wppb-cf-rule-field,
+.wppb-cf-rule select.wppb-cf-rule-value,
+.wppb-cf-rule .wppb-cf-rule-value {
+	width: 40%;
+}
+
+.wppb-cf-rule input.wppb-cf-rule-value {
+	position: relative;
+	top: 2px;
+	margin-top: -2px;
+	height: 28px;
+}
+
+.wppb-cf-rule-action {
+	position: absolute;
+	top: 50%;
+	margin-top: -11px;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	border: 2px solid #939393;
+	color: #939393;
+	font-size: 20px;
+	text-align: center;
+	font-weight: bold;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.wppb-cf-rule-action:hover {
+	border-color: #0085ba;
+	color: #0085ba;
+}
+
+.wppb-cf-rule-action.wppb-cf-remove {
+	right: 20px;
+	line-height: 13px;
+}
+
+.wppb-cf-rule-action.wppb-cf-add {
+	right: 45px;
+	line-height: 15px;
+}
+
+.wppb-cf-wrapper[data-rules-count="1"] .wppb-cf-rule-action.wppb-cf-remove {
+	display: none;
+}

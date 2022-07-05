@@ -1,0 +1,87 @@
+.wppb-msf-hr {
+    border-top: 1px dashed #848484;
+}
+
+form#wppb-msf-options {
+    overflow: auto;
+}
+
+form#wppb-msf-options input.button {
+    float: right;
+}
+
+#wppb-msf-side .inside {
+    padding: 0;
+}
+
+#wppb-msf-side .inside div.wppb-msf-tabs-title-container {
+    padding: 0 12px 10px 12px;
+}
+
+#wppb-msf-side .inside p {
+    padding: 0 12px;
+}
+
+#wppb-msf-side .inside #major-publishing-actions {
+    overflow: auto;
+}
+
+#wppb-msf-side p.wppb-msf-post-publish-error {
+    color: red;
+}
+
+#wppb-msf-side #wppb-msf-options p.description {
+    text-align: justify;
+}
+
+.wppb-msf-tabs-title {
+    margin: 5px 0;
+    width: 85%;
+}
+
+p.wppb-msf-tabs-title-heading {
+    margin-bottom: 5px;
+}
+
+.wppb-msf-edit-tabs-title {
+    margin-bottom: 10px;
+}
+
+span.wppb-msf-break {
+    border-style: solid;
+    border-width: 30px 0 0 30px;
+    border-color: transparent transparent transparent #0085ba;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+    display: block;
+    cursor: pointer;
+}
+
+span.wppb-msf-break:hover {
+    border-color: transparent transparent transparent #00a5dc;
+}
+
+span.wppb-msf-break b {
+    color: white;
+    font-size: 15px;
+    bottom: 1px;
+    left: -26px;
+    position: inherit;
+}
+
+span.wppb-msf-break b.wppb-msf-add-sign {
+    bottom: 1px;
+    left: -26px;
+}
+
+span.wppb-msf-break b.wppb-msf-remove-sign {
+    bottom: 0;
+    left: -24px;
+}
+
+.wck-msf {
+    display: none;
+}

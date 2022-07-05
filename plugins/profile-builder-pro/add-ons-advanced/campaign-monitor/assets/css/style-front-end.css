@@ -1,0 +1,23 @@
+.wppb-cmi-widget-field-wrapper {
+    margin-bottom: 1em;
+}
+
+.wppb-cmi-widget-field-error input {
+    border-color: #9d0000;
+    background: #fbdddd;
+}
+
+.wppb-cmi-widget-field-error-message {
+    font-size: 0.8em;
+    color: #9d0000;
+}
+
+.wppb-form-field.wppb-campaign-monitor-subscribe input,
+.wppb-form-field.wppb-campaign-monitor-subscribe label {
+    width: auto;
+    float: none;
+}
+
+.wppb-user-forms .wppb-form-field.wppb-campaign-monitor-subscribe label input[type="checkbox"] {
+    margin-right: 10px;
+}

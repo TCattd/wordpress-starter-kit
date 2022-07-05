@@ -1,0 +1,9 @@
+.wppb-form-field.wppb-mailpoet-subscribe input,
+.wppb-form-field.wppb-mailpoet-subscribe label {
+    width: auto;
+    float: none;
+}
+
+.wppb-user-forms .wppb-form-field.wppb-mailpoet-subscribe label input[type="checkbox"] {
+    margin-right: 10px;
+}

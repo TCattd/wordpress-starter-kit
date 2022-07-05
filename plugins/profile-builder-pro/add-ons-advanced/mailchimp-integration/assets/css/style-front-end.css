@@ -1,0 +1,25 @@
+.wppb-mci-widget-field-wrapper {
+    margin-bottom: 1em;
+}
+
+.wppb-mci-widget-field-error input {
+    border-color: #9d0000;
+    background: #fbdddd;
+}
+
+.wppb-mci-widget-field-error-message {
+    font-size: 0.8em;
+    color: #9d0000;
+}
+
+.wppb-form-field.wppb-mailchimp-subscribe input,
+.wppb-form-field.wppb-mailchimp-subscribe label {
+    display: inline-block;
+    width: auto;
+    float: none;
+    margin-right: 10px;
+}
+
+.wppb-user-forms .wppb-form-field.wppb-mailchimp-subscribe label input[type="checkbox"] {
+    margin-right: 10px;
+}

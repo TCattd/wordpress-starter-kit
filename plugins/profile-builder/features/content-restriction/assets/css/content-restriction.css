@@ -1,0 +1,75 @@
+.wppb-content-restriction-wrap form {
+    margin-top: 40px;
+    max-width: 900px;
+}
+
+#wppb-settings-content-restriction .wppb-restriction-fields-group {
+    margin-bottom: 40px;
+}
+
+#wppb-settings-content-restriction .wppb-restriction-label {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 20px 10px 0;
+    width: 140px;
+    font-weight: bold;
+}
+
+#wppb-settings-content-restriction .wppb-restriction-type label {
+    margin-right: 15px;
+}
+
+#wppb-settings-content-restriction input {
+    max-width: 360px;
+}
+
+#wppb-settings-content-restriction .wppb-restriction-type,
+#wppb-settings-content-restriction .wppb-restriction-activated,
+#wppb-settings-content-restriction #wp-message_logged_out-wrap,
+#wppb-settings-content-restriction #wp-message_logged_in-wrap,
+#wppb-settings-content-restriction .wppb-restriction-post-preview {
+    display: inline-block;
+    width: 80%;
+}
+
+#wppb-settings-content-restriction .description {
+    margin-top: 10px;
+}
+
+#wppb-meta-box-fields-wrapper-restriction-redirect-url,
+.wppb-meta-box-field-wrapper-custom-redirect-url,
+.wppb-meta-box-field-wrapper-custom-messages {
+    display: none;
+}
+
+#wppb-meta-box-fields-wrapper-restriction-redirect-url.wppb-content-restriction-enabled,
+.wppb-meta-box-field-wrapper-custom-redirect-url.wppb-content-restriction-enabled,
+.wppb-meta-box-field-wrapper-custom-messages.wppb-content-restriction-enabled {
+    display: block;
+}
+
+.wppb-meta-box-field-wrapper {
+    position: relative;
+    padding-left: 210px;
+    margin: 25px 0;
+}
+
+.wppb-meta-box-fields-wrapper h4 {
+    background: #f1f1f1;
+    padding: 10px 7px;
+    margin: 0 -7px;
+}
+
+.wppb-meta-box-field-wrapper label {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.wppb-meta-box-field-wrapper .wppb-meta-box-field-label {
+    font-weight: bold;
+    width: 200px;
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+}

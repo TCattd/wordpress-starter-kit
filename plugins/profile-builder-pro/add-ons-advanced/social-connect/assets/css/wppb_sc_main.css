@@ -1,0 +1,49 @@
+#wppb_social_connect_settings {
+    padding-top: 0 !important;
+}
+
+#wppb_social_connect_settings .row-display-on-the-following-forms .wck-checkboxes div:nth-child( 4 ) {
+    margin-top: 10px;
+}
+
+#wppb_social_connect_settings .sortable-handle {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: url('../images/sorting-icon-dots.png') no-repeat center center;
+    vertical-align: middle;
+    margin-right: 7px;
+    cursor: move;
+}
+
+#wppb_social_connect_settings .row-buttons-order .wck-checkboxes > div {
+    margin-bottom: 5px;
+}
+
+#wppb_social_connect_settings .row-buttons-order input[type='checkbox'] {
+    display: none;
+}
+
+#wppb_social_connect_settings .row-buttons-re-order {
+    display: none;
+}
+
+/* hide right metabox Save button */
+#wppb_social_connect_info {
+    display: none;
+}
+
+/* Thickbox back-end style */
+.profile-builder_page_wppb-social-connect #TB_window {
+    width: 90% !important;
+    height: 85% !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    top: 5% !important;
+    left: 5% !important;
+}
+
+.profile-builder_page_wppb-social-connect #TB_window iframe {
+    width: 100% !important;
+    height: 100% !important;
+}
