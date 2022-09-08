@@ -1,0 +1,32 @@
+@mixin debug-before {
+	color: #fff;
+	font-size: 13px;
+	font-weight:200;
+	padding: 3px 10px;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	top:0;
+	left:0;
+}
+
+$element-colors: (
+	main > section: #00a8f4,
+	'div[class^="col-"]': #eba602,
+	lc-block: #e91f63,
+	row: #4bb050,
+	container: #617d8a,
+);
+
+@each $element, $color in $element-colors {
+	.#{$element}, #{$element}{
+		outline:2px solid $color;
+		outline-offset:-2px;
+		position:relative;
+	};
+	.#{$element}:before, #{$element}:before{
+		@include debug-before;
+		background-color: $color;
+		content: '#{$element}';
+	}
+}

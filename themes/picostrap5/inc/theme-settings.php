@@ -61,8 +61,20 @@ function add_link_admin_bar($adminBar) {
 	$args = [
         'parent' => 'customize',
 		'id' => 'picostrap-theme',
-        'title' => 'Picostrap Theme', 
+        'title' => 'Picostrap Theme Options', 
         'href' => admin_url('themes.php?page=picostrap-theme-options'),
 	];
     $adminBar->add_node($args);
 }
+
+
+
+
+//Add Twitter handle/username to User Contact Information
+ 
+function user_contact_add_twitter( $user_contact ) {
+	$user_contact['twitter'] = __( 'Twitter Username' );
+
+	return $user_contact;
+}
+add_filter( 'user_contactmethods', 'user_contact_add_twitter' );
