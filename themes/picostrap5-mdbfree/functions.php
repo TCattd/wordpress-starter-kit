@@ -2,12 +2,6 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-// SET A SPECIFIC DESTINATION FOLDER FOT THE COMPILED CSS BUNDLES
-function picostrap_get_css_optional_subfolder_name() { return "css-output/"; }
-
-// SET A CUSTOM NAME FOR THE CSS BUNDLE FILE
-function picostrap_get_base_css_filename() { return "bundle.css"; }
-
 // Picostrap's includes
 $picostrap_includes = [
     //'/your-file.php',
