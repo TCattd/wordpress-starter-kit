@@ -14,7 +14,7 @@ function picostrap_cleanup() {
     remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
     remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
     
-    /*DISABLE EMOJIS */   
+    /* DISABLE EMOJIS */   
     remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
     remove_action( 'admin_print_scripts', 'print_emoji_detection_script' );
     remove_action( 'wp_print_styles', 'print_emoji_styles' );
@@ -61,28 +61,16 @@ function disable_self_pingbacks(&$links) {
  }
 
 
-// Disable XML-RPC - not necess?
-//add_filter('xmlrpc_enabled', '__return_false');
-//add_filter('wp_headers', 'remove_x_pingback');
-//add_filter('pings_open', '__return_false', 9999);
+// Show less info to users on failed login for security.
+//(Will not let a valid username be known.)
 
-//function remove_x_pingback($headers) {
-//     unset($headers['X-Pingback'], $headers['x-pingback']);
-//     return $headers;
-//}
-
-
-
-/*
-Show less info to users on failed login for security.
-(Will not let a valid username be known.)
-*/
 function picostrap_show_less_login_info() { 
     return "<strong>ERROR</strong>: Stop guessing!"; }
 add_filter( 'login_errors', 'picostrap_show_less_login_info' );
-/*
-Do not generate and display WordPress version
-*/
+
+ 
+// Do not generate and display WordPress version
+ 
 function picostrap_no_generator()  {     return ''; }
 add_filter( 'the_generator', 'picostrap_no_generator' );
 
@@ -98,19 +86,8 @@ function my_css_attributes_filter($var) {  return is_array($var) ? array() : '';
 
 
 
-/// REMOVE GUTENBERG BLOCKS CSS - if classic editor plugin is active
-add_action( 'wp_print_styles', 'picostrap_deregister_gstyles', 100 );
-function picostrap_deregister_gstyles() {
 
-    //if user wants to use Gutenberg along with LC editor, exit.... OR we could add a switch in customizer...or //if (  class_exists( 'Classic_Editor' ) )  
-    if (function_exists('lc_plugin_option_is_set') && lc_plugin_option_is_set('gtblocks')) return;
-    
-    wp_dequeue_style( 'wp-block-library' );
-}
-
-
-
-/////// DISABLE CF7 PLUGIN CSS  - as UnderStrap's CSS does already include it ///////////////////////////////////////////////////////////////
+/////// DISABLE CF7 PLUGIN CSS  - optional  ///////////////////////////////////////////////////////////////
 //add_action( 'wp_print_styles', 'wps_deregister_styles', 100 );
 //function wps_deregister_styles() {    wp_deregister_style( 'contact-form-7' );}
 
@@ -154,3 +131,12 @@ function picostrap_disable_embeds_rewrites($rules) {
 
  
  
+
+// REMOVE DEFAULT WP INLINE STYLE:  <style id='global-styles-inline-css'> and SVG filters on body open
+// https://github.com/WordPress/gutenberg/issues/36834
+
+function picostrap_wp_remove_global_css() {
+   remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+   remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+}
+add_action( 'init', 'picostrap_wp_remove_global_css' );

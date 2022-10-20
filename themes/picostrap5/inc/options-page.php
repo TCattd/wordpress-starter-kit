@@ -12,7 +12,7 @@ function pico_get_parent_theme_version(){
 
 //ADD THEME OPTIONS PAGE
 function add_picostrap_theme_page() {
-    add_theme_page( 'Picostrap Theme Options Page', 'Picostrap Theme', 'edit_theme_options', 'picostrap-theme-options', 'theme_option_page' );
+    add_theme_page( 'Picostrap Theme Options Page', 'Picostrap Options', 'edit_theme_options', 'picostrap-theme-options', 'theme_option_page' );
 }
 add_action( 'admin_menu', 'add_picostrap_theme_page' );
  
@@ -22,7 +22,7 @@ function theme_option_page() {
 			<div class='wrap' style="padding: 20px;    font-size: 18px;    background: azure;    margin-top: 10px;     ">Settings imported from file.</div> 
 			<script>
 				jQuery('document').ready(function(){
-					jQuery('#ps-panel-actions-loading-target').text('Working...').show().load('<?php echo admin_url('?ps_compile_scss&ps_compiler_api') ?>');
+					ps_recompile_sass_in_admin();
 				});
 			</script>
 		<?php 
@@ -67,10 +67,50 @@ function theme_option_page() {
 			text-decoration: underline;
 		}
 
+	</style>
+    
+	<script>
+		function ps_recompile_sass_in_admin() {
+			jQuery('#ps-panel-actions-loading-target').text('Rebuilding CSS. Please wait...').show(); 
+			jQuery.ajax({
+				url: ajaxurl, // this will point to admin-ajax.php
+				type: 'POST',
+				data: {
+					'action': 'picostrap_recompile_sass',  
+					'nonce': '<?php echo wp_create_nonce( 'picostrap_livereload' ) ?>' 
+				}, 
+				success: function (response) {
+					jQuery('#ps-panel-actions-loading-target').html(response);
+				}
+			});	
+
+		} //end function definition
 
 
-		</style>
-    <div class="pico-wrap">
+
+		
+		function ps_reset_theme_settings() {
+			if(!confirm('This will DESTROY all your Customizer settings. Are you sure?')) return FALSE;
+			jQuery('#ps-panel-actions-loading-target').text('Resetting options and rebuilding CSS. Please wait...').show(); 
+			jQuery.ajax({
+				url: ajaxurl, // this will point to admin-ajax.php
+				type: 'POST',
+				data: {
+					'action': 'picostrap_reset_theme_options',  
+					'nonce': '<?php echo wp_create_nonce( 'picostrap_livereload' ) ?>' 
+				}, 
+				success: function (response) {
+					jQuery('#ps-panel-actions-loading-target').html(response);
+				}
+			});	
+
+		} //end function definition
+
+	</script>
+	
+	
+	
+	<div class="pico-wrap">
 
         <div class="pico-welcome-panel">
         
@@ -93,20 +133,25 @@ function theme_option_page() {
                 <div class="pico-container">
                     
 					<div class="pico-column" style="width:55%;">
+							<style>
+								.button-hero { min-width: 58%;text-align: center; }
+							</style>
                             <h3>Get Started</h3>
-                            <a class="button button-primary button-hero" href="<?php echo esc_url( admin_url( 'customize.php' ) ); ?>">Customize Your Site</a>
+                            <a class="button button-hero" target="_blank" href="https://picostrap.com/documentation/">Theme Documentation</a>
+							<br><br>
+							<a class="button button-primary button-hero" href="<?php echo esc_url( admin_url( 'customize.php' ) ); ?>">Customize Your Site</a>
                             <p>  to make your own Bootstrap build!		</p>
+							
+							
                     </div>
 
                     <div class="pico-column">
 
                         <h3>Secondary Utilities</h3>
-						
- 
 
                         <ul id="pico-utils">
                                     <li>
-										<a onclick="jQuery('#ps-panel-actions-loading-target').text('Working...').show().load('<?php echo admin_url('?ps_compile_scss&ps_compiler_api') ?>');" href="#" class="">
+										<a onclick="ps_recompile_sass_in_admin()" href="#" class="">
 											<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" style="" lc-helper="svg-icon">
 												<path d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"></path>
 												<path fill-rule="evenodd" d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"></path>
@@ -117,7 +162,7 @@ function theme_option_page() {
                                     
 									
 									<li>
-										<a onclick="if(confirm('This will DESTROY all your Customizer settings. Are you sure?')) jQuery('#ps-panel-actions-loading-target').text('Working...').show().load('<?php echo admin_url('?ps_reset_theme&ps_compiler_api') ?>');"   href="#" >
+										<a onclick="ps_reset_theme_settings()"   href="#" >
 											<svg viewBox="0 0 24 24">
     										<path fill="currentColor" d="M16.24,3.56L21.19,8.5C21.97,9.29 21.97,10.55 21.19,11.34L12,20.53C10.44,22.09 7.91,22.09 6.34,20.53L2.81,17C2.03,16.21 2.03,14.95 2.81,14.16L13.41,3.56C14.2,2.78 15.46,2.78 16.24,3.56M4.22,15.58L7.76,19.11C8.54,19.9 9.8,19.9 10.59,19.11L14.12,15.58L9.17,10.63L4.22,15.58Z" />
 											</svg>
@@ -169,7 +214,7 @@ function theme_option_page() {
 					} else {
 					echo '<p>You can freely edit the <b style="font-family:Courier;font-size:20px;"> sass/_custom.scss </b> file inside your child theme folder.</p>
 					<p>Open this file with your favourite text editor, save, and view the page as admin in your browser:<br>
-					A new CSS bundle will be built and served via ajax after a couple seconds.<br> So while working on your CSS / SCSS code, you can immediately see the "results" of your new styling edits without reloading the page.</p>
+					A new CSS bundle will be built and served via ajax after a few seconds.<br> So while working on your CSS / SCSS code, you can immediately see the "results" of your new styling edits without reloading the page.</p>
 					
 					<p style="font-style:italic" >Stop hitting cmd-R like a drunken monkey!</p>';
 					}
@@ -247,7 +292,8 @@ function pico_process_settings_export() {
 	$settings['theme_version'] = pico_get_parent_theme_version();
 
     foreach (get_theme_mods() as $setting_name => $setting_value):
-        if ($setting_name=="picostrap_scss_last_filesmod_timestamp") continue;
+		if ($setting_name=="picostrap_scss_last_filesmod_timestamp") continue;
+        if ($setting_name=="picostrap_scss_last_filesmod_timestamp_v2") continue;
         if ($setting_name=="custom_css_post_id") continue;
         $settings[$setting_name]=$setting_value;
     endforeach;
@@ -294,9 +340,26 @@ function pico_process_settings_import() {
 	}
 
 	// Retrieve the settings from the file and convert the json object to an array.
-	$settings = (array) json_decode( file_get_contents( $import_file ) );
-	
-	if (!isset($settings['theme_version']) OR $settings['theme_version']!=pico_get_parent_theme_version()) wp_die("<h1>Invalid JSON format</h1><h4> You can only import json exported from the same version of the theme</h4>");
+	$settings = (array) json_decode( file_get_contents( $import_file ), TRUE );
+
+	//version check - should not be necessary anymore, so its disabled
+	//if (!isset($settings['theme_version']) OR $settings['theme_version']!=pico_get_parent_theme_version()) wp_die("<h1>Invalid JSON format</h1><h4> You can only import json exported from the same version of the theme</h4>");
+
+	//should we choose to whitelist only some values, some example code
+	/*
+	// eliminate non - string / boolean values like nav_menu_locations as they break the customizer after importing
+	foreach($settings as $setting_name => $setting_value):
+
+		if (!is_string($setting_value) && !is_bool($setting_value)) {
+			//echo ("eliminate ".$setting_name."<br><br>"); //for debug only
+			unset ($settings[$setting_name]);
+		}
+
+	endforeach; 
+
+	//var_dump ($settings); die; // for debug only
+
+	*/
 
 	$theme = get_option( 'stylesheet' );
 

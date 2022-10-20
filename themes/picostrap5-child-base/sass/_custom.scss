@@ -18,17 +18,16 @@ NOTICE for beginners:
     First of all, have a ride in the WordPress Customizer.
     Then learn to use Bootstrap 5 Classes and utilities.
     If you come from the CSS world, take some time to study the basic of SASS. It's very powerful.
-    With great powers...you are warned
+    With great powers...you are warned 
 
 HOW TO REFERENCE ASSETS AND IMAGES 
-    [BREAKING NEWS] The generated CSS bundle is now called from the Theme folder 
+    The generated CSS bundle is now called from the Theme folder
     so relative paths work as expected on a standard WordPress Theme.
-    So it's not like before.
 
-  
+
 ************************************************		*/
 //a demo statement - uncomment to see page turn red and blush
-//body { background: lime; opacity: 0.3;} 
+//body { background: red; opacity: 0.4;}  
 
 //open menus on hover
 //.dropdown:hover>.dropdown-menu { display: block;}

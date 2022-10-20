@@ -38,11 +38,17 @@ if ( have_posts() ) :
 
                 <h1 class="display-4"><?php the_title(); ?></h1>
                 
-                <?php if (!get_theme_mod("singlepost_disable_entry_meta") ): ?>
+                <?php if (!get_theme_mod("singlepost_disable_date") OR !get_theme_mod("singlepost_disable_author")  ): ?>
                     <div class="post-meta" id="single-post-meta">
                         <p class="lead text-secondary">
-                            <span class="post-date"><?php the_date(); ?> </span>
-                            <span class="text-secondary post-author"> <?php _e( 'by', 'picostrap' ) ?> <?php the_author(); ?></span>
+                            
+                            <?php if (!get_theme_mod("singlepost_disable_date") ): ?>
+                                <span class="post-date"><?php the_date(); ?> </span>
+                            <?php endif; ?>
+
+                            <?php if (!get_theme_mod("singlepost_disable_author") ): ?>
+                                <span class="text-secondary post-author"> <?php _e( 'by', 'picostrap' ) ?> <?php the_author(); ?></span>
+                            <?php endif; ?>
                         </p>
                     </div> 
                 <?php endif; ?>
@@ -57,7 +63,7 @@ if ( have_posts() ) :
                 
                 if( get_theme_mod("enable_sharing_buttons")) picostrap_the_sharing_buttons();
                 
-                edit_post_link( __( 'Edit this post', 'picostrap' ), '<p class="text-right">', '</p>' );
+                edit_post_link( __( 'Edit this post', 'picostrap' ), '<p class="text-end">', '</p>' );
                 
                 // If comments are open or we have at least one comment, load up the comment template.
                 if (!get_theme_mod("singlepost_disable_comments")) if ( comments_open() || get_comments_number() ) {

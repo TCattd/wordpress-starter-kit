@@ -2,6 +2,53 @@
 	font-size: 9px !important;
 }
 
+span.cs-optional-comment {  
+    font-style: normal; 
+}
+
+span.cs-optional-comment b {
+  white-space: nowrap;  
+}
+
+
+/* LIVE PREVIEW AVAILABLE */
+span.lpa { 
+    float: right;
+    user-select: none;
+    color:#abb8c3;
+}
+span.lpa svg  {
+  width:12px;height:12px;vertical-align:top
+}
+#_customize-description-SCSSvar_font-family-base.customize-control-description ,
+#_customize-description-SCSSvar_headings-font-family.customize-control-description { 
+    margin-top: 12px;
+}
+
+.pico-text-suggestion {
+    color: #50575e;
+    font-style: italic;
+}
+/* PLACEHOLDER FOR INPUT TEXT */
+.customize-control input[type=text]::placeholder {color:#cbcbcb}
+
+/* CURRENT COLOR WIDGET FOR COLOR WIDGETS */
+
+.customize-control-color .customize-control-title{
+  display: flex;
+  justify-content: space-between;
+}
+.customize-control-color .customizer-current-color {
+  font-size: 0.7rem;
+  padding-right: 0.5rem;
+  color:#abb8c3;
+  border-right: 24px solid transparent;
+  position: absolute; 
+  right: 11px;
+  margin-top: 4px;
+}
+
+
 .generate-palette {
 	float: right;
 	font-size: 8px;
@@ -9,7 +56,9 @@
 }
 
 #cs-compiling-window {
-  width: 273px;
+  min-width: 300px;
+  max-width: 600px;
+  width: 18%;
   position: fixed;
   z-index: 999999;
   font-size: 14px;
@@ -63,6 +112,16 @@
 }
 
 #cs-loader {margin:40%}
+
+/* COMPILER ERROR */
+
+div#compile-error {
+    /* font-size: 10px !important; */
+    overflow-wrap: break-word;
+}
+div#compile-error:hover{
+  cursor: pointer;
+}
 
 /*  SPINNING LOADER */
 
@@ -141,10 +200,8 @@ body .font-picker .fp-modal {
     bottom: 15px;
 }
 /* hide italic font selection */
-body span.fp-pill.italic{display: none} 
+body span.fp-pill.italic { display: none} 
 
-/* HIDE TEXT FIELD FOR FONT LOADING CODE */	
- body li#customize-control-picostrap_fonts_header_code   {opacity:0.7; noo_display: none !important}  
 
 /* MAXIMIZE CSS EDITOR: trigger button */
  
@@ -156,7 +213,7 @@ body span.fp-pill.italic{display: none}
 .picostrap-maximize-editor { position: fixed;  left:0;  top: 45vh;bottom:0;height: auto}
 .picostrap-maximize-editor .CodeMirror-wrap {border-top: 3px solid #888;}
 
-
+/* BOOTSTRAP LOGO ON SECTION TITLES */
 #accordion-section-colors h3.accordion-section-title::before,
 #accordion-section-typography h3.accordion-section-title::before,
 #accordion-section-components h3.accordion-section-title::before,
@@ -175,4 +232,37 @@ body span.fp-pill.italic{display: none}
 }
 
 #cs-font-combi {display: none;}
- 
+
+/* FOOTER TEXT / HEADER / FOOTER / TEXTAREAS */
+
+#_customize-input-picostrap_footer_text, #_customize-input-picostrap_header_code, #_customize-input-picostrap_footer_code {
+  height: 200px;
+  font-size: 12px;
+}
+
+/* FONT HEADER CODE TEXTAREA */
+#_customize-input-picostrap_fonts_header_code {
+  min-height: 200px;
+  font-size: 12px; 
+}
+
+/* FONT OBJECT HIDDEN SETTINGS */
+#customize-control-body_font_object,
+#customize-control-headings_font_object {display: none;}
+
+/* VIDEO TUTORIAL LINKS  */
+
+.video-tutorial-link {
+  display:block;
+  text-align:right;
+  font-size: 12px;
+  margin:0 10px 10px;
+}
+
+.video-tutorial-link:hover {
+  color:red
+}
+
+.video-tutorial-link:focus {
+  box-shadow: none;
+}

@@ -9,10 +9,7 @@ defined( 'ABSPATH' ) || exit;
 //CHECK URL PARAMETERS AND REACT ACCORDINGLY
 add_action("admin_init", function (){
 	if (!current_user_can("administrator")) return; //ADMINS ONLY
-	
-	if (isset($_GET['ps_compile_scss'])) {		picostrap_generate_css();		die();	}
-	if (isset($_GET['ps_reset_theme'])) {		remove_theme_mods(); 	echo ("Theme Options Reset.<br>");	picostrap_generate_css();		die(); }
-	if (isset($_GET['ps_show_mods'])){		print_r(get_theme_mods());		wp_die();	}
+	if (isset($_GET['ps_show_mods'])){ print_r(get_theme_mods()); wp_die();	}
 });
 
 // USE LEAFO's SCSSPHP LIBRARY
@@ -36,6 +33,9 @@ function picostrap_get_active_scss_code(){
 	//FOR STYLE PACKAGES
 	if(function_exists("picostrap_alter_scss")) $the_scss_code = picostrap_alter_scss ($the_scss_code);	 
 	
+	//EXAMPLE FOR OPTIONAL SASS EXTRAS
+	//if (get_theme_mod("picostrap_additional_color_shades") )  $the_scss_code.=' @import "optional-extras/theme_color_shades"; ';
+
 	return $the_scss_code;
 }
 
@@ -45,7 +45,7 @@ function picostrap_get_active_scss_code(){
 function picostrap_generate_css(){
 	
 	//SET TIMESTAMP
-	set_theme_mod("picostrap_scss_last_filesmod_timestamp",picostrap_get_scss_last_filesmod_timestamp());
+	set_theme_mod("picostrap_scss_last_filesmod_timestamp_v2", picostrap_get_scss_last_filesmod_timestamp());
 		
 	//INITIALIZE COMPILER
 	require_once "scssphp/scss.inc.php";
@@ -74,11 +74,21 @@ function picostrap_generate_css(){
 	
 	} catch (Exception $e) {
 		//COMPILER ERROR: TYPICALLY INVALID SCSS CODE
-		die("<div id='compile-error' style='font-size:20px;background:#212337;color:lime;font-family:courier;border:8px solid red;padding:15px;display:block'><h1 style='color:lime;'>SCSS error</h1>".$e->getMessage()."</div>");
+		echo "<compiler-error>";
+		echo  "<h1>SCSS Compile Error</h1>". $e->getMessage();
+		echo "</compiler-error>";
+		return FALSE;
    	}
 	
 	//CHECK CSS IS REALLY THERE
-	if ($compiled_css=="") die("Compiled CSS is empty, aborting.");
+	if ($compiled_css=="") {
+		//COMPILER ERROR: NO OUTPUT
+		echo "<compiler-error>";
+		echo  "<h1>SCSS Compile Error</h1>";
+		echo "<p>Compiled CSS is empty, aborting.</p>";
+		echo "</compiler-error>";
+		return FALSE;
+   	}
 	
 	//ADD SOME COMMENT
 	$compiled_css .= " /* DO NOT ADD YOUR CSS HERE. ADD IT TO SASS/_CUSTOM.SCSS */ ";
@@ -95,28 +105,28 @@ function picostrap_generate_css(){
 	
 	if ($saving_operation) { // IF UPLOAD WAS SUCCESSFUL 
 
+		//STORE CSS BUNDLE VERSION NUMBER
+		$current_version_number = get_theme_mod ('css_bundle_version_number');
+		if (!is_numeric($current_version_number)) $current_version_number=rand(1,1000);
+		set_theme_mod ('css_bundle_version_number', $current_version_number+1);
+
 		//GIVE POSITIVE FEEDBACK	
-		if (isset($_GET['ps_compiler_api'])) {
-			echo "New CSS bundle: " . picostrap_get_css_url();
-		} else {		
-			echo "File was successfully uploaded<br><br>";
-			echo "<a href='".picostrap_get_css_url()."' target='new'>View File</a>";
-			echo "<br><br><b>Size: </b><br>".round(mb_strlen($compiled_css, '8bit')/1000)." kB - ".round(mb_strlen(gzcompress($compiled_css), '8bit')/1000)." kB gzipped";
-		}
+		echo "<compiler-success>";
+		echo "<h1>New CSS bundle successfully generated</h1>";
+		echo "<a href='".picostrap_get_css_url()."' target='new'>View File</a>";
+		echo "<br><br><b>Size: </b><br>".round(mb_strlen($compiled_css, '8bit')/1000)." kB - ".round(mb_strlen(gzcompress($compiled_css), '8bit')/1000)." kB gzipped";
+		echo "</compiler-success>";
+		return TRUE;
 
 	} else {
 		//GIVE NEGATIVE FEEDBACK
-		if (isset($_GET['ps_compiler_api'])) {
-			echo  "<br><br><span id='saving-error'>Error saving CSS file "."</span>";
-		} else {
-			echo  "<div id='savingfile-error' style='font-size:20px;background:#212337;color:lime;font-family:courier;border:8px solid red;padding:15px;display:block'><h1>Error writing file</h1></div>";
-		die();
-		}
+		echo "<compiler-error>";
+		echo  "<h1>Error writing CSS file</h1>";
+		echo "</compiler-error>";
+		return FALSE;
 	}
- 
-	//PRINT A CLOSE BUTTON
-	if (!isset($_GET['ps_compiler_api'])) echo  " <button style='font-size:30px;width:100%' class='cs-close-compiling-window'>OK </button>";
-}
+  
+} ///end function
 
 
 
@@ -150,16 +160,5 @@ function picostrap_get_active_scss_variables_array(){
 // FORCE CSS REBUILD UPON ENABLING CHILD THEME 
 add_action( 'after_switch_theme', 'picostrap_force_css_rebuilding', 10, 2 ); 
 function picostrap_force_css_rebuilding() {   
-    remove_theme_mod("picostrap_scss_last_filesmod_timestamp");
+    remove_theme_mod("picostrap_scss_last_filesmod_timestamp_v2");
 }
-
-
-// MIGRATE TO NEW SAVING MECHANISM:: FORCE CSS REBUILD UPON upgrading from <1.3 
-add_action( 'init', 'picostrap_migrate_to_new_saving_check', 10, 2 ); 
-function picostrap_migrate_to_new_saving_check() { 
-	if ( get_theme_mod("picostrap_css_bundle_wp_relative_upload_path")):
-    	remove_theme_mod("picostrap_scss_last_filesmod_timestamp");
-		remove_theme_mod("picostrap_css_bundle_wp_relative_upload_path");
-	endif;
-}
-

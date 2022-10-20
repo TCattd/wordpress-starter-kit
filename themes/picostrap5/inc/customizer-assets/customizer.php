@@ -5,21 +5,50 @@ defined( 'ABSPATH' ) || exit;
 
 // ADD CUSTOM JS & CSS TO CUSTOMIZER //////////////////////////////////////////////////////////////////////////////////////////////////////////
 function picostrap_customize_enqueue() {
-	wp_enqueue_script( 'custom-customize', get_template_directory_uri() . '/inc/customizer-assets/customizer.js', array( 'jquery', 'customize-controls' ), '2.63', true );
-	wp_enqueue_script( 'custom-customize-lib', get_template_directory_uri() . '/inc/customizer-assets/customizer-vars.js', array( 'jquery', 'customize-controls' ), '2.61', true );
-	wp_enqueue_style( 'custom-customize', get_template_directory_uri() . '/inc/customizer-assets/customizer.css'  );
+	wp_enqueue_script( 'custom-customize', get_template_directory_uri() . '/inc/customizer-assets/customizer.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
+	 
+	wp_localize_script(
+		'custom-customize',
+		'picostrap_ajax_obj',
+		array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce'    => wp_create_nonce( 'picostrap_livereload' ),
+		)
+	);
+	
+	
+	
+	wp_enqueue_script( 'custom-customize-lib', get_template_directory_uri() . '/inc/customizer-assets/customizer-vars.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
+	wp_enqueue_style( 'custom-customize', get_template_directory_uri() . '/inc/customizer-assets/customizer.css', array(), rand(0,1000)   );
 	
 	//fontpicker
-	wp_enqueue_script( 'fontpicker', get_template_directory_uri() . '/inc/customizer-assets/fontpicker/jquery.fontpicker.min.js', array( 'jquery', 'customize-controls' ), '2.61', true );
-	wp_enqueue_style( 'fontpicker', get_template_directory_uri() . '/inc/customizer-assets/fontpicker/jquery.fontpicker.min.css', array(), '2.61' );
+	wp_enqueue_script( 'fontpicker', get_template_directory_uri() . '/inc/customizer-assets/fontpicker/jquery.fontpicker.min.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
+	wp_enqueue_style( 'fontpicker', get_template_directory_uri() . '/inc/customizer-assets/fontpicker/jquery.fontpicker.min.css', array(), rand(0,1000) );
 }
 add_action( 'customize_controls_enqueue_scripts', 'picostrap_customize_enqueue' );
+
+//one more file for live preview
+add_action( 'customize_preview_init', function(){
+	wp_enqueue_script( 
+		  'picostrap-themecustomizer',			//Give the script an ID
+		  get_template_directory_uri().'/inc/customizer-assets/customizer-live-preview.js',//Point to file
+		  array( 'jquery','customize-preview' ),	//Define dependencies
+		  '',						//Define a version (optional) 
+		  true						//Put script in footer?
+	);
+});
 
 
 //ADD BODY CLASSES  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 add_filter( 'body_class', 'picostrap_config_body_classes' );
 function picostrap_config_body_classes( $classes ) {
+
+	//if we are using LC's custom header, don't add anything
+	if (function_exists('lc_custom_header')) return $classes; 
+	
 	$classes[]="picostrap_header_navbar_position_".get_theme_mod('picostrap_header_navbar_position');
+	$classes[]="picostrap_header_navbar_color_choice_".get_theme_mod('picostrap_header_navbar_color_choice');
+	
 	return $classes;
 }
 
@@ -34,13 +63,18 @@ function picostrap_filter_head() {
 ///MAIN SETTING: DECLARE ALL SCSS VARIABLES TO HANDLE IN THE CUSTOMIZER
 if(!function_exists("picostrap_get_scss_variables_array")):
 	function picostrap_get_scss_variables_array(){
+		$live_preview_message = '
+		<span class="lpa">
+			<svg viewBox="0 0 24 24"> <path fill="currentColor" d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg>
+			Live Preview
+		</span>';
 		return array(
 			"colors" => array( //  $variable_name => $variable_props
-				'$body-bg' => array('type' => 'color'),
-				'$body-color' => array('type' => 'color'),
-				'$link-color' => array('type' => 'color'),
+				'$body-bg' => array('type' => 'color', 'comment' => $live_preview_message),
+				'$body-color' => array('type' => 'color', 'comment' => $live_preview_message),
+				'$link-color' => array('type' => 'color', 'comment' => $live_preview_message),
 				//'$link-decoration' => array('type' => 'text'),
-				'$link-hover-color' => array('type' => 'color'),
+				'$link-hover-color' => array('type' => 'color', 'comment' => $live_preview_message),
 				//'$link-hover-decoration' => array('type' => 'text'),
 				// STATUS COLORS
 				'$primary'=> array('type' => 'color','newgroup' => 'Bootstrap Colors'),
@@ -51,9 +85,12 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 				'$danger' => array('type' => 'color'),
 				'$light' => array('type' => 'color'),
 				'$dark' => array('type' => 'color'),
-				),
-			
-
+				
+				//ADDITIONAL COLOR CLASSES
+				'$enable-text-shades'=> array('type' => 'boolean', 'default' => 'true', 'newgroup' => 'Color Shades', 'comment' => 'Generates text shade classes: from <b>.text-primary-100</b> to <b>.text-primary-900</b>'),
+				'$enable-bg-shades' => array('type' => 'boolean', 'default' => 'true', 'comment' => 'Generates background shade classes: from <b>.bg-primary-100</b> to <b>.bg-primary-900</b>'),
+				'$enable-text-bg-shades' => array('type' => 'boolean', 'comment' => 'Generates text & background combination shade classes: from <b>.text-bg-primary-100</b> to <b>.text-bg-primary-900</b>'),
+				),	
 			//add another section
 			"components" => array( // $variable_name => $variable_props
 								
@@ -63,12 +100,16 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 				
 				'$spacer' => array('type' => 'text','placeholder' => '1rem'),
 				
-				'$border-width' => array('type' => 'text','placeholder' => '1px'),
-				'$border-color' => array('type' => 'color' ),
-				'$border-radius' => array('type' => 'text','placeholder' => '.25rem'),
-				'$border-radius-lg' => array('type' => 'text','placeholder' => '.3rem'),
-				'$border-radius-sm' => array('type' => 'text','placeholder' => '.2rem'),
-				'$rounded-pill' => array('type' => 'text','placeholder' => '50rem'),
+				'$border-width' => array( 'newgroup' => 'Global Borders','type' => 'text','placeholder' => '1px', 'comment' => $live_preview_message),
+				'$border-style' => array('type' => 'text','placeholder' => 'solid', 'comment' => $live_preview_message),
+				'$border-color' => array('type' => 'color', 'comment' => $live_preview_message ),
+				'$border-radius' => array('type' => 'text','placeholder' => '.375rem'),
+				
+				'$border-radius-sm' => array('newgroup' => 'Rounded Helper Classes', 'type' => 'text','placeholder' => '.25rem', 'comment' => $live_preview_message),
+				'$border-radius-lg' => array('type' => 'text','placeholder' => '.5rem', 'comment' => $live_preview_message),
+				'$border-radius-xl' => array('type' => 'text','placeholder' => '1rem', 'comment' => $live_preview_message),
+				'$border-radius-2xl' => array('type' => 'text','placeholder' => '2rem', 'comment' => $live_preview_message),
+				'$border-radius-pill' => array('type' => 'text','placeholder' => '50rem', 'comment' => $live_preview_message),
 				
 
 				),
@@ -80,26 +121,32 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 				
 				
 							
-				'$font-family-base' => array('type' => 'text', 'placeholder' => '$font-family-sans-serif ', 'newgroup' => 'Font Families', ), 
-				'$font-family-sans-serif' => array('type' => 'text', 'placeholder' => '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" '),
-				'$font-family-monospace' => array('type' => 'text', 'placeholder' => 'SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace '),
+				'$font-family-base' => array('type' => 'text', 'placeholder' => '$font-family-sans-serif ', 'newgroup' => 'Font Families', 'comment' => $live_preview_message ), 
+				'$font-family-sans-serif' => array('type' => 'text', ),
+				'$font-family-monospace' => array('type' => 'text' ),
 				
 				'$font-size-base' => array('newgroup' => 'Font Sizes', 'type' => 'text', 'placeholder' => '1rem'),
-				'$font-size-lg' => array('type' => 'text', 'placeholder' => '1.25rem'),
+				
 				'$font-size-sm' => array('type' => 'text', 'placeholder' => '.875rem '),
+				'$font-size-lg' => array('type' => 'text', 'placeholder' => '1.25rem'),
 
 				'$enable-rfs' => array('type' => 'boolean','default' => 'true'),
 				
-				'$font-weight-lighter' => array('newgroup' => 'Font Weights', 'type' => 'text', 'placeholder' => 'lighter '),
+				'$font-weight-base' => array('newgroup' => 'Font Weights', 'type' => 'text', 'placeholder' => '400', 'comment' => $live_preview_message),
+				'$line-height-base' => array('type' => 'text', 'placeholder' => '1.5', 'comment' => $live_preview_message),
+
+				
+				
+				'$font-weight-lighter' => array('type' => 'text', 'placeholder' => 'lighter '),
 				'$font-weight-light' => array('type' => 'text', 'placeholder' => '300'),
 				'$font-weight-normal' => array('type' => 'text', 'placeholder' => '400'),
+				'$font-weight-semibold' => array('type' => 'text', 'placeholder' => '600'),
 				'$font-weight-bold' => array('type' => 'text', 'placeholder' => '700'),
 				'$font-weight-bolder' => array('type' => 'text', 'placeholder' => 'bolder'),
 				
-				'$font-weight-base' => array('type' => 'text', 'placeholder' => '400'),
-				'$line-height-base' => array('type' => 'text', 'placeholder' => '1.5'),
+				
 			
-				'$headings-font-family' => array('type' => 'text', 'placeholder' => 'null','newgroup' => 'Headings', ),
+				'$headings-font-family' => array('type' => 'text', 'placeholder' => 'null','newgroup' => 'Headings', 'comment' => $live_preview_message ),
 				'$headings-font-weight' => array('type' => 'text', 'placeholder' => '500 '),
 				'$headings-line-height' => array('type' => 'text', 'placeholder' => '1.2'),
 				'$headings-color' => array('type' => 'color'),
@@ -117,11 +164,7 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 				//'$display2-size' => array('type' => 'text', 'placeholder' => '5.5rem'),
 				//'$display3-size' => array('type' => 'text', 'placeholder' => '4.5rem'),
 				//'$display4-size' => array('type' => 'text', 'placeholder' => '3.5rem'),
-				//
-				//'$display1-weight' => array('type' => 'text', 'placeholder' => '300'),
-				//'$display2-weight' => array('type' => 'text', 'placeholder' => '300'),
-				//'$display3-weight' => array('type' => 'text', 'placeholder' => '300'),
-				//'$display4-weight' => array('type' => 'text', 'placeholder' => '300'),
+				//'$display-font-weight' => array('type' => 'text', 'placeholder' => '300'),
 				//'$display-line-height' => array('type' => 'text', 'placeholder' => ' $headings-line-height '),
 				
 				'$lead-font-size' => array('newgroup' => 'Lead, Small and Muted', 'type' => 'text', 'placeholder' => '1.25rem'),
@@ -132,10 +175,11 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 				'$text-muted' => array('type' => 'color',  ),
 				
 				
-				'$blockquote-small-font-size' => array('newgroup' => 'Blockquotes', 'type' => 'text', 'placeholder' => '$small-font-size '),
+				'$blockquote-margin-y' => array('newgroup' => 'Blockquotes', 'type' => 'text', 'placeholder' => '$spacer'),
 				'$blockquote-font-size' => array('type' => 'text', 'placeholder' => '1.25rem '),
-				'$blockquote-footer-font-size' => array('type' => 'text', 'placeholder' => '$small-font-size'),
 				'$blockquote-footer-color' => array('type' => 'color' ),
+				'$blockquote-footer-font-size' => array('type' => 'text', 'placeholder' => '$small-font-size'),
+
 				
 				
 				'$hr-height' => array('newgroup' => 'HRs', 'type' => 'text', 'placeholder' => '$border-width'),
@@ -162,7 +206,7 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 			
 			
 			
-			//add another section
+			//add another section for FORMS
 			"buttons-forms" => array( // $variable_name => $variable_props
 				
 							
@@ -173,26 +217,26 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 				'$input-btn-line-height' => array('type' => 'text','placeholder' => '$line-height-base'),
 				
 				'$input-btn-focus-width' => array('type' => 'text','placeholder' => '.2rem'),
+				'$input-btn-focus-color-opacity' => array('type' => 'text','placeholder' => '.25'),
 				'$input-btn-focus-color' => array('type' => 'color','placeholder' => 'rgba($component-active-bg, .25)'),
+				'$input-btn-focus-blur' => array('type' => 'text','placeholder' => '0'),
 				'$input-btn-focus-box-shadow' => array('type' => 'text','placeholder' => '0 0 0 $input-btn-focus-width $input-btn-focus-color'),
 				
 				'$input-btn-padding-y-sm' => array('type' => 'text','placeholder' => '.25rem'),
 				'$input-btn-padding-x-sm' => array('type' => 'text','placeholder' => '.5rem'),
 				'$input-btn-font-size-sm' => array('type' => 'text','placeholder' => '$font-size-sm'),
-				'$input-btn-line-height-sm' => array('type' => 'text','placeholder' => '    $line-height-sm'),
-				
+				 
 				'$input-btn-padding-y-lg' => array('type' => 'text','placeholder' => '.5rem'),
 				'$input-btn-padding-x-lg' => array('type' => 'text','placeholder' => '1rem'),
 				'$input-btn-font-size-lg' => array('type' => 'text','placeholder' => '$font-size-lg'),
-				'$input-btn-line-height-lg' => array('type' => 'text','placeholder' => '    $line-height-lg'),
-				
+ 
 				'$input-btn-border-width' => array('type' => 'text','placeholder' => '$border-width'),
 				
 
 				),
 			
 			
-			//add another section
+			//add another section for BUTTONS
 			"buttons" => array( // $variable_name => $variable_props
 				
 							
@@ -255,7 +299,7 @@ if(!function_exists("picostrap_get_scss_variables_array")):
 			
 			
 		);	 
-	}
+	} //end function
 
 endif;
 
@@ -263,7 +307,7 @@ endif;
 //ENABLE SELECTIVE REFRESH 
 add_theme_support( 'customize-selective-refresh-widgets' );
 
-//ADD HELPER ICONS
+//ADD CUSTOMIZATION HELPER ICONS & CONFIGURE CUSTOMIZATION LIVE PREVIEWS
 function picostrap_register_main_partials( WP_Customize_Manager $wp_customize ) {
  
     // Abort if selective refresh is not available.
@@ -297,7 +341,6 @@ function picostrap_register_main_partials( WP_Customize_Manager $wp_customize ) 
 	$wp_customize->selective_refresh->add_partial( 'header_menu_left', array(
         'selector' => '#navbar .menuwrap-left',
         'settings' => array( 'nav_menu_locations[navbar-left]' ),
-          
     ) );
 	
 	/*
@@ -322,6 +365,7 @@ function picostrap_register_main_partials( WP_Customize_Manager $wp_customize ) 
              return picostrap_site_info();
         },     
     ));
+
 	/*
 	//inline css
 	$wp_customize->selective_refresh->add_partial( 'picostrap_inline_css', array(
@@ -333,9 +377,6 @@ function picostrap_register_main_partials( WP_Customize_Manager $wp_customize ) 
     ));
 	*/
 	
-
-
-	
 	//SINGLE: categories
 	$wp_customize->selective_refresh->add_partial( 'singlepost_entry_footer', array(
         'selector' => '.entry-categories',
@@ -343,28 +384,28 @@ function picostrap_register_main_partials( WP_Customize_Manager $wp_customize ) 
 		'render_callback' => '__return_false'    
 	));
 	
-	//SINGLE: meta: date and author
+	//SINGLE: metas: date and author
+	/*
 	$wp_customize->selective_refresh->add_partial( 'singlepost_entry_meta', array(
 		'selector' => '#single-post-meta',
 		'settings' => array( 'singlepost_disable_entry_meta' ),
 		'render_callback' => '__return_false'    
 	));
+	*/
 
-
-	/*
-	//SINGLE: postnavi
-	$wp_customize->selective_refresh->add_partial( 'singlepost_posts_nav', array(
-        'selector' => 'nav.post-navigation',
-        'settings' => array( 'singlepost_disable_posts_nav' ),
-		'render_callback' => '__return_false' 
-    ));
-	
-	//SINGLE: comments
-	$wp_customize->selective_refresh->add_partial( 'singlepost_comments', array(
-        'selector' => '#comments',
-        'settings' => array( 'singlepost_disable_comments' ),
+	//SINGLE: meta date  
+	$wp_customize->selective_refresh->add_partial( 'singlepost_date', array(
+		'selector' => '.post-date',
+		'settings' => array( 'singlepost_disable_date' ),
 		'render_callback' => '__return_false'    
-	)); */
+	));
+
+	//SINGLE: meta author
+	$wp_customize->selective_refresh->add_partial( 'singlepost_author', array(
+		'selector' => '.post-author',
+		'settings' => array( 'singlepost_disable_author' ),
+		'render_callback' => '__return_false'    
+	));
 
 	//SINGLE: sharing buttons
 	$wp_customize->selective_refresh->add_partial( 'enable_sharing_buttons', array(
@@ -439,21 +480,18 @@ add_action("customize_register","picostrap_theme_customize_register_extras");
 function picostrap_theme_customize_register_extras($wp_customize) {
 	
 	///ADDITIONAL SECTIONS:
-	//COLORS is already default
-	
-	 
+	//COLORS section is already built, so lets define the other ones
+		 
 	$wp_customize->add_section("typography", array(
         "title" => __("Typography", "picostrap"),
         "priority" => 50,
     ));
-	
- 
+	 
 	$wp_customize->add_section("components", array(
         "title" => __("Global Options", "picostrap"),
         "priority" => 50,
     ));
 	
-	 
 	$wp_customize->add_section("buttons-forms", array(
         "title" => __("Forms", "picostrap"),
         "priority" => 50,
@@ -464,9 +502,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
         "priority" => 50,
     ));
 	
-	
-	
-	
 	//istantiate  all controls needed for controlling the SCSS variables
 	foreach(picostrap_get_scss_variables_array() as $section_slug => $section_data):
 	
@@ -475,8 +510,9 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 			$variable_slug=str_replace("$","SCSSvar_",$variable_name);
 			$variable_pretty_format_name=ucwords(str_replace("-",' ',str_replace("$","",$variable_name)));		
 			$variable_type=$variable_props['type'];
-			if (array_key_exists('default',$variable_props)) $default=$variable_props['default']; else $default="";
-			
+			if (array_key_exists('default',$variable_props)) $default = $variable_props['default']; else $default="";
+			if (array_key_exists('newgroup',$variable_props)) $optional_grouptitle = " <span hidden class='cs-option-group-title'>".$variable_props['newgroup']."</span> "; else $optional_grouptitle="";
+			if (array_key_exists('comment',$variable_props)) $optional_comment = " <span class='cs-optional-comment'>".$variable_props['comment']."</span> "; else $optional_comment="";
 			
 			if($variable_type=="color"):
 			
@@ -491,7 +527,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 					$variable_slug, //give it an ID
 					array(
 						'label' => __( $variable_pretty_format_name, 'picostrap' ), //set the label to appear in the Customizer
-						'description' =>  "(".$variable_name.")",
+						'description' => $optional_grouptitle. " (<span class='variable-name'>".$variable_name."</span>) ".$optional_comment, 
 						'section' => $section_slug, //select the section for it to appear under  
 						)
 					));	
@@ -501,14 +537,14 @@ function picostrap_theme_customize_register_extras($wp_customize) {
  
 				$wp_customize->add_setting($variable_slug, array(
 					"default" => $default,
-					"transport" => "postMessage",
+					"transport" => "postMessage", 
 				));
 				$wp_customize->add_control(new WP_Customize_Control(
 					$wp_customize,
 					$variable_slug,
 					array(
 						'label' => __( $variable_pretty_format_name, 'picostrap' ), //set the label to appear in the Customizer
-						'description' =>  "(".$variable_name.")",
+						'description' => $optional_grouptitle.  " (<span class='variable-name'>".$variable_name."</span>) " .$optional_comment, 
 						'section' => $section_slug, //select the section for it to appear under
 						'type' => 'checkbox'
 						)
@@ -518,11 +554,10 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 			if($variable_type=="text"):
 			
 				if(array_key_exists('placeholder',$variable_props)) $placeholder_html="<b>Default:</b> ".$variable_props['placeholder']; else $placeholder_html="";
-				if (array_key_exists('newgroup',$variable_props)) $optional_grouptitle=" <span hidden class='cs-option-group-title'>".$variable_props['newgroup']."</span>"; else $optional_grouptitle="";
-			
+
 				$wp_customize->add_setting($variable_slug, array(
 					"default" => $default,
-					"transport" => "postMessage",
+					"transport" => (in_array($variable_slug, array('SCSSvar_font-family-base','SCSSvar_headings-font-family')) )  ? "refresh" : "postMessage",
 					//"default" => "1rem",
 					//'sanitize_callback' => 'picostrap_sanitize_rem'
 				));
@@ -531,9 +566,13 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 					$variable_slug,
 					array(
 						'label' => __( $variable_pretty_format_name, 'picostrap' ), //set the label to appear in the Customizer
-						'description' => $optional_grouptitle. " <!-- (".$variable_name.") -->".$placeholder_html, //ADD COMMENT HERE IF NECESSARY
+						'description' => $optional_grouptitle. " <!-- (".$variable_name.") -->".$placeholder_html." ". $optional_comment,  
 						'section' => $section_slug, //select the section for it to appear under
-						'type' => 'text', 
+						'type' => 'text',
+						 'input_attrs' => array(
+							//'placeholder' => strip_tags($placeholder_html),
+							'title' => esc_attr($variable_name)
+							)
 						)
 				));
 			endif;
@@ -554,12 +593,13 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 		$wp_customize,
 		'picostrap_header_chrome_color', //give it an ID
 		array(
-		'label' => __( 'Header Color in Android Chrome', 'picostrap' ), //set the label to appear in the Customizer
-		'section' => 'colors', //select the section for it to appear under 
-		'description' =>" <span hidden class='cs-option-group-title'>Extra</span>" //to implement a divisor
+			'label' => __( 'Header Color in Android Chrome', 'picostrap' ), //set the label to appear in the Customizer
+			'section' => 'colors', //select the section for it to appear under 
+			'description' =>" <span hidden class='cs-option-group-title'>Extra</span>", //to implement a divisor
+			'type' => 'color'  
 		)
 	));
- 
+
     //TAGLINE: SHOW / HIDE SWITCH
 	$wp_customize->add_setting('header_disable_tagline', array(
         'default' => '',
@@ -626,7 +666,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
         )
     ));
 
-	
 	//DETECT PAGE SCROLL
 	$wp_customize->add_setting("enable_detect_page_scroll", array(
         "default" => "",
@@ -666,8 +705,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 				'bg-light' 	=> 'Light', 	
 				'bg-dark' 		=> 'Dark', 		
 				'bg-transparent' 		=> 'Transparent' 
-				
-				
 				)
         )
     ));
@@ -692,12 +729,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
         )
     ));
 	
-	
-
-	
-
-
-
 	//SEARCH FORM
 	$wp_customize->add_setting("enable_search_form", array(
         "default" => "",
@@ -712,9 +743,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
             'type'     => 'checkbox',
 			)
 	));
-
-
-
 
 
 	//  TOPBAR SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -829,193 +857,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
         )
     ));
 	
-		
-	// ADD A SECTION FOR HEADER & FOOTER CODE -- to fix
-	$wp_customize->add_section("addcode", array(
-        "title" => __("Header / Footer Code", "picostrap"),
-        "priority" => 180,
-    ));
-	
-	//ADD HEADER CODE  
-	$wp_customize->add_setting("picostrap_header_code", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_header_code",
-        array(
-            "label" => __("Add code to Header", "picostrap"),
-            "section" => "addcode",
-            'type'     => 'textarea',
-			'description' =>'Placed inside the HEAD of the page'
-			)
-    ));
-	
-	//ADD FOOTER CODE 
-	$wp_customize->add_setting("picostrap_footer_code", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-
-
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_footer_code",
-        array(
-            "label" => __("Add code to Footer", "picostrap"),
-            "section" => "addcode",
-            'type'     => 'textarea',
-			'description' =>'Placed before closing the BODY of the page'
-			)
-    ));
-
-	//ADD FONTLOADING HEADER CODE  
-	$wp_customize->add_setting("picostrap_fonts_header_code", array(
-        "default" => "",
-		"transport" => "refresh",
-        //"transport" => "postMessage", // and no custom js is added: so no live page update is done, how it should be - but causes unstable behavoiur
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_fonts_header_code",
-        array(
-            "label" => __("Font Loading Header code", "picostrap"),
-            "section" => "addcode",
-            'type'     => 'textarea',
-			'description' =>'<b>Not editable</b> - Reading purpose only. Automatically generated upon publishing'
-			)
-    ));
-	
-	//DISABLE FONTLOADING HEADER CODE  
-	$wp_customize->add_setting("picostrap_fonts_header_code_disable", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_fonts_header_code_disable",
-        array(
-            "label" => __("Disable the Font Loading in Header", "picostrap"),
-			"description" =>  __("<b>Keep this unchecked, unless you really want. </b>").__("Disables serving the code in the textarea above to the site header. Can be relevant if you want to self-host Google Fonts. Refer to this <a target='_blank' href='https://google-webfonts-helper.herokuapp.com/fonts/abeezee?subsets=latin'>tool</a> to get started. ", "picostrap"),
-            "section" => "addcode", 
-            'type'     => 'checkbox',
-			)
-    ));
-	
-	
-	// ADD A SECTION FOR EXTRAS /////////////////////////////////////////////////////////////////////////////
-	$wp_customize->add_section("extras", array(
-        "title" => __("Global Options & Utilities", "picostrap"),
-        "priority" => 190,
-    ));
-	/*
-	//USE BOOTSTRAP NATIVE
-	$wp_customize->add_setting("bootstrap_native", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "bootstrap_native",
-        array(
-            "label" => __("Use Bootstrap Native JS", "picostrap"),
-			"description" => __("Will completely disable the jQuery-based BootStrap JS, and enqueue a similar version written in Vanilla (plain) JS. Publish and exit the Customizer to see the effect", "picostrap"),
-            "section" => "extras", 
-            'type'     => 'checkbox',
-			)
-    ));
-	*/
-	
-	//DISABLE LIVERELOAD
-	$wp_customize->add_setting("picostrap_disable_livereload", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_disable_livereload",
-        array(
-            "label" => __("Disable  SCSS  LiveReload  ", "picostrap"),
-			"description" => __("Will completely disable the entire livereload feature. If you're not editing the SCSS files, you can do so. Makes a difference for site admins only.", "picostrap"),
-            "section" => "extras", 
-            'type'     => 'checkbox',
-			)
-	));
-	
-
-	//DISABLE COMMENTS
-	$wp_customize->add_setting("singlepost_disable_comments", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "singlepost_disable_comments",
-        array(
-            "label" => __("Disable the WordPress comments system", "picostrap"),
-			"description" => __("Will completely disable the entire WP comments feature.", "picostrap"),
-            "section" => "extras", 
-            'type'     => 'checkbox',
-			)
-    ));
-
-
-	/*
-	//DISABLE FONTAWESOME
-	$wp_customize->add_setting("picostrap_fontawesome_disable", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_fontawesome_disable",
-        array(
-            "label" => __("Disable FontAwesome", "picostrap"),
-			"description" => __("<b>Keep this unchecked, unless you really know what you're doing.</b>").__("This will prevent the compiler to pick the FontAwesome icon font from the UnderStrap folder and add it to the CSS bundle.", "picostrap"),
-            "section" => "extras", 
-            'type'     => 'checkbox',
-			)
-    ));
-	*/
-
-	//BACK TO TOP
-	$wp_customize->add_setting("enable_back_to_top", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "enable_back_to_top",
-        array(
-            "label" => __("Add a 'Back to Top' button to site", "picostrap"),
-			"description" => __("Very light implementation. To see the button, you will also need to Publish, exit the Customizer, and scroll down a long page", "picostrap"),
-            "section" => "extras", 
-            'type'     => 'checkbox',
-			)
-    ));
-	
-	
-	
-	
-	//LIGHTBOX
-	$wp_customize->add_setting("enable_lightbox", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "enable_lightbox",
-        array(
-            "label" => __("Enable Lightbox", "picostrap"),
-			"description" => __("Will lazily add a JS and a CSS file from cdn.jsdelivr.net before closing the BODY of the page, to use   <a target='_blank' href='https://github.com/biati-digital/glightbox'>gLightBox</a>: a very lightweight lightbox implementation. <br><br>The lightbox will be enabled on all images matching the selector: main#theme-main a:not(.nolightbox) img<br>To prevent the lightbox on an image, add the <b>nolightbox</b> class to it.", "picostrap"),
-            "section" => "extras", 
-            'type'     => 'checkbox',
-			)
-	));
-	
-
-	// SINGLE POST & ARCHIVES SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ADD SECTION FOR SINGLE POST & ARCHIVES //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$wp_customize->add_section("singleposts", array(
         "title" => __("Single Post & Archives", "picostrap"),
         "priority" => 160,
@@ -1037,7 +879,8 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 			)
 	));
 
-	//ENTRY META: AUTHOR  & DATE  
+	//ENTRY METAS: AUTHOR & DATE  
+	/*
 	$wp_customize->add_setting("singlepost_disable_entry_meta", array(
 		"default" => "",
 		"transport" => "refresh",
@@ -1046,32 +889,46 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 		$wp_customize,
 		"singlepost_disable_entry_meta",
 		array(
-			"label" => __("Hide Post Date and Author", "picostrap"),
+			"label" => __("Hide Post Metas: Date and Author", "picostrap"),
+			//"description" => __("Publish and exit the Customizer to see the effect", "picostrap"),
+			"section" => "singleposts", 
+			'type'     => 'checkbox',
+			)
+	));
+	*/
+
+	//ENTRY META: AUTHOR   
+	$wp_customize->add_setting("singlepost_disable_author", array(
+		"default" => "",
+		"transport" => "refresh",
+	));
+	$wp_customize->add_control(new WP_Customize_Control(
+		$wp_customize,
+		"singlepost_disable_author",
+		array(
+			"label" => __("Hide Post Author", "picostrap"),
 			//"description" => __("Publish and exit the Customizer to see the effect", "picostrap"),
 			"section" => "singleposts", 
 			'type'     => 'checkbox',
 			)
 	));
 
-
-
-	/*
-	//PAGES NAVIGATION: NEXT / PREV ARTICLE
-	$wp_customize->add_setting("singlepost_disable_posts_nav", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
+	//ENTRY META: DATE  
+	$wp_customize->add_setting("singlepost_disable_date", array(
+		"default" => "",
+		"transport" => "refresh",
+	));
 	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "singlepost_disable_posts_nav",
-        array(
-            "label" => __("Hide Next and Prev Post Links (Single Post Template)", "picostrap"),
-			"description" => __("Publish and exit the Customizer to see the effect", "picostrap"),
-            "section" => "singleposts", 
-            'type'     => 'checkbox',
+		$wp_customize,
+		"singlepost_disable_date",
+		array(
+			"label" => __("Hide Post Date", "picostrap"),
+			//"description" => __("Publish and exit the Customizer to see the effect", "picostrap"),
+			"section" => "singleposts", 
+			'type'     => 'checkbox',
 			)
-    ));
-	*/
+	));
+
  	//SHARING BUTTONS
 	$wp_customize->add_setting("enable_sharing_buttons", array(
         "default" => "",
@@ -1089,7 +946,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
     ));
 	//end single posts ////////////////////////////////////
 
-	/*  .php
+	/* 
 	// ADD A SECTION FOR ARCHIVES ///////////////////////////////
 	$wp_customize->add_section("archives", array(
         "title" => __("Archive Templates", "picostrap"),
@@ -1122,5 +979,291 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 	
 	*/
 	
-}
+	// ADD A SECTION FOR HEADER & FOOTER CODE /////////////////////////////////////
+	$wp_customize->add_section("addcode", array(
+        "title" => __("Header / Footer Code", "picostrap"),
+        "priority" => 180,
+    ));
+	
+	//ADD HEADER CODE  
+	$wp_customize->add_setting("picostrap_header_code", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_header_code",
+        array(
+            "label" => __("Add code to Header", "picostrap"),
+            "section" => "addcode",
+            'type'     => 'textarea',
+			'description' =>'Will be added to the &lt;HEAD&gt; of all site pages'
+			)
+    ));
+	
+	//ADD FOOTER CODE 
+	$wp_customize->add_setting("picostrap_footer_code", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_footer_code",
+        array(
+            "label" => __("Add code to Footer", "picostrap"),
+            "section" => "addcode",
+            'type'     => 'textarea',
+			'description' =>'Will be added before closing the &lt;BODY&gt;  of all site pages'
+			)
+    ));
+
+	//ADD BODY FONT OBJECT - hidden by CSS
+	$wp_customize->add_setting("body_font_object", array(
+        "default" => "",
+		"transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "body_font_object",
+        array(
+            "label" => __("body_font_object", "picostrap"),
+            "section" => "addcode",
+            'type'     => 'textarea',
+			'description' =>'<b>Not editable</b> - Internal purpose only.'
+			)
+    ));
+
+	//ADD HEADINGS FONT OBJECT - hidden by CSS
+	$wp_customize->add_setting("headings_font_object", array(
+        "default" => "",
+		"transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "headings_font_object",
+        array(
+            "label" => __("headings_font_object", "picostrap"),
+            "section" => "addcode",
+            'type'     => 'textarea',
+			'description' =>'<b>Not editable</b> - Internal purpose only.'
+			)
+    ));
+
+	//ADD FONT LOADING HEADER CODE  
+	$wp_customize->add_setting("picostrap_fonts_header_code", array(
+        "default" => "",
+		"transport" => "refresh",
+        //"transport" => "postMessage", // and no custom js is added: so no live page update is done, how it should be - but causes unstable behaviour
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_fonts_header_code",
+        array(
+            "label" => __("Font Loading Header code", "picostrap"),
+            "section" => "addcode",
+            'type'     => 'textarea',
+			'description' =>__('
+						The code in the field below is generated each time you set a new font family for body or headings, and is served in the site\'s &lt;head&gt;.
+						<br><br>
+						You can customize this code, for example to add multiple font weights, but please mind that if you choose new fonts, your customizations will be lost.
+						<br><br>
+						In case you break things up while editing, you can manually regenerate the code <a href="#" id="regenerate-font-loading-code">clicking here</a>.
+						<br><br>
+						For further information, and to understand how to enable multiple font weights,  please refer to our <a target="_blank" href="https://www.youtube.com/watch?v=dmsUpFJwDW8&t=200s">video documentation</a> and to the <a target="_blank" href="https://fonts.google.com/">Google Fonts website</a>.
+						')
+			)
+    ));
+	
+	//USE ALTERNATIVE FONT SOURCE FOR GDPR COMPLIANCE
+	$wp_customize->add_setting("picostrap_fonts_use_alternative_font_source", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_fonts_use_alternative_font_source",
+        array(
+            "label" => __("Load Google Fonts anonymously", "picostrap"),
+			"description" =>  __("<b>Google Fonts can be an issue for GDPR compliance in Europe. </b>").
+			__("Checking this option, Google fonts will be loaded from the privacy compliant <a target='_blank' href='https://fonts.coollabs.io/'>Coollabs Font repository</a>. ", "picostrap"),
+            "section" => "addcode", 
+            'type'     => 'checkbox',
+			)
+    ));
+
+	//DISABLE FONTLOADING HEADER CODE  
+	$wp_customize->add_setting("picostrap_fonts_header_code_disable", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_fonts_header_code_disable",
+        array(
+            "label" => __("Disable the Font Loading in Header", "picostrap"),
+			"description" =>  __("<b>Keep this unchecked, unless you really want. </b>").__("Prevents the code of 
+			the textarea above from being served in the site's &lt;head&gt;. ", "picostrap"),
+            "section" => "addcode", 
+            'type'     => 'checkbox',
+			)
+    ));
+	
+
+	// ADD A SECTION FOR EXTRAS /////////////////////////////////////////////////////////////////////////////
+	$wp_customize->add_section("extras", array(
+        "title" => __("Global Utilities", "picostrap"),
+        "priority" => 190,
+    ));
+	
+	//DISABLE GUTENBERG
+	$wp_customize->add_setting("disable_gutenberg", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "disable_gutenberg",
+        array(
+            "label" => __("Disable the Gutenberg Content Editor", "picostrap"),
+			"description" => __("Disables the Gutenberg content editor on all post types. De-enqueues its CSS styles as well.", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+    ));
+
+	//DISABLE WIDGETS BLOCK EDITOR
+	$wp_customize->add_setting("disable_widgets_block_editor", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "disable_widgets_block_editor",
+        array(
+            "label" => __("Disable the Block-based Widgets Editor", "picostrap"),
+			"description" => __("Disables the Block-based Widgets Editor and restores the classic widgets editor.", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+    ));
+
+	//DISABLE COMMENTS
+	$wp_customize->add_setting("singlepost_disable_comments", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "singlepost_disable_comments",
+        array(
+            "label" => __("Disable WordPress Comments", "picostrap"),
+			"description" => __("Will completely disable the entire WP comments feature.", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+    ));
+
+	//DISABLE XML-RPC
+	$wp_customize->add_setting("disable_xml_rpc", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "disable_xml_rpc",
+        array(
+            "label" => __("Disable XML - RPC", "picostrap"),
+			"description" => __("Disabling XML-RPC will close one more door that a potential hacker may try to exploit to hack your website.", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+    ));
+
+	//DISABLE LIVERELOAD
+	$wp_customize->add_setting("picostrap_disable_livereload", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "picostrap_disable_livereload",
+        array(
+            "label" => __("Disable  SCSS Autocompile / LiveReload ", "picostrap"),
+			"description" => __("If you're not editing the SCSS files, you can check this option. Makes a difference for site admins only.", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+	));
+
+	//BACK TO TOP
+	$wp_customize->add_setting("enable_back_to_top", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "enable_back_to_top",
+        array(
+            "label" => __("Add a 'Back to Top' button to site", "picostrap"),
+			"description" => __("Very light implementation. To see the button, you will also need to Publish, exit the Customizer, and scroll down a long page", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+    ));
+	
+	//LIGHTBOX
+	$wp_customize->add_setting("enable_lightbox", array(
+        "default" => "",
+        "transport" => "refresh",
+    ));
+	$wp_customize->add_control(new WP_Customize_Control(
+        $wp_customize,
+        "enable_lightbox",
+        array(
+            "label" => __("Enable Lightbox", "picostrap"),
+			"description" => __("Will lazily add a JS and a CSS file from cdn.jsdelivr.net before closing the BODY of the page, to use   <a target='_blank' href='https://github.com/biati-digital/glightbox'>gLightBox</a>: a very lightweight lightbox implementation. <br><br>The lightbox will be enabled on all images matching the selector: main#theme-main a:not(.nolightbox) img<br><br>This means that any image linked to something will open a lightbox.<br><br>To force the lightbox on an element, add the <b>glightbox</b> class to it.<br><br> To prevent the lightbox on a linked image, add the <b>nolightbox</b> class to it.", "picostrap"),
+            "section" => "extras", 
+            'type'     => 'checkbox',
+			)
+	));
+	
+
+
+} //end function
+ 
+
+
+
+
+
+/////////// LIVE CUSTOMIZER HELPER FOR CSS  VARIABLES ///////////
+
+// if we are in customizer preview iframe,
+// add some CSS that alters the bootstrap css variables,
+// so live preview is possible
+// check out also customizer-live-preview.js
+
+//Please remember that for the input widgets down below to work,
+// we have to have the controls "transport" setting set to "refresh"
+
+add_action( 'wp_head', function  () {
+	if (!current_user_can('administrator') OR !isset($_GET['customize_theme'])) return;
+    ?>
+	<style>
+		:root {
+			<?php if (get_theme_mod("SCSSvar_font-family-base")): ?>
+				--bs-body-font-family: "<?php echo get_theme_mod("SCSSvar_font-family-base") ?>" !important;
+			<?php endif ?>
+
+		} /* close :root */
+		
+		h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+			<?php if (get_theme_mod("SCSSvar_headings-font-family")): ?>
+				font-family:"<?php echo get_theme_mod("SCSSvar_headings-font-family") ?>" !important; 
+			<?php endif ?>
+		}
+		
+	</style>
+	<?php
+} );
  
