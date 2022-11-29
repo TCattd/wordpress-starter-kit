@@ -1,4 +1,3 @@
-
 /* ============ ADD HERE YOUR CUSTOM SCSS or  plain CSS CODE. ============ 
 
 HOW DOES IT WORK?
@@ -20,14 +19,9 @@ NOTICE for beginners:
     If you come from the CSS world, take some time to study the basic of SASS. It's very powerful.
     With great powers...you are warned 
 
-HOW TO REFERENCE ASSETS AND IMAGES 
-    The generated CSS bundle is now called from the Theme folder
-    so relative paths work as expected on a standard WordPress Theme.
-
-
 ************************************************		*/
 //a demo statement - uncomment to see page turn red and blush
-//body { background: red; opacity: 0.4;}  
+//body { background: red; opacity: 0.4;border:5px solid yellow}  
 
 //open menus on hover
 //.dropdown:hover>.dropdown-menu { display: block;}
