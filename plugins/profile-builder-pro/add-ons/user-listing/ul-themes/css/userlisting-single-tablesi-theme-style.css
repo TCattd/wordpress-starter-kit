@@ -1,0 +1,210 @@
+/* TABLESI Theme Template Style - Single User */
+
+.entry-content, .entry-summary {
+    max-width: calc(100% - (2 * 1rem)) !important;
+    width: 100% !important;
+    margin: 0 1rem !important;
+    padding: 0 !important;
+}
+
+.container {
+    width: 100%;
+}
+
+.entry-content > *:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce):not(#bbpress-forums),
+.col-full,
+.grid-container {
+    max-width: 100%!important;
+}
+
+#wppb-ul-theme-tablesi {
+    width: 870px;
+    margin: auto;
+    max-width: 100% !important;
+}
+
+#wppb-ul-theme-tablesi a {
+    box-shadow: none !important;
+}
+
+.wppb-ul-user {
+    width: 100%;
+    padding: 40px;
+    margin: 33px 0 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    background: linear-gradient(#F8F9FD 50%, transparent 50%);
+}
+
+.wppb-ul-user .wppb-ul-image {
+    flex-basis: 35%;
+    max-width: 220px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wppb-ul-user .wppb-ul-info {
+    flex-basis: auto;
+    max-width: 530px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.wppb-ul-image img {
+    border-radius: 50%;
+    max-width: 100%;
+    height: auto;
+}
+
+#wppb-ul-theme-tablesi .wppb-ul-user .wppb-ul-info h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: #111521;
+    margin: 0;
+}
+
+#wppb-ul-theme-tablesi .wppb-ul-user .wppb-ul-info p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #111521;
+    margin-top: 6px;
+}
+
+.wppb-ul-user-details {
+    padding: 0 40px;
+}
+
+.wppb-ul-user-details .wppb-ul-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-bottom: 70px;
+}
+
+.wppb-ul-user-details .wppb-ul-section h3 {
+    flex-basis: 220px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #111521;
+    margin: 0;
+}
+
+.wppb-ul-user-details .wppb-ul-section-info {
+    flex-basis: 530px;
+}
+
+.wppb-ul-user-details .wppb-ul-description {
+    padding-bottom: 15px;
+}
+
+.wppb-ul-section-info h4 {
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 6px;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #111521;
+}
+
+.wppb-ul-section-info p {
+    font-weight: 400;
+    margin-bottom: 30px;
+    margin-top: 0;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 26px;
+    color: #111521;
+    word-break: break-word;
+}
+
+.wppb-ul-section-info a {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #0047FF;
+    text-decoration: none !important;
+}
+
+.wppb-ul-user-details a:focus {
+    background-color: transparent !important;
+    color: #0047FF !important;
+    text-decoration: none !important;
+    outline: none;
+}
+
+
+/* back button */
+a#wppb-back {
+    font-size: 14px;
+    text-decoration: none;
+    line-height: 17px;
+    color: #111521;
+    font-style: normal;
+    font-weight: 600;
+}
+
+a#wppb-back:focus {
+    outline: none;
+}
+
+a#wppb-back:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16px' style='fill:%23111521;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+    position: relative;
+    top: 3px;
+    right: 9px;
+}
+
+a#wppb-back:hover {
+    color: #0047FF;
+}
+
+a#wppb-back:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16px' style='fill:%230047FF;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+hr.wppb-ul-separator {
+    border-bottom: 1px solid #CACDD6;
+    margin-bottom: 33px;
+}
+
+
+/* Mobile */
+@media screen and (max-width: 720px) {
+    .wppb-ul-user {
+        padding: 20px;
+        gap: 20px;
+        flex-direction: column;
+        align-items: center;
+        background: none;
+    }
+
+    .wppb-ul-user-details {
+        padding: 0 10px;
+    }
+
+    .wppb-ul-user-details .wppb-ul-section h3,
+    .wppb-ul-user-details .wppb-ul-section-info {
+        flex-basis: 100%;
+    }
+
+    #wppb-ul-theme-tablesi .wppb-ul-user .wppb-ul-info h3 {
+        font-size: 24px;
+    }
+
+    .col-full {
+        margin: auto;
+    }
+}

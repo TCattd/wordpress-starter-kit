@@ -65,9 +65,6 @@ class WPML_TM_Scripts_Factory {
 			wp_enqueue_style( 'otgs-notices' );
 		}
 
-		if ( WPML_TM_Page::is_job_list() ) {
-			$this->localize_jobs_list();
-		}
 		if ( WPML_TM_Page::is_dashboard() ) {
 			$this->load_pick_up_box_scripts();
 		}
@@ -167,25 +164,22 @@ class WPML_TM_Scripts_Factory {
 		}
 	}
 
-
-	public function localize_jobs_list() {
-		$script_data = new WPML_TM_Jobs_List_Script_Data();
-
-		$this->localize_script( 'translation-remote-jobs', $script_data->get() );
-	}
-
 	/**
 	 * @param $handle
 	 *
 	 * @throws \InvalidArgumentException
 	 */
 	public function localize_script( $handle, $additional_data = array() ) {
+		wp_localize_script( $handle, 'WPML_TM_SETTINGS', $this->build_localize_script_data( $additional_data ) );
+	}
+
+	public function build_localize_script_data($additional_data = array()  ) {
 		$data = array(
 			'hasATEEnabled' => WPML_TM_ATE_Status::is_enabled(),
 			'restUrl'       => untrailingslashit( rest_url() ),
 			'restNonce'     => wp_create_nonce( 'wp_rest' ),
 			'ate'           => $this->create_ate()
-									->get_script_data(),
+			                        ->get_script_data(),
 			'currentUser'   => null,
 		);
 
@@ -196,7 +190,7 @@ class WPML_TM_Scripts_Factory {
 			$data['currentUser'] = $current_user;
 		}
 
-		wp_localize_script( $handle, 'WPML_TM_SETTINGS', $data );
+		return $data;
 	}
 
 	/**

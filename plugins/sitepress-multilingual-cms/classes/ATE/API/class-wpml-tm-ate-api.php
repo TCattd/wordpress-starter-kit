@@ -12,6 +12,7 @@ use WPML\FP\Logic;
 use WPML\FP\Str;
 use WPML\Element\API\Entity\LanguageMapping;
 use WPML\LIB\WP\WordPress;
+use WPML\TM\Editor\ATEDetailedErrorMessage;
 use function WPML\FP\invoke;
 use function WPML\FP\pipe;
 use WPML\Element\API\Languages;
@@ -396,7 +397,65 @@ class WPML_TM_ATE_API {
 
 		return Maybe::of( $result )->reject( 'is_wp_error' );
 	}
-	
+
+	public function start_translation_memory_migration() {
+		$result = $this->requestWithLog(
+			$this->endpoints->startTranlsationMemoryIclMigration(),
+			[
+				'method' => 'POST',
+				'body'   => [
+					'site_identifier' => $this->get_website_id( site_url() ),
+					'ts_id'           => 10,
+					// random numbers for now, we should check what needs to be done for the final version.
+					'ts_access_key'   => 20,
+				],
+			]
+		);
+
+		return WordPress::handleError( $result );
+	}
+
+	public function check_translation_memory_migration() {
+		$result = $this->requestWithLog(
+			$this->endpoints->checkStatusTranlsationMemoryIclMigration(),
+			[
+				'method' => 'GET',
+				'body'   => [
+					'site_identifier' => $this->get_website_id( site_url() ),
+					'ts_id'           => 10,
+					// random numbers for now, we should check what needs to be done for the final version.
+					'ts_access_key'   => 20,
+				],
+			]
+		);
+
+		return WordPress::handleError( $result );
+	}
+
+	/**
+	 * @see https://ate.pages.onthegosystems.com/ate-docs/ATE/API/V1/icl/translators/import
+	 *
+	 * @param $iclToken
+	 * @param $iclServiceId
+	 *
+	 * @return callable|Either
+	 */
+	public function import_icl_translators( $tsId, $tsAccessKey ) {
+		$params = [
+			'site_identifier' => $this->auth->get_site_id(),
+			'ts_id'           => $tsId,
+			'ts_access_key'   => $tsAccessKey
+		];
+
+		$result = $this->requestWithLog( $this->endpoints->importIclTranslators(),
+			[
+				'method' => 'POST',
+				'body'   => $params
+			] );
+
+		return WordPress::handleError( $result );
+	}
+
 	private function get_response( $result ) {
 		$errors = $this->get_response_errors( $result );
 		if ( is_wp_error( $errors ) ) {
@@ -599,7 +658,7 @@ class WPML_TM_ATE_API {
 
 	/**
 	 * @param string $url
-	 * @param array  $requestArgs
+	 * @param array $requestArgs
 	 *
 	 * @return array|mixed|object|string|WP_Error|null
 	 */
@@ -610,12 +669,22 @@ class WPML_TM_ATE_API {
 			$entry              = new Entry();
 			$entry->eventType   = EventsTypes::SERVER_ATE;
 			$entry->description = $response->get_error_message();
-			$entry->extraData   = [
+			$errorCode = $response->get_error_code();
+			$entry->extraData = [
 				'url'         => $url,
 				'requestArgs' => $requestArgs,
 			];
 
+            if ( $errorCode ) {
+                $entry->extraData['status'] = $errorCode;
+            }
+			if ( $response->get_error_data( $errorCode ) ) {
+				$entry->extraData['details'] = $response->get_error_data( $errorCode );
+			}
+
 			wpml_tm_ate_ams_log( $entry );
+
+			ATEDetailedErrorMessage::saveDetailedError( $response );
 		}
 
 		return $response;

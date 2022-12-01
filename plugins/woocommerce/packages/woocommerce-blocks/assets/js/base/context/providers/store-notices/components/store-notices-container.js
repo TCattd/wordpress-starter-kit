@@ -4,6 +4,9 @@
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { Notice } from 'wordpress-components';
+import { sanitizeHTML } from '@woocommerce/utils';
+import { useDispatch, useSelect } from '@wordpress/data';
+import { PAYMENT_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -23,10 +26,25 @@ const getWooClassName = ( { status = 'default' } ) => {
 	return '';
 };
 
-const StoreNoticesContainer = ( { className, notices, removeNotice } ) => {
-	const regularNotices = notices.filter(
-		( notice ) => notice.type !== 'snackbar'
+export const StoreNoticesContainer = ( {
+	className,
+	context = 'default',
+	additionalNotices = [],
+} ) => {
+	const isExpressPaymentMethodActive = useSelect( ( select ) =>
+		select( PAYMENT_STORE_KEY ).isExpressPaymentMethodActive()
 	);
+
+	const { notices } = useSelect( ( select ) => {
+		const store = select( 'core/notices' );
+		return {
+			notices: store.getNotices( context ),
+		};
+	} );
+	const { removeNotice } = useDispatch( 'core/notices' );
+	const regularNotices = notices
+		.filter( ( notice ) => notice.type !== 'snackbar' )
+		.concat( additionalNotices );
 
 	if ( ! regularNotices.length ) {
 		return null;
@@ -34,11 +52,12 @@ const StoreNoticesContainer = ( { className, notices, removeNotice } ) => {
 
 	const wrapperClass = classnames( className, 'wc-block-components-notices' );
 
-	return (
+	// We suppress the notices when the express payment method is active
+	return isExpressPaymentMethodActive ? null : (
 		<div className={ wrapperClass }>
 			{ regularNotices.map( ( props ) => (
 				<Notice
-					key={ 'store-notice-' + props.id }
+					key={ `store-notice-${ props.id }` }
 					{ ...props }
 					className={ classnames(
 						'wc-block-components-notices__notice',
@@ -46,11 +65,11 @@ const StoreNoticesContainer = ( { className, notices, removeNotice } ) => {
 					) }
 					onRemove={ () => {
 						if ( props.isDismissible ) {
-							removeNotice( props.id );
+							removeNotice( props.id, context );
 						}
 					} }
 				>
-					{ props.content }
+					{ sanitizeHTML( props.content ) }
 				</Notice>
 			) ) }
 		</div>

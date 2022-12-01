@@ -85,7 +85,7 @@ class WPML_Admin_Text_Import extends WPML_Admin_Text_Functionality {
 					? array_replace_recursive( $_icl_admin_option_names, $arr_options ) : $arr_options;
 			}
 
-			update_option( '_icl_admin_option_names', $_icl_admin_option_names );
+			update_option( '_icl_admin_option_names', $_icl_admin_option_names, 'no' );
 
 			set_transient( $transient_name, $admin_texts_hash );
 			$sitepress->set_setting( 'admin_text_3_2_migration_complete_' . $admin_texts_hash, true, true );

@@ -1579,7 +1579,7 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 
 				// If term exists, add it to the preload array.
 				if ( $term ) {
-					$terms[ $term->slug ] = $term->name;
+					$terms[ $term->slug ] = esc_html( $term->name );
 				}
 
 			}
@@ -1635,7 +1635,7 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 				// Add field to results.
 				$results[] = array(
 					'id'   => esc_html( $term->slug ),
-					'text' => esc_html( $term->name ),
+					'text' => wp_strip_all_tags( $term->name ),
 				);
 
 			}
@@ -2222,14 +2222,25 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 
 			$values = is_array( $mapping_value ) ? $mapping_value : array_map( 'trim', explode( $separator, $mapping_value ) );
 
+			/**
+			 * Allows users to modify which field is used when looking up terms via `get_term_by()`. Defaults to `name`, but can be
+			 * any of: 'slug', 'name', 'term_id' (or 'id', 'ID'), or 'term_taxonomy_id'
+			 *
+			 * @since 1.3
+			 *
+			 * @param string $field
+			 * @param string $taxonomy
+			 * @param array  $values
+			 *
+			 * @return string
+			 */
+			$mapping_field = apply_filters( 'gform_advancedpostcreation_taxonomy_mapping_field', 'name', $taxonomy, $values );
 			foreach ( $values as $val ) {
-				$existing_term = get_term_by( 'name', $val, $taxonomy );
-
+				$existing_term = get_term_by( $mapping_field, $val, $taxonomy );
 				if ( $existing_term ) {
 					$term_ids[] = $existing_term->term_id;
 				} else {
 					$new_term = wp_insert_term( $val, $taxonomy );
-
 					if ( ! is_wp_error( $new_term ) ) {
 						$term_ids[] = $new_term['term_id'];
 					}
@@ -2433,20 +2444,40 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 			return;
 		}
 
-		$file = $this->get_field_value( $form, $entry, $field_id );
-		if ( ! $file ) {
+		$file_url = $this->get_field_value( $form, $entry, $field_id );
+		$tag_args = array( 'gform_advancedpostcreation_file_url_pre_set_post_thumbnail', absint( rgar( $form, 'id' ) ), $field_id );
+
+		if ( gf_has_filters( $tag_args ) ) {
+			$this->log_debug( __METHOD__ . '(): Executing functions hooked to gform_advancedpostcreation_file_url_pre_set_post_thumbnail.' );
+
+			/**
+			 * Allows the URL of the file to be added to the media library and set as the post thumbnail to be overridden.
+			 *
+			 * @since 1.3
+			 *
+			 * @param string     $file_url The URL of the file to be added to the media library and set as the post thumbnail.
+			 * @param int|string $field_id The form field ID or entry meta key mapped to the feed postThumbnail setting.
+			 * @param array      $feed     The feed being processed.
+			 * @param array      $entry    The entry being processed.
+			 * @param array      $form     The form being processed.
+			 * @param int        $post_id  The ID of the post the thumbnail is to be set for.
+			 */
+			$file_url = gf_apply_filters( $tag_args, $file_url, $field_id, $feed, $entry, $form, $post_id );
+		}
+
+		if ( ! $file_url ) {
 			$this->log_debug( __METHOD__ . "(): No file uploaded for field ID {$field_id}." );
 			return;
 		}
 
-		$image_id = $this->media_handle_upload( $file, $post_id );
+		$image_id = $this->media_handle_upload( $file_url, $post_id );
 		if ( is_wp_error( $image_id ) ) {
 			$this->log_error( __METHOD__ . "(): Unable to set featured image for post ID {$post_id} " . $image_id->get_error_message() );
 			return;
 		}
 
 		$image_exts = array( 'jpg', 'jpeg', 'jpe', 'gif', 'png' );
-		$file_type  = wp_check_filetype( $file );
+		$file_type  = wp_check_filetype( $file_url );
 
 		if ( in_array( strtolower( $file_type['ext'] ), $image_exts ) ) {
 			$this->log_debug( __METHOD__ . "(): Setting image ID {$image_id} as featured image for post ID {$post_id}." );

@@ -440,10 +440,7 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 		*
 		*  @param   $field  - an array holding all the field's data
 		*/
-
 		function render_field_settings( $field ) {
-
-			// post_type
 			acf_render_field_setting(
 				$field,
 				array(
@@ -459,7 +456,6 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 				)
 			);
 
-			// taxonomy
 			acf_render_field_setting(
 				$field,
 				array(
@@ -475,19 +471,6 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 				)
 			);
 
-			// allow_null
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
-					'instructions' => '',
-					'name'         => 'allow_null',
-					'type'         => 'true_false',
-					'ui'           => 1,
-				)
-			);
-
-			// allow_archives
 			acf_render_field_setting(
 				$field,
 				array(
@@ -499,7 +482,6 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 				)
 			);
 
-			// multiple
 			acf_render_field_setting(
 				$field,
 				array(
@@ -510,9 +492,28 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 					'ui'           => 1,
 				)
 			);
-
 		}
 
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Allow Null?', 'acf' ),
+					'instructions' => '',
+					'name'         => 'allow_null',
+					'type'         => 'true_false',
+					'ui'           => 1,
+				)
+			);
+		}
 
 		/*
 		*  format_value()
@@ -617,6 +618,91 @@ if ( ! class_exists( 'acf_field_page_link' ) ) :
 
 			// Return value.
 			return $value;
+		}
+
+		/**
+		 * Validates page link fields updated via the REST API.
+		 *
+		 * @param bool  $valid
+		 * @param int   $value
+		 * @param array $field
+		 *
+		 * @return bool|WP_Error
+		 */
+		public function validate_rest_value( $valid, $value, $field ) {
+			return acf_get_field_type( 'post_object' )->validate_rest_value( $valid, $value, $field );
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			$schema = array(
+				'type'     => array( 'integer', 'array', 'null' ),
+				'required' => ! empty( $field['required'] ),
+				'items'    => array(
+					'type' => array( 'integer' ),
+				),
+			);
+
+			if ( empty( $field['allow_null'] ) ) {
+				$schema['minItems'] = 1;
+			}
+
+			if ( ! empty( $field['allow_archives'] ) ) {
+				$schema['type'][]          = 'string';
+				$schema['items']['type'][] = 'string';
+			}
+
+			if ( empty( $field['multiple'] ) ) {
+				$schema['maxItems'] = 1;
+			}
+
+			return $schema;
+		}
+
+		/**
+		 * @see \acf_field::get_rest_links()
+		 * @param mixed      $value The raw (unformatted) field value.
+		 * @param int|string $post_id
+		 * @param array      $field
+		 * @return array
+		 */
+		public function get_rest_links( $value, $post_id, array $field ) {
+			$links = array();
+
+			if ( empty( $value ) ) {
+				return $links;
+			}
+
+			foreach ( (array) $value as $object_id ) {
+				if ( ! $post_type = get_post_type( $object_id ) or ! $post_type = get_post_type_object( $post_type ) ) {
+					continue;
+				}
+				$rest_base = acf_get_object_type_rest_base( $post_type );
+				$links[]   = array(
+					'rel'        => $post_type->name === 'attachment' ? 'acf:attachment' : 'acf:post',
+					'href'       => rest_url( sprintf( '/wp/v2/%s/%s', $rest_base, $object_id ) ),
+					'embeddable' => true,
+				);
+			}
+
+			return $links;
+		}
+
+		/**
+		 * Apply basic formatting to prepare the value for default REST output.
+		 *
+		 * @param mixed      $value
+		 * @param string|int $post_id
+		 * @param array      $field
+		 * @return mixed
+		 */
+		public function format_value_for_rest( $value, $post_id, array $field ) {
+			return acf_format_numerics( $value );
 		}
 
 	}

@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,21 +20,27 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-booking.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-booking.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'piotnetforms' ];
+		return [ 'form' ];
 	}
 
 	public function get_keywords() {
-		return [ 'button' ];
+		return [ 'booking', 'appointment' ];
 	}
 
 	public function get_script() {
-		return [ 
+		return [
 			'piotnetforms-advanced-script',
+		];
+	}
+
+	public function get_style() {
+		return [
+			'piotnetforms-form-booking-style'
 		];
 	}
 
@@ -58,7 +66,7 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 			'piotnetforms_booking_form_id',
 			[
 				'label' => __( 'Form ID* (Required)', 'piotnetforms' ),
-				'type' => 'text',
+				'type' => 'hidden',
 				'description' => __( 'Enter the same form id for all fields in a form', 'piotnetforms' ),
 				'dynamic' => [
 					'active' => true,
@@ -81,9 +89,10 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 			'shortcode',
 			[
 				'label' => __( 'Shortcode', 'piotnetforms' ),
-				'type' => 'html',
-				'classes' => 'forms-field-shortcode',
-				'raw' => '<input class="piotnetforms-field-shortcode" readonly />',
+				'type'    => 'text',
+				'classes' => 'piotnetforms-field-shortcode',
+				'attr'    => 'readonly',
+				'copy'    => true,
 			]
 		);
 
@@ -111,7 +120,7 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'piotnetforms_booking_field_required',
 			[
-				'label' => __( 'Required', 'pafe' ),
+				'label' => __( 'Required', 'piotnetforms' ),
 				'type' => 'switch',
 				'label_on' => __( 'Yes', 'piotnetforms' ),
 				'label_off' => __( 'No', 'piotnetforms' ),
@@ -123,7 +132,7 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'piotnetforms_booking_mark_required',
 			[
-				'label' => __( 'Required Mark', 'elementor-pro' ),
+				'label' => __( 'Required Mark', 'piotnetforms' ),
 				'type' => 'switch',
 				'label_on' => __( 'Show', 'piotnetforms' ),
 				'label_off' => __( 'Hide', 'piotnetforms' ),
@@ -141,27 +150,27 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 				'type' => 'select',
 				'default' => 'date_picker',
 				'options' => [
-					'date_picker'  => __( 'Date Picker','piotnetforms' ),
-					'specify_date' => __( 'Specify Date','piotnetforms' ),
-				], 
+					'date_picker'  => __( 'Date Picker', 'piotnetforms' ),
+					'specify_date' => __( 'Specify Date', 'piotnetforms' ),
+				],
 			]
 		);
 
 		$this->add_control(
-			'piotnetforms_booking_date_field', 
+			'piotnetforms_booking_date_field',
 			[
 				'label' => __( 'Date Field Shortcode', 'piotnetforms' ),
 				'type'        => 'select',
 				'get_fields'  => true,
 				'placeholder' => __( '[field id="date"]', 'piotnetforms' ),
 				'condition' => [
-					'piotnetforms_booking_date_type' => 'date_picker'	
+					'piotnetforms_booking_date_type' => 'date_picker'
 				]
 			]
 		);
 
 		$this->add_control(
-			'piotnetforms_booking_date', 
+			'piotnetforms_booking_date',
 			[
 				'label' => __( 'Date', 'piotnetforms' ),
 				'type' => 'date',
@@ -170,7 +179,7 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 					'enableTime' => false,
 				],
 				'condition' => [
-					'piotnetforms_booking_date_type' => 'specify_date'	
+					'piotnetforms_booking_date_type' => 'specify_date'
 				]
 			]
 		);
@@ -262,9 +271,6 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 			[
 				'label' => __( 'Slot ID* (Required)', 'piotnetforms' ),
 				'type' => 'text',
-				'dynamic' => [
-					'active' => true,
-				],
 			]
 		);
 
@@ -274,30 +280,21 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 				'label' => __( 'Number of Slot', 'piotnetforms' ),
 				'type' => 'number',
 				'default' => 1,
-				'dynamic' => [
-					'active' => true,
-				],
 			]
-		); 
+		);
 		$this->add_control(
 			'piotnetforms_booking_title',
 			[
 				'label' => __( 'Title', 'piotnetforms' ),
 				'type' => 'text',
-				'dynamic' => [
-					'active' => true,
-				],
 			]
-		); 
+		);
 
 		$this->add_control(
 			'piotnetforms_booking_price',
 			[
 				'label' => __( 'Price', 'piotnetforms' ),
 				'type' => 'number',
-				'dynamic' => [
-					'active' => true,
-				],
 			]
 		);
 
@@ -306,21 +303,18 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 			[
 				'label' => __( 'Price Text', 'piotnetforms' ),
 				'type' => 'text',
-				'dynamic' => [
-					'active' => true,
-				],
 			]
 		);
-		
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
 
 		$repeater_items = $this->get_group_controls();
 
@@ -413,7 +407,6 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 
 
 	private function item_style_controls() {
-
 		$this->add_responsive_control(
 			'piotnetforms_booking_item_width',
 			[
@@ -423,15 +416,15 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 					'px' => [
 						'min' => 0,
 						'max' => 500,
-						'step' => 1, 
+						'step' => 1,
 					],
 					'%' => [
 						'min' => 0,
 						'max' => 100,
-						'step' => 1, 
+						'step' => 1,
 					],
-				], 
-				'default' => [ 
+				],
+				'default' => [
 					'unit' => '%',
 					'size' => 25,
 				],
@@ -442,21 +435,21 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_responsive_control(
-   			'item_align',
+			'item_align',
 			[
-  				'label' => __( 'Alignment', 'piotnetforms' ),
- 				'type' => 'select',
-   				'options'      => [
+				'label' => __( 'Alignment', 'piotnetforms' ),
+				'type' => 'select',
+				'options'      => [
 					''        => __( 'Default', 'piotnetforms' ),
 					'left'    => __( 'Left', 'piotnetforms' ),
 					'center'  => __( 'Center', 'piotnetforms' ),
 					'right'   => __( 'Right', 'piotnetforms' ),
 				],
-   				'default' => 'center',
+				'default' => 'center',
 				'selectors' => [
 					'{{WRAPPER}} .piotnetforms-booking__item' => 'text-align: {{VALUE}};',
- 				],
-   			]
+				],
+			]
 		);
 
 		$this->add_responsive_control(
@@ -468,8 +461,8 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 				'selectors' => [
 					'{{WRAPPER}} .piotnetforms-booking__item-inner' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
-			] 
-		); 
+			]
+		);
 
 		$this->add_responsive_control(
 			'piotnetforms_booking_item_margin',
@@ -493,7 +486,7 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 				'selectors' => [
 					'{{WRAPPER}} .piotnetforms-booking__item-inner' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
-			] 
+			]
 		);
 
 		$this->add_text_typography_controls(
@@ -597,30 +590,30 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		);
 	}
 
-	private function add_item_style_controls(string $name, $args = []) {
+	private function add_item_style_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['selectors'] ) ? $args['selectors'] : '{{WRAPPER}}';
 		$previous_controls = $this->new_group_controls();
 
-		$this->add_control( 
+		$this->add_control(
 			'piotnetforms_booking_item_background_' . $name,
 			[
 				'label' => __( 'Background', 'piotnetforms' ),
 				'type' => 'color',
-				'default' => '#D53440',  
+				'default' => '#D53440',
 				'selectors' => [
-					$wrapper => 'background-color: {{VALUE}}',       
+					$wrapper => 'background-color: {{VALUE}}',
 				],
 			]
 		);
 
-		$this->add_control( 
+		$this->add_control(
 			'piotnetforms_booking_item_text_' . $name,
 			[
 				'label' => __( 'Text Color', 'piotnetforms' ),
 				'type' => 'color',
-				'default' => '#fff',  
+				'default' => '#fff',
 				'selectors' => [
-					$wrapper => 'color: {{VALUE}}',       
+					$wrapper => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -693,30 +686,30 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		return $this->get_group_controls( $previous_controls );
 	}
 
-	private function add_item_style_controls_selected(string $name, $args = []) {
+	private function add_item_style_controls_selected( string $name, $args = [] ) {
 		$wrapper = isset( $args['selectors'] ) ? $args['selectors'] : '{{WRAPPER}}';
 		$previous_controls = $this->new_group_controls();
 
-		$this->add_control( 
+		$this->add_control(
 			'piotnetforms_booking_item_background_' . $name,
 			[
 				'label' => __( 'Background', 'piotnetforms' ),
 				'type' => 'color',
 				'default' => '#931b23',
 				'selectors' => [
-					$wrapper => 'background-color: {{VALUE}}',       
+					$wrapper => 'background-color: {{VALUE}}',
 				],
 			]
 		);
 
-		$this->add_control( 
+		$this->add_control(
 			'piotnetforms_booking_item_text_' . $name,
 			[
 				'label' => __( 'Text Color', 'piotnetforms' ),
 				'type' => 'color',
-				'default' => '#fff',  
+				'default' => '#fff',
 				'selectors' => [
-					$wrapper => 'color: {{VALUE}}',       
+					$wrapper => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -789,30 +782,30 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		return $this->get_group_controls( $previous_controls );
 	}
 
-	private function add_item_style_controls_sold_out(string $name, $args = []) {
+	private function add_item_style_controls_sold_out( string $name, $args = [] ) {
 		$wrapper = isset( $args['selectors'] ) ? $args['selectors'] : '{{WRAPPER}}';
 		$previous_controls = $this->new_group_controls();
 
-		$this->add_control( 
+		$this->add_control(
 			'piotnetforms_booking_item_background_' . $name,
 			[
 				'label' => __( 'Background', 'piotnetforms' ),
 				'type' => 'color',
 				'default' => '#ccc',
 				'selectors' => [
-					$wrapper => 'background-color: {{VALUE}}',       
+					$wrapper => 'background-color: {{VALUE}}',
 				],
 			]
 		);
 
-		$this->add_control( 
+		$this->add_control(
 			'piotnetforms_booking_item_text_' . $name,
 			[
 				'label' => __( 'Text Color', 'piotnetforms' ),
 				'type' => 'color',
-				'default' => '#000',  
+				'default' => '#000',
 				'selectors' => [
-					$wrapper => 'color: {{VALUE}}',       
+					$wrapper => 'color: {{VALUE}}',
 				],
 			]
 		);
@@ -887,6 +880,11 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 
 	public function render() {
 		$settings = $this->settings;
+		$form_post_id = $this->post_id;
+		$form_version = empty( get_post_meta( $form_post_id, '_piotnetforms_version', true ) ) ? 1 : get_post_meta( $form_post_id, '_piotnetforms_version', true );
+		$form_id = $form_version == 1 ? $settings['piotnetforms_booking_id'] : $form_post_id;
+		$settings['piotnetforms_booking_id'] = $form_id;
+
 		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-fields-wrapper piotnetforms-labels-above' );
 
 		if ( ! empty( $settings['piotnetforms_booking_field_required'] ) ) {
@@ -894,16 +892,13 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 			if ( ! empty( $settings['piotnetforms_booking_mark_required'] ) ) {
 				$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-mark-required' );
 			}
-		}
-
-		?>
+		} ?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
 			<div class="piotnetforms-field-group piotnetforms-booking piotnetforms-booking--loading" data-piotnetforms-booking>
 				<?php
 					require_once( __DIR__ . '/../forms/templates/template-form-booking.php' );
 
-					piotnetforms_template_form_booking($settings, $this->get_id(), $this->post_id);
-				?>
+		piotnetforms_template_form_booking( $settings, $this->get_id(), $this->post_id ); ?>
 			</div>
 		</div>
 		<?php
@@ -945,5 +940,4 @@ class Piotnetforms_Booking extends Base_Widget_Piotnetforms {
 		</div>
 		<?php
 	}
-
 }

@@ -62,6 +62,21 @@ function validate_simple_upload(){
                 formData.append('nonce', wppb_upload_script_vars.nonce);
                 formData.append('name', fieldName);
 
+                var simpleUploadFields = uploadButton.closest('.wppb-user-forms').find('.wppb_simple_upload');
+
+                simpleUploadFields.each(function() {
+                    jQuery( this ).prop( 'disabled', true );
+                });
+
+                var submitAlreadyDisabled = false;
+                var submitButtonText = uploadButton.closest('.wppb-user-forms').find('.submit.button').val();
+                jQuery("input#"+fieldName).closest('.wppb-user-forms').find('.submit.button').val( 'Uploading file...' );
+                if ( jQuery( 'p.form-submit .submit.button' ).prop( 'disabled' ) ) {
+                    submitAlreadyDisabled = true;
+                } else {
+                    jQuery( 'p.form-submit .submit.button' ).prop( 'disabled', true );
+                }
+
                 jQuery.ajax({
                     url: wppb_upload_script_vars.ajaxUrl,
                     type: 'POST',
@@ -70,6 +85,13 @@ function validate_simple_upload(){
                     data: formData,
                     success: function(response){
                         jQuery("input#"+fieldName).val(JSON.parse(response));
+                        if ( !submitAlreadyDisabled ) {
+                            jQuery("p.form-submit .submit.button").prop('disabled', false);
+                        }
+                        simpleUploadFields.each(function() {
+                            jQuery( this ).prop( 'disabled', false );
+                        });
+                        jQuery("input#"+fieldName).closest('.wppb-user-forms').find('.submit.button').val( submitButtonText );
                     },
                 });
             }

@@ -18,7 +18,7 @@ class piotnetforms_Social_Icon extends Base_Widget_Piotnetforms {
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
@@ -26,7 +26,7 @@ class piotnetforms_Social_Icon extends Base_Widget_Piotnetforms {
 	}
 
 	public function get_style() {
-		return [ 
+		return [
 			'piotnetforms-fontawesome-style'
 		];
 	}
@@ -116,15 +116,15 @@ class piotnetforms_Social_Icon extends Base_Widget_Piotnetforms {
 				'show_heading' => true,
 			]
 		);
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
 		$repeater_items = $this->get_group_controls();
 
 		$this->new_group_controls();
@@ -480,5 +480,4 @@ class piotnetforms_Social_Icon extends Base_Widget_Piotnetforms {
 
 		<?php
 	}
-
 }

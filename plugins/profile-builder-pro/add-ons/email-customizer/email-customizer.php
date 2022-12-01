@@ -410,13 +410,9 @@ if ( $wppb_email_customizer_activate == 'show' ){
 	add_filter ( 'email_change_email', 'wppb_email_customizer_change_email_address_title_filter_handler', 10, 3);
 	add_filter ( 'email_change_email', 'wppb_email_customizer_change_email_address_header_filter_handler', 10, 3);
 
-    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-    if( function_exists( 'wppb_init_edit_profile_approval' ) ) {
-        $epaa_plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/pb-add-on-edit-profile-approved-by-admin/index.php', false, false);
-        if (version_compare($epaa_plugin_data['Version'], '1.0.6', '>')) {
-            add_filter('wppb_epaa_user_email_content', 'wppb_email_customizer_epaa_content_filter_handler', 10, 4);
-            add_filter('wppb_epaa_user_email_subject', 'wppb_email_customizer_epaa_title_filter_handler', 10, 4);
-        }
+    if( function_exists( 'wppb_in_init_edit_profile_approval' ) ) {
+        add_filter('wppb_epaa_user_email_content', 'wppb_email_customizer_epaa_content_filter_handler', 10, 4);
+        add_filter('wppb_epaa_user_email_subject', 'wppb_email_customizer_epaa_title_filter_handler', 10, 4);
     }
 
 }
@@ -432,17 +428,15 @@ if ( $wppb_email_customizer_activate == 'show' ){
 	add_filter ( 'wppb_recover_password_message_content_sent_to_admin', 'wppb_admin_email_customizer_password_reset_content_filter_handler', 10, 4 );
 	add_filter ( 'wppb_recover_password_message_title_sent_to_admin', 'wppb_admin_email_customizer_password_reset_title_filter_handler', 10, 2 );
 
-    include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-    if( function_exists( 'wppb_init_edit_profile_approval' ) ) {
-        $epaa_plugin_data = get_plugin_data(WP_PLUGIN_DIR . '/pb-add-on-edit-profile-approved-by-admin/index.php', false, false);
-        if (version_compare($epaa_plugin_data['Version'], '1.0.6', '>')) {
-            add_filter('wppb_epaa_admin_email_content', 'wppb_admin_email_customizer_epaa_content_filter_handler', 10, 4);
-            add_filter('wppb_epaa_admin_email_subject', 'wppb_admin_email_customizer_epaa_title_filter_handler', 10, 4);
-        }
+    if( function_exists( 'wppb_in_init_edit_profile_approval' ) ) {
+		add_filter('wppb_epaa_admin_email_content', 'wppb_admin_email_customizer_epaa_content_filter_handler', 10, 4);
+		add_filter('wppb_epaa_admin_email_subject', 'wppb_admin_email_customizer_epaa_title_filter_handler', 10, 4);
     }
 
 }
 
+
+// Mustache variables
 
 /**
  * Function that overwrites the default reply-to with the one set in the Email Customizer

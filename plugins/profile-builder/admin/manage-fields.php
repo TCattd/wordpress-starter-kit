@@ -53,12 +53,23 @@ function wppb_populate_manage_fields(){
             'standard' =>
                 array(
                     'label'		=> __('Standard', 'profile-builder'),
-                    'options'	=> array(),
+                    'options'	=> array(
+                        // since 3.8.1
+                        'Avatar',
+                        'Checkbox',
+                        'Heading',
+                        'Input',
+                        'Radio',
+                        'Select',
+                        'Textarea',
+                    ),
                 ),
             'advanced' =>
                 array(
                     'label'		=> __('Advanced', 'profile-builder'),
-                    'options'	=> array(),
+                    'options'	=> array(
+                        'Select2' // since 3.8.1
+                    ),
                 ),
             'other' =>
                 array(
@@ -83,20 +94,20 @@ function wppb_populate_manage_fields(){
     }
 
     if( PROFILE_BUILDER != 'Profile Builder Free' ) {
-        $manage_field_types['optgroups']['standard']['options'][] = 'Heading';
-        $manage_field_types['optgroups']['standard']['options'][] = 'Input';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Heading';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Input';
         $manage_field_types['optgroups']['standard']['options'][] = 'Number';
         $manage_field_types['optgroups']['standard']['options'][] = 'Input (Hidden)';
         $manage_field_types['optgroups']['standard']['options'][] = 'Language';
-        $manage_field_types['optgroups']['standard']['options'][] = 'Textarea';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Textarea';
         $manage_field_types['optgroups']['standard']['options'][] = 'WYSIWYG';
-        $manage_field_types['optgroups']['standard']['options'][] = 'Select';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Select';
         $manage_field_types['optgroups']['standard']['options'][] = 'Select (Multiple)';
-        $manage_field_types['optgroups']['standard']['options'][] = 'Checkbox';
-        $manage_field_types['optgroups']['standard']['options'][] = 'Radio';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Checkbox';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Radio';
         $manage_field_types['optgroups']['standard']['options'][] = 'HTML';
         $manage_field_types['optgroups']['standard']['options'][] = 'Upload';
-        $manage_field_types['optgroups']['standard']['options'][] = 'Avatar';
+        // $manage_field_types['optgroups']['standard']['options'][] = 'Avatar';
 
         $manage_field_types['optgroups']['advanced']['options'][] = 'Phone';
         $manage_field_types['optgroups']['advanced']['options'][] = 'Select (Country)';
@@ -113,11 +124,12 @@ function wppb_populate_manage_fields(){
 		$manage_field_types['optgroups']['other']['options'][] = 'Email';
 		$manage_field_types['optgroups']['other']['options'][] = 'URL';
 
-        $manage_field_types['optgroups']['other']['options'][] = 'Select2';
+        // $manage_field_types['optgroups']['other']['options'][] = 'Select2';
         $manage_field_types['optgroups']['other']['options'][] = 'Select2 (Multiple)';
 
         $manage_field_types['optgroups']['other']['options'][] = 'Honeypot';
-    }
+
+    } 
 
     $manage_field_types['optgroups']['other']['options'][] = 'Email Confirmation';
 
@@ -130,7 +142,42 @@ function wppb_populate_manage_fields(){
 
     $manage_field_types = apply_filters( 'wppb_all_manage_fields_types', $manage_field_types );
 
-	//Free to Pro call to action on Manage Fields page
+    if( PROFILE_BUILDER == 'Profile Builder Free' ) {
+
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'Number', 'disabled' => true );
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'Input (Hidden)', 'disabled' => true );
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'Language', 'disabled' => true );
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'WYSIWYG', 'disabled' => true );
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'Select (Multiple)', 'disabled' => true );
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'HTML', 'disabled' => true );
+        $manage_field_types['optgroups']['standard']['options'][] = array( 'field_name' => 'Upload', 'disabled' => true );
+
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Phone', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Select (Country)', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Select (Timezone)', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Select (Currency)', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Select (CPT)', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Checkbox (Terms and Conditions)', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Datepicker', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Timepicker', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Colorpicker', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Validation', 'disabled' => true );
+        $manage_field_types['optgroups']['advanced']['options'][] = array( 'field_name' => 'Map', 'disabled' => true );
+
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'WooCommerce Customer Billing Address', 'disabled' => true );
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'WooCommerce Customer Shipping Address', 'disabled' => true );
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'MailChimp Subscribe', 'disabled' => true );
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'Email', 'disabled' => true );
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'URL', 'disabled' => true );
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'Select2 (Multiple)', 'disabled' => true );
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'Honeypot', 'disabled' => true );
+
+    }
+
+    if( !is_plugin_active( 'paid-member-subscriptions/index.php' ) )
+		$manage_field_types['optgroups']['other']['options'][] = array( 'field_name' => 'Subscription Plans', 'disabled' => true );
+
+	// Free to Pro call to action on Manage Fields page
 	$field_description = __('Choose one of the supported field types','profile-builder');
 	if( PROFILE_BUILDER == 'Profile Builder Free' ) {
 		$field_description .= sprintf( __('. Extra Field Types are available in <a href="%s">Basic or PRO versions</a>.' , 'profile-builder'), esc_url( 'https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=manage-fields-link&utm_campaign=PBFree' ) );

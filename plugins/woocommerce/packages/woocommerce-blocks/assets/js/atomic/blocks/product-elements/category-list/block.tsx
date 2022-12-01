@@ -7,6 +7,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { isEmpty } from 'lodash';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { HTMLAttributes } from 'react';
@@ -26,9 +27,13 @@ type Props = Attributes & HTMLAttributes< HTMLDivElement >;
  * @param {string} [props.className] CSS Class name for the component.
  * @return {*} The component.
  */
-const Block = ( { className }: Props ): JSX.Element | null => {
+const Block = ( props: Props ): JSX.Element | null => {
+	const { className } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+
+	const colorProps = useColorProps( props );
+	const typographyProps = useTypographyProps( props );
 
 	if ( isEmpty( product.categories ) ) {
 		return null;
@@ -39,10 +44,13 @@ const Block = ( { className }: Props ): JSX.Element | null => {
 			className={ classnames(
 				className,
 				'wc-block-components-product-category-list',
+				colorProps.className,
 				{
-					[ `${ parentClassName }__product-category-list` ]: parentClassName,
+					[ `${ parentClassName }__product-category-list` ]:
+						parentClassName,
 				}
 			) }
+			style={ { ...colorProps.style, ...typographyProps.style } }
 		>
 			{ __( 'Categories:', 'woo-gutenberg-products-block' ) }{ ' ' }
 			<ul>

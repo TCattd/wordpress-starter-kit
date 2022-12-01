@@ -27,6 +27,7 @@
 #wppb-settings-content-restriction .wppb-restriction-activated,
 #wppb-settings-content-restriction #wp-message_logged_out-wrap,
 #wppb-settings-content-restriction #wp-message_logged_in-wrap,
+#wppb-settings-content-restriction #wp-messages_purchasing_restricted-wrap,
 #wppb-settings-content-restriction .wppb-restriction-post-preview {
     display: inline-block;
     width: 80%;

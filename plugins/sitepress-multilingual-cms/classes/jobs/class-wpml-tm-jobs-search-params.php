@@ -86,6 +86,9 @@ class WPML_TM_Jobs_Search_Params {
 	/** @var bool */
 	private $exclude_longstanding = false;
 
+	/** @var bool  */
+	private $exclude_cancelled = false;
+
 	/**
 	 * Corresponds with `wp_icl_translations.element_type` column
 	 *
@@ -646,6 +649,24 @@ class WPML_TM_Jobs_Search_Params {
 	 */
 	public function set_element_type( $element_type ) {
 		$this->element_type = $element_type;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function should_exclude_cancelled() {
+		return $this->exclude_cancelled;
+	}
+
+	/**
+	 * @param bool $exclude_cancelled
+	 *
+	 * @return $this
+	 */
+	public function set_exclude_cancelled( $exclude_cancelled = true ) {
+		$this->exclude_cancelled = $exclude_cancelled;
 
 		return $this;
 	}

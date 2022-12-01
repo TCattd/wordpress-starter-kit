@@ -300,7 +300,10 @@ function wppb_generate_mustache_array_for_single_user_list(){
  * @since v.2.0
  */
 function wppb_userlisting_add_mustache_in_backend(){
-	require_once( WPPB_PAID_PLUGIN_DIR.'/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+	if( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+		require_once( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+	elseif( file_exists( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+		require_once( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
 
 	// initiate box for multiple users listing
 	new PB_Mustache_Generate_Admin_Box( 'wppb-ul-templates', __( 'All-userlisting Template', 'profile-builder' ), 'wppb-ul-cpt', 'core', wppb_generate_mustache_array_for_user_list(), wppb_generate_allUserlisting_content() );
@@ -474,6 +477,8 @@ function wppb_user_listing_shortcode( $atts ){
                 }
                 else {
                     $single_userlisting_template = get_post_meta( $value->ID, 'wppb-single-ul-templates', true );
+                    // apply active User Listing Theme styles
+                    $single_userlisting_template = apply_filters( 'wppb_apply_active_ul_theme_style', $single_userlisting_template, $value->ID, true );
                     if( empty( $single_userlisting_template ) )
                         $single_userlisting_template = wppb_generate_singleUserlisting_content();
                     // prevent loading more than one template for single user listing
@@ -487,6 +492,8 @@ function wppb_user_listing_shortcode( $atts ){
                 return;
             }else{
                 $userlisting_template = get_post_meta( $value->ID, 'wppb-ul-templates', true );
+                // apply active User Listing Theme styles
+                $userlisting_template = apply_filters( 'wppb_apply_active_ul_theme_style', $userlisting_template, $value->ID, false );
                 if( empty( $userlisting_template ) )
                     $userlisting_template = wppb_generate_allUserlisting_content();
 				return apply_filters( 'wppb_all_userlisting_template', '<div class="wppb-userlisting-container">'.(string) new PB_Mustache_Generate_Template( wppb_generate_mustache_array_for_user_list($userlisting_template), $userlisting_template, array( 'userlisting_form_id' => $value->ID, 'meta_key' => $meta_key, 'meta_value' => $meta_value, 'include' => $include, 'exclude' => $exclude, 'single' => false ) ) . '</div>' ) ;
@@ -980,19 +987,27 @@ function wppb_userlisting_users_loop( $value, $name, $children, $extra_values ){
             else
                 $sorting_order = $userlisting_args[0]['default-sorting-order'];
 
-            /* if we have admin approval on we don't want to show those users in the userlisting so we need to exclude them */
+            // if we have admin approval on we don't want to show users that have the unapproved or pending status in
+            // the userlisting so we need to exclude them
             if( wppb_get_admin_approval_option_value() === 'yes' ){
                 $excluded_ids = array();
-                $user_statusTaxID = get_term_by( 'name', 'unapproved', 'user_status' );
-                if( $user_statusTaxID != false ){
-                    $term_taxonomy_id = $user_statusTaxID->term_taxonomy_id;
+                $user_status_unapproved = get_term_by( 'name', 'unapproved', 'user_status' );
+                if( $user_status_unapproved != false ){
+                    $term_taxonomy_id = $user_status_unapproved->term_taxonomy_id;
                     $results = $wpdb->get_results( $wpdb->prepare( "SELECT wppb_t1.ID FROM $wpdb->users AS wppb_t1 LEFT OUTER JOIN $wpdb->term_relationships AS wppb_t0 ON wppb_t1.ID = wppb_t0.object_id WHERE wppb_t0.term_taxonomy_id = %d", $term_taxonomy_id ) );
 
                     foreach ( $results as $result )
                         array_push( $excluded_ids, $result->ID );
-
-                    $excluded_ids = implode( ',', $excluded_ids );
                 }
+                $user_status_pending = get_term_by( 'name', 'pending', 'user_status' );
+                if( $user_status_pending != false ){
+                    $term_taxonomy_id = $user_status_pending->term_taxonomy_id;
+                    $results = $wpdb->get_results( $wpdb->prepare( "SELECT wppb_t1.ID FROM $wpdb->users AS wppb_t1 LEFT OUTER JOIN $wpdb->term_relationships AS wppb_t0 ON wppb_t1.ID = wppb_t0.object_id WHERE wppb_t0.term_taxonomy_id = %d", $term_taxonomy_id ) );
+
+                    foreach ( $results as $result )
+                        array_push( $excluded_ids, $result->ID );
+                }
+                $excluded_ids = implode( ',', $excluded_ids );
             }
             if( !empty($excluded_ids) )
                 $extra_values['exclude'] .= ','. $excluded_ids;
@@ -1723,7 +1738,7 @@ function wppb_userlisting_pagination( $value, $name, $children, $extra_info ){
                 $this_form_settings[0]['number-of-userspage'] = 5;
 
 			$currentPage = wppb_get_query_var( 'wppb_page' );
-			if ( $currentPage == 0 )
+			if ( empty( $currentPage ) )
 				$currentPage = 1;
 
 			if ( isset( $_POST['searchFor'] ) ){
@@ -1821,6 +1836,9 @@ function wppb_ul_faceted_checkboxes( $faceted_filter_options, $meta_values, $wpp
     //sort by country name not country code
     $meta_values = wppb_sort_country_values_by_name( $meta_values, $wppb_manage_fields, $faceted_filter_options );
 
+    //filter meta values before displaying
+    $meta_values = apply_filters( 'wppb_filter_meta_values_before_output', $meta_values, $faceted_filter_options );
+
     if( !empty( $meta_values ) ){
         $filter = '';
 
@@ -1859,6 +1877,9 @@ function wppb_ul_faceted_select($faceted_filter_options, $meta_values, $wppb_man
 
     //sort by country name not country code
     $meta_values = wppb_sort_country_values_by_name( $meta_values, $wppb_manage_fields, $faceted_filter_options );
+
+    //filter meta values before displaying
+    $meta_values = apply_filters( 'wppb_filter_meta_values_before_output', $meta_values, $faceted_filter_options );
 
     if( !empty( $meta_values ) ){
         $filter = '<select class="wppb-facet-select';
@@ -1900,6 +1921,9 @@ function wppb_ul_faceted_select_multiple($faceted_filter_options, $meta_values, 
 
     //sort by country name not country code
     $meta_values = wppb_sort_country_values_by_name( $meta_values, $wppb_manage_fields, $faceted_filter_options );
+
+    //filter meta values before displaying
+    $meta_values = apply_filters( 'wppb_filter_meta_values_before_output', $meta_values, $faceted_filter_options );
 
     if( !empty( $meta_values ) ){
         /* initialize the select2 */
@@ -2483,7 +2507,7 @@ function wppb_ul_content(){
         echo '<br/>';
         echo "<textarea readonly spellcheck='false' class='wppb-shortcode textarea'>[wppb-list-users name=\"" . esc_attr( $form_shortcode ) . "\"]</textarea>";
         echo '</p><p>';
-        echo esc_html__( '<span style="color:red;">Note:</span> changing the form title also changes the shortcode!', 'profile-builder' );
+        echo wp_kses_post( __( '<span style="color:red;">Note:</span> changing the form title also changes the shortcode!', 'profile-builder' ) );
         echo '</p>';
 
         echo '<h4>'. esc_html__('Extra shortcode parameters', 'profile-builder') .'</h4>';
@@ -2661,8 +2685,750 @@ function wppb_manage_ul_cpt(){
     );
     new Wordpress_Creation_Kit_PB( $args );
     /* end search field setting box */
+
+
+    /* Userlisting Themes Selection Metabox */
+    $userlisting_themes = wppb_get_ul_themes_data();
+
+    // set up the box arguments
+    $args = array(
+        'metabox_id' => 'wppb-ul-themes-settings',
+        'metabox_title' => __( 'Themes: add style to your user listing section', 'profile-builder' ),
+        'post_type' => 'wppb-ul-cpt',
+        'meta_name' => 'wppb_ul_themes_settings',
+        'meta_array' => wppb_render_themes_metabox_content( $userlisting_themes ),
+        'single' => true
+    );
+    new Wordpress_Creation_Kit_PB( $args );
+
 }
 add_action( 'admin_init', 'wppb_manage_ul_cpt', 1 );
+
+
+/**
+ * Function that returns the Themes data
+ *
+ */
+function wppb_get_ul_themes_data() {
+
+    $userlisting_themes= array(
+        array(
+            'id' => 'default',
+            'name' => 'DEFAULT',
+            'status' => wppb_set_ul_theme_status( 'default'),
+            'image_url' => WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/images/default-theme-preview.png',
+            'theme_templates' => array(
+                'all_users' =>  ( isset( $_GET['post'] )) ? get_post_meta( sanitize_text_field( $_GET['post'] ) , 'wppb-ul-default-all-users-template', true ) : wppb_generate_allUserlisting_content(),
+                'single_user' =>  ( isset( $_GET['post'] )) ? get_post_meta( sanitize_text_field( $_GET['post'] ) , 'wppb-ul-default-single-user-template', true ) : wppb_generate_singleUserlisting_content()
+            ),
+            'users_per_page' => '10',
+            'all_users_avatar_size' => '40',
+            'single_user_avatar_size' => '60'
+        ),
+        array(
+            'id' => 'tablesi',
+            'name' => 'TABLESI',
+            'status' => wppb_set_ul_theme_status( 'tablesi' ),
+            'image_url' => WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/images/tablesi-theme-preview.png',
+            'theme_templates' => array(
+                'all_users' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/all-userlisting-tablesi.php'),
+                'single_user' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/single-userlisting-tablesi.php')
+            ),
+            'users_per_page' => '10',
+            'all_users_avatar_size' => '60',
+            'single_user_avatar_size' => '220'
+        ),
+        array(
+            'id' => 'vergrid',
+            'name' => 'VERGRID',
+            'status' => wppb_set_ul_theme_status( 'vergrid' ),
+            'image_url' => WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/images/vergrid-theme-preview.png',
+            'theme_templates' => array(
+                'all_users' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/all-userlisting-vergrid.php'),
+                'single_user' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/single-userlisting-vergrid.php')
+            ),
+            'users_per_page' => '6',
+            'all_users_avatar_size' => '230',
+            'single_user_avatar_size' => '270'
+        ),
+        array(
+            'id' => 'boxomo',
+            'name' => 'BOXOMO',
+            'status' => wppb_set_ul_theme_status( 'boxomo' ),
+            'image_url' => WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/images/boxomo-theme-preview.png',
+            'theme_templates' => array(
+                'all_users' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/all-userlisting-boxomo.php'),
+                'single_user' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/single-userlisting-boxomo.php')
+            ),
+            'users_per_page' => '6',
+            'all_users_avatar_size' => '270',
+            'single_user_avatar_size' => '270'
+        ),
+        array(
+            'id' => 'glimplist',
+            'name' => 'GLIMPLIST',
+            'status' => wppb_set_ul_theme_status( 'glimplist' ),
+            'image_url' => WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/images/glimplist-theme-preview.png',
+            'theme_templates' => array(
+                'all_users' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/all-userlisting-glimplist.php'),
+                'single_user' => file_get_contents( WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/templates/single-userlisting-glimplist.php')
+            ),
+            'users_per_page' => '8',
+            'all_users_avatar_size' => '400',
+            'single_user_avatar_size' => '500'
+        ),
+    );
+
+    return apply_filters( 'wppb_userlisting_themes', $userlisting_themes );
+}
+
+
+/**
+ * Function that returns the Themes Metabox Content
+ *
+ */
+function wppb_render_themes_metabox_content( $userlisting_themes ) {
+
+    if ( empty( $userlisting_themes ) )
+        return;
+
+    $current_post = ( isset( $_GET['post'] ) ) ? sanitize_text_field( $_GET['post'] ) : 'new-post';
+
+    wp_register_style( 'wppb_userlisting_themes_settings_style', WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/css/userlisting-themes-settings-style.css', array(),PROFILE_BUILDER_VERSION );
+    wp_enqueue_style( 'wppb_userlisting_themes_settings_style' );
+
+    wp_enqueue_script( 'wppb_userlisting_themes_settings_js', WPPB_PAID_PLUGIN_URL.'add-ons/user-listing/ul-themes/js/userlisting-themes-settings.js', array( 'jquery' ), PROFILE_BUILDER_VERSION );
+
+    $output = '<div class="ul-themes-browser">';
+
+    foreach ( $userlisting_themes as $theme ) {
+
+        if ( $theme['status'] == 'active') {
+            $status = ' active';
+            $title = '<strong>Active: </strong> '. $theme['name'];
+        }
+        else {
+            $status = '';
+            $title = $theme['name'];
+        }
+
+        $output .= '                    
+                        <div class="wppb-ul-theme'. $status .'" id="'. $theme['id'] .'">
+                            <div class="wppb-ul-theme-screenshot">
+                                <img src="' . $theme['image_url'] . '">
+                                 <div class="wppb-ul-theme-preview" id="'. $theme['id'] .'-info">Preview</div>
+                            </div>                                                     
+                            
+                            <div class="wppb-ul-theme-details">
+                            
+                                <div class="wppb-ul-theme-title">
+                                    <h2>'. $title .'</h2>
+                                </div>
+                                
+                                <div class="wppb-ul-theme-activate">
+                                    <button 
+                                        type="button" 
+                                        class="button activate button-small" 
+                                        id="activate-'. $theme['id'] .'" 
+                                        data-ajax-url="'. admin_url( 'admin-ajax.php' ) .'" 
+                                        data-theme-id="'. $theme['id'] .'"
+                                        data-current-post="'. $current_post .'">
+                                        Activate
+                                    </button>
+                                    
+                                    <button 
+                                        type="button" 
+                                        class="button reset button-small" 
+                                        id="reset-'. $theme['id'] .'">
+                                        Reset Data
+                                    </button>
+                                </div>
+                                
+
+                                
+                            </div>
+                        </div>                    
+                ';
+
+        $output .= '<div id="modal-'. $theme['id'] .'" class="wppb-ul-theme-modal" title="'. $theme['name'] .'">
+                        <img class="wppb-ul-theme-preview-image" src="'. $theme['image_url'] .'">
+                    </div>';
+
+        $output .= '<div id="modal-reset-'. $theme['id'] .'" class="wppb-ul-theme-reset-modal" title="Reset '. $theme['name'] .' Theme Settings">
+                            <div class="wppb-reset-modal-content">
+                                <p class="wppb-options-message">Select which settings you want to reset:</p>
+                                <div class="wppb-reset-options">
+                                    <div class="wppb-options-wrapper" id="'. $theme['id'] .'-options">
+                                        <label for="settings-data"><input type="checkbox" name="reset_theme_data" id="settings-data" value="settings_data"> User-Listing Settings</label>
+                                        <label for="all-users-template"><input type="checkbox" name="reset_theme_data" id="all-users-template" value="all_users_template"> All-userlisting Template</label>
+                                        <label for="single-user-template"><input type="checkbox" name="reset_theme_data" id="single-user-template" value="single_user_template"> Single-userlisting Template</label>
+                                        <label for="all-theme-data"><input type="checkbox" name="reset_all_theme_data" id="all-theme-data" value="'. $theme['id'] .'"> All Theme Data</label>
+                                    </div>
+                                </div>
+                                <p class="notice-content"><strong>Note:</strong> The settings on the page will be replaced with your active User-Listing Theme\'s Default settings, according to your choice from the options above.</p>
+                            </div>
+                            <div class="wppb-reset-buttons">
+                                <button type="button" class="button cancel-reset" value="modal-reset-'. $theme['id'] .'" >Cancel</button>
+                                <button 
+                                    type="button" 
+                                    class="button button-primary confirm-reset" 
+                                    data-ajax-url="'. admin_url( 'admin-ajax.php' ) .'" 
+                                    data-theme-id="'. $theme['id'] .'"
+                                    data-current-post="'. $current_post .'">
+                                    Confirm
+                                </button>
+                            </div>
+
+                    </div>';
+
+    }
+
+    $output .= '</div>';
+
+    return $output;
+}
+
+
+/**
+ * Function that sends an Ajax response with the selected data to fill in the necessary fields
+ *
+ */
+function get_new_templates_data() {
+
+    if ( empty( $_GET['theme_id'] ) || empty( $_GET['current_post'] ) )
+        die("Something went wrong!");
+
+    $new_theme_id = sanitize_text_field( $_GET['theme_id'] );
+    $current_post = sanitize_text_field( $_GET['current_post'] );
+
+    $new_theme_data = wppb_get_newly_activated_theme_data( $current_post, $new_theme_id );
+
+    update_option( 'wppb_ul_active_theme', $new_theme_id );
+    update_option( 'all_users_wp_theme_file', $new_theme_data['all_users_wp_theme_file'] );
+    update_option( 'single_user_wp_theme_file', $new_theme_data['single_user_wp_theme_file'] );
+
+    echo json_encode(  !empty( $new_theme_data ) ? $new_theme_data : '' );
+
+    // update db metadata with newly activated theme data
+    if ( !empty( $current_post ) && $current_post != 'new-post' )
+        wppb_save_ul_theme_data_in_db( $current_post, $new_theme_data );
+
+    die();
+}
+add_action( 'wp_ajax_get_new_templates_data', 'get_new_templates_data' );
+
+
+/**
+ * Function that sends an Ajax response with the selected Theme default data to fill in the necessary fields
+ *
+ */
+function get_selected_theme_default_data() {
+
+    if ( empty( $_GET['theme_id'] ) || empty( $_GET['current_post'] ) || empty( $_GET['options_to_reset'] ) )
+        die("Something went wrong!");
+
+    $theme_id = sanitize_text_field( $_GET['theme_id'] );
+    $current_post = sanitize_text_field( $_GET['current_post'] );
+    $options_to_reset = $_GET['options_to_reset'];//phpcs:ignore
+
+    $default_data = wppb_get_theme_defaults( $current_post, $theme_id, $options_to_reset );
+
+    echo json_encode(  !empty( $default_data ) ? $default_data : '' );
+
+//    // update db metadata with newly activated theme data
+//    if ( !empty( $current_post ) && $current_post != 'new-post' )
+//        wppb_save_ul_theme_data_in_db( $current_post, $default_data );
+
+    die();
+}
+add_action( 'wp_ajax_get_selected_theme_default_data', 'get_selected_theme_default_data' );
+
+
+function wppb_get_theme_defaults( $current_post, $theme_id, $options_to_reset ) {
+
+    $default_data = array();
+
+    $userlisting_themes = wppb_get_ul_themes_data();
+    foreach ( $userlisting_themes as $ul_theme ) {
+        if ( $ul_theme['id'] == $theme_id ) {
+
+            if ( in_array( 'settings_data', $options_to_reset ) ) {
+                $default_data=array(
+                    "users_per_page" => $ul_theme['users_per_page'],
+                    "all_users_avatar_size" => $ul_theme['all_users_avatar_size'],
+                    "single_user_avatar_size" => $ul_theme['single_user_avatar_size'],
+                    "sorting_order" => 'asc',
+                    "sorting_criteria" => 'login',
+                    "roles_to_display" => '*',
+                );
+            }
+
+            if ( in_array( 'single_user_template', $options_to_reset ) )
+                $default_data['single_user'] = $ul_theme['theme_templates']['single_user'];
+
+            if ( in_array( 'all_users_template', $options_to_reset ) )
+                $default_data['all_users'] = $ul_theme['theme_templates']['all_users'];
+
+        }
+    }
+
+    $active_wp_theme = wp_get_theme();
+    $all_users_wp_theme_file = get_theme_root().'/'. $active_wp_theme->stylesheet .'/profile-builder/userlisting/all-userlisting-'. $theme_id .'-ul-'. $current_post .'.php';
+    $single_user_wp_theme_file = get_theme_root().'/'. $active_wp_theme->stylesheet .'/profile-builder/userlisting/single-userlisting-'. $theme_id .'-ul-'. $current_post .'.php';
+
+    if( !empty( $active_wp_theme->stylesheet ) && file_exists( $all_users_wp_theme_file ) )
+        $default_data['all_users_wp_theme_file'] = 'yes';
+    else $default_data['all_users_wp_theme_file'] = 'no';
+
+    if( !empty( $active_wp_theme->stylesheet ) && file_exists( $single_user_wp_theme_file ) )
+        $default_data['single_user_wp_theme_file'] = 'yes';
+    else $default_data['single_user_wp_theme_file'] = 'no';
+
+    return $default_data;
+}
+
+
+/**
+ * Function that saves newly activated theme data into DB
+ * - on Add New View the Post ID is missing therefore it only works on Edit View
+ *
+ */
+function wppb_save_ul_theme_data_in_db( $post_id, $new_theme_data ) {
+
+    $active_theme = get_option('wppb_ul_active_theme');
+
+    if ( empty( $active_theme ) )
+        return;
+
+    $all_users_wp_theme_file = get_option('all_users_wp_theme_file');
+    $single_user_wp_theme_file = get_option('single_user_wp_theme_file');
+
+    // save User Listing Theme number of users per page
+    if ( !empty( $new_theme_data['users_per_page'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-number-of-userspage', $new_theme_data['users_per_page'] );
+
+    // save User Listing Theme sorting data
+    if ( !empty( $new_theme_data['sorting_order'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-default-sorting-order', $new_theme_data['sorting_order']);
+    if ( !empty( $new_theme_data['sorting_criteria'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-default-sorting-criteria', $new_theme_data['sorting_criteria']);
+
+     // save User Listing Theme roles to display
+    if ( !empty( $new_theme_data['roles_to_display'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-roles-to-display', $new_theme_data['roles_to_display'] );
+
+    // save User Listing Theme avatar sizes
+    if ( !empty( $new_theme_data['all_users_avatar_size'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-all-users-avatar-size', $new_theme_data['all_users_avatar_size'] );
+    if ( !empty( $new_theme_data['single_user_avatar_size'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-single-user-avatar-size', $new_theme_data['single_user_avatar_size'] );
+
+    // save User Listing Theme template (maybe the template was modified by the user)
+    if ( !empty( $new_theme_data['all_users'] ) && empty( $all_users_wp_theme_file ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-all-users-template', $new_theme_data['all_users'] );//phpcs:ignore
+    if ( !empty( $new_theme_data['single_user'] ) && empty( $single_user_wp_theme_file ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-single-user-template', $new_theme_data['single_user'] );//phpcs:ignore
+
+    update_post_meta( $post_id, 'wppb_ul_page_settings', array( array(
+        'number-of-userspage' => $new_theme_data['users_per_page'],
+        'avatar-size-all-userlisting' => $new_theme_data['all_users_avatar_size'],
+        'avatar-size-single-userlisting' => $new_theme_data['single_user_avatar_size'],
+        'roles-to-display' => $new_theme_data['roles_to_display'],
+        'default-sorting-order' => $new_theme_data['sorting_order'],
+        'default-sorting-criteria' => $new_theme_data['sorting_criteria'],
+    ) ) );
+
+    // update UL Templates in DB
+    update_post_meta( $post_id, 'wppb-ul-templates', $new_theme_data['all_users'] );
+    update_post_meta( $post_id, 'wppb-single-ul-templates', $new_theme_data['single_user'] );
+
+    // update active theme in DB
+    update_post_meta( $post_id, 'wppb-ul-active-theme', $active_theme );
+
+    // delete options set on Ajax call
+    delete_option('all_users_wp_theme_file');
+    delete_option('single_user_wp_theme_file');
+    delete_option('wppb_ul_active_theme');
+}
+
+
+/**
+ * Function that search and returns the new templates:
+ *
+ * 1st - from within active WP Theme files (if any present)
+ * 2nd - from DB (if there is a saved template)
+ * 3rd - from UL Theme files (default template for selected theme)
+ *
+ */
+function wppb_get_newly_activated_theme_data( $post_id, $theme_id ) {
+    
+    $userlisting_settings = get_post_meta( $post_id, 'wppb_ul_page_settings', true );
+    $new_theme_data = array(
+        'all_users' => '',
+        'single_user' => '',
+        'all_users_wp_theme_file' => '',
+        'single_user_wp_theme_file' => '',
+        'users_per_page' => get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-number-of-userspage', true ),
+        'all_users_avatar_size' => get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-all-users-avatar-size', true ),
+        'single_user_avatar_size' => get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-single-user-avatar-size', true ),
+        'roles_to_display' => get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-roles-to-display', true),
+        'sorting_order' => get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-default-sorting-order', true),
+        'sorting_criteria' => get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-default-sorting-criteria', true),
+    );
+
+    if ( is_array( $new_theme_data['roles_to_display'] ) )
+        $new_theme_data['roles_to_display'] = implode(", ", $new_theme_data['roles_to_display'] );
+
+    $active_wp_theme = wp_get_theme();
+    $all_users_wp_theme_file = get_theme_root().'/'. $active_wp_theme->stylesheet .'/profile-builder/userlisting/all-userlisting-'. $theme_id .'-ul-'. $post_id .'.php';
+    $single_user_wp_theme_file = get_theme_root().'/'. $active_wp_theme->stylesheet .'/profile-builder/userlisting/single-userlisting-'. $theme_id .'-ul-'. $post_id .'.php';
+
+    // load all_users template from the currently active WP Theme (if there is any template file present)
+    if( !empty( $active_wp_theme->stylesheet ) && file_exists( $all_users_wp_theme_file ) ) {
+        $new_theme_data['all_users'] = file_get_contents( $all_users_wp_theme_file );
+        $new_theme_data['all_users_wp_theme_file'] = $all_users_wp_theme_file;
+    }
+    else { // load all_users template from DB (if saved)
+        $modified_all_users_template = get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-all-users-template', true );
+        if ( !empty( $modified_all_users_template ) ) {
+            $new_theme_data['all_users'] = $modified_all_users_template;
+        }
+        else { // load all_users default theme template from theme files
+            $userlisting_themes = wppb_get_ul_themes_data();
+            foreach ( $userlisting_themes as $ul_theme ) {
+                if ( $ul_theme['id'] == $theme_id ) {
+                    $new_theme_data['all_users'] = $ul_theme['theme_templates']['all_users'];
+                }
+            }
+        }
+    }
+
+    // load single_user template from the currently active WP Theme (if there is any template file present)
+    if( !empty( $active_wp_theme->stylesheet ) && file_exists( $single_user_wp_theme_file ) ) {
+        $new_theme_data['single_user'] = file_get_contents( $single_user_wp_theme_file );
+        $new_theme_data['single_user_wp_theme_file'] = $single_user_wp_theme_file;
+    }
+    else { // load single_user template from DB (if saved)
+        $modified_single_user_template = get_post_meta( $post_id, 'wppb-ul-'. $theme_id .'-single-user-template', true );
+        if ( !empty( $modified_single_user_template ) ) {
+            $new_theme_data['single_user'] = $modified_single_user_template;
+        }
+        else { // load single_user default theme template from theme files
+            $userlisting_themes = wppb_get_ul_themes_data();
+            foreach ( $userlisting_themes as $ul_theme ) {
+                if ( $ul_theme['id'] == $theme_id ) {
+                    $new_theme_data['single_user'] = $ul_theme['theme_templates']['single_user'];
+                }
+            }
+        }
+    }
+
+    if ( empty( $new_theme_data['users_per_page'] ) ) {
+        if ( $theme_id == 'glimplist' )
+            $new_theme_data['users_per_page'] = '8';
+        elseif ( $theme_id == 'vergrid' || $theme_id == 'boxomo' )
+            $new_theme_data['users_per_page'] = '6';
+        elseif ( $theme_id == 'default' || $theme_id == 'tablesi' )
+            $new_theme_data['users_per_page'] = '10';
+    }
+
+    if ( empty( $new_theme_data['sorting_order'] ) )
+        $new_theme_data['sorting_order'] = ( isset( $userlisting_settings[0]['default-sorting-order'] ) ? $userlisting_settings[0]['default-sorting-order'] : 'asc' );
+
+    if ( empty( $new_theme_data['sorting_criteria'] ) )
+        $new_theme_data['sorting_criteria'] = ( isset( $userlisting_settings[0]['default-sorting-criteria'] ) ? $userlisting_settings[0]['default-sorting-criteria'] : 'login' );
+
+    if ( empty( $new_theme_data['roles_to_display'] ) )
+        $new_theme_data['roles_to_display'] = ( isset( $userlisting_settings[0]['roles-to-display'] ) ? $userlisting_settings[0]['roles-to-display'] : '*' );
+
+    if ( empty( $new_theme_data['all_users_avatar_size'] ) ) {
+        if ( $theme_id == 'default' )
+            $new_theme_data['all_users_avatar_size'] = '40';
+        elseif ( $theme_id == 'tablesi' )
+            $new_theme_data['all_users_avatar_size'] = '60';
+        elseif ( $theme_id == 'vergrid' )
+            $new_theme_data['all_users_avatar_size'] = '230';
+        elseif ( $theme_id == 'boxomo' )
+            $new_theme_data['all_users_avatar_size'] = '270';
+        elseif ( $theme_id == 'glimplist' )
+            $new_theme_data['all_users_avatar_size'] = '400';
+    }
+
+    if ( empty( $new_theme_data['single_user_avatar_size'] ) ) {
+        if ( $theme_id == 'default' )
+            $new_theme_data['single_user_avatar_size'] = '60';
+        elseif ( $theme_id == 'tablesi' )
+            $new_theme_data['single_user_avatar_size'] = '220';
+        elseif ( $theme_id == 'vergrid' || $theme_id == 'boxomo' )
+            $new_theme_data['single_user_avatar_size'] = '270';
+        elseif ( $theme_id == 'glimplist' )
+            $new_theme_data['single_user_avatar_size'] = '500';
+    }
+
+    return $new_theme_data;
+}
+
+
+/**
+ * Function that returns the theme status
+ *
+ */
+function wppb_set_ul_theme_status( $ul_theme_id ) {
+
+    if ( isset( $_GET['post'] ) ) {
+        $post_id = sanitize_text_field( $_GET['post'] );
+        $active_theme = get_post_meta( $post_id , 'wppb-ul-active-theme', true );
+    }
+
+    // activate Default Theme if no other theme is active
+    if ( empty( $active_theme ) && $ul_theme_id == 'default' ) {
+        $status = 'active';
+
+        if ( isset( $post_id ) ) {
+            $current_all_users_template = get_post_meta( $post_id, 'wppb-ul-templates', true );
+            $current_single_users_template = get_post_meta( $post_id, 'wppb-single-ul-templates', true );
+            update_post_meta( $post_id, 'wppb-ul-default-all-users-template', $current_all_users_template );
+            update_post_meta( $post_id, 'wppb-ul-default-single-user-template', $current_single_users_template );
+            update_post_meta( $post_id, 'wppb-ul-active-theme', 'default' );
+        }
+
+    }
+    elseif ( !empty( $active_theme ) && $ul_theme_id == $active_theme ) {
+        $status = 'active';
+    }
+    else $status = '';
+
+    return $status;
+}
+
+
+/**
+ * Function that returns the style for the selected theme
+ *
+ */
+function wppb_apply_userlisting_theme_style( $ul_template, $post_id, $single ) {
+
+    if ( empty( $ul_template ) || empty( $post_id ) || !isset( $single ) )
+        return;
+
+    $active_ul_theme = get_post_meta( $post_id, 'wppb-ul-active-theme', true );
+
+    if ( empty( $active_ul_theme ))
+        return $ul_template;
+
+    $template_type = ( $single ) ? 'single' : 'all';
+    $file_path = WPPB_PAID_PLUGIN_DIR . '/add-ons/user-listing/ul-themes/css/userlisting-'. $template_type .'-'. $active_ul_theme .'-theme-style.css';
+
+    if ( file_exists( $file_path ) )
+        $template_styling = '<style>' . file_get_contents( $file_path ) . '</style>';
+    else $template_styling = '';
+
+    return $template_styling . $ul_template;
+}
+add_filter( 'wppb_apply_active_ul_theme_style', 'wppb_apply_userlisting_theme_style', 10, 3 );
+
+
+/**
+ * Function that replaces First-Name with UserName (user_login) if both First and Last names are empty
+ *
+ */
+function wppb_maybe_replace_first_name( $value, $name, $children, $extra_info ) {
+
+    if ( $name == 'meta_first_name' && empty( $value )) {
+
+        $active_ul_theme = get_post_meta( $extra_info['userlisting_form_id'], 'wppb-ul-active-theme', true );
+
+        if ( empty( $active_ul_theme ) || $active_ul_theme == 'default' )
+            return $value;
+
+        $user_info = get_userdata( $extra_info['user_id'] );
+        $username = $user_info->user_login;
+        $last_name = get_user_meta( $extra_info['user_id'], 'last_name', true );
+
+        if ( empty( $last_name ))
+            $value = $username;
+
+    }
+
+    return $value;
+}
+add_filter( 'mustache_variable_user_meta', 'wppb_maybe_replace_first_name', 10, 4 );
+
+
+/**
+ * Function that generates missing image size for user's profile picture (avatar_or_gravatar)
+ *
+ */
+function wppb_resize_avatar_or_gravatar( $avatar_or_gravatar, $user_info, $avatar_size, $userID ) {
+
+    global $wpdb;
+
+    $user_id = !empty( $userID ) ? $userID : (int)$user_info->data->ID;
+    $avatar_url = get_avatar_url( $user_id );
+    $image_name = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', basename( $avatar_url ));
+
+    $sql = $wpdb->prepare( "SELECT * FROM  $wpdb->posts WHERE  post_type = 'attachment' and guid like %s order by post_date desc", "%$image_name" );
+    $attachments = $wpdb->get_results( $sql, OBJECT );
+    $attachment_id = isset( $attachments[0]->ID ) ? $attachments[0]->ID : false;
+
+    $attachment_meta = wp_get_attachment_metadata( $attachment_id );
+
+    $image_path = wp_get_original_image_path( $attachment_id );
+
+    if( !empty( $image_path ) ){
+        $image_data = getimagesize( $image_path );
+
+        if ( !empty( $image_data['0'] ) && $image_data['0'] < $avatar_size )
+            $avatar_size = $image_data['0'];
+
+        if ( !empty( $attachment_meta ) && empty( $attachment_meta['sizes']['wppb-avatar-size-' . $avatar_size ] ) ) {
+
+            $resized_img = image_make_intermediate_size( $image_path, $avatar_size, $avatar_size, true );
+
+            if ($resized_img && !is_wp_error( $resized_img )) {
+
+                // Save the new size in meta data
+                $key = sprintf( 'wppb-avatar-size-%d', $avatar_size );
+                $attachment_meta['sizes'][$key] = $resized_img;
+                $resized_img_url = str_replace( basename( $avatar_url ), $resized_img['file'], $avatar_url );
+                wp_update_attachment_metadata( $attachment_id, $attachment_meta );
+
+                // Save size in backup sizes so it's deleted when original attachment is deleted.
+                $backup_sizes = get_post_meta( $attachment_id, '_wp_attachment_backup_sizes', true );
+                if ( !is_array( $backup_sizes )) {
+                    $backup_sizes = array();
+                }
+                $backup_sizes[$key] = $resized_img;
+                update_post_meta( $attachment_id, '_wp_attachment_backup_sizes', $backup_sizes );
+
+                $avatar_or_gravatar = sprintf( '<img alt="" src="%1$s" class="avatar avatar-%2$s photo avatar-default" height="%2$s" width="%2$s" />', $resized_img_url, $avatar_size );
+            }
+
+        }
+        elseif ( !empty( $attachment_meta['sizes']['wppb-avatar-size-' . $avatar_size ] ) ) {
+            $sized_avatar_url = get_avatar_url( $user_id, ['size' => $avatar_size] );
+            $avatar_or_gravatar = sprintf( '<img alt="" src="%1$s" class="avatar avatar-%2$s photo avatar-default" height="%2$s" width="%2$s" />', $sized_avatar_url, $avatar_size );
+        }
+    }
+
+    return $avatar_or_gravatar;
+
+}
+add_filter( 'wppb_userlisting_extra_avatar_or_gravatar', 'wppb_resize_avatar_or_gravatar', 10, 4 );
+
+
+/**
+ * Function that filters User Roles (Faceted Menus -> wp_capabilities) according to the "Roles to Display" Option from User-Listing Settings
+ *
+ */
+function wppb_filter_faceted_menus_wp_capabilities( $meta_values, $faceted_filter_options ) {
+
+    if ( $faceted_filter_options['facet-meta'] != 'wp_capabilities' )
+        return $meta_values;
+
+    global $userlisting_args;
+
+    $selected_user_roles  = explode( ', ', $userlisting_args[0]['roles-to-display'] );
+
+    if ( empty( $selected_user_roles ) || in_array( '*', $selected_user_roles ) )
+        return $meta_values;
+
+    foreach ( $meta_values as $role => $user_count ) {
+        if ( !in_array( $role, $selected_user_roles ) )
+            unset( $meta_values[$role] );
+    }
+
+    return $meta_values;
+}
+add_filter( 'wppb_filter_meta_values_before_output', 'wppb_filter_faceted_menus_wp_capabilities', 10, 2 );
+
+
+/**
+ * Function that handles User Listing Theme activation
+ *
+ */
+function wppb_handle_userlisting_theme_templates( $post_id ) {
+
+    if ( ( !isset( $_POST['publish'] ) || $_POST['publish'] != 'Publish' ) && ( !isset( $_POST['save'] ) || $_POST['save'] != 'Update' ) ) {
+        return;
+    }
+
+    // check if a new theme was selected or get the active theme from DB
+    $activate_new_theme = get_option('wppb_ul_active_theme');
+    if ( !empty( $activate_new_theme ) ) {
+        delete_option('wppb_ul_active_theme');
+        $active_theme = $activate_new_theme;
+    }
+    else $active_theme = get_post_meta( $post_id, 'wppb-ul-active-theme', true );
+
+    // save User Listing Theme number of users per page
+    if ( isset( $_POST['wppb_ul_page_settings_number-of-userspage'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-number-of-userspage', sanitize_text_field( $_POST['wppb_ul_page_settings_number-of-userspage'] ));
+
+    // save User Listing Theme sorting data
+    if ( isset( $_POST['wppb_ul_page_settings_default-sorting-order'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-default-sorting-order', sanitize_text_field( $_POST['wppb_ul_page_settings_default-sorting-order'] ));
+    if ( isset( $_POST['wppb_ul_page_settings_default-sorting-criteria'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-default-sorting-criteria', sanitize_text_field( $_POST['wppb_ul_page_settings_default-sorting-criteria'] ));
+
+    // save User Listing Theme role to display
+    if ( isset( $_POST['wppb_ul_page_settings_roles-to-display'] ) )
+        update_post_meta($post_id, 'wppb-ul-' . $active_theme . '-roles-to-display', $_POST['wppb_ul_page_settings_roles-to-display']  );//phpcs:ignore
+
+
+    // save User Listing Theme avatar sizes
+    if ( isset( $_POST['wppb_ul_page_settings_avatar-size-all-userlisting'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-all-users-avatar-size', sanitize_text_field( $_POST['wppb_ul_page_settings_avatar-size-all-userlisting'] ));
+    if ( isset( $_POST['wppb_ul_page_settings_avatar-size-single-userlisting'] ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-single-user-avatar-size', sanitize_text_field( $_POST['wppb_ul_page_settings_avatar-size-single-userlisting'] ));
+
+    $all_users_wp_theme_file = get_option('all_users_wp_theme_file');
+    $single_user_wp_theme_file = get_option('single_user_wp_theme_file');
+
+    // save User Listing Theme template (maybe the template was modified by the user)
+    if ( isset( $_POST['wppb-ul-templates'] ) && empty( $all_users_wp_theme_file ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-all-users-template', $_POST['wppb-ul-templates'] );//phpcs:ignore
+    if ( isset( $_POST['wppb-single-ul-templates'] ) && empty( $single_user_wp_theme_file ) )
+        update_post_meta( $post_id, 'wppb-ul-'. $active_theme .'-single-user-template', $_POST['wppb-single-ul-templates'] );//phpcs:ignore
+
+    delete_option('all_users_wp_theme_file');
+    delete_option('single_user_wp_theme_file');
+
+
+    // update UL Templates in DB
+    if ( isset( $_POST['wppb-ul-templates'] ) )
+        update_post_meta( $post_id, 'wppb-ul-templates', sanitize_text_field( $_POST['wppb-ul-templates'] ));
+    if ( isset( $_POST['wppb-single-ul-templates'] ) )
+        update_post_meta( $post_id, 'wppb-single-ul-templates', sanitize_text_field( $_POST['wppb-single-ul-templates'] ));
+
+    // update active theme in DB
+    update_post_meta( $post_id, 'wppb-ul-active-theme', $active_theme );
+
+}
+add_action( 'save_post', 'wppb_handle_userlisting_theme_templates' );
+
+
+/**
+ * Function that adds an admin notification about the UL Themes feature
+ *
+ */
+function wppb_ul_themes_new_feature_notification() {
+    /* initiate the plugin notifications class */
+    $notifications = WPPB_Plugin_Notifications::get_instance();
+    /* this must be unique */
+    $notification_id = 'wppb_ul_themes_new_feature';
+
+    $ul_icon_url = ( file_exists( WPPB_PLUGIN_DIR . 'assets/images/pro_user_listing.png' )) ? WPPB_PLUGIN_URL . 'assets/images/pro_user_listing.png' : '';
+    $ul_icon = ( !empty($ul_icon_url)) ? '<img src="'. $ul_icon_url .'" width="64" height="64" style="float: left; margin: 10px 12px 10px 0; max-width: 100px;" alt="User Listing">' : '';
+
+    $message = $ul_icon;
+    $message .= '<h3 style="margin-bottom: 0px;">Profile Builder PRO - User Listing</h3>';
+    $message .= '<p style="font-size: 15px;margin-top:4px;">' . sprintf( __( 'You can now add beautifully pre-designed templates to showcase the user base on your website using one of the <strong>user listing templates</strong> available in the %sUser Listing add-on%s.', 'profile-builder' ), '<a href="https://www.cozmoslabs.com/docs/profile-builder-2/modules/user-listing/" target="_blank">', '</a>') . '</p>';
+    $message .= '<a href="' . add_query_arg( array( 'wppb_dismiss_admin_notification' => $notification_id ) ) . '" type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'profile-builder' ) . '</span></a>';
+
+    $notifications->add_notification( $notification_id, $message, 'wppb-notice notice notice-info', false );
+}
+add_action( 'admin_init', 'wppb_ul_themes_new_feature_notification' );
 
 /* hook to filter to exclude fields from the search field */
 add_filter('wppb_exclude_search_fields', 'wppb_ul_exclude_fields_from_search',10, 2 );
@@ -2796,15 +3562,27 @@ function wppb_set404(){
             }
         }
 
-        //if admin approval is activated, then give 404 if the user was manually requested
+        //if admin approval is activated, then give 404 if an unapproved or pending user was manually requested
         $wppb_generalSettings = get_option('wppb_general_settings', 'not_found');
         if( $wppb_generalSettings != 'not_found' )
             if( wppb_get_admin_approval_option_value() === 'yes' ){
 
-                // Get term by name ''unapproved'' in user_status taxonomy.
-                $user_statusTaxID = get_term_by('name', 'unapproved', 'user_status');
-                if( $user_statusTaxID != false ){
-                    $term_taxonomy_id = $user_statusTaxID->term_taxonomy_id;
+                // Get term by the name 'unapproved' in user_status taxonomy.
+                $user_status_unapproved = get_term_by('name', 'unapproved', 'user_status');
+                if( $user_status_unapproved != false ){
+                    $term_taxonomy_id = $user_status_unapproved->term_taxonomy_id;
+
+                    $results = $wpdb->get_results( $wpdb->prepare ( "SELECT wppb_t3.ID FROM $wpdb->users AS wppb_t3 LEFT OUTER JOIN $wpdb->term_relationships AS wppb_t4 ON wppb_t3.ID = wppb_t4.object_id WHERE wppb_t4.term_taxonomy_id = %d ORDER BY wppb_t3.ID", $term_taxonomy_id ) );
+                    if( !empty( $results ) ){
+                        foreach ($results as $result){
+                            array_push($arrayID, $result->ID);
+                        }
+                    }
+                }
+                // Get term by the name 'pending' in user_status taxonomy.
+                $user_status_pending = get_term_by('name', 'pending', 'user_status');
+                if( $user_status_pending != false ){
+                    $term_taxonomy_id = $user_status_pending->term_taxonomy_id;
 
                     $results = $wpdb->get_results( $wpdb->prepare ( "SELECT wppb_t3.ID FROM $wpdb->users AS wppb_t3 LEFT OUTER JOIN $wpdb->term_relationships AS wppb_t4 ON wppb_t3.ID = wppb_t4.object_id WHERE wppb_t4.term_taxonomy_id = %d ORDER BY wppb_t3.ID", $term_taxonomy_id ) );
                     if( !empty( $results ) ){

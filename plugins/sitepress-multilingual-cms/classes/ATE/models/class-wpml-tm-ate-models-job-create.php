@@ -5,6 +5,8 @@
  */
 class WPML_TM_ATE_Models_Job_Create {
 	/** @var int */
+	public $id;
+	/** @var int */
 	public $deadline;
 	/** @var WPML_TM_ATE_Models_Job_File */
 	public $file;

@@ -93,6 +93,9 @@
                     <li class="description">
                         <?php esc_html_e( 'For example, you can redirect these users to the Edit Profile form so they can add the missing info.', 'profile-builder' ); ?>
                     </li>
+                    <li class="description">
+                        <?php esc_html_e( 'This option will not work if you have conditional logic implemented in the form.', 'profile-builder' ); ?>
+                    </li>
                 </ul>
             </td>
         </tr>
@@ -252,57 +255,54 @@
             </tr>
         <?php endif; ?>
 
-            <tr>
-                <th><?php esc_html_e( 'Show the Password field visibility toggle', 'profile-builder' ); ?></th>
+        <tr>
+            <th><?php esc_html_e( 'Show the Password field visibility toggle', 'profile-builder' ); ?></th>
 
-                <td>
-                    <label><input type="checkbox" name="wppb_toolbox_fields_settings[password-visibility-hide]"<?php echo ( ( isset( $settings['password-visibility-hide'] ) && ( $settings['password-visibility-hide'] == 'yes' ) ) ? ' checked' : '' ); ?> value="yes">
-                        <?php esc_html_e( 'Yes', 'profile-builder' ); ?>
-                    </label>
+            <td>
+                <label><input type="checkbox" name="wppb_toolbox_fields_settings[password-visibility-hide]"<?php echo ( ( isset( $settings['password-visibility-hide'] ) && ( $settings['password-visibility-hide'] == 'yes' ) ) ? ' checked' : '' ); ?> value="yes">
+                    <?php esc_html_e( 'Yes', 'profile-builder' ); ?>
+                </label>
 
-                    <ul>
-                        <li class="description">
-                            <?php esc_html_e( 'Activating this option will show a visibility toggle button for all Password fields.', 'profile-builder' ); ?>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
+                <ul>
+                    <li class="description">
+                        <?php esc_html_e( 'Activating this option will show a visibility toggle button for all Password fields.', 'profile-builder' ); ?>
+                    </li>
+                </ul>
+            </td>
+        </tr>
 
-	    <?php if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/front-end/extra-fields/extra-fields.php' ) ) : ?>
-            <tr>
-                <th><?php esc_html_e( 'Remove All Extra Fields from Backend edit profile page.', 'profile-builder' ); ?></th>
 
-                <td>
-                    <label><input type="checkbox" name="wppb_toolbox_fields_settings[remove-all-fields-from-backend]"<?php echo ( ( isset( $settings['remove-all-fields-from-backend'] ) && ( $settings['remove-all-fields-from-backend'] == 'yes' ) ) ? ' checked' : '' ); ?> value="yes">
-					    <?php esc_html_e( 'Yes', 'profile-builder' ); ?>
-                    </label>
+        <tr>
+            <th><?php esc_html_e( 'Remove All Extra Fields from Backend edit profile page.', 'profile-builder' ); ?></th>
 
-                    <ul>
-                        <li class="description">
-						    <?php esc_html_e( 'If you activate this option, it will remove all custom fields from the backend profile page created with Profile Builder.', 'profile-builder' ); ?>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-	    <?php endif; ?>
+            <td>
+                <label><input type="checkbox" name="wppb_toolbox_fields_settings[remove-all-fields-from-backend]"<?php echo ( ( isset( $settings['remove-all-fields-from-backend'] ) && ( $settings['remove-all-fields-from-backend'] == 'yes' ) ) ? ' checked' : '' ); ?> value="yes">
+                    <?php esc_html_e( 'Yes', 'profile-builder' ); ?>
+                </label>
 
-        <?php if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/front-end/extra-fields/extra-fields.php' ) ) : ?>
-            <tr>
-                <th><?php esc_html_e( 'Update database entries when changing meta key', 'profile-builder' ); ?></th>
+                <ul>
+                    <li class="description">
+                        <?php esc_html_e( 'If you activate this option, it will remove all custom fields from the backend profile page created with Profile Builder.', 'profile-builder' ); ?>
+                    </li>
+                </ul>
+            </td>
+        </tr>
 
-                <td>
-                    <label><input type="checkbox" name="wppb_toolbox_fields_settings[update-db-meta-keys]"<?php echo ( ( isset( $settings['update-db-meta-keys'] ) && ( $settings['update-db-meta-keys'] == 'yes' ) ) ? ' checked' : '' ); ?> value="yes">
-                        <?php esc_html_e( 'Yes', 'profile-builder' ); ?>
-                    </label>
+        <tr>
+            <th><?php esc_html_e( 'Update database entries when changing meta key', 'profile-builder' ); ?></th>
 
-                    <ul>
-                        <li class="description">
-                            <?php esc_html_e( 'If you activate this option, when changing the meta key of a field, existing entries from the database will be updated as well.', 'profile-builder' ); ?>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        <?php endif; ?>
+            <td>
+                <label><input type="checkbox" name="wppb_toolbox_fields_settings[update-db-meta-keys]"<?php echo ( ( isset( $settings['update-db-meta-keys'] ) && ( $settings['update-db-meta-keys'] == 'yes' ) ) ? ' checked' : '' ); ?> value="yes">
+                    <?php esc_html_e( 'Yes', 'profile-builder' ); ?>
+                </label>
+
+                <ul>
+                    <li class="description">
+                        <?php esc_html_e( 'If you activate this option, when changing the meta key of a field, existing entries from the database will be updated as well.', 'profile-builder' ); ?>
+                    </li>
+                </ul>
+            </td>
+        </tr>
 
     </table>
 

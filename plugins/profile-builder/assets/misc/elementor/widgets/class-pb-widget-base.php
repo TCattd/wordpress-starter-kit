@@ -248,12 +248,33 @@ abstract class PB_Elementor_Widget extends \Elementor\Widget_Base {
      * @return bool
      */
     protected function is_2fa_active(){
-        $wppb_two_factor_authentication_settings = get_option( 'wppb_two_factor_authentication_settings', 'not_found' );
-        if( isset( $wppb_two_factor_authentication_settings['enabled'] ) && $wppb_two_factor_authentication_settings['enabled'] === 'yes' ) {
-            return true;
-        }
+        return wppb_is_2fa_active();
+    }
 
-        return false;
+    /**
+     * Get an aray of page names.
+     * @return array
+     */
+    protected function get_all_pages(){
+        $args = array(
+            'post_type'         => 'page',
+            'posts_per_page'    => -1
+        );
+
+        $page_titles = array(
+            '' => ''
+        );
+
+        if( function_exists( 'wc_get_page_id' ) )
+            $args['exclude'] = wc_get_page_id( 'shop' );
+
+        $all_pages = get_posts( $args );
+        if( !empty( $all_pages ) ){
+            foreach ( $all_pages as $page ){
+                $page_titles[$page->ID] = $page->post_title;
+            }
+        }
+        return $page_titles;
     }
 
     /**
@@ -283,8 +304,8 @@ abstract class PB_Elementor_Widget extends \Elementor\Widget_Base {
                 $atts = [
                     'role' => $settings['pb_role'],
                     'form_name' => $form_name,
-                    'redirect_url' => $settings['pb_redirect_url'],
-                    'logout_redirect_url' => $settings['pb_logout_redirect_url'],
+                    'redirect_url' => get_page_link( $settings['pb_redirect_url'] ),
+                    'logout_redirect_url' => get_page_link( $settings['pb_logout_redirect_url'] ),
                     'automatic_login' => $settings['pb_automatic_login'],
                 ];
                 return wppb_front_end_register( $atts );
@@ -300,22 +321,22 @@ abstract class PB_Elementor_Widget extends \Elementor\Widget_Base {
                 }
                 $atts = [
                     'form_name' => $form_name,
-                    'redirect_url' => $settings['pb_redirect_url'],
+                    'redirect_url' => get_page_link( $settings['pb_redirect_url'] ),
                 ];
                 return wppb_front_end_profile_info( $atts );
             case 'l':
                 include_once( WPPB_PLUGIN_DIR.'/front-end/login.php' );
                 $atts = [
-                    'redirect_url'        => $settings['pb_after_login_redirect_url'],
-                    'logout_redirect_url' => $settings['pb_after_logout_redirect_url'],
-                    'register_url'        => $settings['pb_register_url'],
-                    'lostpassword_url'    => $settings['pb_lostpassword_url'],
+                    'redirect_url'        => get_page_link( $settings['pb_after_login_redirect_url'] ),
+                    'logout_redirect_url' => get_page_link( $settings['pb_after_logout_redirect_url'] ),
+                    'register_url'        => get_page_link( $settings['pb_register_url'] ),
+                    'lostpassword_url'    => get_page_link( $settings['pb_lostpassword_url'] ),
                     'show_2fa_field'      => isset( $settings['pb_auth_field'] ) ? $settings['pb_auth_field'] : false,
                 ];
                 return wppb_front_end_login( $atts );
             case 'rp':
                 include_once( WPPB_PLUGIN_DIR.'/front-end/recover.php' );
-                return wppb_front_end_password_recovery();
+                return wppb_front_end_password_recovery( [] );
             case 'ul':
                 if( defined( 'WPPB_PAID_PLUGIN_DIR' ) ){
                     include_once( WPPB_PAID_PLUGIN_DIR.'/add-ons/user-listing/userlisting.php' );
@@ -323,7 +344,7 @@ abstract class PB_Elementor_Widget extends \Elementor\Widget_Base {
                         'name'       => $settings['pb_name'],
                         'single'     => $settings['pb_single'] === 'yes',
                         'meta_key'   => $settings['pb_meta_key'],
-                        'meta_value' => $settings['pb_meta_value'],
+                        'meta_value' => $settings['pb_meta_key'] ? $settings['pb_meta_value'] : '',
                         'include'    => $settings['pb_include'],
                         'exclude'    => $settings['pb_exclude'],
                         'id'         => $settings['pb_id'],

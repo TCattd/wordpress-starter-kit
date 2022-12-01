@@ -46,7 +46,7 @@ class StatusIcons implements \IWPML_Backend_Action {
 	}
 
 	public function getIcon( $default, $job ) {
-		if (
+		if ( $job &&
 			(int) Obj::prop( 'editor_job_id', $job ) === (int) Obj::prop( 'ate_job_id', $_GET )
 			&& Relation::propEq( 'editor', \WPML_TM_Editors::ATE, $job )
 			&& Lst::includes( (int) Obj::prop( 'status', $job ), [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ] )

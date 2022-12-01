@@ -1,14 +1,12 @@
 <?php
-namespace Automattic\WooCommerce\Blocks\StoreApi\Utilities;
+namespace Automattic\WooCommerce\StoreApi\Utilities;
 
 use \Exception;
-use Automattic\WooCommerce\Blocks\StoreApi\Routes\RouteException;
+use Automattic\WooCommerce\StoreApi\Exceptions\RouteException;
 
 /**
  * OrderController class.
  * Helper class which creates and syncs orders with the cart.
- *
- * @internal This API is used internally by Blocks--it is still in flux and may be subject to revisions.
  */
 class OrderController {
 
@@ -46,6 +44,9 @@ class OrderController {
 	 * @param \WC_Order $order The order object to update.
 	 */
 	public function update_order_from_cart( \WC_Order $order ) {
+		// Ensures Local pickups are accounted for.
+		add_filter( 'woocommerce_order_get_tax_location', array( $this, 'handle_local_pickup_taxes' ) );
+
 		// Ensure cart is current.
 		wc()->cart->calculate_shipping();
 		wc()->cart->calculate_totals();
@@ -92,16 +93,9 @@ class OrderController {
 					'shipping_state'      => $order->get_shipping_state(),
 					'shipping_postcode'   => $order->get_shipping_postcode(),
 					'shipping_country'    => $order->get_shipping_country(),
+					'shipping_phone'      => $order->get_shipping_phone(),
 				]
 			);
-
-			$shipping_phone_value = is_callable( [ $order, 'get_shipping_phone' ] ) ? $order->get_shipping_phone() : $order->get_meta( '_shipping_phone', true );
-
-			if ( is_callable( [ $customer, 'set_shipping_phone' ] ) ) {
-				$customer->set_shipping_phone( $shipping_phone_value );
-			} else {
-				$customer->update_meta_data( 'shipping_phone', $shipping_phone_value );
-			}
 
 			$customer->save();
 		};
@@ -444,6 +438,23 @@ class OrderController {
 	}
 
 	/**
+	 * Passes the correct base for local pick orders
+	 *
+	 * @todo: Remove custom local pickup handling once WooCommerce 6.8.0 is the minimum version.
+	 *
+	 * @param array $location Taxes location.
+	 * @return array updated location that accounts for local pickup.
+	 */
+	public function handle_local_pickup_taxes( $location ) {
+		$customer = wc()->customer;
+
+		if ( ! empty( $customer ) ) {
+			return $customer->get_taxable_address();
+		}
+
+		return $location;
+	}
+	/**
 	 * Create order line items.
 	 *
 	 * @param \WC_Order $order The order object to update.
@@ -512,15 +523,8 @@ class OrderController {
 				'shipping_state'      => wc()->customer->get_shipping_state(),
 				'shipping_postcode'   => wc()->customer->get_shipping_postcode(),
 				'shipping_country'    => wc()->customer->get_shipping_country(),
+				'shipping_phone'      => wc()->customer->get_shipping_phone(),
 			]
 		);
-
-		$shipping_phone_value = is_callable( [ wc()->customer, 'get_shipping_phone' ] ) ? wc()->customer->get_shipping_phone() : wc()->customer->get_meta( 'shipping_phone', true );
-
-		if ( is_callable( [ $order, 'set_shipping_phone' ] ) ) {
-			$order->set_shipping_phone( $shipping_phone_value );
-		} else {
-			$order->update_meta_data( '_shipping_phone', $shipping_phone_value );
-		}
 	}
 }

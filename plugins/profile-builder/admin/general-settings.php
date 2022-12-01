@@ -31,7 +31,13 @@ function wppb_get_settings_pages(){
 	}
 
     //add sub-pages here for email customizer
-	if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/add-ons/add-ons.php' ) ) {
+	if( file_exists( WPPB_PLUGIN_DIR . '/features/email-customizer/email-customizer.php' ) ){
+		
+		$settings_pages['pages']['user-email-customizer'] = __( 'Email Customizer', 'profile-builder' );
+		$settings_pages['sub-pages']['user-email-customizer']['user-email-customizer'] = __( 'User Emails', 'profile-builder' );
+		$settings_pages['sub-pages']['user-email-customizer']['admin-email-customizer'] = __( 'Administrator Emails', 'profile-builder' );
+
+	} else if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/add-ons/add-ons.php' ) ) {
 		if( ( isset($wppb_module_settings['wppb_emailCustomizerAdmin']) && $wppb_module_settings['wppb_emailCustomizerAdmin'] == 'show' ) || ( isset($wppb_module_settings['wppb_emailCustomizer']) && $wppb_module_settings['wppb_emailCustomizer'] == 'show') ){
 			$settings_pages['pages']['user-email-customizer'] = __( 'Email Customizer', 'profile-builder' );
 			$settings_pages['sub-pages']['user-email-customizer']['user-email-customizer'] = __( 'User Emails', 'profile-builder' );
@@ -132,7 +138,10 @@ function wppb_general_settings_content() {
 	wppb_generate_default_settings_defaults();
 ?>
 	<div class="wrap wppb-wrap">
-		<h2><?php esc_html_e( 'Profile Builder Settings', 'profile-builder' ); ?></h2>
+		<h2>
+            <?php esc_html_e( 'Profile Builder Settings', 'profile-builder' ); ?>
+            <a href="https://www.cozmoslabs.com/docs/profile-builder-2/general-settings/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+        </h2>
 
         <?php settings_errors(); ?>
 
@@ -289,7 +298,7 @@ function wppb_general_settings_content() {
 					<?php esc_html_e( '"Admin Approval" Feature:', 'profile-builder' ); ?>
 				</th>
 				<td>
-					<p><em>	<?php printf( esc_html__( 'You decide who is a user on your website. Get notified via email or approve multiple users at once from the WordPress UI. Enable Admin Approval by upgrading to %1$Basic or PRO versions%2$s.', 'profile-builder' ),'<a href="https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=general-settings-link&utm_campaign=PBFree">', '</a>' )?></em></p>
+					<p><em>	<?php printf( esc_html__( 'You decide who is a user on your website. Get notified via email or approve multiple users at once from the WordPress UI. Enable Admin Approval by upgrading to %1$sBasic or PRO versions%2$s.', 'profile-builder' ),'<a href="https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=general-settings-link&utm_campaign=PBFree">', '</a>' )?></em></p>
 				</td>
 			</tr>
 		<?php } ?>
@@ -338,6 +347,42 @@ function wppb_general_settings_content() {
 					</select>
 				</td>
 			</tr>
+
+            <tr>
+                <th scope="row">
+                    <?php esc_html_e( 'Select Recover Password Page:', 'profile-builder' ); ?>
+                </th>
+                <td>
+                    <select name="wppb_general_settings[lost_password_page]" class="wppb-select">
+                        <option value=""> <?php esc_html_e( 'None', 'profile-builder' ); ?></option>
+                        <?php
+                        $args = array(
+                            'post_type' => 'page',
+                            'post_status' => 'publish',
+                            'numberposts' => -1,
+                            'orderby' => 'name',
+                            'order' => 'ASC'
+                        );
+                        $pages = get_posts( $args );
+
+                        foreach ( $pages as $key => $value ){
+                            echo '<option value="'.esc_attr( $value->guid ).'"';
+                            if ( isset( $wppb_generalSettings['lost_password_page'] ) && $wppb_generalSettings['lost_password_page'] == $value->guid )
+                                echo ' selected';
+
+                            echo '>' . esc_html( $value->post_title ) . '</option>';
+                        }
+
+                        ?>
+
+                    </select>
+
+                    <ul>
+                        <li class="description"><?php printf( esc_html__( 'Select the page which contains the %1$s[wppb-recover-password]%2$s shortcode.', 'profile-builder' ), '<strong>','</strong>' ) ?> </li>
+                    </ul>
+
+                </td>
+            </tr>
 
 			<?php do_action( 'wppb_extra_general_settings', $wppb_generalSettings ); ?>
 		</table>

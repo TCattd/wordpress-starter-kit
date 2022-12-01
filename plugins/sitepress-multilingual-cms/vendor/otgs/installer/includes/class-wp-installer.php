@@ -6,6 +6,8 @@ use OTGS\Installer\Recommendations\RecommendationsManager;
 use OTGS\Installer\CommercialTab\SectionsManager;
 use OTGS\Installer\Recommendations\Storage;
 use OTGS\Installer\Settings;
+use OTGS\Installer\FP\Obj;
+use OTGS\Installer\Subscription_Warning_Message;
 
 class WP_Installer {
 
@@ -1835,99 +1837,37 @@ class WP_Installer {
 	}
 
 	public function show_subscription_renew_warning( $repository_id, $subscription_id ) {
+		$subscriptionWarningMessage = new Subscription_Warning_Message( $this );
+		$warningMessage             = $subscriptionWarningMessage->get( $repository_id, $subscription_id );
 
-		$show = false;
-
-		$data = $this->settings['repositories'][ $repository_id ]['data'];
-		if ( ! empty( $data['subscriptions_meta'] ) ) {
-			if ( isset( $data['subscriptions_meta']['expiration'] ) ) {
-
-				if ( ! empty( $data['subscriptions_meta']['expiration'][ $subscription_id ] ) ) {
-
-					$days    = $data['subscriptions_meta']['expiration'][ $subscription_id ]['days_warning'];
-					$message = $data['subscriptions_meta']['expiration'][ $subscription_id ]['warning_message'];
-
-				} else {
-
-					//defaults
-					$days    = 30;
-					$message = __( 'You will have to renew your subscription in order to continue getting the updates and support.', 'installer' );
-
-				}
-
-				if ( ! empty( $this->settings['repositories'][ $repository_id ]['subscription'] ) ) {
-					$subscription = $this->settings['repositories'][ $repository_id ]['subscription'];
-
-					if ( $subscription['data']->subscription_type == $subscription_id && ! empty( $subscription['data']->expires ) ) {
-
-						if ( strtotime( $subscription['data']->expires ) < strtotime( sprintf( "+%d day", $days ) ) ) {
-
-							$days_to_expiration = ceil( ( strtotime( $subscription['data']->expires ) - time() ) / 86400 );
-
-							echo '<div><p class="installer-warn-box">' .
-							     sprintf( _n( 'Your subscription expires in %d day.', 'Your subscription expires in %d days.', $days_to_expiration, 'installer' ), $days_to_expiration ) .
-							     '<br />' . $message .
-							     '</p></div>';
-
-							$show = true;
-
-						}
-
-					}
-
-				}
-
-
-			}
+		if ( ! empty( $warningMessage ) ) {
+			echo '<div><p class="installer-warn-box notice notice-alt">' . $warningMessage . '</p></div>';
 		}
 
-
-		return $show;
-
+		return ! empty( $warningMessage );
 	}
 
 	public function setup_plugins_renew_warnings() {
+		$plugins                     = get_plugins();
+		$subscriptions_with_warnings = [];
 
-		$plugins = get_plugins();
+		foreach ( $this->settings['repositories'] as $repositoryId => $repository ) {
 
-		$subscriptions_with_warnings = array();
-		foreach ( $this->settings['repositories'] as $repository_id => $repository ) {
+			$subscriptionData = Obj::path( [
+				'repositories',
+				$repositoryId,
+				'subscription',
+				'data'
+			], $this->settings );
 
-			if ( $this->repository_has_valid_subscription( $repository_id ) ) {
-				$subscription_type = $this->settings['repositories'][ $repository_id ]['subscription']['data']->subscription_type;
-				$expires           = $this->settings['repositories'][ $repository_id ]['subscription']['data']->expires;
+			$subscriptionType = Obj::prop( 'subscription_type', $subscriptionData );
 
-				$never_expires = isset( $this->settings['repositories'][ $repository_id ]['subscription'] )
-				                 && empty( $this->settings['repositories'][ $repository_id ]['subscription']['data']->expires )
-				                 && (
-				                 (int) $this->settings['repositories'][ $repository_id ]['subscription']['data']->status === OTGS_Installer_Subscription::SUBSCRIPTION_STATUS_ACTIVE_NO_EXPIRATION ||
-				                 (int) $this->settings['repositories'][ $repository_id ]['subscription']['data']->status === OTGS_Installer_Subscription::SUBSCRIPTION_STATUS_ACTIVE
-				                 );
+			$subscriptionWarningMessage = new Subscription_Warning_Message( $this );
+			$warningMessage             = $subscriptionWarningMessage->get( $repositoryId, $subscriptionType );
 
-				if ( ! $never_expires ) {
-					if ( isset( $this->settings['repositories'][ $repository_id ]['data']['subscriptions_meta']['expiration'][ $subscription_type ] ) ) {
-
-						$days_warning   = $this->settings['repositories'][ $repository_id ]['data']['subscriptions_meta']['expiration'][ $subscription_type ]['days_warning'];
-						$custom_message = $this->settings['repositories'][ $repository_id ]['data']['subscriptions_meta']['expiration'][ $subscription_type ]['warning_message'];
-
-					} else {
-						//defaults
-						$days_warning   = 30;
-						$custom_message = __( 'You will have to renew your subscription in order to continue getting the updates and support.', 'installer' );
-					}
-
-					if ( strtotime( $expires ) < strtotime( sprintf( '+%d day', $days_warning ) ) ) {
-
-						$days_to_expiration = ceil( ( strtotime( $expires ) - time() ) / 86400 );
-
-						$message                                           = sprintf( _n( 'Your subscription expires in %d day.', 'Your subscription expires in %d days.', $days_to_expiration, 'installer' ), $days_to_expiration );
-						$subscriptions_with_warnings[ $subscription_type ] = $message . ' ' . $custom_message;
-
-					}
-				}
-
+			if ( ! empty( $warningMessage ) ) {
+				$subscriptions_with_warnings[ $subscriptionType ] = $warningMessage;
 			}
-
 		}
 
 
@@ -1959,7 +1899,6 @@ class WP_Installer {
 									if ( isset( $subscriptions_with_warnings[ $product['subscription_type'] ] ) ) {
 
 										$this->_plugins_renew_warnings[ $plugin_id ] = $subscriptions_with_warnings[ $product['subscription_type'] ];
-
 									}
 
 								}
@@ -1986,7 +1925,6 @@ class WP_Installer {
 
 				add_action( "after_plugin_row_" . $plugin_id, array( $this, 'plugins_renew_warning' ), 10, 3 );
 			}
-
 		}
 
 	}
@@ -2000,16 +1938,15 @@ class WP_Installer {
 		$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
 		?>
 
-        <tr class="plugin-update-tr">
-            <td colspan="<?php echo $wp_list_table->get_column_count(); ?>" class="plugin-update colspanchange">
-                <div class="update-message">
-					<?php
-					echo $this->_plugins_renew_warnings[ $plugin_file ] . ' ';
-					printf( __( '%sRenew here%s.', 'installer' ),
-						'<a href="' . $this->menu_url() . '">', '</a>' );
-					?>
-                </div>
-        </tr>
+		<tr id="<?php echo $plugin_data['slug']; ?>-update" data-slug="<?php echo $plugin_data['slug']; ?>" data-plugin="<?php echo $plugin_file ?>">
+			<td colspan="<?php echo $wp_list_table->get_column_count(); ?>" class="notice notice-warning notice-otgs">
+					<p>
+						<?php
+						echo $this->_plugins_renew_warnings[ $plugin_file ];
+						?>
+					</p>
+			</td>
+		</tr>
 
 		<?php
 
@@ -2671,7 +2608,8 @@ class WP_Installer {
 
 									if (
 										self::isFreeToolsetTypes( $name, $plugin) ||
-										$this->isComplementaryWithWPMLSubscription( $name, $slug )
+										$this->isComplementaryWithWPMLSubscription( $name, $slug ) ||
+										$download['fallback-free-on-wporg']
 									) {
 										$display_subscription_notice = false;
 									} else {

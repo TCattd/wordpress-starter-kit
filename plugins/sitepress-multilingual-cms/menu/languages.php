@@ -745,7 +745,7 @@ $theme_wpml_config_file = WPML_Config::get_theme_wpml_config_file();
 	$request_get_page = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_NULL_ON_FAILURE );
 	do_action( 'icl_extra_options_' . $request_get_page );
 
-	$seo_ui = new WPML_SEO_HeadLangs( $sitepress, new WPML_Queried_Object_Factory() );
+	$seo_ui = new WPML_SEO_HeadLangs( $sitepress );
 	$seo_ui->render_menu();
 	?>
 

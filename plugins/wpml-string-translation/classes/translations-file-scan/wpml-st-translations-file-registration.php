@@ -70,14 +70,14 @@ class WPML_ST_Translations_File_Registration {
 
 	/**
 	 * @param string|false $translations translations in the JED format
-	 * @param string       $file
+	 * @param string|false $file
 	 * @param string       $handle
 	 * @param string       $original_domain
 	 *
 	 * @return string|false
 	 */
 	public function add_json_translations_to_import_queue( $translations, $file, $handle, $original_domain ) {
-		if ( ! isset( $this->cache[ $file ] ) ) {
+		if ( $file && ! isset( $this->cache[ $file ] ) ) {
 			$registration_domain  = WPML_ST_JED_Domain::get( $original_domain, $handle );
 			$this->cache[ $file ] = $this->save_file_info( $original_domain, $registration_domain, $file );
 		}

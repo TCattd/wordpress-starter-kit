@@ -2,6 +2,7 @@
 
 namespace WPML\TM\ATE\Review;
 
+use WPML\API\Sanitize;
 use WPML\FP\Fns;
 use WPML\FP\Logic;
 use WPML\FP\Lst;
@@ -167,7 +168,7 @@ class ReviewTranslation implements \IWPML_Frontend_Action, \IWPML_Backend_Action
 				'needsReview'         => ReviewStatus::doesJobNeedReview( $job ),
 				'completedInATE'      => $this->isCompletedInATE( $_GET ),
 				'needsUpdate'         => Relation::propEq( 'review_status', ReviewStatus::EDITING, $job ),
-				'previousTranslation' => filter_input( INPUT_GET, 'previousTranslation', FILTER_SANITIZE_STRING ),
+				'previousTranslation' => Sanitize::stringProp( 'previousTranslation', $_GET ),
 				'backUrl'             => Obj::prop( 'returnUrl', $_GET ),
 				'endpoints'           => [
 					'accept' => AcceptTranslation::class,

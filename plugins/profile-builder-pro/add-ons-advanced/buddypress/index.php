@@ -516,3 +516,31 @@ function wppb_in_bdp_generate_singleUserlisting_content(){
   </li>
 </ul>';
 }
+
+
+/**
+ * Filter for redirecting BuddyPress Activity and Members pages if Content Restriction is set
+ *
+ */
+if( function_exists( 'bp_is_current_component' ) )
+    add_filter( 'wppb_restricted_post_redirect_post_id', 'wppb_restrict_buddypress_pages' );
+
+function wppb_restrict_buddypress_pages( $post_id ){
+
+    if( bp_is_current_component('activity') ){
+
+        $bp_pages = get_option('bp-pages');
+        $post_id  = $bp_pages['activity'];
+
+    }
+
+    if( bp_is_current_component('members') ){
+
+        $bp_pages = get_option('bp-pages');
+        $post_id  = $bp_pages['members'];
+
+    }
+
+    return $post_id;
+
+}

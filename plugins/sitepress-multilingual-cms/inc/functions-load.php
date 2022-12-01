@@ -7,6 +7,7 @@
 
 use WPML\FP\Obj;
 use WPML\LIB\WP\WPDB as WpWPDB;
+use function WPML\Container\make;
 
 require_once __DIR__ . '/wpml_load_request_handler.php';
 
@@ -83,12 +84,12 @@ function load_essential_globals( $is_admin = null ) {
 function wpml_load_post_translation( $is_admin, $settings ) {
 	global $wpml_post_translations, $wpdb;
 
-	$http_referer_factory = new WPML_URL_HTTP_Referer_Factory();
-	$http_referer         = $http_referer_factory->create();
+	$http_referer = make( WPML_URL_HTTP_Referer::class );
 
-	if ( $is_admin === true
-		 || $http_referer->is_rest_request_called_from_post_edit_page()
-		 || ( defined( 'WP_CLI' ) && WP_CLI )
+	if (
+		$is_admin === true
+		|| $http_referer->is_rest_request_called_from_post_edit_page()
+		|| ( defined( 'WP_CLI' ) && WP_CLI )
 	) {
 		$wpml_post_translations = new WPML_Admin_Post_Actions( $settings, $wpdb );
 	} else {

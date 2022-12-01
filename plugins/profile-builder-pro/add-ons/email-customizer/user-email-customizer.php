@@ -44,7 +44,10 @@ add_action( 'init', 'wppb_user_email_customizer_add_mustache_in_backend', 11 );
  * @since v.2.0
  */
 function wppb_user_email_customizer_add_mustache_in_backend(){
-	require_once( WPPB_PAID_PLUGIN_DIR.'/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+	if( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+		require_once( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+	elseif( file_exists( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+		require_once( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
 
 	$fields = array(
 				array(

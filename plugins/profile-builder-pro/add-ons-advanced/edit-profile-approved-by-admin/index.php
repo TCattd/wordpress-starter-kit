@@ -862,8 +862,8 @@ function wppb_in_epaa_determine_url_from_form_name( $form_name ){
 
         $default_form_pages = array_udiff( $all_edit_form_pages, $specific_form_pages, 'wppb_in_epaa_compare_objects' );
         if ( !empty( $default_form_pages ) ) {
-            if( has_shortcode( $default_form_pages[1]->post_content, 'wppb-edit-profile' ) ) {
-                return get_permalink($default_form_pages[1]->ID);
+            if( has_shortcode( $default_form_pages[0]->post_content, 'wppb-edit-profile' ) ) {
+                return get_permalink($default_form_pages[0]->ID);
             }
         }
 

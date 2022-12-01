@@ -1,0 +1,115 @@
+/* DEFAULT Theme Template Style - All Users */
+
+/*.entry-content, .entry-summary {*/
+/*    max-width: calc(100% - (2 * 1rem)) !important;*/
+/*    width: 100% !important;*/
+/*    margin: 0 1rem !important;*/
+/*    padding: 0 !important;*/
+/*}*/
+
+/*.container {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.entry-content > *:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce),*/
+/*.wppb-userlisting-container,*/
+/*.col-full,*/
+/*.grid-container {*/
+/*    max-width: 100%!important;*/
+/*}*/
+
+/* new pagination design */
+/* start */
+.userlisting_pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: 80px;
+    margin-top: 8px;
+    background-color: #f4f4f4;
+    padding: 0 30px;
+    color: #5E7291;
+}
+
+.userlisting_pagination .page-link:not(.pageLink_fist, .pageLink_previous, .pageLink_next, .pageLink_last),
+.userlisting_pagination .selected {
+    width: 12px;
+    height: 12px;
+    margin: auto 5px 24px;
+    font-size: 0;
+}
+
+.userlisting_pagination .page-link:not(.pageLink_fist, .pageLink_previous, .pageLink_next, .pageLink_last) {
+    border: 1px solid #CACDD6;
+    background-color: #FFFFFF;
+}
+
+.userlisting_pagination .selected,
+.userlisting_pagination .page-link:not(.pageLink_fist, .pageLink_previous, .pageLink_next, .pageLink_last):hover {
+    border: 1px solid #0047FF;
+}
+
+.userlisting_pagination .selected {
+    background-color: #0047FF;
+}
+
+.userlisting_pagination .page-link.pageLink_fist,
+.userlisting_pagination .page-link.pageLink_previous,
+.userlisting_pagination .page-link.pageLink_next,
+.userlisting_pagination .page-link.pageLink_last {
+    font-size: 0;
+    width: 40px;
+    height: 40px;
+    border: 1px solid #CACDD6;
+    background-color: #FFFFFF;
+    margin: 0 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.userlisting_pagination .page-link.pageLink_fist:hover,
+.userlisting_pagination .page-link.pageLink_previous:hover,
+.userlisting_pagination .page-link.pageLink_next:hover,
+.userlisting_pagination .page-link.pageLink_last:hover {
+    border-color: #0047FF;
+}
+
+.userlisting_pagination a.page-link:focus {
+    background: #FFFFFF !important;
+    text-decoration: none !important;
+    outline: none !important;
+}
+
+.userlisting_pagination .page-link.pageLink_fist:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%235E7291;stroke-width:2;'><path d='M11.92,19.92L4,12L11.92,4.08L13.33,5.5L7.83,11H22V13H7.83L13.34,18.5L11.92,19.92M4,12V2H2V22H4V12Z'/></svg>");
+}
+
+.userlisting_pagination .page-link.pageLink_fist:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%230047FF;stroke-width:2;'><path d='M11.92,19.92L4,12L11.92,4.08L13.33,5.5L7.83,11H22V13H7.83L13.34,18.5L11.92,19.92M4,12V2H2V22H4V12Z'/></svg>");
+}
+
+.userlisting_pagination .page-link.pageLink_previous:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%235E7291;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+.userlisting_pagination .page-link.pageLink_previous:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%230047FF;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+.userlisting_pagination .page-link.page-link.pageLink_next:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%235E7291;stroke-width:2;transform: rotate(180deg);'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+.userlisting_pagination .page-link.page-link.pageLink_next:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%230047FF;stroke-width:2;transform: rotate(180deg);'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+.userlisting_pagination .page-link.pageLink_last:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%235E7291;stroke-width:2;transform: rotate(180deg);'><path d='M11.92,19.92L4,12L11.92,4.08L13.33,5.5L7.83,11H22V13H7.83L13.34,18.5L11.92,19.92M4,12V2H2V22H4V12Z'/></svg>");
+}
+
+.userlisting_pagination .page-link.pageLink_last:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%230047FF;stroke-width:2;transform: rotate(180deg);'><path d='M11.92,19.92L4,12L11.92,4.08L13.33,5.5L7.83,11H22V13H7.83L13.34,18.5L11.92,19.92M4,12V2H2V22H4V12Z'/></svg>");
+}
+/* end - pagination */

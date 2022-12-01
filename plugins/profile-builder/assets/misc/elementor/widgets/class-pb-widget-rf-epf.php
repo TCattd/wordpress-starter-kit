@@ -100,6 +100,7 @@ abstract class PB_Elementor_Register_Edit_Profile_Widget extends PB_Elementor_Wi
         $form_titles = array(
             '' => __( 'Default', 'profile-builder' )
         );
+        $page_titles = $this->get_all_pages();
         $form_fields = array(
             'default' => get_option( 'wppb_manage_fields' )
         );
@@ -198,7 +199,7 @@ abstract class PB_Elementor_Register_Edit_Profile_Widget extends PB_Elementor_Wi
                     continue;
                 }
                 foreach ($form_fields['default'] as $key_2 => $form_field_default) {
-                    if ($form_field_default['id'] === $form_field['id']) {
+                    if ($form_field_default['id'] == $form_field['id']) {
                         $form_fields['default'][$key_2]['control_group_conditions']['pb_form_name'][] = '-'.$form_slug;
                     }
                 }
@@ -234,10 +235,11 @@ abstract class PB_Elementor_Register_Edit_Profile_Widget extends PB_Elementor_Wi
 
         unset($params);
         $params = [
-            'type'        => \Elementor\Controls_Manager::TEXT,
-            'placeholder' => __( 'Enter URL', 'profile-builder' ),
+            'type'        => \Elementor\Controls_Manager::SELECT,
+            'options'     => $page_titles,
+            'default'     => '',
             'condition'   => [
-                'pb_form_name'=>'',
+                'pb_form_name' => '',
             ],
         ];
         if ( $form_type === 'rf' ){
@@ -252,9 +254,10 @@ abstract class PB_Elementor_Register_Edit_Profile_Widget extends PB_Elementor_Wi
             $this->add_control(
                 'pb_logout_redirect_url',
                 array(
-                    'label' => __('Redirect after Logout', 'profile-builder'),
-                    'type' => \Elementor\Controls_Manager::TEXT,
-                    'placeholder' => __('Enter URL', 'profile-builder'),
+                    'label'       => __('Redirect after Logout', 'profile-builder'),
+                    'type'        => \Elementor\Controls_Manager::SELECT,
+                    'options'     => $page_titles,
+                    'default'     => '',
                 )
             );
         }
@@ -504,6 +507,10 @@ abstract class PB_Elementor_Register_Edit_Profile_Widget extends PB_Elementor_Wi
                 case 'Default - Password':
                     $field_meta = 'passw1';
                     $targets = $this->handle_placeholder_labels_active( $targets );
+                    $wppb_generalSettings = get_option( 'wppb_general_settings' );
+                    if ( !empty( $wppb_generalSettings['minimum_password_length'] ) || !empty( $wppb_generalSettings['minimum_password_strength'] ) ){
+                        $targets['description'] = '';
+                    }
                     $targets['input'] = '';
                     break;
                 case 'Default - Repeat Password':

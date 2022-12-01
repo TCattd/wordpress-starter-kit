@@ -18,14 +18,30 @@ class Updraft_Restorer {
 	// Public: it is manipulated by the caller after the caller gets the object
 	public $delete = false;
 
+	private $errors;
+
 	private $created_by_version = false;
 
 	// This one can be set externally, if the information is available
 	public $ud_backup_is_multisite = -1;
 
+	public $ud_multisite_selective_restore = false;
+
 	private $ud_backup_set;
 
+	private $ud_foreign_working_dir;
+
+	private $ud_foreign_package;
+
 	public $ud_foreign;
+
+	private $ud_extract_count;
+	
+	private $ud_working_dir;
+
+	private $ud_extract_dir;
+	
+	private $ud_made_dirs;
 
 	// store restored table names
 	public $restored_table_names = array();
@@ -35,13 +51,15 @@ class Updraft_Restorer {
 	// The default of false means "use the global $wpdb"
 	private $wpdb_obj = false;
 
+	private $mysql_dbh = false;
+	
+	private $use_mysqli = false;
+
 	private $line_last_logged = 0;
 
 	private $our_siteurl;
 
 	private $configuration_bundle;
-
-	private $ajax_restore_auth_code;
 	
 	private $restore_options;
 	
@@ -66,6 +84,14 @@ class Updraft_Restorer {
 	private $table_engine = '';
 
 	private $table_name = '';
+
+	private $new_table_name = '';
+
+	private $original_table_name = '';
+
+	private $tables_created = 0;
+
+	private $view_names = array();
 	
 	private $continuation_data;
 
@@ -77,11 +103,23 @@ class Updraft_Restorer {
 
 	private $include_unspecified_tables = false;
 
+	private $include_unspecified_plugins = false;
+
+	private $include_unspecified_themes = false;
+
 	private $tables_to_restore = array();
+
+	private $plugins_to_restore = array();
+
+	private $themes_to_restore = array();
 
 	private $stored_routine_supported = null;
 	
 	private $tables_to_skip = array();
+
+	private $plugins_to_skip = array();
+
+	private $themes_to_skip = array();
 
 	public $search_replace_obj = null;
 	
@@ -105,10 +143,46 @@ class Updraft_Restorer {
 	private $generated_columns_exist_in_the_statement = array();
 
 	private $printed_new_table_prefix = false;
+
+	private $old_siteurl = '';
+
+	private $old_home = '';
+	
+	private $old_content = '';
+	
+	private $old_uploads = '';
 	
 	private $old_table_prefix = null;
 
 	private $old_abspath = '';
+
+	private $pre_restore_updatedir_writable;
+
+	private $abspath;
+
+	private $create_forbidden = false;
+	
+	private $drop_forbidden = false;
+	
+	private $lock_forbidden = false;
+	
+	private $rename_forbidden = false;
+
+	private $triggers_forbidden = false;
+	
+	private $prior_upload_path;
+	
+	private $insert_statements_run;
+	
+	private $start_time;
+	
+	private $last_error;
+	
+	private $last_error_no;
+	
+	private $max_allowed_packet;
+	
+	private $set_names;
 
 	/**
 	 * Constructor
@@ -169,6 +243,14 @@ class Updraft_Restorer {
 		if (isset($restore_options['include_unspecified_tables'])) $this->include_unspecified_tables = $restore_options['include_unspecified_tables'];
 		if (isset($restore_options['tables_to_restore'])) $this->tables_to_restore = $restore_options['tables_to_restore'];
 		if (isset($restore_options['tables_to_skip'])) $this->tables_to_skip = $restore_options['tables_to_skip'];
+
+		if (isset($restore_options['include_unspecified_plugins'])) $this->include_unspecified_plugins = $restore_options['include_unspecified_plugins'];
+		if (isset($restore_options['plugins_to_restore'])) $this->plugins_to_restore = $restore_options['plugins_to_restore'];
+		if (isset($restore_options['plugins_to_skip'])) $this->plugins_to_skip = $restore_options['plugins_to_skip'];
+
+		if (isset($restore_options['include_unspecified_themes'])) $this->include_unspecified_themes = $restore_options['include_unspecified_themes'];
+		if (isset($restore_options['themes_to_restore'])) $this->themes_to_restore = $restore_options['themes_to_restore'];
+		if (isset($restore_options['themes_to_skip'])) $this->themes_to_skip = $restore_options['themes_to_skip'];
 
 		// Restore in the most helpful order
 		uksort($backup_set, array('UpdraftPlus_Manipulation_Functions', 'sort_restoration_entities'));
@@ -338,7 +420,7 @@ class Updraft_Restorer {
 		restore_error_handler();
 		
 	}
-	
+
 	/**
 	 * Whether or not we must use the global $wpdb object for database queries.
 	 * That is to say: we *can* always use it. But we prefer to avoid the overhead since we are potentially doing very many queries.
@@ -856,8 +938,12 @@ class Updraft_Restorer {
 
 		// Unzip package to working directory
 		if ('.zip' == strtolower(substr($package, -4, 4))) {
+
+			$folders_to_include = array();
+			if ('themes' == $type && !$this->include_unspecified_themes) $folders_to_include = $this->themes_to_restore;
+			if ('plugins' == $type && !$this->include_unspecified_plugins) $folders_to_include = $this->plugins_to_restore;
 		
-			$result = UpdraftPlus_Filesystem_Functions::unzip_file($package, $working_dir, $zip_starting_index);
+			$result = UpdraftPlus_Filesystem_Functions::unzip_file($package, $working_dir, $zip_starting_index, $folders_to_include);
 			
 		} elseif ('.tar' == strtolower(substr($package, -4, 4)) || '.tar.gz' == strtolower(substr($package, -7, 7)) || '.tar.bz2' == strtolower(substr($package, -8, 8))) {
 			if (!class_exists('UpdraftPlus_Archive_Tar')) {
@@ -1121,9 +1207,10 @@ class Updraft_Restorer {
 	 * @param  string  $type              specify type
 	 * @param  boolean $send_actions      send actions
 	 * @param  boolean $force_local       force local
+	 * @param  boolean $moving_old        indicates if we are moving old files
 	 * @return boolean
 	 */
-	public function move_backup_in($working_dir, $dest_dir, $preserve_existing = 1, $do_not_overwrite = array('plugins', 'themes', 'uploads', 'upgrade'), $type = 'not-others', $send_actions = false, $force_local = false) {
+	public function move_backup_in($working_dir, $dest_dir, $preserve_existing = 1, $do_not_overwrite = array('plugins', 'themes', 'uploads', 'upgrade'), $type = 'not-others', $send_actions = false, $force_local = false, $moving_old = false) {
 
 		global $wp_filesystem, $updraftplus;
 		$updraft_dir = $updraftplus->backups_dir_location();
@@ -1154,7 +1241,12 @@ class Updraft_Restorer {
 
 		$wpcore_config_moved = false;
 
-		if ('plugins' == $type || 'themes' == $type) $updraftplus->log("Top-level entities being moved: ".implode(', ', array_keys($upgrade_files)));
+		if ('plugins' == $type || 'themes' == $type) {
+			$upgrade_files_log = implode(', ', array_keys($upgrade_files));
+			if ('plugins' == $type && !empty($this->plugins_to_restore) && !$this->include_unspecified_plugins) $upgrade_files_log = implode(', ', $this->plugins_to_restore);
+			if ('themes' == $type && !empty($this->themes_to_restore) && !$this->include_unspecified_themes) $upgrade_files_log = implode(', ', $this->themes_to_restore);
+			$updraftplus->log("Top-level entities being moved: ".$upgrade_files_log);
+		}
 
 		foreach ($upgrade_files as $file => $filestruc) {
 
@@ -1217,6 +1309,38 @@ class Updraft_Restorer {
 			} elseif (('object-cache-backup.php' == $file || 'advanced-cache-backup.php' == $file) && 'others' == $type) {
 				if (!$wpfs->delete($working_dir."/".$file)) {
 					$this->restore_log_permission_failure_message($working_dir, 'Delete '.$working_dir."/".$file);
+				}
+				continue;
+			}
+
+			if ('plugins' == $type && !empty($this->plugins_to_skip) && in_array($file, $this->plugins_to_skip)) {
+				if (!$moving_old) {
+					$updraftplus->log("Skipping {$file} as user requested it to not be restored.", "notice-restore");
+					// Remove it from the temporary directory - so that it will be clean later
+					@$wpfs->delete($working_dir.'/'.$file, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				}
+				continue;
+			} elseif ('plugins' == $type && !empty($this->plugins_to_restore) && !in_array($file, $this->plugins_to_restore) && !$this->include_unspecified_plugins) {
+				if (!$moving_old) {
+					$updraftplus->log("Skipping {$file} as it's not in the list of plugins to restore and we are not including unspecified plugins.", "notice-restore");
+					// Remove it from the temporary directory - so that it will be clean later
+					@$wpfs->delete($working_dir.'/'.$file, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				}
+				continue;
+			}
+
+			if ('themes' == $type && !empty($this->themes_to_skip) && in_array($file, $this->themes_to_skip)) {
+				if (!$moving_old) {
+					$updraftplus->log("Skipping {$file} as user requested it to not be restored.", "notice-restore");
+					// Remove it from the temporary directory - so that it will be clean later
+					@$wpfs->delete($working_dir.'/'.$file, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				}
+				continue;
+			} elseif ('themes' == $type && !empty($this->themes_to_restore) && !in_array($file, $this->themes_to_restore) && !$this->include_unspecified_themes) {
+				if (!$moving_old) {
+					$updraftplus->log("Skipping {$file} as it's not in the list of themes to restore and we are not including unspecified themes.", "notice-restore");
+					// Remove it from the temporary directory - so that it will be clean later
+					@$wpfs->delete($working_dir.'/'.$file, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 				}
 				continue;
 			}
@@ -1851,13 +1975,13 @@ class Updraft_Restorer {
 		// Firstly, try direct filesystem method into updraft_dir
 		if ($move_old_destination > 0 && 1 == $move_old_destination % 2) {
 			// The final 'true' forces direct filesystem access
-			$move_old = @$this->move_backup_in($get_dir, $updraft_dir.'/'.$type.'-old/', 3, array(), $type, false, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			$move_old = @$this->move_backup_in($get_dir, $updraft_dir.'/'.$type.'-old/', 3, array(), $type, false, true, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 			if (is_wp_error($move_old)) $updraftplus->log_wp_error($move_old);
 		}
 
 		// Try wp_filesystem method into -old if that failed
 		if (2 >= $move_old_destination && (0 == $move_old_destination % 2 || (!empty($move_old) && is_wp_error($move_old)))) {
-			$move_old = @$this->move_backup_in($wp_filesystem_dir, $wp_filesystem_dir."-old/", 3, array(), $type);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			$move_old = @$this->move_backup_in($wp_filesystem_dir, $wp_filesystem_dir."-old/", 3, array(), $type, false, false, true);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 			if (is_wp_error($move_old)) $updraftplus->log_wp_error($move_old);
 		}
 
@@ -2306,7 +2430,7 @@ class Updraft_Restorer {
 				}
 			}
 
-			if ($this->restoring_table != $this->new_table_name) {
+			if ('' !== $this->restoring_table && $this->restoring_table != $this->new_table_name) {
 				$final_table_name = $this->maybe_rename_restored_table();
 				$this->restored_table($final_table_name, $this->final_import_table_prefix, $this->old_table_prefix, $this->table_engine);
 			}
@@ -3036,7 +3160,11 @@ class Updraft_Restorer {
 			}
 
 			// The timed overhead of this is negligible
-			if (preg_match('/^\s*drop table (if exists )?\`?([^\`]*)\`?\s*'.$delimiter_regex.'/i', $sql_line, $matches)) {
+			if (preg_match('/^\s*drop view (if exists )?\`?([^\`]*)\`?\s*'.$delimiter_regex.'/i', $sql_line, $matches)) {
+				$sql_type = 16;
+				$this->view_names[] = $matches[2];
+				$this->view_names = array_unique($this->view_names);
+			} elseif (preg_match('/^\s*drop table (if exists )?\`?([^\`]*)\`?\s*'.$delimiter_regex.'/i', $sql_line, $matches)) {
 				$sql_type = 1;
 
 				if (!$this->printed_new_table_prefix) {
@@ -3313,19 +3441,29 @@ class Updraft_Restorer {
 				if (null !== $this->old_table_prefix) {
 					foreach (array_keys($this->restore_this_table) as $table_name) {
 						// Code for a view can contain pretty much anything. As such, we want to be minimise the risks of unwanted matches.
+						if (in_array($table_name, $this->view_names)) continue; // since DROP VIEW statement is preceded by DROP TABLE statement (@see UpdraftPlus_Backup::write_table_backup_beginning), it makes the view name to be recognised as a real table and to be added to the $this->restore_this_table variable when executing the DROP TABLE statement via UpdraftPlus_Restore::sql_exec method. This line prevents a view name from being replaced and suffixed with $import_table_prefix during an atomic restoration and/or when the view uses the same table prefix
 						if (false !== strpos($sql_line, $table_name)) {
-							$new_table_name = ('' == $this->old_table_prefix) ? $import_table_prefix.$table_name : UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $import_table_prefix, $table_name);
+							$new_table_name = ('' == $this->old_table_prefix) ? $import_table_prefix.$table_name : UpdraftPlus_Manipulation_Functions::str_replace_once($this->old_table_prefix, $this->rename_forbidden ? $import_table_prefix : $this->final_import_table_prefix, $table_name);
 							$sql_line = str_replace($table_name, $new_table_name, $sql_line);
 						}
 					}
+					// by default during an atomic restoration, the last created table is renamed at the end of the restoration process (@see the `if ($this->restoring_table)` code at the end of this method), tipically the DB server will throw an error when creating a view that requires a table that doesn't exist in the database
+					if ($this->restoring_table) {
+						$final_table_name = $this->maybe_rename_restored_table();
+						$this->restored_table($final_table_name, $this->final_import_table_prefix, $this->old_table_prefix, $this->table_engine);
+						$this->restoring_table = ''; // reset this variable so that the same table renaming procedure at the end of this method doesn't get executed
+					}
 				}
+			} elseif (preg_match('/^SET @@GLOBAL.GTID_PURGED/i', $sql_line)) {
+				// skip the SET @@GLOBAL.GTID_PURGED command
+				$sql_type = 17;
 			} else {
 				// Prevent the previous value of $sql_type being retained for an unknown type
 				$sql_type = 0;
 			}
 
-			// Do not execute "USE" or "CREATE|DROP DATABASE" commands
-			if (6 != $sql_type && 7 != $sql_type && (9 != $sql_type || false == $this->triggers_forbidden) && 10 != $sql_type) {
+			// Do not execute "USE" or "CREATE|DROP DATABASE" or "SET @@GLOBAL.GTID_PURGED" commands
+			if (6 != $sql_type && 7 != $sql_type && (9 != $sql_type || false == $this->triggers_forbidden) && 10 != $sql_type && 17 != $sql_type) {
 				$do_exec = $this->sql_exec($sql_line, $sql_type);
 				if (is_wp_error($do_exec)) return $do_exec;
 			} else {
@@ -3685,11 +3823,13 @@ class Updraft_Restorer {
 	 * 8 SET NAMES
 	 * 9 TRIGGER
 	 * 10 DELIMITER
-	 * 11 CREATE ALGORITHM
+	 * 11 CREATE VIEW
 	 * 12 ROUTINE
 	 * 13 DROP FUNCTION|PROCEDURE
 	 * 14 ALTER
 	 * 15 UNLOCK
+	 * 16 DROP VIEW
+	 * 17 SET GLOBAL.GTID_PURGED
 	 *
 	 * @param  String  $sql_line            sql line to execute
 	 * @param  Integer $sql_type            sql type
@@ -3954,7 +4094,10 @@ class Updraft_Restorer {
 			$this->restore_configuration_bundle($table);
 		}
 
-		if (preg_match('/^([\d+]_)?options$/', substr($table, strlen($import_table_prefix)), $matches)) {
+		if ($this->is_multisite && $import_table_prefix.'sitemeta' === $table) {
+			// the reason why this if statement is needed is that when *_options table is not included in the backup, then updraft_jobdata will never be wiped out from the *_sitemeta table as the below elseif statement will call wipe_state_data() only if *_options table is included
+			$updraftplus->wipe_state_data(false, 'sitemeta');
+		} elseif (preg_match('/^([\d+]_)?options$/', substr($table, strlen($import_table_prefix)), $matches)) {
 			// The second prefix here used to have a '!$this->is_multisite' on it (i.e. 'options' table on non-multisite). However, the user_roles entry exists in the main options table on multisite too.
 			if (($this->is_multisite && !empty($matches[1])) || $table == $import_table_prefix.'options') {
 			
@@ -4022,6 +4165,23 @@ class Updraft_Restorer {
 						if (!is_dir($edir.'/'.$dbase)) @mkdir($edir.'/'.$dbase);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
 						$updraftplus->log_e("Elegant themes theme builder plugin data detected: resetting temporary folder");
 						update_option('et_images_temp_folder', $edir.'/'.$dbase);
+					}
+
+					// check if current restoration is a migration
+					if (!empty($this->restore_options['updraft_restorer_replacesiteurl'])) {
+						$wp_rocket_settings = $wpdb->get_row($wpdb->prepare("SELECT option_value FROM $new_table_name WHERE option_name = %s LIMIT 1", 'wp_rocket_settings'));
+
+						if (!empty($wp_rocket_settings->option_value)) {
+							$wp_rocket_settings = maybe_unserialize($wp_rocket_settings->option_value);
+
+							// if WP Rocket settings is found and cdn is enabled
+							if (isset($wp_rocket_settings['cdn'])) {
+								unset($wp_rocket_settings['cdn']);
+								update_option('wp_rocket_settings', $wp_rocket_settings);
+
+								$updraftplus->log_e("WP Rocket CDN option detected: disabling the option");
+							}
+						}
 					}
 				}
 

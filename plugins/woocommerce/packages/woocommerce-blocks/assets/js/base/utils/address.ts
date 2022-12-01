@@ -1,13 +1,30 @@
 /**
  * External dependencies
  */
-import { defaultAddressFields } from '@woocommerce/settings';
 import prepareAddressFields from '@woocommerce/base-components/cart-checkout/address-form/prepare-address-fields';
 import { isEmail } from '@wordpress/url';
 import type {
 	CartResponseBillingAddress,
 	CartResponseShippingAddress,
 } from '@woocommerce/types';
+import {
+	defaultAddressFields,
+	ShippingAddress,
+	BillingAddress,
+} from '@woocommerce/settings';
+
+/**
+ * Compare two addresses and see if they are the same.
+ */
+export const isSameAddress = < T extends ShippingAddress | BillingAddress >(
+	address1: T,
+	address2: T
+): boolean => {
+	return Object.keys( defaultAddressFields ).every(
+		( field: string ) =>
+			address1[ field as keyof T ] === address2[ field as keyof T ]
+	);
+};
 
 /**
  * pluckAddress takes a full address object and returns relevant fields for calculating

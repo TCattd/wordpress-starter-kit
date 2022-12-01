@@ -1,6 +1,22 @@
 # Changelog
 
-# 1.3.7 / 2021-10-08
+# 1.4.3 / 2022-11-28
+- REST API enabled by default for all users. Needed for the modern WordPress themes and other plugins.
+- Resolved an issue with Elementor Template Kits import.
+
+# 1.4.2 / 2022-07-22
+- PHP 8.x compatibility check.
+- Tested up to WordPress 6.0.
+- Added an option to enable/disble the sender email address.
+- Added an option to disable Customizer additional CSS editor.
+- Added an option to force REST API usage to logged in users only.
+- Fixed a compatibility bug with Elementor's editor.
+
+# 1.3.11 / 2022-01-11
+- Fixed bug with un-trimmed advanced restrictions.
+- Fixed a bug with cached options values (transient).
+
+# 1.3.8 / 2021-10-08
 - Option to configure Theme Editor restriction.
 - Option to configure Plugin Editor restriction.
 - Option to configure new plugins installation restriction.

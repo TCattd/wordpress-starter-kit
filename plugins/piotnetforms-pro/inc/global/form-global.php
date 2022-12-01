@@ -1,9 +1,10 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Piotnetforms_Form_Global extends Base_Widget_Piotnetforms {
-
 	protected $is_add_conditional_logic = false;
 
 	public $is_global = true;
@@ -54,7 +55,6 @@ class Piotnetforms_Form_Global extends Base_Widget_Piotnetforms {
 	}
 
 	private function add_label_style_controls() {
-
 		$this->add_control(
 			'label_spacing',
 			[
@@ -152,10 +152,9 @@ class Piotnetforms_Form_Global extends Base_Widget_Piotnetforms {
 				'controls_query' => '.piotnet-start-controls-tab',
 			]
 		);
-
 	}
 
-	private function label_style_tab_controls(string $name, $args = []){
+	private function label_style_tab_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['wrapper'] ) ? $args['wrapper'] : '{{GLOBAL}}';
 		$name = !empty( $name ) ? '_' . $name : '';
 		$previous_controls = $this->new_group_controls();
@@ -196,7 +195,7 @@ class Piotnetforms_Form_Global extends Base_Widget_Piotnetforms {
 		return $this->get_group_controls( $previous_controls );
 	}
 
-	private function field_style_controls(string $name, $args = []){
+	private function field_style_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['wrapper'] ) ? $args['wrapper'] : '{{GLOBAL}}';
 		$name = !empty( $name ) ? '_' . $name : '';
 		$previous_controls = $this->new_group_controls();
@@ -278,34 +277,34 @@ class Piotnetforms_Form_Global extends Base_Widget_Piotnetforms {
 			]
 		);
 
-        $this->add_responsive_control(
-            'input_height' . $name,
-            [
-                'label'      => __( 'Input Height', 'piotnetforms' ),
-                'type'       => 'slider',
-                'size_units' => [ 'px', 'em', '%' ],
-                'range'      => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 1000,
-                    ],
-                    '%'  => [
-                        'min' => 0,
-                        'max' => 100,
-                    ],
-                ],
-                'default'    => [
-                    'unit' => 'px',
-                ],
-                'selectors'  => [
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field-container .mce-tinymce iframe' => 'height: {{SIZE}}{{UNIT}}!important;',
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field-textual' => 'height: {{SIZE}}{{UNIT}}!important;',
-                ],
-                'condition'  => [
-                    'field_type' => 'tinymce',
-                ],
-            ]
-        );
+		$this->add_responsive_control(
+			'input_height' . $name,
+			[
+				'label'      => __( 'Input Height', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px', 'em', '%' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%'  => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field-container .mce-tinymce iframe' => 'height: {{SIZE}}{{UNIT}}!important;',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field-textual' => 'height: {{SIZE}}{{UNIT}}!important;',
+				],
+				'condition'  => [
+					'field_type' => 'tinymce',
+				],
+			]
+		);
 
 		$this->add_responsive_control(
 			'input_padding' . $name,
@@ -483,7 +482,7 @@ class Piotnetforms_Form_Global extends Base_Widget_Piotnetforms {
 		);
 	}
 
-		private function add_button_style_controls() {
+	private function add_button_style_controls() {
 		$this->add_text_typography_controls(
 			'typography',
 			[

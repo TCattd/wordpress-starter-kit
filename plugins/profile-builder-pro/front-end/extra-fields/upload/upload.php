@@ -98,117 +98,10 @@ function wppb_upload_handler( $output, $form_location, $field, $user_id, $field_
 add_filter( 'wppb_output_form_field_upload', 'wppb_upload_handler', 10, 6 );
 add_filter( 'wppb_admin_output_form_field_upload', 'wppb_upload_handler', 10, 6 );
 
-function wppb_make_upload_button( $field, $input_value, $extra_attr = '' ){
-    // change the upload limit. This is not functional.
-    // just for display in the upload window. see upload_helper_functions.php for the actual restriction.
-    add_filter('upload_size_limit', function($limit, $u, $p){
-        return apply_filters('wppb_server_max_upload_size_byte_constant', wppb_return_bytes(ini_get('upload_max_filesize')));
-    }, 10, 3);
-
-    $upload_button = '';
-    $upload_input_id = str_replace( '-', '_', Wordpress_Creation_Kit_PB::wck_generate_slug( $field['meta-name'] ) );
-
-    /* container for the image preview (or file ico) and name and file type */
-    if( !empty( $input_value ) ){
-        /* it can hold multiple attachments separated by comma */
-        $values = explode( ',', $input_value );
-        foreach( $values as $value ) {
-            if( !empty( $value ) && is_numeric( $value ) ){
-                $thumbnail = wp_get_attachment_image($value, array(80, 80), true);
-                $file_name = get_the_title($value);
-                $file_type = get_post_mime_type($value);
-                $attachment_url = wp_get_attachment_url($value);
-                $upload_button .= '<div id="' . esc_attr($upload_input_id) . '_info_container" class="upload-field-details" data-attachment_id="' . $value . '">';
-                $upload_button .= '<div class="file-thumb">';
-                $upload_button .= "<a href='{$attachment_url}' target='_blank' class='wppb-attachment-link'>" . $thumbnail . "</a>";
-                $upload_button .= '</div>';
-                $upload_button .= '<p><span class="file-name">';
-                $upload_button .= $file_name;
-                $upload_button .= '</span><span class="file-type">';
-                $upload_button .= $file_type;
-                $upload_button .= '</span>';
-                $upload_button .= '<span class="wppb-remove-upload" tabindex="0">' . apply_filters( 'wppb_upload_button_remove_label', __( 'Remove', 'profile-builder' ) ) . '</span>';
-                $upload_button .= '</p></div>';
-            }
-        }
-        $hide_upload_button = ' style="display:none;"';
-    }
-    else{
-        $hide_upload_button = '';
-    }
-
-    if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' ){
-        //If selected accordingly in form fields, generate a simple upload button
-        $upload_button .= '<input type="file" id="upload_' . esc_attr(Wordpress_Creation_Kit_PB::wck_generate_slug($field['meta-name'], $field)) . '_button" name="simple_upload_'. esc_attr( Wordpress_Creation_Kit_PB::wck_generate_slug( $field['meta-name'], $field ) ) .'"';
-        $upload_button .=  $hide_upload_button . '>';
-        $upload_button .= '<p id="p_simple_upload_'. esc_attr(Wordpress_Creation_Kit_PB::wck_generate_slug($field['meta-name'], $field)) .'"></p>';
-        $limit = apply_filters( 'wppb_server_max_upload_size_byte_constant', wppb_return_bytes( ini_get( 'upload_max_filesize' ) ) );
-        $all_fields = apply_filters( 'wppb_form_fields', get_option( 'wppb_manage_fields' ), array( 'context' => 'upload_helper', 'upload_meta_name' => $field[ 'meta-name' ] ) );
-        if ( !empty( $all_fields ) ) {
-            foreach ( $all_fields as $form_field ) {
-                if ($form_field[ 'meta-name' ] == $field[ 'meta-name' ] ) {
-                    $allowed_upload_extensions = '';
-                    if ( $form_field[ 'field' ] == 'Upload' && !empty( $form_field[ 'allowed-upload-extensions' ] ) ) {
-                        $allowed_upload_extensions = $form_field[ 'allowed-upload-extensions' ];
-                    }
-                    if ( $form_field[ 'field' ] == 'Avatar' ) {
-                        if ( trim( $field[ 'allowed-image-extensions' ] ) == '.*' || trim( $field[ 'allowed-image-extensions' ] ) == '' ) {
-                            $allowed_upload_extensions = '.jpg,.jpeg,.gif,.png';
-                        }
-                        else {
-                            $allowed_upload_extensions = $form_field[ 'allowed-image-extensions' ];
-                        }
-                    }
-                }
-                if ( !empty( $allowed_upload_extensions ) && $allowed_upload_extensions != '.*' ) {
-                    $allowed_extensions = str_replace( '.', '', array_map( 'trim', explode( ",", strtolower( $allowed_upload_extensions ) ) ) );
-                    $allowed_extensions = implode( ',', $allowed_extensions );
-                } else {
-                    $allowed_extensions = '';
-                }
-            }
-        }
-        $upload_button .= '<input id="allowed_extensions_simple_upload_'. esc_attr( $upload_input_id ) .'" type="hidden" size="36" name="allowed_extensions_simple_upload_'. esc_attr( Wordpress_Creation_Kit_PB::wck_generate_slug( $field['meta-name'], $field ) ) .'" value="'. $allowed_extensions .'"/>';
-        $allowed_mime_types = get_allowed_mime_types();
-        $allowed_types = '';
-        if ( !empty( $allowed_mime_types ) ) {
-            foreach ($allowed_mime_types as $key => $val){
-                $allowed_types .= $key . '=>' . $val . ',';
-            }
-        }
-        $error_messages = array(
-            'limit_error_message'       => __( 'Files must be smaller than ', 'profile-builder' ),
-            'upload_type_error_message' => __( 'Sorry, you cannot upload this file type for this field.', 'profile-builder' ),
-        );
-        $size_limit = array(
-            'size_limit' => $limit
-        );
-        $allowed_wordpress_formats = array(
-          'allowed_wordpress_formats'   => $allowed_mime_types
-        );
-        wp_localize_script( 'wppb-upload-script', 'wppb_error_messages', $error_messages );
-        wp_localize_script( 'wppb-upload-script', 'wppb_limit', $size_limit );
-        wp_localize_script( 'wppb-upload-script', 'wppb_allowed_wordpress_formats', $allowed_wordpress_formats );
-    }
-    else{
-        //Otherwise, generate the WordPress upload button
-        $upload_button .= '<a href="#" class="button wppb_upload_button" id="upload_' . esc_attr(Wordpress_Creation_Kit_PB::wck_generate_slug($field['meta-name'], $field)) . '_button" '.$hide_upload_button.' data-uploader_title="' . $field["field-title"] . '" data-uploader_button_text="'. __( 'Select File', 'profile-builder' ) .'" data-upload_mn="'. $field['meta-name'] .'" data-upload_input="' . esc_attr($upload_input_id) . '"';
-
-        if (is_user_logged_in())
-            $upload_button .= ' data-uploader_logged_in="true"';
-        $upload_button .= ' data-multiple_upload="false"';
-
-        $upload_button .= '>' . apply_filters( 'wppb_upload_button_select_label', __( 'Upload ', 'profile-builder' ) ) . '</a>';
-    }
-
-    $upload_button .= '<input id="'. esc_attr( $upload_input_id ) .'" type="hidden" size="36" name="'. esc_attr( Wordpress_Creation_Kit_PB::wck_generate_slug( $field['meta-name'], $field ) ) .'" value="'. $input_value .'"/>';
-    return $upload_button;
-}
-
 /* handle field save */
 function wppb_save_upload_value( $field, $user_id, $request_data, $form_location ){
     if( $field[ 'field' ] == 'Upload' ){
-        if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) {
+        if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && ( !isset( $field[ 'woocommerce-checkout-field' ] ) || $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) ) {
             //Save data in the case the simple upload field is used
             $field_name = 'simple_upload_' . wppb_handle_meta_name( $field[ 'meta-name' ] );
             if( isset( $_FILES[ $field_name ] ) ) {
@@ -250,47 +143,13 @@ function wppb_save_upload_value( $field, $user_id, $request_data, $form_location
 add_action( 'wppb_save_form_field', 'wppb_save_upload_value', 10, 4 );
 add_action( 'wppb_backend_save_form_field', 'wppb_save_upload_value', 10, 4 );
 
-/**
- * Function to save an attachment from the simple upload field
- * @param $field_name
- * @return string|WP_Error
- */
-function wppb_save_simple_upload_file ( $field_name ){
-    require_once(ABSPATH . 'wp-admin/includes/file.php');
-    $upload_overrides = array('test_form' => false);
-
-    if( isset( $_FILES[$field_name] ) )
-        $file = wp_handle_upload($_FILES[$field_name], $upload_overrides);
-
-    if (isset($file['error'])) {
-        return new WP_Error('upload_error', $file['error']);
-    }
-    $filename = isset( $_FILES[$field_name]['name'] ) ? sanitize_text_field( $_FILES[$field_name]['name'] ) : '';
-    $wp_filetype = wp_check_filetype($filename, null);
-    $attachment = array(
-        'post_mime_type' => $wp_filetype['type'],
-        'post_title' => $filename,
-        'post_content' => '',
-        'post_status' => 'inherit'
-    );
-    $attachment_id = wp_insert_attachment($attachment, $file['file']);
-    if (!is_wp_error($attachment_id) && is_numeric($attachment_id)) {
-        require_once(ABSPATH . 'wp-admin/includes/image.php');
-        $attachment_data = wp_generate_attachment_metadata($attachment_id, $file['file']);
-        wp_update_attachment_metadata($attachment_id, $attachment_data);
-        return trim($attachment_id);
-    } else {
-        return '';
-    }
-}
-
 /* save file when ec is enabled */
 function wppb_add_upload_for_user_signup( $field_value, $field, $request_data ){
 
     // Save the uploaded file
     // It will have no author until the user's email is confirmed
     if( $field['field'] == 'Upload' ) {
-        if( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] === 'yes' && $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) {
+        if( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] === 'yes' && ( !isset( $field[ 'woocommerce-checkout-field' ] ) || $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) ) {
             $field_name = 'simple_upload_' . $field['meta-name'];
 
             if (isset($_FILES[$field_name]) &&
@@ -327,7 +186,7 @@ add_action( 'wp_ajax_wppb_woo_simple_upload', 'wppb_woo_simple_upload' );
 function wppb_check_upload_value( $message, $field, $request_data, $form_location ){
     if( $field['field'] == 'Upload' ){
         if( $field['required'] == 'Yes' ){
-            if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) {
+            if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && ( !isset( $field[ 'woocommerce-checkout-field' ] ) || $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) ) {
                 //Check the required field in the case simple upload is used
                 $field_name = 'simple_upload_' . wppb_handle_meta_name( $field[ 'meta-name' ] );
                 if ( (!isset( $_FILES[ $field_name ] ) || ( isset( $_FILES[ $field_name ] ) && isset( $_FILES[ $field_name ][ 'size' ] ) && $_FILES[ $field_name ][ 'size' ] == 0 ) || !wppb_valid_simple_upload( $field, $_FILES[ $field_name ] ) ) && isset( $request_data[ $field[ 'meta-name' ] ] ) && empty( $request_data[ $field[ 'meta-name' ] ] ) ){/* phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized */ /* no need here for wppb_valid_simple_upload() */

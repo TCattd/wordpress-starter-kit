@@ -81,7 +81,7 @@ class WPML_ACF_Repeater_Shuffle {
 					<div class="acf-input-wrap">
 						<input type="checkbox" name="wpml_synchronise_acf_fields_translations" value="synchronise" <?php checked( $this->isSynchroniseOptionChecked( $element_id ), true, true ); ?> />
 						<?php wp_nonce_field( self::ACTION_SYNCHRONISE, self::ACTION_SYNCHRONISE ); ?>
-						<?php esc_html_e( 'Synchronise repeater and flexible sub-fields positions in post translations (record drag-and-drop moves and do the same moves in other translations).', 'acfml' ); ?>
+						<?php esc_html_e( 'Keep repeater and flexible sub-fields in the same order as the default language.', 'acfml' ); ?>
 					</div>
 				</div>
 			</div>

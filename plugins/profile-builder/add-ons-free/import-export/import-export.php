@@ -46,6 +46,7 @@ function wppb_pbie_page() {
 		<?php
 		echo '<h2>';
 			esc_html_e( 'Import and Export', 'profile-builder' );
+            echo '<a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/import-export-pb-settings/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help" style="margin-left: 5px;"></a>';
 		echo '</h2>';
 
 		if( isset ( $_GET['tab'] ) ) wppb_pbie_tabs( sanitize_text_field( $_GET['tab'] ) );

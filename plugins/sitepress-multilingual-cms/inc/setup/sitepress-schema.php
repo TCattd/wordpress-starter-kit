@@ -65,8 +65,9 @@ function icl_sitepress_activate() {
 		SitePress_Setup::fill_flags();
 
 		// translations
-		$table_name = $wpdb->prefix . 'icl_translations';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_translations';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
              CREATE TABLE IF NOT EXISTS `{$table_name}` (
                 `translation_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -86,8 +87,9 @@ function icl_sitepress_activate() {
 		}
 
 		// translation_status table
-		$table_name = $wpdb->prefix . 'icl_translation_status';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_translation_status';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS `{$table_name}` (
                  `rid` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -118,8 +120,9 @@ function icl_sitepress_activate() {
 		}
 
 		// translation jobs
-		$table_name = $wpdb->prefix . 'icl_translate_job';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_translate_job';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS `{$table_name}` (
                 `job_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -144,8 +147,9 @@ function icl_sitepress_activate() {
 		}
 
 		// translate table
-		$table_name = $wpdb->prefix . 'icl_translate';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_translate';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS `{$table_name}` (
                 `tid` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -168,8 +172,9 @@ function icl_sitepress_activate() {
 		}
 
 		// batches table
-		$table_name = $wpdb->prefix . 'icl_translation_batches';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_translation_batches';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS {$wpdb->prefix}icl_translation_batches (
                   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -186,8 +191,9 @@ function icl_sitepress_activate() {
 		}
 
 		// languages locale file names
-		$table_name = $wpdb->prefix . 'icl_locale_map';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_locale_map';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS `{$table_name}` (
                     `code` VARCHAR( 7 ) NOT NULL ,
@@ -202,7 +208,8 @@ function icl_sitepress_activate() {
 		/* general string translation */
 		$translation_priority_default = __( 'Optional', 'sitepress' );
 		$table_name                   = $wpdb->prefix . 'icl_strings';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$found_table                  = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS `{$table_name}` (
                   `id` bigint(20) unsigned NOT NULL auto_increment,
@@ -233,8 +240,9 @@ function icl_sitepress_activate() {
 			}
 		}
 
-		$table_name = $wpdb->prefix . 'icl_string_translations';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_string_translations';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                  CREATE TABLE IF NOT EXISTS `{$table_name}` (
                   `id` bigint(20) unsigned NOT NULL auto_increment,
@@ -255,8 +263,9 @@ function icl_sitepress_activate() {
 			}
 		}
 
-		$table_name = $wpdb->prefix . 'icl_string_status';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_string_status';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                   CREATE TABLE IF NOT EXISTS `{$table_name}` (
                 `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -271,8 +280,9 @@ function icl_sitepress_activate() {
 			}
 		}
 
-		$table_name = $wpdb->prefix . 'icl_string_positions';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_string_positions';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                   CREATE TABLE IF NOT EXISTS `{$table_name}` (
                 `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -287,8 +297,9 @@ function icl_sitepress_activate() {
 		}
 
 		// message status table
-		$table_name = $wpdb->prefix . 'icl_message_status';
-		if ( 0 !== strcasecmp( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ), $table_name ) ) {
+		$table_name  = $wpdb->prefix . 'icl_message_status';
+		$found_table = (string) $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" );
+		if ( 0 !== strcasecmp( $found_table, $table_name ) ) {
 			$sql = "
                   CREATE TABLE IF NOT EXISTS `{$table_name}` (
                       `id` bigint(20) unsigned NOT NULL auto_increment,

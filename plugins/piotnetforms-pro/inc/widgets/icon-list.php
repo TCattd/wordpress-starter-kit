@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Icon_List extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,21 +20,22 @@ class piotnetforms_Icon_List extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-preview-submissions.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-icon-list.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
-		return [ 'text' ];
+		return [ 'icon' ];
 	}
 
 	public function get_style() {
-		return [ 
-			'piotnetforms-fontawesome-style'
+		return [
+			'piotnetforms-fontawesome-style',
+			'piotnetforms-icon-list-style'
 		];
 	}
 
@@ -95,15 +98,15 @@ class piotnetforms_Icon_List extends Base_Widget_Piotnetforms {
 				'show_heading' => true,
 			]
 		);
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
 		$repeater_items = $this->get_group_controls();
 
 		$this->new_group_controls();
@@ -350,15 +353,13 @@ class piotnetforms_Icon_List extends Base_Widget_Piotnetforms {
                         </a>';
 				} else {
 					$icon_html = '<span class="piotnetforms-icon-list__item-icon"><i class="' . $item['icon_list_icon'] . '"></i></span><span class="piotnetforms-icon-list__item-text">' . $item['icon_list_text'] . '</span>';
-				}
-				?>
+				} ?>
 				<li class="piotnetforms-icon-list__item piotnetforms-icon-list__item--align">
 					<?php echo $icon_html; ?>
 				</li>
 				<?php
 			endforeach;
-		endif;
-		?>
+		endif; ?>
 		</div>
 		</ul>
 		<?php
@@ -392,5 +393,4 @@ class piotnetforms_Icon_List extends Base_Widget_Piotnetforms {
 		</div>
 		<?php
 	}
-
 }

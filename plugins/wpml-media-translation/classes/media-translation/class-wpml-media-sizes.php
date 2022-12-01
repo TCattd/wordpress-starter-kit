@@ -124,7 +124,8 @@ class WPML_Media_Sizes {
 	public function get_image_size_from_url( $url, $attachment_id ) {
 		$size = null;
 
-		$thumb_file_name      = basename( $url );
+		$thumb_file_name = basename( $url );
+
 		$attachment_meta_data = wp_get_attachment_metadata( $attachment_id );
 		if ( isset( $attachment_meta_data['sizes'] ) ) {
 			foreach ( $attachment_meta_data['sizes'] as $key => $size_array ) {

@@ -226,10 +226,10 @@ class WPML_URL_Converter_Subdir_Strategy extends WPML_URL_Converter_Abstract_Str
 	 * @return string
 	 */
 	private function extract_lang_from_url_path( $url_path ) {
-		$fragments = array_filter( (array) explode( '/', $url_path ) );
+		$fragments = ! empty( $url_path ) ? array_filter( explode( '/', $url_path ) ) : [''];
 		$lang      = array_shift( $fragments );
 
-		$lang_get_parts = explode( '?', $lang );
+		$lang_get_parts = ! empty( $lang ) ? explode( '?', $lang ) : [''];
 		$lang           = $lang_get_parts[0];
 
 		return isset( $this->language_codes_reverse_map[ $lang ] ) ? $this->language_codes_reverse_map[ $lang ] : $lang;

@@ -310,7 +310,7 @@ class WPML_Media_Translations_UI extends WPML_Templates_Factory {
 		$query_count = preg_replace(
 			'/^SELECT /',
 			'SELECT SQL_CALC_FOUND_ROWS ',
-			$query
+			trim( $query )
 		);
 		$this->wpdb->get_results( $query_count );
 

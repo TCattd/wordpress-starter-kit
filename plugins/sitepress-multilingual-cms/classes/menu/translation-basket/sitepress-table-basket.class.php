@@ -1,5 +1,6 @@
 <?php
 
+use WPML\API\Sanitize;
 use WPML\TM\Menu\TranslationBasket\Strings;
 use function WPML\Container\make;
 
@@ -311,7 +312,7 @@ class SitePress_Table_Basket extends SitePress_Table {
 		} elseif ( $this->current_action() == 'delete' && isset( $_GET['id'] ) && isset( $_GET['item_type'] ) ) {
 			// Delete basket item from post action
 			$delete_basket_item_id   = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT );
-			$delete_basket_item_type = filter_input( INPUT_GET, 'item_type', FILTER_SANITIZE_STRING );
+			$delete_basket_item_type = Sanitize::stringProp( 'item_type', $_GET );
 			if ( $delete_basket_item_id && $delete_basket_item_type ) {
 				TranslationProxy_Basket::delete_item_from_basket(
 					$delete_basket_item_id,

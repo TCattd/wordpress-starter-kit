@@ -10,6 +10,7 @@ use WPML\TM\API\ATE\CachedLanguageMappings;
 use WPML\Element\API\Languages;
 use WPML\LIB\WP\Post;
 use WPML\API\PostTypes;
+use WPML\TM\API\Jobs;
 use function WPML\FP\partial;
 
 class WPML_TM_Translation_Status_Display {
@@ -127,7 +128,8 @@ class WPML_TM_Translation_Status_Display {
        				translation_status.translation_service,
        				translation_status.needs_update,
        				translations.trid,
-       			    translate_job.job_id
+       			    translate_job.job_id,
+       				translate_job.editor
 				FROM {$this->wpdb->prefix}icl_languages languages
 				LEFT JOIN {$this->wpdb->prefix}icl_translations translations
 					ON languages.code = translations.language_code
@@ -197,7 +199,12 @@ class WPML_TM_Translation_Status_Display {
 			);
 		} elseif ( $this->is_lang_pair_allowed( $lang, null, $original_post_id ) && $this->is_in_progress( $trid, $lang ) ) {
 			$language = $this->sitepress->get_language_details( $lang );
-			$text     = sprintf( __( 'Edit the %s translation', 'wpml-translation-management' ), $language['display_name'] );
+
+			if ( $this->shouldAutoTranslate( $original_post_id, $lang ) ) {
+				$text = sprintf( __( '%s: Waiting for automatic translation', 'wpml-translation-management' ), $language['display_name'] );
+			} else {
+				$text = sprintf( __( 'Edit the %s translation', 'wpml-translation-management' ), $language['display_name'] );
+			}
 		} elseif ( ! $this->is_lang_pair_allowed( $lang, $source_lang, $original_post_id ) ) {
 			$language        = $this->sitepress->get_language_details( $lang );
 			$source_language = $this->sitepress->get_language_details( $source_lang );
@@ -315,6 +322,7 @@ class WPML_TM_Translation_Status_Display {
 			'trid'               => $trid,
 			'language'           => $lang,
 			'user-can-translate' => $this->is_lang_pair_allowed( $lang, null, $post_id ) ? 'yes' : 'no',
+			'should-ate-sync'    => $this->shouldATESync( $trid, $lang ) ? '1' : '0',
 		];
 		if ( isset( $this->statuses[ $trid ][ $lang ]['job_id'] ) ) {
 			$Attributes['tm-job-id'] = esc_attr( $this->statuses[ $trid ][ $lang ]['job_id'] );
@@ -358,23 +366,27 @@ class WPML_TM_Translation_Status_Display {
 		$args = array(
 			'page'       => WPML_TM_FOLDER . '/menu/translations-queue.php',
 			'return_url' => $returnUrl,
+			'lang'       => Languages::getCurrentCode(), // We pass this param later to ATE in order to return to the page list in the same language.
 		);
 
 		return add_query_arg( $args, 'admin.php' );
 	}
 
 	private static function get_return_url() {
-		$args = array( 'wpml_tm_saved', 'wpml_tm_cancel' );
+		$args = [ 'wpml_tm_saved', 'wpml_tm_cancel' ];
 
 		if ( wpml_is_ajax() || ! is_admin() ) {
-			if ( isset( $_SERVER['HTTP_REFERER'] ) ) {
-				return remove_query_arg( $args, $_SERVER['HTTP_REFERER'] );
+			if ( ! isset( $_SERVER['HTTP_REFERER'] ) ) {
+				return null;
 			}
 
-			return null;
+			$url = remove_query_arg( $args, $_SERVER['HTTP_REFERER'] );
+		} else {
+			$url = remove_query_arg( $args );
 		}
 
-		return remove_query_arg( $args );
+		// We add the lang parameter to the return url to return from CTE to the post list in the same language.
+		return add_query_arg( [ 'lang' => Languages::getCurrentCode() ], $url );
 	}
 
 	/**
@@ -390,7 +402,7 @@ class WPML_TM_Translation_Status_Display {
 			false,
 			$this->sitepress->get_wp_api()->get_current_user_id(),
 			[
-				'lang_from'      => $lang_from ? $lang_from : $this->sitepress->get_current_language(),
+				'lang_from'      => $lang_from ?: Languages::getCurrentCode(),
 				'lang_to'        => $lang_to,
 				'admin_override' => $this->is_current_user_admin(),
 				'post_id'        => $post_id,
@@ -467,5 +479,17 @@ class WPML_TM_Translation_Status_Display {
 		       $postLanguage === Languages::getDefaultCode() &&
 		       Automatic::shouldTranslate( get_post_type( $postId ) ) &&
 		       CachedLanguageMappings::isCodeEligibleForAutomaticTranslations( $targetLang );
+	}
+
+	/**
+	 * @param int $trid
+	 * @param string $lang
+	 *
+	 * @return bool
+	 */
+	private function shouldATESync( $trid, $lang ) {
+		$job = Obj::path( [ $trid, $lang ], $this->statuses );
+
+		return Jobs::shouldBeATESynced( $job );
 	}
 }

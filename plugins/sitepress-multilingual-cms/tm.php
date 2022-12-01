@@ -157,6 +157,8 @@ function wpml_tm_load( $sitepress = null ) {
 			\WPML\TM\ATE\Sitekey\Sync::class,
 			\WPML\TM\ATE\Review\ReviewCompletedNotice::class,
 			\WPML\TM\Settings\CustomFieldChangeDetector::class,
+			\WPML\MediaTranslation\AddMediaDataToTranslationPackageFactory::class,
+			\WPML\MediaTranslation\MediaTranslationEditorLayoutFactory::class,
 		];
 		$action_filter_loader->load( $actions );
 
@@ -188,10 +190,12 @@ function wpml_tm_load( $sitepress = null ) {
 			ReportAjax::class,
 			AteLockNotice::class,
 			\WPML\TM\ATE\Loader::class,
+			\WPML\TM\Jobs\Loader::class,
 			\WPML\TM\ATE\Review\ApplyJob::class,
 			\WPML\TM\ATE\Review\StatusIcons::class,
 			\WPML\TM\ATE\StatusIcons::class,
-			\WPML\TM\Editor\ManualJobCreationErrorNotice::class
+			\WPML\TM\Editor\ManualJobCreationErrorNotice::class,
+			\WPML\ICLToATEMigration\Loader::class,
 		];
 		$action_filter_loader->load( $ams_ate_actions );
 

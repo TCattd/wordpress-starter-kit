@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit62417389c92a01c65f914511555ba8a7
+class ComposerStaticInitaa1712cc9e8ed183620e96299e757715
 {
     public static $classMap = array (
         'ACFML\\Convertable\\LinkFieldData' => __DIR__ . '/../..' . '/classes/Convertable/LinkFieldData.php',
@@ -12,6 +12,8 @@ class ComposerStaticInit62417389c92a01c65f914511555ba8a7
         'ACFML\\FieldReferenceAdjuster' => __DIR__ . '/../..' . '/classes/class-wpml-acf-field-reference-adjuster.php',
         'ACFML\\FieldState' => __DIR__ . '/../..' . '/classes/class-wpml-acf-field-state.php',
         'ACFML\\MigrateBlockPreferences' => __DIR__ . '/../..' . '/classes/class-wpml-acf-migrate-block-preferences.php',
+        'ACFML\\Notice\\Activation' => __DIR__ . '/../..' . '/classes/Notice/Activation.php',
+        'ACFML\\Notice\\Links' => __DIR__ . '/../..' . '/classes/Notice/Links.php',
         'ACFML\\Repeater\\Shuffle\\OptionsPage' => __DIR__ . '/../..' . '/classes/strategy/repeater-shuffle/OptionsPage.php',
         'ACFML\\Repeater\\Shuffle\\Post' => __DIR__ . '/../..' . '/classes/strategy/repeater-shuffle/post.php',
         'ACFML\\Repeater\\Shuffle\\Strategy' => __DIR__ . '/../..' . '/classes/strategy/repeater-shuffle/strategy.php',
@@ -63,7 +65,7 @@ class ComposerStaticInit62417389c92a01c65f914511555ba8a7
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit62417389c92a01c65f914511555ba8a7::$classMap;
+            $loader->classMap = ComposerStaticInitaa1712cc9e8ed183620e96299e757715::$classMap;
 
         }, null, ClassLoader::class);
     }

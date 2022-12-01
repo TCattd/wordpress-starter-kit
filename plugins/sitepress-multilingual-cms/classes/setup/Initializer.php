@@ -32,7 +32,8 @@ class Initializer {
 
 		$siteUrl = self::getSiteUrl();
 
-		Option::setOnlyMyselfAsDefault();
+		$defaultServiceName = self::getDefaultTranslationServiceName();
+		Option::setDefaultTranslationMode( ! empty( $defaultServiceName ) );
 
 		$defaultLang  = self::getDefaultLang();
 		$originalLang = Option::getOriginalLang();
@@ -47,7 +48,7 @@ class Initializer {
 			self::savePredefinedSiteKey( OTGS_INSTALLER_SITE_KEY_WPML );
 		}
 
-		$translationMethod = Option::shouldTranslateEverything( Option::getTranslateEverythingDefaultInSetup() )
+		$translationMethod = Option::shouldTranslateEverything( Option::getTranslateEverythingDefaultInSetup( ! empty( $defaultServiceName ) ) )
 			? 'automatic'
 			: 'manual';
 
@@ -100,14 +101,27 @@ class Initializer {
 				'adminUserName'            => User::getCurrent()->display_name,
 				'translation'              => Lst::concat(
 					[
-						'whoModes'   => Option::getTranslationMode(),
-						'method'     => $translationMethod,
-						'reviewMode' => Option::getReviewMode(),
+						'whoModes'           => Option::getTranslationMode(),
+						'defaultServiceName' => $defaultServiceName,
+						'method'             => $translationMethod,
+						'reviewMode'         => Option::getReviewMode(),
 					],
 					TranslationRolesInitializer::getTranslationData()
 				),
 			],
 		];
+	}
+
+	/**
+	 * Get the actual service name, or empty string if there's no default service.
+	 *
+	 * @return string
+	 */
+	private static function getDefaultTranslationServiceName() {
+		return Maybe::fromNullable( \TranslationProxy::get_tp_default_suid() )
+			->map( [ \TranslationProxy_Service::class, 'get_service_by_suid'] )
+			->map( Obj::prop('name') )
+			->getOrElse('');
 	}
 
 	/**

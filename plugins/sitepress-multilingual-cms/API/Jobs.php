@@ -10,6 +10,7 @@ use WPML\FP\Logic;
 use WPML\FP\Maybe;
 use WPML\FP\Obj;
 use WPML\FP\Str;
+use WPML\FP\Lst;
 use WPML\Settings\PostType\Automatic;
 use WPML\TM\API\ATE\LanguageMappings;
 use WPML\TM\API\Job\Map;
@@ -29,6 +30,7 @@ use function WPML\FP\pipe;
  * @method static callable|void setStatus( ...$jobId, $jobStatus ) : Curried:: int->int->int
  * @method static callable|void setNotTranslatedStatus( ...$jobId )  : Curried:: int->int
  * @method static callable|void setReviewStatus( ...$jobId, $reviewStatus ) : Curried:: int->int->int
+ * @method static callable|void setTranslationService( ...$jobId, $translationService ) : Curried:: int->int|string->int
  * @method static callable|void clearReviewStatus( ...$jobId ) : Curried:: int->int->int
  * @method static callable|array getTranslation( ...$job ) - Curried :: \stdClass->array
  * @method static callable|int getTranslatedPostId( ...$job ) - Curried :: \stdClass->int
@@ -85,6 +87,10 @@ class Jobs {
 
 		self::macro( 'setReviewStatus', curryN( 2, function ( $jobId, $status ) {
 			return self::updateTranslationStatusField( $jobId, 'review_status', $status, '%s' );
+		} ) );
+
+		self::macro( 'setTranslationService', curryN( 2, function ( $jobId, $translationService ) {
+			return self::updateTranslationStatusField( $jobId, 'translation_service', $translationService, '%s' );
 		} ) );
 
 		self::macro( 'clearReviewStatus', self::setReviewStatus( Fns::__, null ) );
@@ -175,18 +181,43 @@ class Jobs {
 		return $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
+	/**
+	 * It checks whether the job must be synced with ATE or not
+	 *
+	 * @param array{status: int, editor: string}|\stdClass{status: int, editor: string} $job
+	 *
+	 * @return bool
+	 */
+	public static function shouldBeATESynced( $job ) {
+		$statuses = [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ];
+
+		return Lst::includes( (int) Obj::prop( 'status', $job ), $statuses ) &&
+		       Obj::prop( 'editor', $job ) === \WPML_TM_Editors::ATE;
+	}
+
 	private static function updateTranslationStatusField( $jobId, $fieldName, $newValue, $fieldType = '%d' ) {
 		global $wpdb;
 
-		$query = "
-				UPDATE {$wpdb->prefix}icl_translation_status
-				SET `{$fieldName}` = {$fieldType}
-				WHERE rid = (
-				    SELECT rid FROM {$wpdb->prefix}icl_translate_job
-				    WHERE job_id = %d
-				)
-			";
-		$wpdb->query( $wpdb->prepare( $query, $newValue, $jobId ) );
+		$newValueSqlString = null === $newValue ? 'NULL' : $fieldType;
+		$unpreparedQuery = "
+					UPDATE {$wpdb->prefix}icl_translation_status
+						SET `{$fieldName}` = {$newValueSqlString}
+						WHERE rid = (
+						    SELECT rid FROM {$wpdb->prefix}icl_translate_job
+						    WHERE job_id = %d
+						)
+					";
+
+		if ( null === $newValue ) {
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+			$query = $wpdb->prepare( $unpreparedQuery, $jobId );
+		} else {
+			// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+			$query = $wpdb->prepare( $unpreparedQuery, $newValue, $jobId );
+		}
+
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared
+		$wpdb->query( $query );
 
 		return $jobId;
 	}

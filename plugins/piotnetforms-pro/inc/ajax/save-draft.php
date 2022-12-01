@@ -1,8 +1,10 @@
 <?php
-	if ( ! defined( 'ABSPATH' ) ) { exit; }
-	
+
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
+
 	add_action( 'wp_ajax_piotnetforms_save_draft', 'piotnetforms_save_draft' );
-	add_action( 'wp_ajax_nopriv_piotnetforms_save_draft', 'piotnetforms_save_draft' );
 
 	function piotnetforms_save_draft() {
 		$post_id    = $_POST['post_id'];
@@ -15,7 +17,7 @@
 		];
 		wp_update_post( $my_post_update );
 
-		update_post_meta( $post_id, '_piotnetforms_form_id', get_the_title($post_id) );
+		update_post_meta( $post_id, '_piotnetforms_form_id', get_the_title( $post_id ) );
 
 		wp_die();
 	}

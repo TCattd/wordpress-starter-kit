@@ -1,9 +1,10 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Text extends Base_Widget_Piotnetforms {
-
 	public function get_type() {
 		return 'text';
 	}
@@ -19,12 +20,12 @@ class piotnetforms_Text extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type'  => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-text.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-text.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
@@ -36,17 +37,16 @@ class piotnetforms_Text extends Base_Widget_Piotnetforms {
 			'text_content',
 			[
 				'type'        => 'textarea',
-				'label'       => 'Content',
 				'value'       => 'Text',
 				'label_block' => true,
-				'placeholder' => '',
+				'placeholder' => __( 'Content', 'piotnetforms' ),
 			]
 		);
 		$this->add_control(
 			'text_html_tag',
 			[
 				'type'    => 'select',
-				'label'   => 'Tag',
+				'label'   => 'HTML Tag',
 				'value'   => 'h2',
 				'options' => [
 					'h1'   => 'H1',
@@ -121,11 +121,47 @@ class piotnetforms_Text extends Base_Widget_Piotnetforms {
 		);
 	}
 
+	private function add_form_messages_controls() {
+		$this->add_control(
+			'form_messages',
+			[
+				'type'         => 'switch',
+				'label'        => __( 'Enable', 'piotnetforms' ),
+				'value'        => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'form_messages_status',
+			[
+				'type'    => 'select',
+				'label'   => 'Type Message',
+				'options' => [
+					'success' => 'Success Message',
+					'danger' => 'Error Message',
+				],
+				'conditions'  => [
+					[
+						'name'     => 'form_messages',
+						'operator' => '!=',
+						'value'    => '',
+					],
+				],
+			]
+		);
+	}
+
 	public function register_controls() {
 		$this->start_tab( 'settings', 'Settings' );
 
 		$this->start_section( 'text_settings_section', 'Settings' );
 		$this->add_setting_controls();
+
+		$this->start_section( 'form_messages_section', 'Form Messages' );
+		$this->add_form_messages_controls();
 
 		$this->start_tab( 'style', 'Style' );
 		$this->start_section( 'text_styles_section', 'Style' );
@@ -138,10 +174,25 @@ class piotnetforms_Text extends Base_Widget_Piotnetforms {
 
 	public function render() {
 		$settings = $this->settings;
+		$editor = ( isset( $_GET['action'] ) && $_GET['action'] == 'piotnetforms' ) ? true : false;
 		$text_link  = ! empty( $settings['text_link'] ) ? $settings['text_link'] : '';
 		$text_link_target = ! empty( $settings['text_link_target'] ) ? $settings['text_link_target'] : '';
+
+		if ( !empty( $settings['form_messages'] ) ) {
+			$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-alert piotnetforms-alert--mail' );
+			$this->add_render_attribute( 'widget', 'class', 'piotnetforms-message piotnetforms-message-' . $settings['form_messages_status'] . ' piotnetforms-message-custom' );
+			if ( $editor ) {
+				$this->add_render_attribute( 'widget', 'class', 'visible' );
+			}
+		}
+
 		if ( ! empty( $settings['text_content'] ) ) {
-			$text_content = !empty($text_link) ? '<a href="' . $text_link . '" target="' . $text_link_target . '">' . $settings['text_content'] . '</a>' : $settings['text_content'];
+			$text_content = !empty( $text_link ) ? '<a href="' . $text_link . '" target="' . $text_link_target . '">' . $settings['text_content'] . '</a>' : $settings['text_content'];
+
+			if ( !empty( $settings['form_messages'] ) ) {
+				$text_content = '<span ' . $this->get_render_attribute_string( 'widget' ) . '>' . $text_content . '</span>';
+			}
+
 			echo '<' . $settings['text_html_tag'] . ' ' . $this->get_render_attribute_string( 'wrapper' ) . '>' . $text_content . '</' . $settings['text_html_tag'] . '>';
 		}
 	}

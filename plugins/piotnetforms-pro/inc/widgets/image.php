@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Image extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,12 +20,12 @@ class piotnetforms_Image extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-image.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-image.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
@@ -359,8 +361,7 @@ class piotnetforms_Image extends Base_Widget_Piotnetforms {
 		// }
 		$image_link  = ! empty( $settings['image_link'] ) && ! empty( $settings['image_link_type'] ) ? $settings['image_link'] : '';
 		$link_target = ! empty( $settings['image_link_target'] ) ? $settings['image_link_target'] : '';
-		$image_caption = ! empty( $settings['image_caption'] ) ? $settings['image_caption'] : '';
-		?>
+		$image_caption = ! empty( $settings['image_caption'] ) ? $settings['image_caption'] : ''; ?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
 			<?php if ( empty( $image_link ) ) { ?>
 			<div class="piotnetforms-image__content"><img class="piotnetforms-image__tag" src="<?php echo $url_image; ?>" ></div>
@@ -400,5 +401,4 @@ class piotnetforms_Image extends Base_Widget_Piotnetforms {
 		</div>
 		<?php
 	}
-
 }

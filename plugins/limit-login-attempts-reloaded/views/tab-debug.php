@@ -9,26 +9,34 @@ if( !defined( 'ABSPATH' ) ) exit();
 $debug_info = '';
 
 $ips = $server = array();
+
 foreach ($_SERVER as $key => $value) {
 
-	if( in_array( $key, array( 'SERVER_ADDR' ) ) ) continue;
+	if( in_array( $key, array( 'SERVER_ADDR' ) ) || is_array( $value ) ) continue;
 
-	if( $this->is_ip_valid( $value ) ) {
+	$ips_for_check = array_map( 'trim', explode( ',', $value ) );
+	foreach ( $ips_for_check as $ip ) {
 
-	    if(!in_array($value, $ips)) {
+		if( $this->is_ip_valid( $ip ) ) {
 
-			$ips[] = $value;
+			if( !in_array( $ip, $ips ) ) {
+				$ips[] = $ip;
+			}
+
+			if( !isset( $server[$key] ) ) {
+				$server[$key] = '';
+            }
+
+			if( in_array( $ip, array( '127.0.0.1', '0.0.0.0' ) ) )
+				$server[$key] = $ip;
+			else
+				$server[$key] .= 'IP'.array_search( $ip, $ips ) . ',';
 		}
-
-		if( in_array( $value, array( '127.0.0.1', '0.0.0.0' ) ) )
-			$server[$key] = $value;
-		else
-			$server[$key] = 'IP'.array_search($value, $ips);
-	}
+    }
 }
 
-foreach ($server as $server_key => $ip ) {
-	$debug_info .= $server_key . ' = ' . $ip . "\n";
+foreach ($server as $server_key => $ips ) {
+	$debug_info .= $server_key . ' = ' . trim( $ips, ',' ) . "\n";
 }
 ?>
 

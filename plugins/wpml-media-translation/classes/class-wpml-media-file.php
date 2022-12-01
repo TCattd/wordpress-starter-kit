@@ -31,7 +31,7 @@ class WPML_Media_File {
 			$this->wp_filesystem->delete( $file_path, false, 'f' );
 
 			$attachment_meta_data = wp_get_attachment_metadata( $this->attachment_id );
-			if ( $attachment_meta_data ) {
+			if ( $attachment_meta_data && isset( $attachment_meta_data['file'] ) ) {
 				$subdir = dirname( $attachment_meta_data['file'] );
 				foreach ( $attachment_meta_data['sizes'] as $key => $size ) {
 					$file_path = $this->get_full_file_upload_path( $subdir . '/' . $size['file'] );

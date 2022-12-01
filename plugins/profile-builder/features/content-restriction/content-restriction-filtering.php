@@ -188,7 +188,7 @@ function wppb_content_restriction_message_wpautop( $message = '' ) {
         $message = wpautop( $message );
     }
 
-    return apply_filters( 'wppb_content_restriction_message_wpautop' ,$message );
+    return apply_filters( 'wppb_content_restriction_message_wpautop', $message );
 
 }
 add_filter( 'wppb_content_restriction_message_logged_in', 'wppb_content_restriction_message_wpautop', 30, 1 );
@@ -235,56 +235,6 @@ function wppb_content_restriction_add_post_preview( $message, $content, $post, $
 }
 add_filter( 'wppb_content_restriction_message_logged_in', 'wppb_content_restriction_add_post_preview', 30, 4 );
 add_filter( 'wppb_content_restriction_message_logged_out', 'wppb_content_restriction_add_post_preview', 30, 4 );
-
-
-if( function_exists( 'wc_get_page_id' ) ) {
-    /**
-     * Restrict the Shop page
-     *
-     * @param $template The shop page template to return
-     * @return string
-     */
-    function wppb_woo_restrict_shop_page($template){
-
-        // check if we're on the Shop page (set under WooCommerce Settings -> Products -> Display)
-        if (is_post_type_archive('product') || is_page(wc_get_page_id('shop'))) {
-
-            // get the ID of the shop page
-            $post_id = wc_get_page_id('shop');
-
-            if (($post_id != -1) && wppb_check_content_restriction_on_post_id($post_id)) {
-
-                $shop_page = get_post($post_id);
-
-                setup_postdata($shop_page);
-
-                $template = WPPB_PLUGIN_DIR . 'features/content-restriction/templates/archive-product.php';
-
-                wp_reset_postdata();
-            }
-
-        }
-
-        return $template;
-    }
-    add_filter('template_include', 'wppb_woo_restrict_shop_page', 40);
-
-
-    /* restrict products content  */
-    add_action( 'woocommerce_before_single_product', 'wppb_woo_product_restriction_start' );
-    function wppb_woo_product_restriction_start(){
-        ob_start();
-    }
-
-    add_action( 'woocommerce_after_single_product', 'wppb_woo_product_restriction_end' );
-    function wppb_woo_product_restriction_end(){
-        $product_content = ob_get_contents();
-        ob_end_clean();
-        remove_filter('the_content', 'wpautop');
-        echo apply_filters( 'the_content', $product_content );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        add_filter('the_content', 'wpautop');
-    }
-}
 
 /* if the Static Posts Page has a restriction on it hijack the query */
 add_action( 'template_redirect', 'wppb_content_restriction_posts_page_handle_query', 1 );
@@ -388,4 +338,311 @@ if( !function_exists( 'pms_exclude_restricted_comments' ) ){
         }
         return $comments;
     }
+}
+
+/**
+ * WooCommerce specific filters
+ */
+if( function_exists( 'wc_get_page_id' ) ) {
+
+    /**
+     * Function that restricts product content
+     *
+     * @param $output What is returned
+     * @return string
+     */
+    function wppb_woo_restrict_product_content( $output ){
+        global $post, $user_ID;
+
+        if ( strpos( $post->post_password, 'wppb_woo_product_restricted_' ) !== false ) {
+
+            // user does not have access, filter the content
+            $output = '';
+
+            // check if restricted post preview is set
+            $settings       = get_option( 'wppb_content_restriction_settings' );
+            $preview_option = ( !empty( $settings['restricted_post_preview']['option'] ) ? $settings['restricted_post_preview']['option'] : '' );
+
+            if ( !empty($preview_option) && ($preview_option != 'none') ) {
+                // display product title
+
+                ob_start();
+
+                echo '<div class="summary entry-summary">';
+                wc_get_template( 'single-product/title.php' );
+                echo '</div>';
+
+                $output = ob_get_clean();
+            }
+
+            if( !is_user_logged_in() )
+                $message = wppb_content_restriction_process_content_message( 'logged_out', $user_ID, $post->ID );
+            else if( !wppb_woo_is_product_purchasable() && !wppb_content_restriction_is_post_restricted() )
+                $message = wppb_content_restriction_process_content_message( 'purchasing_restricted', $user_ID, $post->ID );
+            else 
+                $message = wppb_content_restriction_process_content_message( 'logged_in', $user_ID, $post->ID );
+                
+            $message = '<div class="woocommerce"><div class="woocommerce-info wppb-woo-restriction-message wppb-woo-restricted-product-purchasing-message">' . $message . '</div></div>';
+
+            $output .= $message;
+
+            $post->post_password = null;
+
+        }
+
+        return $output;
+    }
+
+    /**
+     * Function that checks if current user can purchase the product
+     *
+     * @param string|WC_Product $product The product
+     * @return bool
+     */
+    function wppb_woo_is_product_purchasable( $product = '' ){
+        global $user_ID, $post;
+
+        if ( empty($product) )
+            $product = wc_get_product( $post->ID );
+
+        if( false == $product )
+            return false;
+
+        /**
+         * Show "buy now" for the `manage_options` and `pms_bypass_content_restriction` capabilities
+         */
+        if( current_user_can( 'manage_options' ) )
+            return true;
+
+        // if is variation, use the id of the parent product
+        if ( $product->is_type( 'variation' ) )
+            $product_id = $product->get_parent_id();
+        else
+            $product_id = $product->get_id();
+
+        // Get subscription plans that can purchase this product
+        $user_status        = get_post_meta( $product_id, 'wppb-purchase-restrict-user-status', true );
+        $product_user_roles = get_post_meta( $product_id, 'wppb-purchase-restrict-user-role' );
+
+        if( empty( $user_status ) && empty( $product_user_roles ) ) {
+            //everyone can purchase
+            return true;
+
+        } else if( !empty( $product_user_roles ) && is_user_logged_in() ) {
+
+            $user_data = get_userdata( $user_ID );
+            foreach( $product_user_roles as $product_user_role ) {
+                foreach( $user_data->roles as $role ) {
+                    if( $product_user_role == $role ) {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+
+        } else if ( !is_user_logged_in() && (
+                    ( !empty( $user_status ) && $user_status == 'loggedin' ) || ( !empty( $product_user_roles ) )
+                ) ) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Restrict the Shop page
+     *
+     * @param $template The shop page template to return
+     * @return string
+     */
+    function wppb_woo_restrict_shop_page($template){
+
+        // check if we're on the Shop page (set under WooCommerce Settings -> Products -> Display)
+        if (is_post_type_archive('product') || is_page(wc_get_page_id('shop'))) {
+
+            // get the ID of the shop page
+            $post_id = wc_get_page_id('shop');
+
+            if (($post_id != -1) && wppb_check_content_restriction_on_post_id($post_id)) {
+
+                $shop_page = get_post($post_id);
+
+                setup_postdata($shop_page);
+
+                $template = WPPB_PLUGIN_DIR . 'features/content-restriction/templates/archive-product.php';
+
+                wp_reset_postdata();
+            }
+
+        }
+
+        return $template;
+    }
+    add_filter('template_include', 'wppb_woo_restrict_shop_page', 40);
+
+
+    /* restrict products content  */
+    add_action( 'woocommerce_before_single_product', 'wppb_woo_product_restriction_start' );
+    function wppb_woo_product_restriction_start(){
+        ob_start();
+    }
+
+    add_action( 'woocommerce_after_single_product', 'wppb_woo_product_restriction_end' );
+    function wppb_woo_product_restriction_end(){
+        $product_content = ob_get_contents();
+        ob_end_clean();
+        remove_filter('the_content', 'wpautop');
+        echo apply_filters( 'the_content', $product_content );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+        add_filter('the_content', 'wpautop');
+    }
+
+    /**
+     * Function that restricts product viewing by hijacking WooCommerce product password protection (hide_content restriction mode)
+     *
+     */
+    function wppb_woo_maybe_password_protect_product(){
+        global $post;
+
+        // if the product is to be restricted, and doesn't already have a password,
+        // set a password so as to perform the actions we want
+        if ( wppb_content_restriction_is_post_restricted() && ! post_password_required() ) {
+
+            $post->post_password = uniqid( 'wppb_woo_product_restricted_' );
+
+            add_filter( 'the_password_form', 'wppb_woo_restrict_product_content' );
+
+        }
+    }
+    add_action( 'woocommerce_before_single_product', 'wppb_woo_maybe_password_protect_product' );
+
+
+    /**
+     * Function that hides the price for view-restricted products
+     *
+     * @param float $price The product price
+     * @param WC_Product $product The product
+     * @return string
+     */
+    function wppb_woo_hide_restricted_product_price( $price, WC_Product $product ){
+        // check if current user can view this product, and if not, remove the price
+        if ( wppb_content_restriction_is_post_restricted( $product->get_id() ) ) {
+
+            $price = '';
+        }
+
+        return $price;
+    }
+    add_filter( 'woocommerce_get_price_html', 'wppb_woo_hide_restricted_product_price', 9, 2);
+
+
+    /**
+     * Function that hides the product image thumbnail for view-restricted products
+     *
+     */
+    function wppb_woo_maybe_remove_product_thumbnail(){
+        global $post, $wppb_woo_product_thumbnail_restricted;
+
+        $wppb_woo_product_thumbnail_restricted = false;
+
+        // skip if the product thumbnail is not shown anyway
+        if ( ! has_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail' ) ) {
+            return;
+        }
+
+        // if product is view restricted, do not display the product thumbnail
+        if ( wppb_content_restriction_is_post_restricted($post->ID) ) {
+
+            // indicate that we removed the product thumbnail
+            $wppb_woo_product_thumbnail_restricted = true;
+
+            // remove the product thumbnail and replace it with the placeholder image
+            remove_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail' );
+            add_action( 'woocommerce_before_shop_loop_item_title', 'wppb_woo_template_loop_product_thumbnail_placeholder', 10 );
+        }
+
+    }
+    add_action( 'woocommerce_before_shop_loop_item_title', 'wppb_woo_maybe_remove_product_thumbnail', 5 );
+
+
+    // return placeholder thumbnail instead of image for view-restricted products
+    function wppb_woo_template_loop_product_thumbnail_placeholder(){
+        if ( wc_placeholder_img_src() ) {
+
+            echo wp_kses_post( wc_placeholder_img( 'shop_catalog' ) );
+        }
+    }
+
+    // restore product thumbnail for the next product in the loop
+    function wppb_woo_restore_product_thumbnail(){
+        global $wppb_woo_product_thumbnail_restricted;
+
+        if (  $wppb_woo_product_thumbnail_restricted
+            && ! has_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail' ) ) {
+
+            add_action( 'woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10 );
+            remove_action( 'woocommerce_before_shop_loop_item_title', 'wppb_woo_template_loop_product_thumbnail_placeholder' );
+        }
+    }
+    add_action( 'woocommerce_after_shop_loop_item_title', 'wppb_woo_restore_product_thumbnail', 5 );
+
+
+    /**
+     * Function that restricts product purchasing
+     *
+     * @param boolean $purchasable Whether the product is purchasable or not
+     * @param $product The product
+     * @return bool
+     */
+    function wppb_woo_product_is_purchasable( $purchasable, $product ){
+
+        // if the product is view-restricted or purchase-restricted it cannot be purchased
+        if ( wppb_content_restriction_is_post_restricted( $product->get_id() ) || !wppb_woo_is_product_purchasable( $product ) )
+            $purchasable = false;
+
+        // double-check for variations; if parent is not purchasable, then neither should be the variation
+        if ( $purchasable && $product->is_type( array( 'variation' ) ) ) {
+
+            $parent = wc_get_product( $product->get_parent_id() );
+
+            if( !empty( $parent ) && is_object( $parent ) )
+                $purchasable = $parent->is_purchasable();
+
+        }
+
+        return $purchasable;
+
+    }
+    add_filter( 'woocommerce_is_purchasable', 'wppb_woo_product_is_purchasable', 10, 2 );
+    add_filter( 'woocommerce_variation_is_purchasable', 'wppb_woo_product_is_purchasable', 10, 2 );
+
+    /**
+     * Function that shows the product purchasing restricted message
+     *
+     **/
+    function wppb_woo_single_product_purchasing_restricted_message(){
+        global $wppb_show_content, $post;
+
+        if( empty( $post->ID ) )
+            return;
+
+        if ( !wppb_woo_is_product_purchasable() ) {
+
+            // product purchasing is restricted
+            $wppb_show_content = false;
+
+            if( is_user_logged_in() )
+                $message = wppb_content_restriction_process_content_message( 'purchasing_restricted', get_current_user_id(), $post->ID );
+            else 
+                $message = wppb_content_restriction_process_content_message( 'logged_out', get_current_user_id(), $post->ID );
+
+            echo wp_kses_post( $message );
+        }
+    }
+    add_action( 'woocommerce_single_product_summary', 'wppb_woo_single_product_purchasing_restricted_message', 30 );
+
+    // Apply wpautop() to "purchasing restricted" messages as well
+    add_filter( 'wppb_content_restriction_message_purchasing_restricted', 'wppb_content_restriction_message_wpautop', 30, 1 );
+
 }

@@ -1,5 +1,9 @@
 <?php
 
+use WPML\Element\API\Languages;
+use WPML\FP\Logic;
+use WPML\FP\Lst;
+
 /**
  * Class WPML_Language_Pair_Records
  *
@@ -13,9 +17,18 @@ class WPML_Language_Pair_Records {
 	/** @var WPML_Language_Records $language_records */
 	private $language_records;
 
-	public function __construct( wpdb $wpdb, WPML_Language_Records $language_records ) {
-		$this->meta_key         = $wpdb->prefix . 'language_pairs';
-		$this->language_records = $language_records;
+	/** @var array|null  */
+	private $active_language_codes;
+
+	/**
+	 * @param wpdb                  $wpdb
+	 * @param WPML_Language_Records $language_records
+	 * @param array|null            $active_language_codes
+	 */
+	public function __construct( wpdb $wpdb, WPML_Language_Records $language_records, $active_language_codes = null ) {
+		$this->meta_key              = $wpdb->prefix . 'language_pairs';
+		$this->language_records      = $language_records;
+		$this->active_language_codes = $active_language_codes ?: Lst::pluck( 'code', Languages::getActive() );
 	}
 
 	/**
@@ -28,6 +41,27 @@ class WPML_Language_Pair_Records {
 	public function store( $user_id, $language_pairs ) {
 		$language_pairs = $this->convert_to_storage_format( $language_pairs );
 		update_user_meta( $user_id, $this->meta_key, $language_pairs );
+	}
+
+	/**
+	 * @param int   $user_id
+	 * @param array $language_pairs
+	 *
+	 * Stores only the language pairs that are active.
+	 */
+	public function store_active( $user_id, $language_pairs ) {
+		$language_pairs = wpml_collect( $language_pairs )
+			->mapWithKeys(
+				function( $to, $from ) {
+					if ( ! $this->active_language_codes || ! in_array( $from, $this->active_language_codes, true ) ) {
+						return [];
+					}
+					return [ $from => array_intersect( $to, $this->active_language_codes ) ];
+				}
+			)
+			->filter( Logic::complement( Logic::isEmpty() ) )
+			->toArray();
+		$this->store( $user_id, $language_pairs );
 	}
 
 	/**
@@ -92,6 +126,14 @@ class WPML_Language_Pair_Records {
 			}
 		}
 		return $language_pairs;
+	}
+
+	/**
+	 * @param int $user_id
+	 */
+	public function remove_invalid_language_pairs( $user_id ) {
+		$language_pairs = $this->get( $user_id );
+		$this->store( $user_id, $language_pairs );
 	}
 
 }

@@ -1,19 +1,20 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 require_once __DIR__ . '/../source/export.php';
 
 add_action( 'wp_ajax_piotnetforms_export', 'piotnetforms_export' );
-add_action( 'wp_ajax_nopriv_piotnetforms_export', 'piotnetforms_export' );
 
-function piotnetforms_prepare_http_header() {
+function piotnetforms_prepare_http_header( $post_id ) {
 	header( 'Content-Type: application/download' );
-	header( 'Content-Disposition: attachment;filename=piotnetforms-export.json' );
+	header( 'Content-Disposition: attachment;filename=piotnetforms-export-' . get_post_field( 'post_name', $post_id ) . '.json' );
 }
 
 function piotnetforms_export() {
-	piotnetforms_prepare_http_header();
+	piotnetforms_prepare_http_header( $_GET['id'] );
 
 	$output = fopen( 'php://output', 'w' ) or show_error( "Can't open php://output" );
 	$data   = [];

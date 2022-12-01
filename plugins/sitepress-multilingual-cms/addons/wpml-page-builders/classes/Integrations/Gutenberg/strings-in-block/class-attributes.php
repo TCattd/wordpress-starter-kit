@@ -113,7 +113,16 @@ class Attributes extends Base {
 			return $config_key;
 		}
 
-		return '/^' . str_replace( '*', 'S+', preg_quote( $config_key, '/' ) ) . '$/';
+		return self::getWildcardRegex( $config_key );
+	}
+
+	/**
+	 * @param string $config_key
+	 *
+	 * @return string
+	 */
+	public static function getWildcardRegex( $config_key ) {
+		return '/^' . str_replace( '*', 'S+', preg_quote( $config_key, '/' ) ) . '$/';;
 	}
 
 	/**

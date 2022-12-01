@@ -35,14 +35,6 @@ class WPML_ACF_Field_Settings {
 		// add radio buttons on Field Group page.
 		add_action( 'acf/render_field_settings', [ $this, 'render_field_settings' ], 10, 1 );
 
-		// same as above run when user is changing field type on field group edit screen.
-		if ( function_exists( 'acf_maybe_get_POST' ) ) {
-			$field = acf_maybe_get_POST( 'field' );
-			if ( isset( $field['type'] ) ) {
-				add_action( "acf/render_field_settings/type={$field['type']}", [ $this, 'render_field_settings' ], 10, 1 );
-			}
-		}
-
 		// handle setting sync preferences on Field Group page.
 		add_filter( 'acf/update_field', [ $this, 'update_field_settings' ], 10, 1 );
 
@@ -79,7 +71,8 @@ class WPML_ACF_Field_Settings {
 				'layout'        => 'horizontal',
 				'choices'       => $this->getFieldOptions(),
 				'default_value' => WPML_COPY_CUSTOM_FIELD,
-			]
+			],
+			true
 		);
 	}
 
@@ -307,7 +300,7 @@ class WPML_ACF_Field_Settings {
 			$post_exist = $this->get_post_with_custom_field( $field['name'] );
 			if ( $post_exist ) {
 				$label .= ' <span class="dashicons dashicons-warning acfml-not-migrated"
- 							title="' . __( "Please review WPML translation preferences for this field before saving field group! Otherwise, default value (Don't translate) will be set.", 'acfml' ) . '"></span>';
+ 							title="' . esc_attr__( 'This field is currently set as not translatable. You can change the translation preferences by going to WPML → Settings.', 'acfml' ) . '"></span>';
 			}
 		}
 
@@ -329,7 +322,7 @@ class WPML_ACF_Field_Settings {
 		$fieldNotSetToCopy = ! isset( $field['wpml_cf_preferences'] ) || WPML_COPY_ONCE_CUSTOM_FIELD !== (int) $field['wpml_cf_preferences'];
 		if ( $this->field_should_be_set_to_copy_once( $field ) && $fieldNotSetToCopy && $this->isFieldGroupEditScreen() ) {
 			$label .= ' <span class="dashicons dashicons-lightbulb acfml-advice-copy-setting"
- 							title="' . esc_attr_x( 'We recommend using the "Copy once" translation preferences for repeater and flexible fields. You can use other translation preferences, but if you notice any translation issues with subfields, please go back here and try to change this setting.', 'acfml' ) . '"></span>';
+ 							title="' . esc_attr__( 'You can sync the structure of your repeater and flexible content fields across languages by choosing "Copy". Otherwise, choose "Copy once" to use different custom field structures across languages.', 'acfml' ) . '"></span>';
 		}
 		return $label;
 	}

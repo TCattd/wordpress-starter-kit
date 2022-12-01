@@ -391,7 +391,7 @@ function wppb_in_bdp_ul_content(){
     ), wppb_curpageurl() );
     $url = wp_nonce_url( $url, 'wppb-bdp-reset-ul-template-' . $post->ID );
     echo "<p><a class ='wppb-bdp-reset-template' href='" . esc_attr( $url ) . "' onclick=\"return confirm('" . esc_html__( 'Are you sure you want to reset this template?', 'profile-builder' ) . "')\">" . esc_html__( 'Reset to Default BuddyPress User Listing Templates', 'profile-builder' )  . "</a></p>";
-    echo '<p>' . esc_html__( '<b>Note:</b> This action is not reversible. All modifications to this template will be lost!', 'profile-builder' ) . '</p>';
+    echo '<p>' . wp_kses_post( __( '<b>Note:</b> This action is not reversible. All modifications to this template will be lost!', 'profile-builder' ) ) . '</p>';
 }
 
 
@@ -405,7 +405,7 @@ function wppb_in_bdp_ul_content(){
 function wppb_in_bdp_ul_side_box(){
     global $post;
     if ( !empty( $post->post_content ) && $post->post_content == 'Default Userlisting for BuddyPress integration' ) {
-        add_meta_box( 'wppb-bdp-ul-side', __('Reset template', 'profile-builder'), 'wppb_bdp_ul_content', 'wppb-ul-cpt', 'side', 'low' );
+        add_meta_box( 'wppb-bdp-ul-side', __('Reset template', 'profile-builder'), 'wppb_in_bdp_ul_content', 'wppb-ul-cpt', 'side', 'low' );
     }
 }
 add_action( 'add_meta_boxes', 'wppb_in_bdp_ul_side_box' );

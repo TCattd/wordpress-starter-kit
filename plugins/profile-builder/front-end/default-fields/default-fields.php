@@ -50,5 +50,20 @@ function wppb_include_default_fields_files() {
 
     /* added email-confirmation field in main plugin since version 3.3.4 */
     include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/email-confirmation/email-confirmation.php' );
+
+    // added extra fields since version 3.8.1
+    if( !defined( 'WPPB_PAID_PLUGIN_DIR' ) || ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && defined( 'PROFILE_BUILDER_PAID_VERSION' ) ) ){
+
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/avatar/avatar.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/checkbox/checkbox.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/heading/heading.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/input/input.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/radio/radio.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/select/select.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/select2/select2.php' );
+        include_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/textarea/textarea.php' );
+
+    }
+
 }
 wppb_include_default_fields_files();

@@ -20,6 +20,18 @@ class PostTypes {
 	}
 
 	/**
+	 * Get an array of post types where keys are like: 'post', 'page' and so on
+	 *
+	 * @return array<string, \WP_Post_Type>
+	 */
+	public static function getTranslatableWithInfo() {
+		global $sitepress;
+
+		$postTypes = $sitepress->get_translatable_documents( true );
+		return \apply_filters( 'wpml_get_translatable_types', $postTypes );
+	}
+
+	/**
 	 * @return array  eg. [ 'page', 'post' ]
 	 */
 	public static function getDisplayAsTranslated() {

@@ -10,12 +10,18 @@ if (!$updraftcentral_host_plugin->is_host_dir_set()) die('No access.');
 // Load the listener class that we rely on to pick up messages
 if (!class_exists('UpdraftCentral_Listener')) require_once('listener.php');
 
+// We exit if class already exists. More common if two or more plugins integrated
+// the same `UpdraftCentral` client folder.
+if (!class_exists('UpdraftCentral_Main')) :
+
 class UpdraftCentral_Main {
 
 	/**
 	 * Class constructor
 	 */
 	public function __construct() {
+
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_central_scripts'));
 
 		add_action('udrpc_log', array($this, 'udrpc_log'), 10, 3);
 		
@@ -60,9 +66,41 @@ class UpdraftCentral_Main {
 		}
 
 	}
+
+	/**
+	 * Enqueues the needed styles and scripts for UpdraftCentral
+	 *
+	 * @return void
+	 */
+	public function enqueue_central_scripts() {
+		global $updraftcentral_host_plugin;
+		$version = $updraftcentral_host_plugin->get_version();
+
+		$enqueue_version = (defined('WP_DEBUG') && WP_DEBUG) ? $version.'.'.time() : $version;
+		$min_or_not = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+
+		// Fallback to unminified version if the minified version is not found.
+		if (!empty($min_or_not) && !file_exists(UPDRAFTCENTRAL_CLIENT_DIR.'/js/central'.$min_or_not.'.js')) {
+			$min_or_not = '';
+		}
+
+		wp_enqueue_script('updraft-central', UPDRAFTCENTRAL_CLIENT_URL.'/js/central'.$min_or_not.'.js', array(), $enqueue_version);
+		wp_enqueue_style('updraft-central', UPDRAFTCENTRAL_CLIENT_URL.'/css/central'.$min_or_not.'.css', array(), $enqueue_version);
+
+		$localize = array_merge(
+			array(
+				'central_url' => UPDRAFTCENTRAL_CLIENT_URL,
+				'plugin_name' => $updraftcentral_host_plugin->get_plugin_name(),
+				'updraftcentral_credentialtest_nonce' => wp_create_nonce('updraftcentral-credentialtest-nonce'),
+			),
+			$updraftcentral_host_plugin->translations
+		);
+
+		wp_localize_script('updraft-central', 'uclion', apply_filters('updraftcentral_uclion', $localize));
+	}
 	
 	/**
-	 * Retrieves current clean url for anchor link where href attribute value is not url (for ex. #div) or empty
+	 * Retrieves current clean url for anchor link where href attribute value is not url (for ex. #div) or empty. Output is not escaped (caller should escape).
 	 *
 	 * @return String - current clean url
 	 */
@@ -138,8 +176,10 @@ class UpdraftCentral_Main {
 		
 		$result = $this->receive_public_key();
 		if (!is_array($result) || empty($result['responsetype'])) die;
-		
-		echo '<html><head><title>UpdraftCentral</title></head><body><h1>'.$updraftcentral_host_plugin->retrieve_show_message('updraftcentral_connection').'</h1><h2>'.htmlspecialchars(network_site_url()).'</h2><p>';
+
+		$style = 'body {text-align: center;font-family: Helvetica,Arial,Lucida,sans-serif;background-color: #A64C1A;color: #FFF;height: 100%;width: 100%;margin: 0;padding: 0;}#main {height: 100%;width: 100%;display: table;}#wrapper {display: table-cell;height: 100%;vertical-align: middle;}h1 {margin-bottom: 5px;}h2 {margin-top: 0;font-size: 22px;color: #FFF;}#btn-close {color: #FFF;font-size: 20px;font-weight: 500;padding: .3em 1em;line-height: 1.7em !important;background-color: transparent;background-size: cover;background-position: 50%;background-repeat: no-repeat;border: 2px solid;border-radius: 3px;-webkit-transition-duration: .2s;transition-duration: .2s;-webkit-transition-property: all !important;transition-property: all !important;text-decoration: none;}#btn-close:hover {background-color: #DE6726;}';
+
+		echo '<html><head><title>UpdraftCentral</title><style>'.$style.'</style></head><body><div id="main"><div id="wrapper"><img src="'.UPDRAFTCENTRAL_CLIENT_URL.'/images/ud-logo.png" width="60" /> <h1>'.$updraftcentral_host_plugin->retrieve_show_message('updraftcentral_connection').'</h1><h2>'.htmlspecialchars(network_site_url()).'</h2><p>';
 		
 		if ('ok' == $result['responsetype']) {
 			$updraftcentral_host_plugin->retrieve_show_message('updraftcentral_connection_successful', true);
@@ -165,7 +205,7 @@ class UpdraftCentral_Main {
 			}
 		}
 		
-		echo '</p><p><a href="'.$this->get_current_clean_url().'" onclick="window.close();">'.$updraftcentral_host_plugin->retrieve_show_message('close').'</a></p>';
+		echo '</p><p><a id="btn-close" href="'.esc_url($this->get_current_clean_url()).'" onclick="window.close();">'.$updraftcentral_host_plugin->retrieve_show_message('close').'</a></p></div></div>';
 		die;
 	}
 	
@@ -244,6 +284,9 @@ class UpdraftCentral_Main {
 	 */
 	public function delete_key($key_id) {
 		$our_keys = $this->get_central_localkeys();
+		if (is_array($key_id) && isset($key_id['key_id'])) {
+			$key_id = $key_id['key_id'];
+		}
 
 		if (!is_array($our_keys)) $our_keys = array();
 		if (isset($our_keys[$key_id])) {
@@ -368,9 +411,12 @@ class UpdraftCentral_Main {
 	 * @return array
 	 */
 	public function get_udrpc($indicator_name = 'migrator.updraftplus.com') {
-		if (!class_exists('UpdraftPlus_Remote_Communications')) include_once(dirname(__FILE__).'/classes/class-udrpc.php');
+		global $updraftcentral_host_plugin;
+		
+		if (!class_exists('UpdraftPlus_Remote_Communications')) include_once($updraftcentral_host_plugin->get_host_dir().'/vendor/team-updraft/common-libs/src/updraft-rpc/class-udrpc.php');
 		$ud_rpc = new UpdraftPlus_Remote_Communications($indicator_name);
 		$ud_rpc->set_can_generate(true);
+		
 		return $ud_rpc;
 	}
 	
@@ -568,7 +614,7 @@ class UpdraftCentral_Main {
 				$ret .= '<br>';
 			}
 			
-			$ret .= '<a href="'.$this->get_current_clean_url().'" data-key_id="'.esc_attr($i).'" class="updraftcentral_key_delete">'.$updraftcentral_host_plugin->retrieve_show_message('delete').'</a></td></tr>';
+			$ret .= '<a href="'.esc_url($this->get_current_clean_url()).'" data-key_id="'.esc_attr($i).'" class="updraftcentral_key_delete">'.$updraftcentral_host_plugin->retrieve_show_message('delete').'</a></td></tr>';
 		}
 		
 		
@@ -576,7 +622,7 @@ class UpdraftCentral_Main {
 		?>
 		<div id="updraftcentral_keys_content" style="margin: 10px 0;">
 			<?php if (!empty($our_keys)) { ?>
-				<a href="<?php echo $this->get_current_clean_url(); ?>" class="updraftcentral_keys_show hidden-in-updraftcentral"><?php printf($updraftcentral_host_plugin->retrieve_show_message('manage_keys'), count($our_keys)); ?></a>
+				<a href="<?php echo esc_url($this->get_current_clean_url()); ?>" class="updraftcentral_keys_show hidden-in-updraftcentral"><?php printf($updraftcentral_host_plugin->retrieve_show_message('manage_keys'), count($our_keys)); ?></a>
 			<?php } ?>
 			<table id="updraftcentral_keys_table">
 				<thead>
@@ -661,7 +707,7 @@ class UpdraftCentral_Main {
 								<label>
 									<input id="updraftcentral_keycreate_mothership_firewalled" type="checkbox">
 									<?php $updraftcentral_host_plugin->retrieve_show_message('use_alternative_method', true); ?>
-									<a href="<?php echo $this->get_current_clean_url(); ?>" id="updraftcentral_keycreate_altmethod_moreinfo_get"><?php $updraftcentral_host_plugin->retrieve_show_message('more_information', true); ?></a>
+									<a href="<?php echo esc_url($this->get_current_clean_url()); ?>" id="updraftcentral_keycreate_altmethod_moreinfo_get"><?php $updraftcentral_host_plugin->retrieve_show_message('more_information', true); ?></a>
 									<p id="updraftcentral_keycreate_altmethod_moreinfo" style="display:none; border: 1px dotted; padding: 3px; margin: 2px 10px 2px 24px;">
 										<em><?php $updraftcentral_host_plugin->retrieve_show_message('this_is_useful', true);?></em>
 									</p>
@@ -698,7 +744,7 @@ class UpdraftCentral_Main {
 		ob_start();
 		?>
 			<div id="updraftcentral_view_log_container" style="margin: 10px 0;">
-				<a href="<?php echo $this->get_current_clean_url(); ?>" id="updraftcentral_view_log"><?php $updraftcentral_host_plugin->retrieve_show_message('view_log_events', true); ?>...</a><br>
+				<a href="<?php echo esc_url($this->get_current_clean_url()); ?>" id="updraftcentral_view_log"><?php $updraftcentral_host_plugin->retrieve_show_message('view_log_events', true); ?>...</a><br>
 				<pre id="updraftcentral_view_log_contents" style="min-height: 110px; padding: 0 4px;">
 				</pre>
 			</div>
@@ -711,12 +757,30 @@ class UpdraftCentral_Main {
 	 */
 	public function debugtools_dashboard() {
 		global $updraftcentral_host_plugin;
-		
+
+		$including_desc = '';
+		if (function_exists('get_current_screen')) {
+			$screen = get_current_screen();
+			$hosts = apply_filters('updraftcentral_host_plugins', array());
+			$includes = $updraftcentral_host_plugin->retrieve_show_message('including_description');
+
+			foreach ($hosts as $plugin) {
+				if (false !== stripos($screen->id, $plugin)) {
+					$key = str_replace('-', '_', strtolower($plugin)).'_desc';
+					if (isset($includes[$key])) {
+						$including_desc = $includes[$key];
+						break;
+					}
+				}
+			}
+		}
+
+		$updraftcentral_description = preg_replace('/\s+/', ' ', sprintf($updraftcentral_host_plugin->retrieve_show_message('updraftcentral_description'), $including_desc));
 	?>
 		<div class="advanced_tools updraft_central">
 			<h3><?php $updraftcentral_host_plugin->retrieve_show_message('updraftcentral_remote_control', true); ?></h3>
 			<p>
-				<?php echo $updraftcentral_host_plugin->retrieve_show_message('updraftcentral_description').' <a target="_blank" href="https://updraftcentral.com">'.$updraftcentral_host_plugin->retrieve_show_message('read_more').'</a>'; ?>
+				<?php echo $updraftcentral_description.' <a target="_blank" href="https://updraftcentral.com">'.$updraftcentral_host_plugin->retrieve_show_message('read_more').'</a>'; ?>
 			</p>
 			<div style="min-height: 310px;" id="updraftcentral_keys">
 				<?php echo $this->create_key_markup(); ?>
@@ -728,6 +792,8 @@ class UpdraftCentral_Main {
 	<?php
 	}
 }
+
+endif;
 
 global $updraftcentral_main;
 $updraftcentral_main = new UpdraftCentral_Main();

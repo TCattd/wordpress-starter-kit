@@ -2,6 +2,7 @@
 
 namespace WPML\Setup\Endpoint;
 
+use WPML\AdminLanguageSwitcher\AdminLanguageSwitcher;
 use WPML\Ajax\IHandler;
 use WPML\API\Settings;
 use WPML\Collect\Support\Collection;
@@ -51,7 +52,8 @@ class FinishStep implements IHandler {
 			Option::setTranslateEverything( false );
 		}
 
-		WPLoginUrlConverter::enable();
+		WPLoginUrlConverter::enable( true );
+		AdminLanguageSwitcher::enable();
 
 		return Right::of( true );
 	}

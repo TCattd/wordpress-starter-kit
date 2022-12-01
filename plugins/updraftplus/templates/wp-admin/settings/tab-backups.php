@@ -52,12 +52,12 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing backups', 'updr
 				<?php
 					if (!empty($options['include_uploader'])) {
 					?>
-					<a class="updraft_uploader_toggle" href="<?php echo UpdraftPlus::get_current_clean_url();?>"><?php _e('Upload backup files', 'updraftplus'); ?></a> |
+					<a class="updraft_uploader_toggle" href="<?php echo esc_url(UpdraftPlus::get_current_clean_url());?>"><?php _e('Upload backup files', 'updraftplus'); ?></a> |
 					<?php
 					}
 				?>
-				<a href="<?php echo UpdraftPlus::get_current_clean_url();?>" class="updraft_rescan_local" title="<?php echo __('Press here to look inside your UpdraftPlus directory (in your web hosting space) for any new backup sets that you have uploaded.', 'updraftplus').' '.__('The location of this directory is set in the expert settings, in the Settings tab.', 'updraftplus'); ?>"><?php _e('Rescan local folder for new backup sets', 'updraftplus');?></a>
-				| <a href="<?php echo UpdraftPlus::get_current_clean_url();?>" class="updraft_rescan_remote" title="<?php _e('Press here to look inside your remote storage methods for any existing backup sets (from any site, if they are stored in the same folder).', 'updraftplus'); ?>"><?php _e('Rescan remote storage', 'updraftplus');?></a>
+				<a href="<?php echo esc_url(UpdraftPlus::get_current_clean_url());?>" class="updraft_rescan_local" title="<?php echo __('Press here to look inside your UpdraftPlus directory (in your web hosting space) for any new backup sets that you have uploaded.', 'updraftplus').' '.__('The location of this directory is set in the expert settings, in the Settings tab.', 'updraftplus'); ?>"><?php _e('Rescan local folder for new backup sets', 'updraftplus');?></a>
+				| <a href="<?php echo esc_url(UpdraftPlus::get_current_clean_url());?>" class="updraft_rescan_remote" title="<?php _e('Press here to look inside your remote storage methods for any existing backup sets (from any site, if they are stored in the same folder).', 'updraftplus'); ?>"><?php _e('Rescan remote storage', 'updraftplus');?></a>
 			</li>
 			<?php if (!empty($options['include_opera_warning'])) { ?>
 				<li class="updraft-opera-warning"><strong><?php _e('Opera web browser', 'updraftplus');?>:</strong> <?php _e('If you are using this, then turn Turbo/Road mode off.', 'updraftplus');?></li>
@@ -77,8 +77,8 @@ if (!empty($options['include_header'])) echo '<h2>'.__('Existing backups', 'updr
 				<div id="plupload-upload-ui">
 				<div id="drag-drop-area">
 					<div class="drag-drop-inside">
-					<p class="drag-drop-info"><?php _e('Drop backup files here', 'updraftplus'); ?></p>
-					<p><?php _ex('or', 'Uploader: Drop backup files here - or - Select Files'); ?></p>
+					<p class="drag-drop-info"><?php _e('Drop your backup files', 'updraftplus'); ?></p>
+					<p><?php _ex('or', 'Uploader: Drop your backup files - or - Select Files'); ?></p>
 					<p class="drag-drop-buttons"><input id="plupload-browse-button" type="button" value="<?php esc_attr_e('Select Files'); ?>" class="button" /></p>
 					</div>
 				</div>

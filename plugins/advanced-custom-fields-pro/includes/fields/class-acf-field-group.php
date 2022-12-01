@@ -180,7 +180,7 @@ if ( ! class_exists( 'acf_field__group' ) ) :
 				return null;
 			}
 
-			// bail ealry if no sub fields
+			// bail early if no sub fields
 			if ( empty( $field['sub_fields'] ) ) {
 				return null;
 			}
@@ -372,7 +372,7 @@ if ( ! class_exists( 'acf_field__group' ) ) :
 				// prepare field (allow sub fields to be removed)
 				$sub_field = acf_prepare_field( $sub_field );
 
-				// bail ealry if no field
+				// bail early if no field
 				if ( ! $sub_field ) {
 					continue;
 				}
@@ -393,7 +393,7 @@ if ( ! class_exists( 'acf_field__group' ) ) :
 				}
 
 				?>
-			<th <?php acf_esc_attr_e( $atts ); ?>>
+			<th <?php echo acf_esc_attrs( $atts ); ?>>
 				<?php acf_render_field_label( $sub_field ); ?>
 				<?php acf_render_field_instructions( $sub_field ); ?>
 			</th>
@@ -436,23 +436,24 @@ if ( ! class_exists( 'acf_field__group' ) ) :
 
 			// vars
 			$args = array(
-				'fields' => $field['sub_fields'],
-				'parent' => $field['ID'],
+				'fields'      => $field['sub_fields'],
+				'parent'      => $field['ID'],
+				'is_subfield' => true,
 			);
 
 			?>
-		<tr class="acf-field acf-field-setting-sub_fields" data-setting="group" data-name="sub_fields">
-			<td class="acf-label">
-				<label><?php _e( 'Sub Fields', 'acf' ); ?></label>	
-			</td>
-			<td class="acf-input">
-				<?php
+			<div class="acf-field acf-field-setting-sub_fields" data-setting="group" data-name="sub_fields">
+				<div class="acf-label">
+					<label><?php _e( 'Sub Fields', 'acf' ); ?></label>	
+				</div>
+				<div class="acf-input acf-input-sub">
+					<?php
 
-				acf_get_view( 'field-group-fields', $args );
+					acf_get_view( 'field-group-fields', $args );
 
-				?>
-			</td>
-		</tr>
+					?>
+				</div>
+			</div>
 			<?php
 
 			// layout
@@ -624,7 +625,7 @@ if ( ! class_exists( 'acf_field__group' ) ) :
 
 		function delete_value( $post_id, $meta_key, $field ) {
 
-			// bail ealry if no sub fields
+			// bail early if no sub fields
 			if ( empty( $field['sub_fields'] ) ) {
 				return null;
 			}
@@ -657,6 +658,56 @@ if ( ! class_exists( 'acf_field__group' ) ) :
 					acf_delete_field( $sub_field['ID'] );
 				}
 			}
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			$schema = array(
+				'type'       => array( 'object', 'null' ),
+				'properties' => array(),
+				'required'   => ! empty( $field['required'] ),
+			);
+
+			foreach ( $field['sub_fields'] as $sub_field ) {
+				if ( $sub_field_schema = acf_get_field_rest_schema( $sub_field ) ) {
+					$schema['properties'][ $sub_field['name'] ] = $sub_field_schema;
+				}
+			}
+
+			return $schema;
+		}
+
+		/**
+		 * Apply basic formatting to prepare the value for default REST output.
+		 *
+		 * @param mixed      $value
+		 * @param int|string $post_id
+		 * @param array      $field
+		 * @return array|mixed
+		 */
+		public function format_value_for_rest( $value, $post_id, array $field ) {
+			if ( empty( $value ) || ! is_array( $value ) || empty( $field['sub_fields'] ) ) {
+				return $value;
+			}
+
+			// Loop through each row and within that, each sub field to process sub fields individually.
+			foreach ( $field['sub_fields'] as $sub_field ) {
+
+				// Extract the sub field 'field_key'=>'value' pair from the $value and format it.
+				$sub_value = acf_extract_var( $value, $sub_field['key'] );
+				$sub_value = acf_format_value_for_rest( $sub_value, $post_id, $sub_field );
+
+				// Add the sub field value back to the $value but mapped to the field name instead
+				// of the key reference.
+				$value[ $sub_field['name'] ] = $sub_value;
+			}
+
+			return $value;
 		}
 
 	}

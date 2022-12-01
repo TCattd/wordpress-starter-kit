@@ -39,9 +39,9 @@ class Dismissed {
 
 	public static function dismissNotice() {
 		$data = filter_var_array( $_POST, [
-			'repository'       => FILTER_SANITIZE_STRING,
-			'noticeType'       => FILTER_SANITIZE_STRING,
-			'noticePluginSlug' => FILTER_SANITIZE_STRING,
+			'repository'       => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'noticeType'       => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
+			'noticePluginSlug' => FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 		] );
 
 		$dismissions = apply_filters( 'otgs_installer_admin_notices_dismissions', [] );

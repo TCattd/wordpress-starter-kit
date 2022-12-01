@@ -2,7 +2,6 @@
  * Internal dependencies
  */
 import { AddToCartFormStateContextProvider } from '../form-state';
-import { ValidationContextProvider } from '../../validation';
 import FormSubmit from './submit';
 
 /**
@@ -12,7 +11,7 @@ import FormSubmit from './submit';
  *
  * @param {Object}  props                    Incoming props for the provider.
  * @param {Object}  props.children           The children being wrapped.
- * @param {Object} [props.product]           The product for which the form belongs to.
+ * @param {Object}  [props.product]          The product for which the form belongs to.
  * @param {boolean} [props.showFormElements] Should form elements be shown.
  */
 export const AddToCartFormContextProvider = ( {
@@ -21,14 +20,12 @@ export const AddToCartFormContextProvider = ( {
 	showFormElements,
 } ) => {
 	return (
-		<ValidationContextProvider>
-			<AddToCartFormStateContextProvider
-				product={ product }
-				showFormElements={ showFormElements }
-			>
-				{ children }
-				<FormSubmit />
-			</AddToCartFormStateContextProvider>
-		</ValidationContextProvider>
+		<AddToCartFormStateContextProvider
+			product={ product }
+			showFormElements={ showFormElements }
+		>
+			{ children }
+			<FormSubmit />
+		</AddToCartFormStateContextProvider>
 	);
 };

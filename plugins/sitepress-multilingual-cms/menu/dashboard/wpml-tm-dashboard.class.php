@@ -1,11 +1,15 @@
 <?php
 
 use WPML\FP\Lst;
+use WPML\FP\Obj;
+use WPML\LIB\WP\Hooks;
 
 /**
  * Class WPML_TM_Dashboard
  */
 class WPML_TM_Dashboard {
+
+	const LIMIT_RETRIEVED_POSTS_VALUE = 200;
 
 	/**
 	 * @var array
@@ -51,7 +55,7 @@ class WPML_TM_Dashboard {
 		$defaults = array(
 			'from_lang'   => 'en',
 			'to_lang'     => '',
-			'tstatus'     => -1,
+			'tstatus'     => - 1,
 			'sort_by'     => 'date',
 			'sort_order'  => 'DESC',
 			'limit_no'    => ICL_TM_DOCS_PER_PAGE,
@@ -66,12 +70,21 @@ class WPML_TM_Dashboard {
 		$args = $this->remove_empty_arguments( $args );
 		$args = wp_parse_args( $args, $defaults );
 
-		$documents                  = $this->add_string_packages( $documents, $args );
-		$documents                  = $this->add_translatable_posts( $documents, $args );
-		$filtered_documents         = apply_filters( 'wpml_tm_dashboard_documents', $documents );
-		$filtered_documents         = array_slice( $filtered_documents, 0, $args['limit_no'] );
+		$documents = $this->add_string_packages( $documents, $args );
+		$documents = $this->add_translatable_posts( $documents, $args );
+
+		$filtered_documents = apply_filters( 'wpml_tm_dashboard_documents', $documents );
+		$countAfterFilter   = count( $documents ) - count( $filtered_documents );
+
+		/**
+		 * Slicing the posts and string packages array according to page number and limit of posts per page.
+		 *
+		 * @see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-616
+		 */
+		$filtered_documents = Lst::slice( $args['page'] * $args['limit_no'], $args['limit_no'], $filtered_documents );
+
 		$results['documents']       = $filtered_documents;
-		$results['found_documents'] = $this->found_documents - ( count( $documents ) - count( $filtered_documents ) );
+		$results['found_documents'] = $this->found_documents - $countAfterFilter;
 
 		return $results;
 	}
@@ -101,20 +114,26 @@ class WPML_TM_Dashboard {
 	 * @return array
 	 */
 	private function add_translatable_posts( $results, $args ) {
-		$post_types = $this->get_translatable_post_types();
-		$offset     = 0;
+		$dashboardPagination = new WPML_TM_Dashboard_Pagination();
+		$post_types          = $this->get_translatable_post_types();
+
 		if ( $this->is_cpt_type( $args ) ) {
 			$post_types = array( $args['type'] );
-			$offset     = $args['page'] * $args['limit_no'];
 		} elseif ( ! empty( $args['type'] ) ) {
 			return $results;
 		}
 
+
+		/**
+		 * Preparing query arguments without specific pagination args and with 'no_found_rows = true' to avoid extra query for getting total posts number
+		 * That's done because we're already limiting the number of retrieved posts based on number set in self::LIMIT_RETRIEVED_POSTS_VALUE constant
+		 *
+		 * @see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-616
+		 */
 		$query_args = [
 			'post_type'               => $post_types,
 			'orderby'                 => $args['sort_by'],
 			'order'                   => $args['sort_order'],
-			'posts_per_page'          => $args['limit_no'] + 1,
 			'post_status'             => $args['status'],
 			'post_language'           => $args['from_lang'],
 			'post_language_to'        => $args['to_lang'],
@@ -123,7 +142,6 @@ class WPML_TM_Dashboard {
 			'update_post_meta_cache'  => false,
 			'update_post_term_cache'  => false,
 			'no_found_rows'           => true,
-			'offset'                  => $offset,
 		];
 
 		if ( 'any' !== $args['parent_type'] ) {
@@ -173,24 +191,54 @@ class WPML_TM_Dashboard {
 
 		$lang = $this->sitepress->get_admin_language();
 		$this->sitepress->switch_lang( $args['from_lang'] );
-		$query_args = apply_filters( 'wpml_tm_dashboard_post_query_args', $query_args, $args );
-		$query      = new WPML_TM_WP_Query( $query_args );
-		$this->sitepress->switch_lang( $lang );
-		if ( ! empty( $query->posts ) ) {
-			foreach ( $query->posts as $post ) {
-				$language_details                   = $this->sitepress->get_element_language_details( $post->ID, 'post_' . $post->post_type );
-				$post_obj                           = new stdClass();
-				$post_obj->ID                       = $post->ID;
-				$post_obj->translation_element_type = 'post_' . $post->post_type;
-				$post_obj->title                    = $post->post_title;
-				$post_obj->is_translation           = ( null === $language_details->source_language_code ) ? '0' : '1';
-				$post_obj->language_code            = $language_details->language_code;
-				$post_obj->trid                     = $language_details->trid;
-				$results[]                          = $post_obj;
+
+		/**
+		 * Callback function that queries and prepares posts documents
+		 *
+		 * @return array
+		 *
+		 * @see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-616
+		 */
+		$preparePosts = function () use ( $query_args, $results, $lang ) {
+			$query = new WPML_TM_WP_Query( $query_args );
+
+			$this->sitepress->switch_lang( $lang );
+
+			if ( ! empty( $query->posts ) ) {
+
+				foreach ( $query->posts as $post ) {
+					$language_details                   = $this->sitepress->get_element_language_details( $post->ID, 'post_' . $post->post_type );
+					$post_obj                           = new stdClass();
+					$post_obj->ID                       = $post->ID;
+					$post_obj->translation_element_type = 'post_' . $post->post_type;
+					$post_obj->title                    = $post->post_title;
+					$post_obj->is_translation           = ( null === $language_details->source_language_code ) ? '0' : '1';
+					$post_obj->language_code            = $language_details->language_code;
+					$post_obj->trid                     = $language_details->trid;
+
+					$results[] = $post_obj;
+				}
 			}
-		}
-		$this->found_documents += $query->get_found_count();
+
+			/**
+			 * Setting value of found documents depending on actual number of posts retrieved from database.
+			 *
+			 * @see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-616
+			 */
+			$this->found_documents += $query->getPostCount();
+
+			return $results;
+		};
+
+		$dashboardPagination->setPostsLimitValue( self::LIMIT_RETRIEVED_POSTS_VALUE );
+		$results = Hooks::callWithFilter( $preparePosts, 'post_limits', [
+			$dashboardPagination,
+			'getPostsLimitQueryValue'
+		] );
+		$dashboardPagination->resetPostsLimitValue();
+
 		wp_reset_query();
+
 		return $results;
 	}
 
@@ -208,7 +256,7 @@ class WPML_TM_Dashboard {
 	public function add_dashboard_filter_conditions( $where, $wp_query ) {
 		$post_title_like         = $wp_query->get( 'post_title_like' );
 		$post_language           = $wp_query->get( 'post_language_to' );
-		$post_translation_status = (int) $wp_query->get( 'post_translation_status' );
+		$post_translation_status = $wp_query->get( 'post_translation_status' );
 
 		if ( $post_title_like ) {
 			$where .= $this->wpdb->prepare( " AND {$this->wpdb->posts}.post_title LIKE '%s'", '%' . $this->wpdb->esc_like( $post_title_like ) . '%' );
@@ -233,17 +281,9 @@ class WPML_TM_Dashboard {
 	private function add_string_packages( $results, $args ) {
 		$string_packages_table = $this->wpdb->prefix . 'icl_string_packages';
 		$translations_table    = $this->wpdb->prefix . 'icl_translations';
-		$offset                = 0;
 
 		if ( $this->is_cpt_type( $args ) ) {
 			return array();
-		}
-
-		$sql_calc_found_rows = '';
-		$must_count_rows     = array_key_exists( 'type', $args ) && ! empty( $args['type'] );
-		if ( $must_count_rows ) {
-			$offset              = $args['page'] * $args['limit_no'];
-			$sql_calc_found_rows = 'SQL_CALC_FOUND_ROWS';
 		}
 
 		if ( ! is_plugin_active( 'wpml-string-translation/plugin.php' ) ) {
@@ -256,8 +296,9 @@ class WPML_TM_Dashboard {
 		}
 
 		$where = $this->create_string_packages_where( $args );
+		$postsLimit = self::LIMIT_RETRIEVED_POSTS_VALUE;
 
-		$sql      = "SELECT DISTINCT {$sql_calc_found_rows}
+		$sql      = "SELECT DISTINCT
 				 st_table.ID, 
 				 st_table.kind_slug, 
 				 st_table.title, 
@@ -271,14 +312,11 @@ class WPML_TM_Dashboard {
 				 WHERE 1 = 1 {$where} 
 				 GROUP BY st_table.ID
 				 ORDER BY st_table.ID ASC 
-				 LIMIT {$args['limit_no']} 
-				 OFFSET {$offset}";
+				 LIMIT {$postsLimit}";
+
 		$sql      = apply_filters( 'wpml_tm_dashboard_external_type_sql_query', $sql, $args );
 		$packages = $this->wpdb->get_results( $sql );
 
-		if ( $must_count_rows ) {
-			$this->found_documents += $this->wpdb->get_var( 'SELECT FOUND_ROWS()' );
-		}
 		foreach ( $packages as $package ) {
 			$package_obj                           = new stdClass();
 			$package_obj->ID                       = $package->ID;
@@ -287,8 +325,16 @@ class WPML_TM_Dashboard {
 			$package_obj->is_translation           = ( null === $package->source_language_code ) ? '0' : '1';
 			$package_obj->language_code            = $package->language_code;
 			$package_obj->trid                     = $package->trid;
-			$results[]                             = $package_obj;
+
+			$results[] = $package_obj;
 		}
+
+		/**
+		 * Setting value of found documents depending on actual number of string packages retrieved from database.
+		 *
+		 * @see https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-616
+		 */
+		$this->found_documents += count( $packages );
 
 		return $results;
 	}
@@ -325,7 +371,7 @@ class WPML_TM_Dashboard {
 	}
 
 	/**
-	 * @param  integer $translation_status
+	 * @param  string|int $translation_status
 	 * @param  string  $language
 	 *
 	 * @return string
@@ -339,8 +385,11 @@ class WPML_TM_Dashboard {
 			$subquery = $this->only_language_condition( $language );
 		} else {
 			switch ( $translation_status ) {
-				case ICL_TM_NOT_TRANSLATED:
+				case ICL_TM_NOT_TRANSLATED . '_' . ICL_TM_NEEDS_UPDATE:
 					$subquery = $this->not_translated_or_needs_update_condition( $language );
+					break;
+				case ICL_TM_NOT_TRANSLATED:
+					$subquery = $this->not_translated_or_needs_update_condition( $language, false );
 					break;
 				case ICL_TM_NEEDS_UPDATE:
 					$subquery = $this->needs_update_condition( $language );
@@ -413,14 +462,20 @@ class WPML_TM_Dashboard {
 		return $query;
 	}
 
-	private function not_translated_or_needs_update_condition( $language = null ) {
+	private function not_translated_or_needs_update_condition( $language = null, $withNeedsUpdate = true ) {
 		$prefix = $this->wpdb->prefix;
+
+		if ( $withNeedsUpdate ) {
+			$needsUpdatePart = 'translation_status.needs_update = 1 OR ';
+		} else {
+			$needsUpdatePart = '';
+		}
 
 		$query = "
 			SELECT trid
 			FROM {$prefix}icl_translations translations
 			INNER JOIN {$prefix}icl_translation_status translation_status ON translation_status.translation_id = translations.translation_id
-			WHERE ( translation_status.needs_update = 1 OR translation_status.status = 0 ) 
+			WHERE ( $needsUpdatePart translation_status.status = 0 ) 
 		";
 		if ( $language ) {
 			$query .= $this->language_where( $language );

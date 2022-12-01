@@ -2,8 +2,8 @@
 Contributors: xwp
 Tags: wp stream, stream, activity, logs, track
 Requires at least: 4.5
-Tested up to: 5.8
-Stable tag: 3.8.1
+Tested up to: 6.0
+Stable tag: 3.9.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,7 +89,30 @@ Past Contributors: fjarrett, shadyvb, chacha, westonruter, johnregan3, jacobschw
 3. Create rules for excluding certain kinds of records from appearing in Stream.
 
 
+== Upgrade Notice ==
+
+= 3.9.0 =
+
+Track changes to posts when using the block editor.
+
+
 == Changelog ==
+
+= 3.9.1 - August 23, 2022 =
+
+- Fix: PHP 8 compatibility for widget connector [#1294](https://github.com/xwp/stream/pull/1355), props [@ParhamG](https://github.com/ParhamG)
+- Development: Mark as tested with the latest version 6.0 of WordPress.
+- Development: Update development dependencies.
+
+= 3.9.0 - March 8, 2022 =
+
+- Fix: Track changes to posts when using the block editor by making the Posts connector to run on both frontend and backend requests since block editor changes happen over the REST API [#1264](https://github.com/xwp/stream/pull/1264), props [@coreymckrill](https://github.com/coreymckrill).
+- Fix: Don't store empty log event parameters [#1307](https://github.com/xwp/stream/pull/1307), props [@lkraav](https://github.com/lkraav).
+- Development: Adjust the local development environment to use MariaDB containers for ARM processor compatabilty.
+
+= 3.8.2 - October 12, 2021 =
+
+- Security fix: Ensure the value of `order` query parameter forwarded to the database query when viewing the Stream records in the WordPress admin (for authenticated users) is only `ASC` or `DESC`. Previously it passed the whole value of the `order` parameter filtered through `esc_sql()`.
 
 = 3.8.1 - September 17, 2021 =
 

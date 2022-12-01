@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Section extends Division_Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,16 +20,16 @@ class piotnetforms_Section extends Division_Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-section.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-section.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
-		return [ 'input', 'form', 'field' ];
+		return [ 'section' ];
 	}
 
 	public function register_controls() {
@@ -59,7 +61,7 @@ class piotnetforms_Section extends Division_Base_Widget_Piotnetforms {
 				],
 			]
 		);
-		$this->add_control(
+		$this->add_responsive_control(
 			'section_content_width',
 			[
 				'type'        => 'slider',
@@ -88,10 +90,36 @@ class piotnetforms_Section extends Division_Base_Widget_Piotnetforms {
 				],
 			]
 		); // FIXME conditions not working
+
+		$this->add_responsive_control(
+			'section_min_height',
+			[
+				'type'        => 'slider',
+				'label'       => __( 'Min Height', 'piotnetforms' ),
+				'value'       => [
+					'unit' => 'px',
+				],
+				'label_block' => true,
+				'size_units'  => [
+					'px' => [
+						'min'  => 0,
+						'max'  => 2000,
+						'step' => 1,
+					],
+					'vh' => [
+						'min'  => 0,
+						'max'  => 100,
+						'step' => 1,
+					],
+				],
+				'selectors'   => [
+					'{{WRAPPER}}>.piotnet-section__container' => 'min-height: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
 	}
 
 	private function add_style_typography_controls() {
-
 		$this->add_responsive_control(
 			'section_text_align',
 			[
@@ -132,25 +160,26 @@ class piotnetforms_Section extends Division_Base_Widget_Piotnetforms {
 	}
 
 	public function render_start( $editor = false ) {
-			$settings = $this->settings;
-		?>
+		$settings = $this->settings; ?>
 			<?php if ( $editor ) : ?>
 				<div class="piotnet-section__controls">
-					<div class="piotnet-section__controls-item piotnet-section__controls-item--edit" title="Edit" data-piotnet-control-edit>
-						<i class="fas fa-th"></i>
+					<div class="piotnet-section__controls-item piotnet-section__controls-item--edit" title="Edit" draggable="false" data-piotnet-control-edit>
+						<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-control-edit.svg'; ?>" draggable="false">
 					</div>
-					<div class="piotnet-section__controls-item piotnet-section__controls-item--duplicate" title="Duplicate" data-piotnet-control-duplicate>
-						<i class="far fa-clone"></i>
+					<div class="piotnet-section__controls-item piotnet-section__controls-item--duplicate" title="Duplicate" draggable="false" data-piotnet-control-duplicate>
+						<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-control-duplicate.svg'; ?>" draggable="false">
 					</div>
-					<div class="piotnet-section__controls-item piotnet-section__controls-item--remove" title="Delete" data-piotnet-control-remove>
-						<i class="fas fa-times"></i>
+					<div class="piotnet-section__controls-item piotnet-section__controls-item--remove" title="Delete" draggable="false" data-piotnet-control-remove>
+						<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-control-remove.svg'; ?>" draggable="false">
 					</div>
 				</div>
 			<?php endif; ?>
-			<div class="piotnet-section__container<?php if ( $settings['section_content_width_type'] == 'full-width' ) { echo ' piotnet-section__container--full-width'; } ?>"
+			<div class="piotnet-section__container<?php if ( $settings['section_content_width_type'] == 'full-width' ) {
+				echo ' piotnet-section__container--full-width';
+			} ?>"
 		<?php
-		if ( $editor ) :
-			?>
+			if ( $editor ) :
+				?>
 				 data-piotnet-section-container data-piotnet-inner-html<?php endif; ?>>
 		<?php
 	}

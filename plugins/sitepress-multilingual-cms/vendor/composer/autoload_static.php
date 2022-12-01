@@ -4,14 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
+class ComposerStaticInite7c5ac6fafd4708159f1b449a11cebdd
 {
     public static $files = array (
         '5f5b8f7c1db2e892006e8805f0ed573c' => __DIR__ . '/..' . '/wpml/collect/src/Illuminate/Support/helpers.php',
+        'b45b351e6b6f7487d819961fef2fda77' => __DIR__ . '/..' . '/jakeasmith/http_build_url/src/http_build_url.php',
         '914c4a8cb7e06f7d6e1ddf6997c1785f' => __DIR__ . '/..' . '/wpml/fp/core/functions.php',
         '348332d63f916da7598941d18c24311d' => __DIR__ . '/..' . '/wpml/fp/core/strings_functions.php',
         '766b758ee51e52c53cf3312a1dba9e34' => __DIR__ . '/..' . '/wpml/fp/core/system.php',
-        'b45b351e6b6f7487d819961fef2fda77' => __DIR__ . '/..' . '/jakeasmith/http_build_url/src/http_build_url.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
         '995b589e693a50f54393aa31ee1c3763' => __DIR__ . '/..' . '/yoast/whip/src/facades/wordpress.php',
@@ -30,6 +30,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'PhpMyAdmin\\SqlParser\\' => 21,
         ),
         'C' => 
@@ -54,6 +55,10 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'Symfony\\Polyfill\\Iconv\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-iconv',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'PhpMyAdmin\\SqlParser\\' => 
         array (
@@ -150,6 +155,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\Compatibility\\GoogleSiteKit\\Hooks' => __DIR__ . '/../..' . '/compatibility/GoogleSiteKit/Hooks.php',
         'WPML\\Container\\Config' => __DIR__ . '/../..' . '/classes/container/class-config.php',
         'WPML\\Container\\Container' => __DIR__ . '/../..' . '/classes/container/class-wpml-container.php',
+        'WPML\\Convert\\Ids' => __DIR__ . '/..' . '/wpml/core-api/core/Convert/Ids.php',
         'WPML\\Core\\BackgroundTask' => __DIR__ . '/..' . '/wpml/core-api/core/utility/BackgroundTask.php',
         'WPML\\Core\\ISitePress' => __DIR__ . '/../..' . '/classes/ISitePress.php',
         'WPML\\Core\\LanguageNegotiation' => __DIR__ . '/../..' . '/classes/LanguageNegotiation.php',
@@ -534,6 +540,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\Core\\Twig_Util_DeprecationCollector' => __DIR__ . '/../..' . '/lib/twig/lib/Twig/Util/DeprecationCollector.php',
         'WPML\\Core\\Twig_Util_TemplateDirIterator' => __DIR__ . '/../..' . '/lib/twig/lib/Twig/Util/TemplateDirIterator.php',
         'WPML\\Core\\WP\\App\\Resources' => __DIR__ . '/../..' . '/classes/utilities/Resources.php',
+        'WPML\\DatabaseQueries\\TranslatedPosts' => __DIR__ . '/../..' . '/classes/database-queries/translated-posts.php',
         'WPML\\DefaultCapabilities' => __DIR__ . '/../..' . '/classes/roles/DefaultCapabilities.php',
         'WPML\\DocPage' => __DIR__ . '/..' . '/wpml/core-api/core/DocPage.php',
         'WPML\\Element\\API\\Entity\\LanguageMapping' => __DIR__ . '/..' . '/wpml/core-api/core/Entity/LanguageMapping.php',
@@ -558,6 +565,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\FP\\Json' => __DIR__ . '/..' . '/wpml/fp/core/Json.php',
         'WPML\\FP\\Just' => __DIR__ . '/..' . '/wpml/fp/core/Maybe.php',
         'WPML\\FP\\Left' => __DIR__ . '/..' . '/wpml/fp/core/Either.php',
+        'WPML\\FP\\Lens' => __DIR__ . '/..' . '/wpml/fp/core/Lens.php',
         'WPML\\FP\\Logic' => __DIR__ . '/..' . '/wpml/fp/core/Logic.php',
         'WPML\\FP\\Lst' => __DIR__ . '/..' . '/wpml/fp/core/Lst.php',
         'WPML\\FP\\Math' => __DIR__ . '/..' . '/wpml/fp/core/Math.php',
@@ -576,10 +584,21 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\FP\\System\\System' => __DIR__ . '/..' . '/wpml/fp/core/SystemClass.php',
         'WPML\\FP\\System\\_Filter' => __DIR__ . '/..' . '/wpml/fp/core/Filter.php',
         'WPML\\FP\\System\\_Validator' => __DIR__ . '/..' . '/wpml/fp/core/Validator.php',
+        'WPML\\FP\\Type' => __DIR__ . '/..' . '/wpml/fp/core/Type.php',
         'WPML\\FP\\Undefined' => __DIR__ . '/..' . '/wpml/fp/core/Undefined.php',
         'WPML\\FP\\Wrapper' => __DIR__ . '/..' . '/wpml/fp/core/Wrapper.php',
         'WPML\\FP\\_Invoker' => __DIR__ . '/..' . '/wpml/fp/core/Invoker.php',
         'WPML\\FullSiteEditing\\BlockTemplates' => __DIR__ . '/../..' . '/classes/full-site-editing/BlockTemplates.php',
+        'WPML\\ICLToATEMigration\\Data' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/Data.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\AuthenticateICL' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/AuthenticateICL.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\DeactivateICL' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/DeactivateICL.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\TranslationMemory\\CheckMigrationStatus' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/TranslationMemory/CheckMigrationStatus.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\TranslationMemory\\StartMigration' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/TranslationMemory/StartMigration.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\Translators\\GetFromICL' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/Translators/GetFromICL.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\Translators\\GetFromICLResponseMapper' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/Translators/GetFromICLResponseMapper.php',
+        'WPML\\ICLToATEMigration\\Endpoints\\Translators\\Save' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/endpoints/Translators/Save.php',
+        'WPML\\ICLToATEMigration\\ICLStatus' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/ICLStatus.php',
+        'WPML\\ICLToATEMigration\\Loader' => __DIR__ . '/../..' . '/classes/icl-to-ate-migration/Loader.php',
         'WPML\\Installer\\AddSiteUrl' => __DIR__ . '/../..' . '/classes/Installer/AddSiteUrl.php',
         'WPML\\Installer\\DisableRegisterNow' => __DIR__ . '/../..' . '/classes/Installer/DisableRegisterNow.php',
         'WPML\\LIB\\WP\\App\\Resources' => __DIR__ . '/..' . '/wpml/wp/classes/Resources.php',
@@ -605,6 +624,18 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\Language\\Detection\\Frontend' => __DIR__ . '/../..' . '/classes/language/Detection/Frontend.php',
         'WPML\\Language\\Detection\\Rest' => __DIR__ . '/../..' . '/classes/language/Detection/Rest.php',
         'WPML\\Languages\\UI' => __DIR__ . '/../..' . '/classes/languages/UI.php',
+        'WPML\\MediaTranslation\\AddMediaDataToTranslationPackage' => __DIR__ . '/../..' . '/classes/media-translation/AddMediaDataToTranslationPackage.php',
+        'WPML\\MediaTranslation\\AddMediaDataToTranslationPackageFactory' => __DIR__ . '/../..' . '/classes/media-translation/AddMediaDataToTranslationPackageFactory.php',
+        'WPML\\MediaTranslation\\MediaAttachmentByUrl' => __DIR__ . '/../..' . '/classes/media-translation/MediaAttachmentByUrl.php',
+        'WPML\\MediaTranslation\\MediaAttachmentByUrlFactory' => __DIR__ . '/../..' . '/classes/media-translation/MediaAttachmentByUrlFactory.php',
+        'WPML\\MediaTranslation\\MediaCaption' => __DIR__ . '/../..' . '/classes/media-translation/MediaCaption.php',
+        'WPML\\MediaTranslation\\MediaCaptionTagsParse' => __DIR__ . '/../..' . '/classes/media-translation/MediaCaptionTagsParse.php',
+        'WPML\\MediaTranslation\\MediaImgParse' => __DIR__ . '/../..' . '/classes/media-translation/MediaImgParse.php',
+        'WPML\\MediaTranslation\\MediaSettings' => __DIR__ . '/../..' . '/classes/media-translation/MediaSettings.php',
+        'WPML\\MediaTranslation\\MediaTranslationEditorLayout' => __DIR__ . '/../..' . '/classes/media-translation/MediaTranslationEditorLayout.php',
+        'WPML\\MediaTranslation\\MediaTranslationEditorLayoutFactory' => __DIR__ . '/../..' . '/classes/media-translation/MediaTranslationEditorLayoutFactory.php',
+        'WPML\\MediaTranslation\\PostWithMediaFiles' => __DIR__ . '/../..' . '/classes/media-translation/PostWithMediaFiles.php',
+        'WPML\\MediaTranslation\\PostWithMediaFilesFactory' => __DIR__ . '/../..' . '/classes/media-translation/PostWithMediaFilesFactory.php',
         'WPML\\Media\\Duplication\\AbstractFactory' => __DIR__ . '/../..' . '/classes/media/duplication/AbstractFactory.php',
         'WPML\\Media\\Duplication\\Hooks' => __DIR__ . '/../..' . '/classes/media/duplication/Hooks.php',
         'WPML\\Media\\Duplication\\HooksFactory' => __DIR__ . '/../..' . '/classes/media/duplication/HooksFactory.php',
@@ -623,6 +654,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\Plugins' => __DIR__ . '/../..' . '/classes/plugins/Plugins.php',
         'WPML\\PostTranslation\\SpecialPage\\Hooks' => __DIR__ . '/../..' . '/classes/post-translation/SpecialPage/Hooks.php',
         'WPML\\Posts\\CountPerPostType' => __DIR__ . '/../..' . '/classes/post-translation/endpoints/CountPerPostType.php',
+        'WPML\\Posts\\DeleteTranslatedContentOfLanguages' => __DIR__ . '/../..' . '/classes/post-translation/endpoints/DeleteTranslatedContentOfLanguages.php',
         'WPML\\Posts\\UntranslatedCount' => __DIR__ . '/../..' . '/classes/post-translation/endpoints/UntranslatedCount.php',
         'WPML\\REST\\XMLConfig\\Custom\\Actions' => __DIR__ . '/../..' . '/classes/API/REST/CustomXMLConfig/Actions.php',
         'WPML\\REST\\XMLConfig\\Custom\\Factory' => __DIR__ . '/../..' . '/classes/API/REST/CustomXMLConfig/Factory.php',
@@ -632,6 +664,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\Rest\\Base' => __DIR__ . '/../..' . '/classes/API/REST/Base.php',
         'WPML\\Rest\\ITarget' => __DIR__ . '/../..' . '/classes/API/REST/Target.php',
         'WPML\\Roles' => __DIR__ . '/../..' . '/classes/roles/Roles.php',
+        'WPML\\Settings\\LanguageNegotiation' => __DIR__ . '/..' . '/wpml/core-api/core/settings/LanguageNegotiation.php',
         'WPML\\Settings\\PostType\\Automatic' => __DIR__ . '/..' . '/wpml/core-api/core/settings/Automatic.php',
         'WPML\\Settings\\PostTypesUI' => __DIR__ . '/../..' . '/classes/menu-elements/PostTypesUI.php',
         'WPML\\Settings\\UI' => __DIR__ . '/../..' . '/classes/settings/UI.php',
@@ -659,6 +692,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\TM\\API\\Batch' => __DIR__ . '/../..' . '/API/Batch.php',
         'WPML\\TM\\API\\Job\\Map' => __DIR__ . '/../..' . '/API/Job/Map.php',
         'WPML\\TM\\API\\Jobs' => __DIR__ . '/../..' . '/API/Jobs.php',
+        'WPML\\TM\\API\\TranslationServices' => __DIR__ . '/../..' . '/API/TranslationServices.php',
         'WPML\\TM\\API\\Translators' => __DIR__ . '/../..' . '/API/Translators.php',
         'WPML\\TM\\ATE\\API\\CacheStorage\\StaticVariable' => __DIR__ . '/../..' . '/classes/ATE/API/CacheStorage/StaticVariable.php',
         'WPML\\TM\\ATE\\API\\CacheStorage\\Storage' => __DIR__ . '/../..' . '/classes/ATE/API/CacheStorage/Storage.php',
@@ -667,6 +701,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\TM\\ATE\\API\\ErrorMessages' => __DIR__ . '/../..' . '/classes/ATE/API/ErrorMessages.php',
         'WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\ActivateLanguage' => __DIR__ . '/../..' . '/classes/ATE/auto-translate/endpoints/ActivateLanguage.php',
         'WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\AutoTranslate' => __DIR__ . '/../..' . '/classes/ATE/auto-translate/endpoints/AutoTranslate.php',
+        'WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\CancelJobs' => __DIR__ . '/../..' . '/classes/ATE/auto-translate/endpoints/CancelJobs.php',
         'WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\CheckLanguageSupport' => __DIR__ . '/../..' . '/classes/ATE/auto-translate/endpoints/CheckLanguageSupport.php',
         'WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\EnableATE' => __DIR__ . '/../..' . '/classes/ATE/auto-translate/endpoints/EnableATE.php',
         'WPML\\TM\\ATE\\AutoTranslate\\Endpoint\\GetATEJobsToSync' => __DIR__ . '/../..' . '/classes/ATE/auto-translate/endpoints/GetATEJobsToSync.php',
@@ -728,13 +763,13 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\TM\\ATE\\Sync\\Arguments' => __DIR__ . '/../..' . '/classes/ATE/Sync/Arguments.php',
         'WPML\\TM\\ATE\\Sync\\Process' => __DIR__ . '/../..' . '/classes/ATE/Sync/Process.php',
         'WPML\\TM\\ATE\\Sync\\Result' => __DIR__ . '/../..' . '/classes/ATE/Sync/Result.php',
-        'WPML\\TM\\ATE\\Sync\\Trigger' => __DIR__ . '/../..' . '/classes/ATE/Sync/Trigger.php',
         'WPML\\TM\\ATE\\TranslateEverything' => __DIR__ . '/../..' . '/classes/ATE/TranslateEverything.php',
         'WPML\\TM\\ATE\\TranslateEverything\\UntranslatedPosts' => __DIR__ . '/../..' . '/classes/ATE/TranslateEverything/UntranslatedPosts.php',
         'WPML\\TM\\AdminBar\\Hooks' => __DIR__ . '/../..' . '/classes/admin-bar/Hooks.php',
         'WPML\\TM\\AutomaticTranslation\\Actions\\Actions' => __DIR__ . '/../..' . '/classes/automatic-translation/Actions.php',
         'WPML\\TM\\AutomaticTranslation\\Actions\\ActionsFactory' => __DIR__ . '/../..' . '/classes/automatic-translation/ActionsFactory.php',
         'WPML\\TM\\Container\\Config' => __DIR__ . '/../..' . '/classes/container/class-config-tm.php',
+        'WPML\\TM\\Editor\\ATEDetailedErrorMessage' => __DIR__ . '/../..' . '/classes/editor/ATEDetailedErrorMessage.php',
         'WPML\\TM\\Editor\\ATERetry' => __DIR__ . '/../..' . '/classes/editor/ATERetry.php',
         'WPML\\TM\\Editor\\ClassicEditorActions' => __DIR__ . '/../..' . '/classes/editor/ClassicEditorActions.php',
         'WPML\\TM\\Editor\\Editor' => __DIR__ . '/../..' . '/classes/editor/Editor.php',
@@ -746,9 +781,11 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\TM\\Jobs\\Dispatch\\Packages' => __DIR__ . '/../..' . '/classes/translation-jobs/Dispatch/Packages.php',
         'WPML\\TM\\Jobs\\Dispatch\\Posts' => __DIR__ . '/../..' . '/classes/translation-jobs/Dispatch/Posts.php',
         'WPML\\TM\\Jobs\\Dispatch\\Strings' => __DIR__ . '/../..' . '/classes/translation-jobs/Dispatch/Strings.php',
+        'WPML\\TM\\Jobs\\Endpoint\\Resign' => __DIR__ . '/../..' . '/classes/jobs/endpoint/Resign.php',
         'WPML\\TM\\Jobs\\ExtraFieldDataInEditor' => __DIR__ . '/../..' . '/classes/translation-jobs/ExtraFieldDataInEditor.php',
         'WPML\\TM\\Jobs\\ExtraFieldDataInEditorFactory' => __DIR__ . '/../..' . '/classes/translation-jobs/ExtraFieldDataInEditorFactory.php',
         'WPML\\TM\\Jobs\\FieldId' => __DIR__ . '/../..' . '/classes/translation-jobs/FieldId.php',
+        'WPML\\TM\\Jobs\\Loader' => __DIR__ . '/../..' . '/classes/jobs/Loader.php',
         'WPML\\TM\\Jobs\\Manual' => __DIR__ . '/../..' . '/classes/jobs/Manual.php',
         'WPML\\TM\\Jobs\\Query\\AbstractQuery' => __DIR__ . '/../..' . '/classes/jobs/query/AbstractQuery.php',
         'WPML\\TM\\Jobs\\Query\\CompositeQuery' => __DIR__ . '/../..' . '/classes/jobs/query/CompositeQuery.php',
@@ -766,11 +803,12 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\TM\\Jobs\\Utils\\ElementLinkFactory' => __DIR__ . '/../..' . '/classes/jobs/utils/ElementLinkFactory.php',
         'WPML\\TM\\Menu\\Dashboard\\PostJobsRepository' => __DIR__ . '/../..' . '/classes/menu/dashboard/PostJobsRepository.php',
         'WPML\\TM\\Menu\\McSetup\\CfMetaBoxOption' => __DIR__ . '/../..' . '/classes/menu/mcsetup/CfMetaBoxOption.php',
+        'WPML\\TM\\Menu\\PostLinkUrl' => __DIR__ . '/../..' . '/classes/menu-elements/PostLinkUrl.php',
         'WPML\\TM\\Menu\\TranslationBasket\\Strings' => __DIR__ . '/../..' . '/classes/menu/translation-basket/Strings.php',
         'WPML\\TM\\Menu\\TranslationBasket\\Utility' => __DIR__ . '/../..' . '/classes/menu/translation-basket/Utility.php',
         'WPML\\TM\\Menu\\TranslationMethod\\TranslationMethodSettings' => __DIR__ . '/../..' . '/classes/menu/translation-method/TranslationMethodSettings.php',
         'WPML\\TM\\Menu\\TranslationQueue\\CloneJobs' => __DIR__ . '/../..' . '/classes/menu/translation-queue/CloneJobs.php',
-        'WPML\\TM\\Menu\\TranslationQueue\\JobsRepository' => __DIR__ . '/../..' . '/classes/menu/translation-queue/JobsRepository.php',
+        'WPML\\TM\\Menu\\TranslationQueue\\PostTypeFilters' => __DIR__ . '/../..' . '/classes/menu/translation-queue/PostTypeFilters.php',
         'WPML\\TM\\Menu\\TranslationRoles\\RoleValidator' => __DIR__ . '/../..' . '/classes/menu/translation-roles/RoleValidator.php',
         'WPML\\TM\\Menu\\TranslationServices\\ActivationAjax' => __DIR__ . '/../..' . '/classes/menu/translation-services/ActivationAjax.php',
         'WPML\\TM\\Menu\\TranslationServices\\ActivationAjaxFactory' => __DIR__ . '/../..' . '/classes/menu/translation-services/ActivationAjaxFactory.php',
@@ -806,6 +844,7 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\TM\\TranslationProxy\\Services\\Project\\SiteDetails' => __DIR__ . '/../..' . '/classes/translation-proxy/services/Project/SiteDetails.php',
         'WPML\\TM\\TranslationProxy\\Services\\Project\\Storage' => __DIR__ . '/../..' . '/classes/translation-proxy/services/Project/Storage.php',
         'WPML\\TM\\TranslationProxy\\Services\\Storage' => __DIR__ . '/../..' . '/classes/translation-proxy/services/Storage.php',
+        'WPML\\TM\\Troubleshooting\\Loader' => __DIR__ . '/../..' . '/classes/troubleshoot/Loader.php',
         'WPML\\TM\\Troubleshooting\\ResetPreferredTranslationService' => __DIR__ . '/../..' . '/classes/troubleshooting/ResetPreferredTranslationService.php',
         'WPML\\TM\\Troubleshooting\\SynchronizeSourceIdOfATEJobs\\TriggerSynchronization' => __DIR__ . '/../..' . '/classes/troubleshooting/SynchronizeSourceIdOfATEJobs/TriggerSynchronization.php',
         'WPML\\TM\\Upgrade\\Commands\\ATEProxyUpdateRewriteRules' => __DIR__ . '/../..' . '/classes/upgrade/commands/ATEProxyUpdateRewriteRules.php',
@@ -858,7 +897,10 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML\\Utilities\\ILock' => __DIR__ . '/..' . '/wpml/core-api/core/utility/ILock.php',
         'WPML\\Utilities\\KeyedLock' => __DIR__ . '/../..' . '/classes/utilities/lock/KeyedLock.php',
         'WPML\\Utilities\\Lock' => __DIR__ . '/..' . '/wpml/core-api/core/utility/Lock.php',
+        'WPML\\Utilities\\Logger' => __DIR__ . '/..' . '/wpml/core-api/core/utility/Logger.php',
         'WPML\\Utilities\\NullLock' => __DIR__ . '/../..' . '/classes/utilities/lock/class-wpml-null-lock.php',
+        'WPML\\Utils\\AutoAdjustIds' => __DIR__ . '/../..' . '/classes/utilities/AutoAdjustIds.php',
+        'WPML\\Utils\\AutoAdjustIdsFactory' => __DIR__ . '/../..' . '/classes/utilities/AutoAdjustIdsFactory.php',
         'WPML\\Utils\\DebugBackTrace' => __DIR__ . '/../..' . '/classes/utilities/class-debug-backtrace.php',
         'WPML\\Utils\\Pager' => __DIR__ . '/../..' . '/classes/utilities/Pager.php',
         'WPML\\WP\\OptionManager' => __DIR__ . '/..' . '/wpml/core-api/core/OptionManager.php',
@@ -945,7 +987,6 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML_Cookie_Setting' => __DIR__ . '/../..' . '/classes/cookie/class-wpml-cookie-setting.php',
         'WPML_Cookie_Setting_Ajax' => __DIR__ . '/../..' . '/classes/cookie/class-wpml-cookie-setting-ajax.php',
         'WPML_Copy_Once_Custom_Field' => __DIR__ . '/../..' . '/classes/custom-field-translation/class-wpml-copy-once-custom-field.php',
-        'WPML_Copy_Once_Custom_Field_Factory' => __DIR__ . '/../..' . '/classes/custom-field-translation/class-wpml-copy-once-custom-field-factory.php',
         'WPML_Core_Privacy_Content' => __DIR__ . '/../..' . '/classes/privacy/class-wpml-core-privacy-content.php',
         'WPML_Core_Version_Check' => __DIR__ . '/..' . '/wpml-shared/wpml-lib-dependencies/src/dependencies/class-wpml-core-version-check.php',
         'WPML_Create_Post_Helper' => __DIR__ . '/../..' . '/inc/post-translation/wpml-create-post-helper.class.php',
@@ -1155,7 +1196,6 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML_Privacy_Content_Factory' => __DIR__ . '/../..' . '/classes/privacy/class-wpml-privacy-content-factory.php',
         'WPML_Pro_Translation' => __DIR__ . '/../..' . '/inc/translation-proxy/wpml-pro-translation.class.php',
         'WPML_Queried_Object' => __DIR__ . '/../..' . '/classes/utilities/wpml-queried-object.php',
-        'WPML_Queried_Object_Factory' => __DIR__ . '/../..' . '/classes/utilities/wpml-queried-object-factory.php',
         'WPML_Query_Filter' => __DIR__ . '/../..' . '/classes/query-filtering/wpml-query-filter.class.php',
         'WPML_Query_Parser' => __DIR__ . '/../..' . '/classes/query-filtering/class-wpml-query-parser.php',
         'WPML_Query_Utils' => __DIR__ . '/../..' . '/classes/query-filtering/wpml-query-utils.class.php',
@@ -1413,7 +1453,6 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML_TM_Jobs_Deadline_Estimate_Factory' => __DIR__ . '/../..' . '/classes/jobs-deadline/wpml-tm-jobs-deadline-estimate-factory.php',
         'WPML_TM_Jobs_List_Script_Data' => __DIR__ . '/../..' . '/classes/menu/jobs-list/class-wpml-tm-jobs-list-script-data.php',
         'WPML_TM_Jobs_List_Services' => __DIR__ . '/../..' . '/classes/menu/jobs-list/class-wpml-tm-jobs-list-services.php',
-        'WPML_TM_Jobs_List_Status_Names' => __DIR__ . '/../..' . '/classes/menu/jobs-list/class-wpml-tm-jobs-list-status-names.php',
         'WPML_TM_Jobs_List_Translated_By_Filters' => __DIR__ . '/../..' . '/classes/menu/jobs-list/class-wpml-tm-jobs-list-translated_by_filters.php',
         'WPML_TM_Jobs_List_Translators' => __DIR__ . '/../..' . '/classes/menu/jobs-list/class-wpml-tm-jobs-list-translators.php',
         'WPML_TM_Jobs_Migration_State' => __DIR__ . '/../..' . '/classes/notices/translation-jobs-migration/class-wpml-tm-jobs-migration-state.php',
@@ -1765,8 +1804,6 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
         'WPML_Translation_Tree' => __DIR__ . '/../..' . '/classes/menu-elements/class-wpml-translation-tree.php',
         'WPML_Translations' => __DIR__ . '/../..' . '/classes/translations/class-wpml-translations.php',
         'WPML_Translations_Queue' => __DIR__ . '/../..' . '/classes/menu/translation-queue/class-wpml-translations-queue.php',
-        'WPML_Translations_Queue_Factory' => __DIR__ . '/../..' . '/classes/menu/translation-queue/class-wpml-translations-queue-factory.php',
-        'WPML_Translations_Queue_Jobs_Model' => __DIR__ . '/../..' . '/classes/menu/translation-queue/class-wpml-translations-queue-jobs-model.php',
         'WPML_Translator' => __DIR__ . '/../..' . '/inc/translation-management/wpml-translator.class.php',
         'WPML_Translator_Admin_Records' => __DIR__ . '/../..' . '/classes/user/class-wpml-translator-admin-records.php',
         'WPML_Translator_Records' => __DIR__ . '/../..' . '/classes/user/class-wpml-translator-records.php',
@@ -1910,9 +1947,9 @@ class ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit5f0e357b80c0c78b992d6782abdcb257::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite7c5ac6fafd4708159f1b449a11cebdd::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite7c5ac6fafd4708159f1b449a11cebdd::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInite7c5ac6fafd4708159f1b449a11cebdd::$classMap;
 
         }, null, ClassLoader::class);
     }

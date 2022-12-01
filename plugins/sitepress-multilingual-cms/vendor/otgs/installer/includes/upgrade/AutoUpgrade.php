@@ -74,7 +74,7 @@ class AutoUpgrade {
 				$pluginObj = $this->installerPluginsFinder->get_plugin( $pluginData['slug'], $repositoryId );
 
 				if ( ! $this->installer->plugin_is_registered( $repositoryId, $pluginData['slug'] ) ) {
-					if ( ( ! $pluginObj || $pluginObj->get_external_repo() && $this->installer->plugin_is_registered( $pluginObj->get_external_repo(), $pluginData['slug'] ) )
+					if ( ( ! $pluginObj || $pluginObj->has_fallback_on_wporg() || $pluginObj->get_external_repo() && $this->installer->plugin_is_registered( $pluginObj->get_external_repo(), $pluginData['slug'] ) )
 					     || $this->installer->plugin_is_registered( 'wpml', $pluginData['slug'] ) ) {
 						continue;
 					}

@@ -2,16 +2,16 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Fuerte-WP 1.3.7\n"
+"Project-Id-Version: Fuerte-WP 1.4.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/Fuerte-WP\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Last-Translator: Esteban Cuevas <esteban@attitude.cl>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-08-26T19:31:58+00:00\n"
+"POT-Creation-Date: 2022-07-22T17:03:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.5.0\n"
+"X-Generator: WP-CLI 2.6.0\n"
 "X-Domain: fuerte-wp\n"
 
 #. Plugin Name of the plugin
@@ -59,7 +59,7 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php
+#: admin/class-fuerte-wp-admin.php:136
 msgid "Access denied message."
 msgstr ""
 
@@ -77,282 +77,315 @@ msgid "Admin recovery email. If empty, dev@%s will be used.<br/>This email will 
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:146
+msgid "Use a different sender email."
+msgstr ""
+
+#. translators: %s: link to general options
+#: admin/class-fuerte-wp-admin.php:149
+msgid "Use a different email (than the <a href=\"%s\">administrator one</a>) for all emails that WordPress sends."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:151
 msgid "Sender email."
 msgstr ""
 
 #. translators: %s: site domain
-#: admin/class-fuerte-wp-admin.php:150
+#: admin/class-fuerte-wp-admin.php:165
 msgid "Default site sender email. If empty, no-reply@%1$s will be used.<br/>Emails sent by WP will use this email address. Make sure to check your <a href=\"https://mxtoolbox.com/SPFRecordGenerator.aspx?domain=%1$s&prefill=true\" target=\"_blank\">SPF Records</a> to avoid WP emails going to spam."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:152
+#: admin/class-fuerte-wp-admin.php:167
 msgid "Updates"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:154
+#: admin/class-fuerte-wp-admin.php:169
 msgid "Auto-update WordPress core."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:157
+#: admin/class-fuerte-wp-admin.php:172
 msgid "Auto-update WordPress to the latest stable version."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:159
+#: admin/class-fuerte-wp-admin.php:174
 msgid "Auto-update Plugins."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:162
+#: admin/class-fuerte-wp-admin.php:177
 msgid "Auto-update Plugins to their latest stable version."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:164
+#: admin/class-fuerte-wp-admin.php:179
 msgid "Auto-update Themes."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:167
+#: admin/class-fuerte-wp-admin.php:182
 msgid "Auto-update Themes to their latest stable version."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:169
+#: admin/class-fuerte-wp-admin.php:184
 msgid "Auto-update Translations."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:172
+#: admin/class-fuerte-wp-admin.php:187
 msgid "Auto-update Translations to their latest stable version."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:174
+#: admin/class-fuerte-wp-admin.php:189
 msgid "Tweaks"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:176
+#: admin/class-fuerte-wp-admin.php:191
 msgid "Use site logo at login."
 msgstr ""
 
-#. translators: %s: customizer URL, automatically replaced, don't translate
-#: admin/class-fuerte-wp-admin.php:180
+#. translators: %s: customizer URL
+#: admin/class-fuerte-wp-admin.php:195
 msgid "Use your site logo, uploaded via <a href=\"%s\" target=\"_blank\">Customizer > Site Identity</a>, for WordPress login page."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:183
+#: admin/class-fuerte-wp-admin.php:198
 msgid "E-mails"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:185
+#: admin/class-fuerte-wp-admin.php:200
 msgid "<p>Here you can enable or disable several WordPress built in emails. <strong>Mark</strong> the ones you want to be <strong>enabled</strong>.</p><p><a href=\"https://github.com/johnbillion/wp_mail\" target=\"_blank\">Check here</a> for full documentation of all automated emails WordPress sends."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:187
+#: admin/class-fuerte-wp-admin.php:202
 msgid "Fatal Error."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:190
+#: admin/class-fuerte-wp-admin.php:205
 msgid "Receipt: site admin or recovery email address (main options)."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:192
+#: admin/class-fuerte-wp-admin.php:207
 msgid "Automatic updates."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:195
-#: admin/class-fuerte-wp-admin.php:200
 #: admin/class-fuerte-wp-admin.php:210
 #: admin/class-fuerte-wp-admin.php:215
-#: admin/class-fuerte-wp-admin.php:220
-msgid "Receipt: site admin."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:197
-msgid "Comment awaiting moderation."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:202
-msgid "Comment has been published."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:205
-msgid "Receipt: post author."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:207
-msgid "User reset their password."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:212
-msgid "User confirm personal data export request."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:217
-msgid "New user created."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:222
-msgid "Network: new site created."
-msgstr ""
-
 #: admin/class-fuerte-wp-admin.php:225
 #: admin/class-fuerte-wp-admin.php:230
 #: admin/class-fuerte-wp-admin.php:235
-msgid "Receipt: network admin."
+msgid "Receipt: site admin."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:212
+msgid "Comment awaiting moderation."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:217
+msgid "Comment has been published."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:220
+msgid "Receipt: post author."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:222
+msgid "User reset their password."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:227
-msgid "Network: new user site registered."
+msgid "User confirm personal data export request."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:232
-msgid "Network: new site activated."
+msgid "New user created."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:238
-msgid "Restrictions"
+#: admin/class-fuerte-wp-admin.php:237
+msgid "Network: new site created."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:239
-msgid "Disable XML-RPC API."
+#: admin/class-fuerte-wp-admin.php:240
+#: admin/class-fuerte-wp-admin.php:245
+#: admin/class-fuerte-wp-admin.php:250
+msgid "Receipt: network admin."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:242
-msgid "Disable the old and insecure XML-RPC API in WordPress."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:244
-msgid "Disable admin creation/edition."
+msgid "Network: new user site registered."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:247
-msgid "Disable the creation of new admin accounts and the editing of existing admin accounts."
+msgid "Network: new site activated."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:249
-msgid "Disable app passwords."
+#: admin/class-fuerte-wp-admin.php:253
+msgid "REST API"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:252
-msgid "Disable WordPress app passwords. <a href=\"https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/\" target=\"_blank\">Check here</a> for more info."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:254
-msgid "Disable weak passwords."
+#: admin/class-fuerte-wp-admin.php:255
+msgid "<p>REST API restrictions.</p>"
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:257
-msgid "Disable the use of weak passwords. User can't uncheck \"Confirm use of weak password\". Let users type their own password, but must be somewhat secure (following WP built in recommendation library)."
+msgid "Restrict REST API usage to logged in users only."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:259
-msgid "Force strong passwords."
+#: admin/class-fuerte-wp-admin.php:260
+msgid "Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will brake. This is the second best option: limit his usage to only logged in users. <a href=\"https://developer.wordpress.org/rest-api/frequently-asked-questions/\" target=\"_blank\">Learn more</a>."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:262
-msgid "Force strong passwords usage, making password field read-only. Users must use WordPress provided strong password."
+msgid "Disable app passwords."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:264
-msgid "Disable admin bar for roles."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:267
-msgid "Disable WordPress admin bar for selected roles."
+#: admin/class-fuerte-wp-admin.php:265
+msgid "Disable generation of App Passwords, used for the REST API. <a href=\"https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/\" target=\"_blank\">Check here</a> for more info."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:269
-msgid "Restrict Permalinks configuration."
+msgid "Restrictions"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:272
-msgid "Restrict Permalinks configuration access."
+#: admin/class-fuerte-wp-admin.php:270
+msgid "Disable XML-RPC API."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:274
-msgid "Restrict ACF fields editing."
+#: admin/class-fuerte-wp-admin.php:273
+msgid "Disable the old and insecure XML-RPC API in WordPress. <a href=\"https://blog.wpscan.com/is-wordpress-xmlrpc-a-security-problem/\" target=\"_blank\">Learn more</a>."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disable Theme Editor."
+#: admin/class-fuerte-wp-admin.php:275
+msgid "Disable admin creation/edition."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disables the built in Theme code editor."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disable Plugin Editor."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disables the built in Plugin code editor."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disable Theme install."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disables installation of new Themes."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disable Plugin install."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:
-msgid "Disables installation of new Plugins."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:277
-msgid "Restrict Advanced Custom Fields editing access in the backend (Custom Fields menu)."
+#: admin/class-fuerte-wp-admin.php:278
+msgid "Disable the creation of new admin accounts and the editing of existing admin accounts."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:280
-msgid "Advanced Restrictions"
+msgid "Disable weak passwords."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:282
-msgid "<p>Only for power users. Leave a field blank to not use those restrictions.</p>"
+#: admin/class-fuerte-wp-admin.php:283
+msgid "Disable the use of weak passwords. User can't uncheck \"Confirm use of weak password\". Let users type their own password, but must be somewhat secure (following WP built in recommendation library)."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Restricted Scripts."
+#: admin/class-fuerte-wp-admin.php:285
+msgid "Force strong passwords."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Restricted Pages."
+#: admin/class-fuerte-wp-admin.php:288
+msgid "Force strong passwords usage, making password field read-only. Users must use WordPress provided strong password."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Removed Menus."
+#: admin/class-fuerte-wp-admin.php:290
+msgid "Disable admin bar for roles."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Removed Submenus."
+#: admin/class-fuerte-wp-admin.php:293
+msgid "Disable WordPress admin bar for selected roles."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:
-msgid "Removed Admin Bar menus."
-msgstr ""
-
-#: admin/class-fuerte-wp-admin.php:292
-msgid "One per line. Restricted scripts by file name.<br>These file names will be checked against <a href=\"https://codex.wordpress.org/Global_Variables\" target=\"_blank\">$pagenow</a>, and also will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_menu_page/\" target=\"_blank\">remove_menu_page</a>.<br/>You can comment a line with // to not use it."
+#: admin/class-fuerte-wp-admin.php:295
+msgid "Restrict Permalinks configuration."
 msgstr ""
 
 #: admin/class-fuerte-wp-admin.php:298
+msgid "Restrict Permalinks configuration access."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:300
+msgid "Restrict ACF fields editing."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:303
+msgid "Restrict Advanced Custom Fields editing access in the backend (Custom Fields menu)."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:305
+msgid "Disable Theme Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:308
+msgid "Disables the built in Theme code editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:310
+msgid "Disable Plugin Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:313
+msgid "Disables the built in Plugin code editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:315
+msgid "Disable Theme install."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:318
+msgid "Disables installation of new Themes."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:320
+msgid "Disable Plugin install."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:323
+msgid "Disables installation of new Plugins."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:325
+msgid "Disable Customizer CSS Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:328
+msgid "Disables Customizer Additional CSS Editor."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:331
+msgid "Advanced Restrictions"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:333
+msgid "<p>Only for power users. Leave a field blank to not use those restrictions.</p>"
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:335
+msgid "Restricted Scripts."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:341
+msgid "One per line. Restricted scripts by file name.<br>These file names will be checked against <a href=\"https://codex.wordpress.org/Global_Variables\" target=\"_blank\">$pagenow</a>, and also will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_menu_page/\" target=\"_blank\">remove_menu_page</a>.<br/>You can comment a line with // to not use it."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:343
+msgid "Restricted Pages."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:359
 msgid "One per line. Restricted pages by \"page\" URL variable.<br/>In wp-admin, checks for URLs like: <i>admin.php?page=</i>"
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:306
+#: admin/class-fuerte-wp-admin.php:361
+msgid "Removed Menus."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:367
 msgid "One per line. Menus to be removed. Use menu <i>slug</i>.<br/>These slugs will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_menu_page/\" target=\"_blank\">remove_menu_page</a>."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:312
+#: admin/class-fuerte-wp-admin.php:369
+msgid "Removed Submenus."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:377
 msgid "One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href=\"https://developer.wordpress.org/reference/functions/remove_submenu_page/\" target=\"_blank\">remove_submenu_page</a>."
 msgstr ""
 
-#: admin/class-fuerte-wp-admin.php:319
+#: admin/class-fuerte-wp-admin.php:379
+msgid "Removed Admin Bar menus."
+msgstr ""
+
+#: admin/class-fuerte-wp-admin.php:384
 msgid "One per line. Admin bar menus to be removed. Use: <i>adminbar-item-node-id</i>.<br/>These nodes will be thrown into <a href=\"https://developer.wordpress.org/reference/classes/wp_admin_bar/remove_node/#finding-toolbar-node-ids\" target=\"_blank\">remove_node</a>. Check the docs on how to find an admin bar node id."
 msgstr ""
 
 #. translators: %s: plugin settings URL
-#: admin/class-fuerte-wp-admin.php:386
+#: admin/class-fuerte-wp-admin.php:436
 msgid "<a href=\"%s\">Settings</a>"
 msgstr ""

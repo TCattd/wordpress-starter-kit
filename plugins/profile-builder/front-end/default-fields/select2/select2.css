@@ -1,0 +1,21 @@
+/* Select 2 Field */
+.wppb-select2 span.select2-container{
+    clear: none;
+    width: 69.9% !important;
+}
+
+.wppb-select2-multiple span.select2-container{
+    clear: none;
+    width: 69.9% !important;
+}
+
+@media screen and (max-width: 400px){
+    .wppb-select2 span.select2-container{
+        clear: none;
+        width: 100% !important;
+    }
+    .wppb-select2-multiple span.select2-container{
+        clear: none;
+        width: 100% !important;
+    }
+}

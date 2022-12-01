@@ -419,3 +419,17 @@
     }
     add_filter('mailpoet_conflict_resolver_whitelist_script', 'wppb_mailpoet_conflict_resolver_whitelist_script');
 
+    /****************************************************
+     * Plugin Name: Advanced Product Fields for Woocommerce
+     * Plugin URI: https://wordpress.org/plugins/advanced-product-fields-for-woocommerce/
+     * When both plugins are activated an '&&' operator from the JS code APF adds to product $content for its Datepicker is encoded
+     ****************************************************/
+    if( function_exists( 'SW_WAPF_PRO_auto_loader' ) ){
+        function wppb_WAPF_compatibility( $content )
+        {
+            $content = str_replace( "&#038;&#038;", "&&", $content );
+            return $content;
+        }
+        add_filter('the_content', 'wppb_WAPF_compatibility', 13, 1);
+    }
+

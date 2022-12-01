@@ -1,3 +1,6 @@
+// We need to disable the following eslint check as it's only applicable
+// to testing-library/react not `react-test-renderer` used here
+/* eslint-disable testing-library/await-async-query */
 /**
  * External dependencies
  */
@@ -28,9 +31,7 @@ mockUtils.getProducts = jest.fn().mockImplementation( () =>
 // Add a mock implementation of debounce for testing so we can spy on the onSearch call.
 mockUseDebounce.useDebouncedCallback = jest
 	.fn()
-	.mockImplementation( ( search ) => [
-		() => mockUtils.getProducts( search ),
-	] );
+	.mockImplementation( ( search ) => () => mockUtils.getProducts( search ) );
 
 describe( 'withSearchedProducts Component', () => {
 	const { getProducts } = mockUtils;

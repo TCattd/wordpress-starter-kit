@@ -1,13 +1,13 @@
 <?php
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; }
+	exit;
+}
 
 require_once __DIR__ . '/../source/export.php';
 require_once __DIR__ . '/../source/import.php';
 
 add_action( 'wp_ajax_piotnetforms_duplicate', 'piotnetforms_duplicate' );
-add_action( 'wp_ajax_nopriv_piotnetforms_duplicate', 'piotnetforms_duplicate' );
 
 function piotnetforms_duplicate() {
 	if ( ! isset( $_GET['id'] ) ) {

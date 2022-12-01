@@ -2,21 +2,24 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { InspectorControls } from '@wordpress/block-editor';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
 import ServerSideRender from '@wordpress/server-side-render';
 import PropTypes from 'prop-types';
+import { Icon, listView } from '@wordpress/icons';
 import {
 	Disabled,
 	PanelBody,
 	ToggleControl,
 	Placeholder,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
 } from '@wordpress/components';
-import { Icon, list } from '@woocommerce/icons';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
 
 const EmptyPlaceholder = () => (
 	<Placeholder
-		icon={ <Icon srcElement={ list } /> }
+		icon={ <Icon icon={ listView } /> }
 		label={ __(
 			'Product Categories List',
 			'woocommerce'
@@ -24,7 +27,7 @@ const EmptyPlaceholder = () => (
 		className="wc-block-product-categories"
 	>
 		{ __(
-			"This block shows product categories for your store. To use it, you'll first need to create a product and assign it to a category.",
+			'This block displays the product categories for your store. To use it you first need to create a product and assign it to a category.',
 			'woocommerce'
 		) }
 	</Placeholder>
@@ -33,20 +36,15 @@ const EmptyPlaceholder = () => (
 /**
  * Component displaying the categories as dropdown or list.
  *
- * @param {Object} props Incoming props for the component.
- * @param {Object} props.attributes Incoming block attributes.
+ * @param {Object}            props               Incoming props for the component.
+ * @param {Object}            props.attributes    Incoming block attributes.
  * @param {function(any):any} props.setAttributes Setter for block attributes.
- * @param {string} props.name Name for block.
+ * @param {string}            props.name          Name for block.
  */
 const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 	const getInspectorControls = () => {
-		const {
-			hasCount,
-			hasImage,
-			hasEmpty,
-			isDropdown,
-			isHierarchical,
-		} = attributes;
+		const { hasCount, hasImage, hasEmpty, isDropdown, isHierarchical } =
+			attributes;
 
 		return (
 			<InspectorControls key="inspector">
@@ -57,34 +55,33 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 					) }
 					initialOpen
 				>
-					<ToggleButtonControl
+					<ToggleGroupControl
 						label={ __(
 							'Display style',
 							'woocommerce'
 						) }
 						value={ isDropdown ? 'dropdown' : 'list' }
-						options={ [
-							{
-								label: __(
-									'List',
-									'woocommerce'
-								),
-								value: 'list',
-							},
-							{
-								label: __(
-									'Dropdown',
-									'woocommerce'
-								),
-								value: 'dropdown',
-							},
-						] }
 						onChange={ ( value ) =>
 							setAttributes( {
 								isDropdown: value === 'dropdown',
 							} )
 						}
-					/>
+					>
+						<ToggleGroupControlOption
+							value="list"
+							label={ __(
+								'List',
+								'woocommerce'
+							) }
+						/>
+						<ToggleGroupControlOption
+							value="dropdown"
+							label={ __(
+								'Dropdown',
+								'woocommerce'
+							) }
+						/>
+					</ToggleGroupControl>
 				</PanelBody>
 				<PanelBody
 					title={ __( 'Content', 'woocommerce' ) }
@@ -95,17 +92,6 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'Show product count',
 							'woocommerce'
 						) }
-						help={
-							hasCount
-								? __(
-										'Product count is visible.',
-										'woocommerce'
-								  )
-								: __(
-										'Product count is hidden.',
-										'woocommerce'
-								  )
-						}
 						checked={ hasCount }
 						onChange={ () =>
 							setAttributes( { hasCount: ! hasCount } )
@@ -139,17 +125,6 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'Show hierarchy',
 							'woocommerce'
 						) }
-						help={
-							isHierarchical
-								? __(
-										'Hierarchy is visible.',
-										'woocommerce'
-								  )
-								: __(
-										'Hierarchy is hidden.',
-										'woocommerce'
-								  )
-						}
 						checked={ isHierarchical }
 						onChange={ () =>
 							setAttributes( {
@@ -162,17 +137,6 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 							'Show empty categories',
 							'woocommerce'
 						) }
-						help={
-							hasEmpty
-								? __(
-										'Empty categories are visible.',
-										'woocommerce'
-								  )
-								: __(
-										'Empty categories are hidden.',
-										'woocommerce'
-								  )
-						}
 						checked={ hasEmpty }
 						onChange={ () =>
 							setAttributes( { hasEmpty: ! hasEmpty } )
@@ -183,8 +147,12 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 		);
 	};
 
+	const blockProps = useBlockProps( {
+		className: 'wc-block-product-categories',
+	} );
+
 	return (
-		<>
+		<div { ...blockProps }>
 			{ getInspectorControls() }
 			<Disabled>
 				<ServerSideRender
@@ -193,7 +161,7 @@ const ProductCategoriesBlock = ( { attributes, setAttributes, name } ) => {
 					EmptyResponsePlaceholder={ EmptyPlaceholder }
 				/>
 			</Disabled>
-		</>
+		</div>
 	);
 };
 

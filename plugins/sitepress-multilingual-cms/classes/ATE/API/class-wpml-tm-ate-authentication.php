@@ -146,7 +146,7 @@ class WPML_TM_ATE_Authentication {
 	 */
 	protected function build_query( $query ) {
 		if ( PHP_VERSION_ID >= 50400 ) {
-			$final_query = http_build_query( $query, null, '&', PHP_QUERY_RFC3986 );
+			$final_query = http_build_query( $query, '', '&', PHP_QUERY_RFC3986 );
 		} else {
 			$final_query = str_replace(
 				array( '+', '%7E' ),

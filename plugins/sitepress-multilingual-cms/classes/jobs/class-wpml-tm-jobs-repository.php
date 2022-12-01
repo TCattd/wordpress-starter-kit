@@ -118,7 +118,10 @@ class WPML_TM_Jobs_Repository {
 			$job->set_review_status( $raw_data->review_status );
 			$job->set_trid( $raw_data->trid );
 			$job->set_element_type( $raw_data->element_type );
+			$job->set_element_id( $raw_data->element_id );
+			$job->set_element_type_prefix( $raw_data->element_type );
 			$job->set_job_title( $raw_data->job_title );
+
 		} else {
 			$job = new WPML_TM_Job_Entity(
 				$raw_data->id,
@@ -130,6 +133,7 @@ class WPML_TM_Jobs_Repository {
 		}
 
 		$job->set_original_element_id( $raw_data->original_element_id );
+
 		$job->set_source_language( $raw_data->source_language );
 		$job->set_target_language( $raw_data->target_language );
 		$job->set_translation_service( $raw_data->translation_service );

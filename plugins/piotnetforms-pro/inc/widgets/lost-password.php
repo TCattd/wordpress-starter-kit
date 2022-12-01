@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Piotnetforms_Lost_Password extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,16 +20,16 @@ class Piotnetforms_Lost_Password extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-lost-password.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-lost-password.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'piotnetforms' ];
+		return [ 'form' ];
 	}
 
 	public function get_keywords() {
-		return [ 'button' ];
+		return [ 'lost password' ];
 	}
 
 	public function register_controls() {
@@ -64,7 +66,7 @@ class Piotnetforms_Lost_Password extends Base_Widget_Piotnetforms {
 				'options' => [
 					'_self'  => __( 'Self', 'piotnetforms' ),
 					'_blank'  => __( 'Blank', 'piotnetforms' ),
-		
+
 				],
 			]
 		);
@@ -109,10 +111,9 @@ class Piotnetforms_Lost_Password extends Base_Widget_Piotnetforms {
 	public function render() {
 		$settings = $this->settings;
 		if ( !empty( $settings['lost_password_text'] ) ) {
-			$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-lost-password' );
-		?>	
+			$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-lost-password' ); ?>	
 			<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-				<a class="piotnetforms-lost-password__url" target="<?php echo $settings['lost_password_link_target'];?>" href="<?php echo wp_lostpassword_url( get_permalink() ); ?>" title="<?php echo $settings['lost_password_text']; ?>"><?php echo $settings['lost_password_text']; ?></a>
+				<a class="piotnetforms-lost-password__url" target="<?php echo $settings['lost_password_link_target']; ?>" href="<?php echo wp_lostpassword_url( get_permalink() ); ?>" title="<?php echo $settings['lost_password_text']; ?>"><?php echo $settings['lost_password_text']; ?></a>
 			</div>
         <?php
 		}
@@ -130,5 +131,4 @@ class Piotnetforms_Lost_Password extends Base_Widget_Piotnetforms {
 			</div>
 		<?php
 	}
-
 }

@@ -111,7 +111,7 @@ class WPML_Post_Synchronization extends WPML_SP_And_PT_User {
 			$this->is_deleting_all_translations = ! $this->post_translation->get_original_element( $post_id, true );
 			$trid                               = $this->post_translation->get_element_trid( $post_id );
 			$translated_ids                     = $this->get_translations_without_source( $post_id, $trid );
-			if ( $this->sync_delete || Lst::includes( $post_type, [ 'wp_template', 'wp_template_parts' ] ) ) {
+			if ( $this->sync_delete || Lst::includes( $post_type, [ 'wp_template', 'wp_template_part' ] ) ) {
 				$this->delete_translations( $translated_ids, $keep_db_entries );
 			}
 			$this->is_deleting_all_translations = false;

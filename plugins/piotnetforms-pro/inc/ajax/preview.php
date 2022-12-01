@@ -1,13 +1,15 @@
 <?php
-	if ( ! defined( 'ABSPATH' ) ) { exit; }
-	
+
+	if ( ! defined( 'ABSPATH' ) ) {
+		exit;
+	}
+
 	// require all widgets
 	foreach ( glob( __DIR__ . '/../widgets/*.php' ) as $file ) {
 		require_once $file;
 	}
 
 	add_action( 'wp_ajax_piotnetforms_widget_preview', 'piotnetforms_widget_preview' );
-	add_action( 'wp_ajax_nopriv_piotnetforms_widget_preview', 'piotnetforms_widget_preview' );
 
 	function piotnetforms_widget_preview() {
 		$widget_id = $_POST['widget_id'];
@@ -24,19 +26,24 @@
 
 		if ( $function == 'widget_init' ) {
 			$widget_data       = $_POST['widget_data'];
-			$widget            = new $widget_data['class_name']();
-			$widget->widget_id = $widget_id;
 
-			$response['outputHTML'] = $widget->output( $widget_id, true );
+			if ( !empty( $widget_data['class_name'] ) ) {
+				$widget            = new $widget_data['class_name']();
+				$widget->widget_id = $widget_id;
+
+				$response['outputHTML'] = $widget->output( $widget_id, true );
+			}
 		} elseif ( $function == 'widget_edit' ) {
 			$widget_settings    = $_POST['widget_settings'];
 			$widget_information = $_POST['widget_information'];
 
-			$widget            = new $widget_information['class_name']();
-			$widget->settings  = $widget_settings;
-			$widget->widget_id = $widget_id;
+			if ( !empty( $widget_information['class_name'] ) ) {
+				$widget            = new $widget_information['class_name']();
+				$widget->settings  = $widget_settings;
+				$widget->widget_id = $widget_id;
 
-			$response['outputHTML'] = stripslashes( $widget->output( $widget_id, true ) );
+				$response['outputHTML'] = stripslashes( $widget->output( $widget_id, true ) );
+			}
 		}
 
 		echo json_encode( $response );

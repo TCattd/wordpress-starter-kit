@@ -14,15 +14,22 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
+import { supports } from './supports';
 
 const blockConfig = {
+	apiVersion: 2,
 	title,
 	description,
-	icon: {
-		src: icon,
-		foreground: '#7f54b3',
-	},
+	parent: [ 'core/group' ],
+	ancestor: [
+		'@woocommerce/all-products',
+		'@woocommerce/single-product',
+		'core/post-template',
+	],
+	usesContext: [ 'query', 'queryId', 'postId' ],
+	icon: { src: icon },
 	attributes,
+	supports,
 	edit,
 };
 

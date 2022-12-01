@@ -2,6 +2,7 @@
 
 namespace WPML\Compatibility\FusionBuilder\Frontend;
 
+use WPML\API\Sanitize;
 use WPML\Compatibility\FusionBuilder\BaseHooks;
 use WPML\FP\Obj;
 
@@ -67,8 +68,9 @@ class Hooks extends BaseHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Acti
 	}
 
 	private function isFusionBuilderRequest() {
+		/* phpcs:ignore WordPress.Security.NonceVerification.Recommended */
+		$builder_id = Sanitize::stringProp( 'builder_id', $_GET );
 		$builder    = filter_input( INPUT_GET, 'builder', FILTER_VALIDATE_BOOLEAN );
-		$builder_id = filter_input( INPUT_GET, 'builder_id', FILTER_SANITIZE_STRING );
 
 		return $builder && $builder_id;
 	}
@@ -89,7 +91,7 @@ class Hooks extends BaseHooks implements \IWPML_Frontend_Action, \IWPML_DIC_Acti
 	public function addMenuLinkCssClass( $atts, $item ) {
 		if ( 'wpml_ls_menu_item' === $item->type ) {
 			$class         = Obj::prop( 'class', $atts );
-			$atts['class'] = $class ? "$class wpml-ls-link" : "wpml-ls-link";
+			$atts['class'] = $class ? "$class wpml-ls-link" : 'wpml-ls-link';
 		}
 
 		return $atts;

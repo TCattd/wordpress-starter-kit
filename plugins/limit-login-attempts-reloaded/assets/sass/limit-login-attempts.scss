@@ -67,6 +67,17 @@
         &.llar-col-nowrap {
           white-space: nowrap;
         }
+
+        .llar-log-country-flag {
+          display: flex;
+          align-items: center;
+          white-space: nowrap;
+
+          img {
+            width: 20px;
+            height: auto;
+          }
+        }
       }
       td {
         button {
@@ -109,6 +120,7 @@
     .llar-table-header {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       margin: 15px 0 5px;
 
       h3 {
@@ -152,6 +164,20 @@
 
       .app-rules-col {
         flex: 0 0 49%;
+
+        h3 {
+          display: flex;
+          justify-content: space-between;
+
+          .help-link {
+            font-size: 14px;
+            font-weight: normal;
+
+            .dashicons {
+              text-decoration: none !important;
+            }
+          }
+        }
 
         .form-table {
           select {
@@ -293,14 +319,27 @@
 
 
 
-  .llar-show-app-fields {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    color: #bdbdbd;
-
+  .llar-toggle-setup-field {
+    color: #2271b1;
+    text-decoration-style: dashed;
     &:hover {
       color: #222;
+    }
+  }
+
+  .setup-code-wrap {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+  }
+
+  .app-form-field {
+    display: none;
+
+    &.active {
+      display: table-row;
     }
   }
 
@@ -652,11 +691,6 @@
   }
 }
 
-.jconfirm .jconfirm-box div.jconfirm-closeIcon {
-  top: -2px !important;
-  right: -2px !important;
-}
-
 .llar-tooltip {
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -708,4 +742,49 @@
   }
 }
 
+.llar-alert-icon-animation {
+  animation-duration: 10s;
+  animation-timing-function: ease-out;
+  animation-delay: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  animation-fill-mode: both;
+  animation-play-state: running;
+  animation-name: shake;
+}
+
+#menu-settings {
+  li {
+    position: relative;
+    .llar-alert-icon-animation {
+      position: absolute;
+      right: 5px;
+      top: 7px;
+      min-width: 15px;
+      line-height: 15px;
+      height: 15px;
+    }
+  }
+}
+
+@keyframes shake {
+  1%, 9% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  2%, 8% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  3%, 5%, 7% {
+    transform: translate3d(-3px, 0, 0);
+  }
+
+  4%, 6% {
+    transform: translate3d(3px, 0, 0);
+  }
+}
+
 @import "dashboard-page";
+@import "admin-dashboard-widgets";
+@import "onboarding-popup";

@@ -247,13 +247,15 @@ function wppb_send_admin_password_reset_email( $user ){
  * The function for the recover password shortcode
  *
  */
-function wppb_front_end_password_recovery(){
+function wppb_front_end_password_recovery( $atts ){
     global $wppb_shortcode_on_front;
     $wppb_shortcode_on_front = true;
     global $wppb_password_recovery_shortcode_on_front;
     $wppb_password_recovery_shortcode_on_front = true;
     $password_email_sent = false;
     $password_changed_success = false;
+
+    extract( shortcode_atts( array( 'block' => false ), $atts ) );
 
     $output = '<div class="wppb_holder" id="wppb-recover-password-container">';
 
@@ -265,7 +267,7 @@ function wppb_front_end_password_recovery(){
         $is_elementor_edit_mode = \Elementor\Plugin::$instance->editor->is_edit_mode();
     }
 
-    if( is_user_logged_in() && !$is_elementor_edit_mode ) {
+    if( is_user_logged_in() && !( $is_elementor_edit_mode || $block ) ) {
         return apply_filters('wppb_recover_password_already_logged_in', __('You are already logged in. You can change your password on the edit profile form.', 'profile-builder'));
     }
 

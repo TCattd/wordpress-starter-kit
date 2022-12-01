@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Shortcode extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,12 +20,12 @@ class piotnetforms_Shortcode extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-shortcode.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-shortcode.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {

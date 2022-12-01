@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 require_once WPML_PLUGIN_PATH . '/inc/functions-troubleshooting.php';
 
 global $wpdb;
@@ -17,12 +19,11 @@ function get_term_taxonomy_id_from_term_object( $term_object ) {
 function get_ATE_account_data() {
 	return get_option( WPML_TM_ATE_Authentication::AMS_DATA_KEY, [] );
 }
-
-$action = filter_input( INPUT_GET, 'debug_action', FILTER_SANITIZE_STRING );
-$nonce  = filter_input( INPUT_GET, 'nonce', FILTER_SANITIZE_STRING );
+$action = Sanitize::stringProp( 'debug_action', $_GET );
+$nonce  = Sanitize::stringProp( 'nonce', $_GET );
 if ( ! $action ) {
-	$action = filter_input( INPUT_POST, 'debug_action', FILTER_SANITIZE_STRING );
-	$nonce  = filter_input( INPUT_POST, 'nonce', FILTER_SANITIZE_STRING );
+	$action = Sanitize::stringProp( 'debug_action', $_POST );
+	$nonce  = Sanitize::stringProp( 'nonce', $_POST );
 }
 
 $otgs_twig_cache_disable_key = '_otgs_twig_cache_disabled';
@@ -30,7 +31,7 @@ if ( defined( 'WPML_Templates_Factory::OTGS_TWIG_CACHE_DISABLED_KEY' ) ) {
 	$otgs_twig_cache_disable_key = WPML_Templates_Factory::OTGS_TWIG_CACHE_DISABLED_KEY;
 }
 
-if ( isset( $action ) && wp_verify_nonce( $nonce, $action ) ) {
+if ( wp_verify_nonce( $nonce, $action ) ) {
 	ob_end_clean();
 	global $wpdb;
 	switch ( $action ) {
@@ -342,6 +343,10 @@ if ( wp_verify_nonce(
 		</p></div>
 <?php } ?>
 <?php
+
+// phpcs:disable
+echo \WPML\ICLToATEMigration\Loader::renderContainerIfNeeded();
+// phpcs:enable
 
 echo '<a href="#wpml-settings">' . __( 'WPML Settings', 'sitepress' ) . '</a>';
 echo '<br /><hr /><h3 id="wpml-settings"> ' . __( 'WPML settings', 'sitepress' ) . '</h3>';

@@ -67,6 +67,7 @@ class Plugins {
 		$tmSlug  = 'wpml-translation-management/plugin.php';
 
 		self::stopPluginActivation( self::WPML_TM_PLUGIN );
+		add_action( 'otgs_installer_subscription_refreshed', [ self::class, 'updateTMAllowedOption' ] );
 
 		if ( ! self::deactivateTm() ) {
 

@@ -13,9 +13,13 @@ class Translators {
 	public static function getCurrent() {
 		$translator = wpml_load_core_tm()->get_current_translator();
 
+		if ( ! $translator->ID ) {
+			return $translator;
+		}
+
 		if (
 			empty( $translator->language_pairs )
-		     && User::getCurrent()->has_cap( \WPML_Manage_Translations_Role::CAPABILITY )
+			&& User::getCurrent()->has_cap( \WPML_Manage_Translations_Role::CAPABILITY )
 		) {
 			return Obj::assoc( 'language_pairs', \WPML_All_Language_Pairs::get(), $translator );
 		}

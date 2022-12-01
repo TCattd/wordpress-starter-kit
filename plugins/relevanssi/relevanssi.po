@@ -1,0 +1,2413 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Relevanssi\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-25 10:14+0200\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Mikko Saari <mikko@mikkosaari.fi>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: _e;__;esc_html__;esc_html_e;_n\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: lib\n"
+
+#: lib/admin-ajax.php:91 vendor/lib/admin-ajax.php:89
+#, php-format
+msgid "Indexed %1$d post (total %2$d), processed %3$d / %4$d."
+msgstr ""
+
+#: lib/admin-ajax.php:214 lib/tabs/indexing-tab.php:130
+#: vendor/lib/admin-ajax.php:212 vendor/lib/tabs/indexing-tab.php:125
+msgid "Results"
+msgstr ""
+
+#: lib/admin-ajax.php:218 vendor/lib/admin-ajax.php:216
+#, php-format
+msgid "Found a total of %1$d posts, showing posts %2$d–%3$s."
+msgstr ""
+
+#: lib/admin-ajax.php:220 vendor/lib/admin-ajax.php:218
+msgid "Previous page"
+msgstr ""
+
+#: lib/admin-ajax.php:223 vendor/lib/admin-ajax.php:221
+msgid "Next page"
+msgstr ""
+
+#: lib/admin-ajax.php:227 vendor/lib/admin-ajax.php:225
+msgid "Score:"
+msgstr ""
+
+#: lib/admin-ajax.php:252 vendor/lib/admin-ajax.php:250
+msgid "Edit"
+msgstr ""
+
+#: lib/admin-ajax.php:300 vendor/lib/admin-ajax.php:296
+msgid "Query variables"
+msgstr ""
+
+#: lib/admin-ajax.php:369 vendor/lib/admin-ajax.php:365
+msgid "Filters"
+msgstr ""
+
+#: lib/admin-ajax.php:370 vendor/lib/admin-ajax.php:366
+msgid "show"
+msgstr ""
+
+#: lib/admin-ajax.php:371 vendor/lib/admin-ajax.php:367
+msgid "hide"
+msgstr ""
+
+#: lib/common.php:999 vendor/lib/common.php:1601
+msgid "25 most common words in the index"
+msgstr ""
+
+#: lib/common.php:1000 vendor/lib/common.php:1602
+msgid ""
+"These words are excellent stopword material. A word that appears in most of "
+"the posts in the database is quite pointless when searching. This is also an "
+"easy way to create a completely new stopword list, if one isn't available in "
+"your language. Click the word to add the word to the stopword list. The word "
+"will also be removed from the index, so rebuilding the index is not "
+"necessary."
+msgstr ""
+
+#: lib/common.php:1006 vendor/lib/common.php:1608
+msgid "Stopword Candidates"
+msgstr ""
+
+#: lib/common.php:1011 vendor/lib/common.php:1613
+msgid "Add to stopwords"
+msgstr ""
+
+#: lib/common.php:1014 vendor/lib/common.php:1616
+msgid "Add to content stopwords"
+msgstr ""
+
+#: lib/common.php:1334
+#, php-format
+msgid "Nothing found for post ID %d."
+msgstr ""
+
+#: lib/common.php:1341
+msgid "Possible reasons this post is not indexed"
+msgstr ""
+
+#: lib/common.php:1345
+msgid "Post title"
+msgstr ""
+
+#: lib/common.php:1349
+msgid "Post content"
+msgstr ""
+
+#: lib/common.php:1353 lib/tabs/indexing-tab.php:320
+#: vendor/lib/tabs/indexing-tab.php:265
+msgid "Comments"
+msgstr ""
+
+#: lib/common.php:1357
+msgid "Tags"
+msgstr ""
+
+#: lib/common.php:1361
+msgid "Categories"
+msgstr ""
+
+#: lib/common.php:1365
+msgid "Other taxonomies"
+msgstr ""
+
+#: lib/common.php:1369
+msgid "Links"
+msgstr ""
+
+#: lib/common.php:1373
+msgid "Authors"
+msgstr ""
+
+#: lib/common.php:1377
+msgid "Excerpt"
+msgstr ""
+
+#: lib/common.php:1381 lib/tabs/indexing-tab.php:334
+#: vendor/lib/tabs/indexing-tab.php:279
+msgid "Custom fields"
+msgstr ""
+
+#: lib/common.php:1385
+msgid "MySQL content"
+msgstr ""
+
+#: lib/compatibility/aioseo.php:88
+msgid "Use All-in-One SEO noindex"
+msgstr ""
+
+#: lib/compatibility/aioseo.php:93
+msgid "Use All-in-One SEO noindex."
+msgstr ""
+
+#: lib/compatibility/aioseo.php:95
+msgid ""
+"If checked, Relevanssi will not index posts marked as \"No index\" in All-in-"
+"One SEO settings."
+msgstr ""
+
+#: lib/compatibility/rankmath.php:80
+msgid "Use Rank Math SEO noindex"
+msgstr ""
+
+#: lib/compatibility/rankmath.php:85
+msgid "Use Rank Math SEO noindex."
+msgstr ""
+
+#: lib/compatibility/rankmath.php:87
+msgid ""
+"If checked, Relevanssi will not index posts marked as \"No index\" in Rank "
+"Math SEO settings."
+msgstr ""
+
+#: lib/compatibility/seoframework.php:76
+msgid "Use SEO Framework noindex"
+msgstr ""
+
+#: lib/compatibility/seoframework.php:81
+msgid "Use SEO Framework noindex."
+msgstr ""
+
+#: lib/compatibility/seoframework.php:83
+msgid ""
+"If checked, Relevanssi will not index posts marked as \"No index\" in SEO "
+"Framework settings."
+msgstr ""
+
+#: lib/compatibility/seopress.php:82
+msgid "Use SEOPress noindex"
+msgstr ""
+
+#: lib/compatibility/seopress.php:87
+msgid "Use SEOPress noindex."
+msgstr ""
+
+#: lib/compatibility/seopress.php:89
+msgid ""
+"If checked, Relevanssi will not index posts marked as \"No index\" in "
+"SEOPress settings."
+msgstr ""
+
+#: lib/compatibility/yoast-seo.php:82
+msgid "Use Yoast SEO noindex"
+msgstr ""
+
+#: lib/compatibility/yoast-seo.php:87
+msgid "Use Yoast SEO noindex."
+msgstr ""
+
+#: lib/compatibility/yoast-seo.php:89
+msgid ""
+"If checked, Relevanssi will not index posts marked as \"No index\" in Yoast "
+"SEO settings."
+msgstr ""
+
+#: lib/contextual-help.php:24 vendor/lib/contextual-help.php:28
+#, php-format
+msgid ""
+"To adjust the post order, you can use the %1$s query parameter. With %1$s, "
+"you can use multiple layers of different sorting methods. See <a "
+"href='%2$s'>WordPress Codex</a> for more details on using arrays for orderby."
+msgstr ""
+
+#: lib/contextual-help.php:26 vendor/lib/contextual-help.php:35
+#, php-format
+msgid ""
+"To get inside-word highlights, uncheck the \"%s\" option. That has a side-"
+"effect of enabling the inside-word highlights."
+msgstr ""
+
+#: lib/contextual-help.php:26 vendor/lib/contextual-help.php:35
+#: vendor/lib/tabs/excerpts-tab.php:378 vendor/lib/tabs/excerpts-tab.php:387
+msgid "Uncheck this if you use non-ASCII characters"
+msgstr ""
+
+#: lib/contextual-help.php:28 vendor/lib/contextual-help.php:37
+#, php-format
+msgid "In order to adjust the throttle limit, you can use the %s filter hook."
+msgstr ""
+
+#: lib/contextual-help.php:33 lib/interface.php:446
+#: lib/tabs/overview-tab.php:56 vendor/lib/contextual-help.php:25
+#: vendor/lib/interface.php:831 vendor/lib/tabs/overview-tab.php:56
+msgid "Searching"
+msgstr ""
+
+#: lib/contextual-help.php:36 vendor/lib/contextual-help.php:29
+msgid ""
+"Inside-word matching is disabled by default, because it increases garbage "
+"results that don't really match the search term. If you want to enable it, "
+"add the following function to your theme functions.php:"
+msgstr ""
+
+#: lib/contextual-help.php:44 vendor/lib/contextual-help.php:39
+msgid ""
+"It's not usually necessary to adjust the limit from 500, but in some cases "
+"performance gains can be achieved by setting a lower limit. We don't suggest "
+"going under 200, as low values will make the results worse."
+msgstr ""
+
+#: lib/contextual-help.php:50 vendor/lib/contextual-help.php:54
+#, php-format
+msgid "For all the possible options, see the Codex documentation for %s."
+msgstr ""
+
+#: lib/contextual-help.php:55 vendor/lib/contextual-help.php:46
+msgid "Restrictions"
+msgstr ""
+
+#: lib/contextual-help.php:57 vendor/lib/contextual-help.php:48
+msgid ""
+"If you want the general search to target all posts, but have a single search "
+"form target only certain posts, you can add a hidden input variable to the "
+"search form. "
+msgstr ""
+
+#: lib/contextual-help.php:58 vendor/lib/contextual-help.php:49
+msgid ""
+"For example in order to restrict the search to categories 10, 14 and 17, you "
+"could add this to the search form:"
+msgstr ""
+
+#: lib/contextual-help.php:60 vendor/lib/contextual-help.php:51
+msgid ""
+"To restrict the search to posts tagged with alfa AND beta, you could add "
+"this to the search form:"
+msgstr ""
+
+#: lib/contextual-help.php:67 vendor/lib/contextual-help.php:64
+#, php-format
+msgid ""
+"For more exclusion options, see the Codex documentation for %s. For example, "
+"to exclude tag ID 10, use"
+msgstr ""
+
+#: lib/contextual-help.php:69 vendor/lib/contextual-help.php:67
+#, php-format
+msgid ""
+"To exclude posts from the index and not just from the search, you can use "
+"the %s filter hook. This would not index posts that have a certain taxonomy "
+"term:"
+msgstr ""
+
+#: lib/contextual-help.php:71 lib/contextual-help.php:153
+#: vendor/lib/contextual-help.php:77 vendor/lib/contextual-help.php:133
+#, php-format
+msgid ""
+"For more examples, see <a href='%s'>the related knowledge base posts</a>."
+msgstr ""
+
+#: lib/contextual-help.php:76 vendor/lib/contextual-help.php:61
+msgid "Exclusions"
+msgstr ""
+
+#: lib/contextual-help.php:95 vendor/lib/contextual-help.php:87
+#, php-format
+msgid ""
+"By default, the User searches page shows 20 most common keywords. In order "
+"to see more, you can adjust the value with the %s filter hook, like this:"
+msgstr ""
+
+#: lib/contextual-help.php:97 vendor/lib/contextual-help.php:90
+#, php-format
+msgid ""
+"The complete logs are stored in the %s database table, where you can access "
+"them if you need more information than what the User searches page provides."
+msgstr ""
+
+#: lib/contextual-help.php:102 vendor/lib/contextual-help.php:84
+msgid "Logs"
+msgstr ""
+
+#: lib/contextual-help.php:112 vendor/lib/contextual-help.php:101
+#, php-format
+msgid ""
+"Custom snippets require that the search results template uses %s to print "
+"out the excerpts."
+msgstr ""
+
+#: lib/contextual-help.php:114 vendor/lib/contextual-help.php:104
+#, php-format
+msgid ""
+"If you want more control over what content Relevanssi uses to create the "
+"excerpts, you can use the %1$s and %2$s filter hooks to adjust the content."
+msgstr ""
+
+#: lib/contextual-help.php:116 vendor/lib/contextual-help.php:106
+#, php-format
+msgid ""
+"Some shortcode do not work well with Relevanssi excerpt-generation. "
+"Relevanssi disables some shortcodes automatically to prevent problems. This "
+"can be adjusted with the %s filter hook."
+msgstr ""
+
+#: lib/contextual-help.php:118 vendor/lib/contextual-help.php:108
+#, php-format
+msgid ""
+"If you want Relevanssi to build excerpts faster and don't mind that they may "
+"be less than perfect in quality, add a filter that returns true on hook %s."
+msgstr ""
+
+#: lib/contextual-help.php:123 lib/tabs/indexing-tab.php:393
+#: vendor/lib/contextual-help.php:97 vendor/lib/tabs/indexing-tab.php:341
+msgid "Excerpts"
+msgstr ""
+
+#: lib/contextual-help.php:125 vendor/lib/contextual-help.php:99
+msgid ""
+"Building custom excerpts can be slow. If you are not actually using the "
+"excerpts, make sure you disable the option."
+msgstr ""
+
+#: lib/contextual-help.php:127 vendor/lib/contextual-help.php:102
+msgid ""
+"Generally, Relevanssi generates the excerpts from post content. If you want "
+"to include custom field content in the excerpt-building, this can be done "
+"with a simple setting from the excerpt settings."
+msgstr ""
+
+#: lib/contextual-help.php:137 vendor/lib/contextual-help.php:120
+#, php-format
+msgid ""
+"In order to see title highlights from Relevanssi, replace %1$s in the search "
+"results template with %2$s. It does the same thing, but supports Relevanssi "
+"title highlights."
+msgstr ""
+
+#: lib/contextual-help.php:142 vendor/lib/contextual-help.php:116
+msgid "Highlights"
+msgstr ""
+
+#: lib/contextual-help.php:144 vendor/lib/contextual-help.php:118
+msgid ""
+"Title highlights don't appear automatically, because that led to problems "
+"with highlights appearing in wrong places and messing up navigation menus, "
+"for example."
+msgstr ""
+
+#: lib/contextual-help.php:151 vendor/lib/contextual-help.php:131
+#, php-format
+msgid ""
+"For more fine-tuned changes, you can use %1$s filter hook to adjust what is "
+"replaced with what, and %2$s filter hook to completely override the default "
+"punctuation control."
+msgstr ""
+
+#: lib/contextual-help.php:158 vendor/lib/contextual-help.php:127
+msgid "Punctuation"
+msgstr ""
+
+#: lib/contextual-help.php:160 vendor/lib/contextual-help.php:129
+msgid ""
+"Relevanssi removes punctuation. Some punctuation is removed, some replaced "
+"with spaces. Advanced indexing settings include some of the more common "
+"settings people want to change."
+msgstr ""
+
+#: lib/contextual-help.php:168 vendor/lib/contextual-help.php:143
+#, php-format
+msgid ""
+"If you have content that you don't want indexed, you can wrap that content "
+"in a %s shortcode."
+msgstr ""
+
+#: lib/contextual-help.php:170 vendor/lib/contextual-help.php:145
+#, php-format
+msgid ""
+"If you need a search form on some page on your site, you can use the %s "
+"shortcode to print out a basic search form."
+msgstr ""
+
+#: lib/contextual-help.php:172 vendor/lib/contextual-help.php:147
+#, php-format
+msgid ""
+"If you need to add query variables to the search form, the shortcode takes "
+"parameters, which are then printed out as hidden input fields. To get a "
+"search form with a post type restriction, you can use %1$s. To restrict the "
+"search to categories 10, 14 and 17, you can use %2$s and so on."
+msgstr ""
+
+#: lib/contextual-help.php:174 vendor/lib/contextual-help.php:149
+#, php-format
+msgid ""
+"You can use the %1$s parameter to add a taxonomy dropdown to the search "
+"form. Just use the name of the taxonomy, like %2$s. This works best with "
+"hierarchical taxonomies like categories with relatively few options "
+"available."
+msgstr ""
+
+#: lib/contextual-help.php:179 vendor/lib/contextual-help.php:140
+msgid "Helpful shortcodes"
+msgstr ""
+
+#: lib/contextual-help.php:190 vendor/lib/contextual-help.php:160
+#, php-format
+msgid ""
+"For more details how to fix that issue, see <a href='%s'>WooCommerce tips in "
+"Relevanssi user manual</a>."
+msgstr ""
+
+#: lib/contextual-help.php:195 vendor/lib/contextual-help.php:156
+msgid "WooCommerce"
+msgstr ""
+
+#: lib/contextual-help.php:197 vendor/lib/contextual-help.php:158
+msgid ""
+"If your SKUs include hyphens or other punctuation, do note that Relevanssi "
+"replaces most punctuation with spaces. That's going to cause issues with SKU "
+"searches."
+msgstr ""
+
+#: lib/contextual-help.php:199 vendor/lib/contextual-help.php:161
+msgid ""
+"If you don't want to index products that are out of stock, excluded from the "
+"catalog or excluded from the search, there's a product visibility filtering "
+"method that is described in the user manual (see link above)."
+msgstr ""
+
+#: lib/contextual-help.php:205 vendor/lib/contextual-help.php:171
+#, php-format
+msgid ""
+"To adjust the amount of the exact match bonus, you can use the %s filter "
+"hook. It works like this:"
+msgstr ""
+
+#: lib/contextual-help.php:207 vendor/lib/contextual-help.php:177
+#, php-format
+msgid "The default values are %1$s for titles and %2$s for content."
+msgstr ""
+
+#: lib/contextual-help.php:212 vendor/lib/contextual-help.php:168
+msgid "Exact match bonus"
+msgstr ""
+
+#: lib/contextual-help.php:223 vendor/lib/contextual-help.php:181
+msgid "For more information:"
+msgstr ""
+
+#: lib/contextual-help.php:224 vendor/lib/contextual-help.php:182
+msgid "Plugin knowledge base"
+msgstr ""
+
+#: lib/contextual-help.php:225 vendor/lib/contextual-help.php:183
+msgid "WordPress.org forum"
+msgstr ""
+
+#: lib/indexing.php:463
+msgid "Relevanssi index exclude"
+msgstr ""
+
+#: lib/indexing.php:491
+msgid "Blocked by a filter function"
+msgstr ""
+
+#: lib/init.php:109 vendor/lib/init.php:88
+msgid ""
+"You do not have an index! Remember to build the index (click the \"Build the "
+"index\" button), otherwise searching won't work."
+msgstr ""
+
+#: lib/init.php:121 vendor/lib/init.php:100
+msgid ""
+"Multibyte string functions are not available. Relevanssi may not work well "
+"without them. Please install (or ask your host to install) the mbstring "
+"extension."
+msgstr ""
+
+#: lib/init.php:298 lib/init.php:299 lib/interface.php:109
+#: lib/tabs/logging-tab.php:48 vendor/lib/init.php:237 vendor/lib/init.php:238
+#: vendor/lib/interface.php:469 vendor/lib/tabs/logging-tab.php:48
+msgid "User searches"
+msgstr ""
+
+#: lib/init.php:310 lib/init.php:311 lib/tabs/searching-tab.php:248
+#: vendor/lib/init.php:249 vendor/lib/init.php:250
+#: vendor/lib/tabs/searching-tab.php:248
+msgid "Admin search"
+msgstr ""
+
+#: lib/init.php:523 vendor/lib/init.php:441
+msgid "Settings"
+msgstr ""
+
+#: lib/init.php:526 vendor/lib/init.php:444
+msgid "Go Premium!"
+msgstr ""
+
+#: lib/interface.php:18 vendor/lib/interface.php:18
+msgid "Relevanssi Search Options"
+msgstr ""
+
+#: lib/interface.php:20 vendor/lib/interface.php:20
+msgid "Relevanssi Premium Search Options"
+msgstr ""
+
+#: lib/interface.php:111 vendor/lib/interface.php:471
+msgid "Relevanssi User Searches"
+msgstr ""
+
+#: lib/interface.php:129 vendor/lib/interface.php:494
+msgid "Enable query logging to see stats here."
+msgstr ""
+
+#: lib/interface.php:141 vendor/lib/interface.php:506
+msgid "Admin Search"
+msgstr ""
+
+#: lib/interface.php:166 vendor/lib/interface.php:536
+msgid "Logs clear!"
+msgstr ""
+
+#: lib/interface.php:168 vendor/lib/interface.php:538
+msgid "Clearing the logs failed."
+msgstr ""
+
+#: lib/interface.php:202 vendor/lib/interface.php:572
+msgid "Total Searches"
+msgstr ""
+
+#: lib/interface.php:204 vendor/lib/interface.php:574
+msgid "Totals"
+msgstr ""
+
+#: lib/interface.php:208 vendor/lib/interface.php:578
+msgid "Common Queries"
+msgstr ""
+
+#: lib/interface.php:218 vendor/lib/interface.php:588
+#, php-format
+msgid ""
+"Here you can see the %d most common user search queries, how many times "
+"those queries were made and how many results were found for those queries."
+msgstr ""
+
+#: lib/interface.php:222 lib/interface.php:244 lib/interface.php:293
+#: vendor/lib/interface.php:592 vendor/lib/interface.php:614
+#: vendor/lib/interface.php:664
+msgid "Today and yesterday"
+msgstr ""
+
+#: lib/interface.php:225 lib/interface.php:231 lib/interface.php:236
+#: lib/interface.php:253 vendor/lib/interface.php:595
+#: vendor/lib/interface.php:601 vendor/lib/interface.php:606
+#: vendor/lib/interface.php:623
+#, php-format
+msgid "Last %d days"
+msgstr ""
+
+#: lib/interface.php:241 vendor/lib/interface.php:611
+msgid "Unsuccessful Queries"
+msgstr ""
+
+#: lib/interface.php:248 lib/interface.php:294 vendor/lib/interface.php:618
+#: vendor/lib/interface.php:665
+msgid "Last 7 days"
+msgstr ""
+
+#: lib/interface.php:259 vendor/lib/interface.php:629
+msgid "Reset Logs"
+msgstr ""
+
+#: lib/interface.php:268
+msgid ""
+"To reset the logs, type \"reset\" into the box here and click the Reset "
+"button"
+msgstr ""
+
+#: lib/interface.php:271
+msgid "Reset"
+msgstr ""
+
+#: lib/interface.php:295 vendor/lib/interface.php:666
+msgid "Last 30 days"
+msgstr ""
+
+#: lib/interface.php:296 vendor/lib/interface.php:667
+msgid "Forever"
+msgstr ""
+
+#: lib/interface.php:306 vendor/lib/interface.php:677
+msgid "When"
+msgstr ""
+
+#: lib/interface.php:307 vendor/lib/interface.php:678
+msgid "Searches"
+msgstr ""
+
+#: lib/interface.php:369 lib/log.php:195 vendor/lib/interface.php:740
+#: vendor/lib/log.php:178
+msgid "Query"
+msgstr ""
+
+#: lib/interface.php:370 vendor/lib/interface.php:741
+msgid "Hits"
+msgstr ""
+
+#: lib/interface.php:425 vendor/lib/interface.php:828
+msgid "Overview"
+msgstr ""
+
+#: lib/interface.php:432 lib/tabs/overview-tab.php:44
+#: vendor/lib/interface.php:829 vendor/lib/tabs/overview-tab.php:44
+msgid "Indexing"
+msgstr ""
+
+#: lib/interface.php:439 vendor/lib/interface.php:830
+msgid "Attachments"
+msgstr ""
+
+#: lib/interface.php:453 vendor/lib/interface.php:832
+msgid "Logging"
+msgstr ""
+
+#: lib/interface.php:460 lib/tabs/overview-tab.php:60
+#: vendor/lib/interface.php:833 vendor/lib/tabs/overview-tab.php:60
+msgid "Excerpts and highlights"
+msgstr ""
+
+#: lib/interface.php:467 lib/tabs/synonyms-tab.php:27
+#: lib/tabs/synonyms-tab.php:32 vendor/lib/interface.php:834
+#: vendor/lib/tabs/synonyms-tab.php:25 vendor/lib/tabs/synonyms-tab.php:30
+msgid "Synonyms"
+msgstr ""
+
+#: lib/interface.php:474 lib/tabs/stopwords-tab.php:18
+#: vendor/lib/interface.php:835 vendor/lib/tabs/stopwords-tab.php:18
+msgid "Stopwords"
+msgstr ""
+
+#: lib/interface.php:481 lib/tabs/redirects-tab.php:18
+#: vendor/lib/interface.php:836 vendor/lib/tabs/redirects-tab.php:18
+msgid "Redirects"
+msgstr ""
+
+#: lib/interface.php:488 lib/tabs/debugging-tab.php:28
+msgid "Debugging"
+msgstr ""
+
+#: lib/interface.php:590 vendor/lib/interface.php:958
+msgid "Click OK to copy Relevanssi options to all subsites"
+msgstr ""
+
+#: lib/interface.php:591 vendor/lib/interface.php:959
+msgid "Are you sure you want to remove all stopwords?"
+msgstr ""
+
+#: lib/interface.php:592 vendor/lib/interface.php:960
+msgid "Wiping out the index..."
+msgstr ""
+
+#: lib/interface.php:593 vendor/lib/interface.php:961
+msgid "Done."
+msgstr ""
+
+#: lib/interface.php:594 vendor/lib/interface.php:962
+msgid "Indexing users..."
+msgstr ""
+
+#: lib/interface.php:595 vendor/lib/interface.php:963
+msgid "Indexing the following taxonomies:"
+msgstr ""
+
+#: lib/interface.php:596 vendor/lib/interface.php:964
+msgid "Indexing attachments..."
+msgstr ""
+
+#: lib/interface.php:597 vendor/lib/interface.php:965
+msgid "Counting posts..."
+msgstr ""
+
+#: lib/interface.php:598 vendor/lib/interface.php:966
+msgid "Counting taxonomy terms..."
+msgstr ""
+
+#: lib/interface.php:599 vendor/lib/interface.php:967
+msgid "Counting users..."
+msgstr ""
+
+#: lib/interface.php:600 vendor/lib/interface.php:968
+msgid "Counting attachments..."
+msgstr ""
+
+#: lib/interface.php:601 vendor/lib/interface.php:969
+msgid "posts found."
+msgstr ""
+
+#: lib/interface.php:602 vendor/lib/interface.php:970
+msgid "taxonomy terms found."
+msgstr ""
+
+#: lib/interface.php:603 vendor/lib/interface.php:971
+msgid "users found."
+msgstr ""
+
+#: lib/interface.php:604 vendor/lib/interface.php:972
+msgid "attachments found."
+msgstr ""
+
+#: lib/interface.php:605 vendor/lib/interface.php:973
+msgid "Taxonomy term indexing is disabled."
+msgstr ""
+
+#: lib/interface.php:606 vendor/lib/interface.php:974
+msgid "User indexing is disabled."
+msgstr ""
+
+#: lib/interface.php:607 vendor/lib/interface.php:975
+msgid "Indexing complete."
+msgstr ""
+
+#: lib/interface.php:608 vendor/lib/interface.php:976
+msgid "posts excluded."
+msgstr ""
+
+#: lib/interface.php:609 vendor/lib/interface.php:977
+msgid "Settings have changed, please save the options before indexing."
+msgstr ""
+
+#: lib/interface.php:610 vendor/lib/interface.php:978
+msgid "Reload the page to refresh the state of the index."
+msgstr ""
+
+#: lib/interface.php:611 vendor/lib/interface.php:979
+msgid "Are you sure you want to delete all attachment content from the index?"
+msgstr ""
+
+#: lib/interface.php:612 vendor/lib/interface.php:980
+msgid "Relevanssi attachment data wiped clean."
+msgstr ""
+
+#: lib/interface.php:613
+msgid "There were problems wiping the Relevanssi attachment data clean."
+msgstr ""
+
+#: lib/interface.php:614 vendor/lib/interface.php:981
+msgid "hour"
+msgstr ""
+
+#: lib/interface.php:615 vendor/lib/interface.php:982
+msgid "hours"
+msgstr ""
+
+#: lib/interface.php:616 vendor/lib/interface.php:983
+msgid "about"
+msgstr ""
+
+#: lib/interface.php:617 vendor/lib/interface.php:984
+msgid "about an hour"
+msgstr ""
+
+#: lib/interface.php:618 vendor/lib/interface.php:985
+msgid "about an hour and a half"
+msgstr ""
+
+#: lib/interface.php:619 vendor/lib/interface.php:986
+msgid "minute"
+msgstr ""
+
+#: lib/interface.php:620 vendor/lib/interface.php:987
+msgid "minutes"
+msgstr ""
+
+#: lib/interface.php:621 vendor/lib/interface.php:988
+msgid "less than a minute"
+msgstr ""
+
+#: lib/interface.php:622 vendor/lib/interface.php:989
+msgid "we're done!"
+msgstr ""
+
+#: lib/interface.php:689 vendor/lib/interface.php:1056
+msgid "Tag weight"
+msgstr ""
+
+#: lib/interface.php:697 vendor/lib/interface.php:1064
+msgid "Category weight"
+msgstr ""
+
+#: lib/log.php:188
+msgid "Logged searches"
+msgstr ""
+
+#: lib/log.php:191 vendor/lib/log.php:174
+msgid "Time"
+msgstr ""
+
+#: lib/log.php:199 vendor/lib/log.php:182
+msgid "Hits found"
+msgstr ""
+
+#: lib/log.php:203 vendor/lib/log.php:186
+msgid "IP address"
+msgstr ""
+
+#: lib/log.php:298
+msgid "No search keywords logged."
+msgstr ""
+
+#: lib/privacy.php:34 vendor/lib/privacy.php:34
+msgid "What personal data we collect and why we collect it"
+msgstr ""
+
+#: lib/privacy.php:36 vendor/lib/privacy.php:36
+msgid "IP address for searches"
+msgstr ""
+
+#: lib/privacy.php:37 vendor/lib/privacy.php:37
+msgid ""
+"All searches performed using the internal site search are logged in the "
+"database, including the following information: the search query, the number "
+"of hits found, user ID for users who are logged in, date and time and the IP "
+"address. The IP address is stored for security and auditing purposes."
+msgstr ""
+
+#: lib/privacy.php:39 vendor/lib/privacy.php:39
+msgid ""
+"All searches performed using the internal site search are logged in the "
+"database, including the following information: the search query, the number "
+"of hits found, user ID for users who are logged in and date and time."
+msgstr ""
+
+#: lib/privacy.php:42 vendor/lib/privacy.php:42
+msgid "How long we retain your data"
+msgstr ""
+
+#: lib/privacy.php:45 vendor/lib/privacy.php:45
+#, php-format
+msgid ""
+"The search logs are stored for %d days before they are automatically removed."
+msgstr ""
+
+#: lib/privacy.php:47 vendor/lib/privacy.php:47
+msgid "The search logs are stored indefinitely."
+msgstr ""
+
+#: lib/privacy.php:64 lib/privacy.php:81 vendor/lib/privacy.php:64
+#: vendor/lib/privacy.php:81
+msgid "Relevanssi Search Logs"
+msgstr ""
+
+#: lib/shortcodes.php:126 vendor/lib/shortcodes.php:131
+msgid "None"
+msgstr ""
+
+#: lib/stopwords.php:38
+msgid "Added stopwords from the database."
+msgstr ""
+
+#: lib/stopwords.php:53
+#, php-format
+msgid "The stopword file for the language '%s' doesn't exist."
+msgstr ""
+
+#: lib/stopwords.php:69
+msgid "Couldn't read the stopwords from the file."
+msgstr ""
+
+#: lib/stopwords.php:79
+msgid "Added stopwords from the stopword file."
+msgstr ""
+
+#: lib/stopwords.php:138 vendor/lib/stopwords.php:96
+#, php-format
+msgid "Successfully added %1$d/%2$d terms to stopwords!"
+msgstr ""
+
+#: lib/stopwords.php:157 vendor/lib/stopwords.php:107
+#, php-format
+msgid "Term '%s' added to stopwords!"
+msgstr ""
+
+#: lib/stopwords.php:166 vendor/lib/stopwords.php:110
+#, php-format
+msgid "Couldn't add term '%s' to stopwords!"
+msgstr ""
+
+#: lib/stopwords.php:317 vendor/lib/stopwords.php:162
+msgid "All stopwords removed! Remember to re-index."
+msgstr ""
+
+#: lib/stopwords.php:325 vendor/lib/stopwords.php:164
+msgid "There was a problem, and stopwords couldn't be removed."
+msgstr ""
+
+#: lib/stopwords.php:362 vendor/lib/stopwords.php:187
+#, php-format
+msgid "Term '%s' removed from stopwords! Re-index to get it back to index."
+msgstr ""
+
+#: lib/stopwords.php:375 vendor/lib/stopwords.php:193
+#, php-format
+msgid "Couldn't remove term '%s' from stopwords!"
+msgstr ""
+
+#: lib/tabs/attachments-tab.php:18 vendor/lib/tabs/attachments-tab.php:18
+msgid "Indexing attachment content"
+msgstr ""
+
+#: lib/tabs/attachments-tab.php:20 vendor/lib/tabs/attachments-tab.php:20
+msgid ""
+"With Relevanssi Premium, you can index the text contents of attachments "
+"(PDFs, Word documents, Open Office documents and many other types). The "
+"contents of the attachments are processed on an external service, which "
+"makes the feature reliable and light on your own server performance."
+msgstr ""
+
+#: lib/tabs/attachments-tab.php:22 lib/tabs/redirects-tab.php:22
+#: vendor/lib/tabs/attachments-tab.php:22 vendor/lib/tabs/redirects-tab.php:22
+#, php-format
+msgid ""
+"In order to access this and many other delightful Premium features, %1$sbuy "
+"Relevanssi Premium here%2$s."
+msgstr ""
+
+#: lib/tabs/debugging-tab.php:30
+msgid ""
+"In order to figure out problems with indexing posts, you can test how "
+"Relevanssi sees the post by entering the post ID number in the field below."
+msgstr ""
+
+#: lib/tabs/debugging-tab.php:34
+#, php-format
+msgid ""
+"In Relevanssi Premium, you can find this feature for each post on the post "
+"edit page. %1$sBuy Relevanssi Premium here%2$s."
+msgstr ""
+
+#: lib/tabs/debugging-tab.php:37
+msgid "The post ID"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:84 vendor/lib/tabs/excerpts-tab.php:84
+msgid "Custom excerpts/snippets"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:89 vendor/lib/tabs/excerpts-tab.php:89
+msgid "Custom search result snippets"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:94 vendor/lib/tabs/excerpts-tab.php:93
+#: vendor/lib/tabs/excerpts-tab.php:96
+msgid "Create custom search result snippets"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:96 vendor/lib/tabs/excerpts-tab.php:99
+msgid "Only enable this if you actually use the custom excerpts."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:103 vendor/lib/tabs/excerpts-tab.php:106
+#, php-format
+msgid ""
+"Looks like you are using Divi. In order to use custom excerpts with Divi, "
+"you need to make some changes to your templates. %1$sSee instructions here"
+"%2$s."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:115 vendor/lib/tabs/excerpts-tab.php:118
+msgid "Length of the snippet"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:125 vendor/lib/tabs/excerpts-tab.php:128
+msgid "Excerpt length type"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:133 vendor/lib/tabs/excerpts-tab.php:136
+msgid "characters"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:134 vendor/lib/tabs/excerpts-tab.php:137
+msgid "words"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:136 vendor/lib/tabs/excerpts-tab.php:139
+msgid ""
+"Using words is much faster than characters. Don't use characters, unless you "
+"have a really good reason and your posts are short."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:152 vendor/lib/tabs/excerpts-tab.php:150
+msgid "Allowable tags in excerpts"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:162 vendor/lib/tabs/excerpts-tab.php:160
+msgid ""
+"List all tags you want to allow in excerpts. For example: &lt;p&gt;&lt;a&gt;"
+"&lt;strong&gt;."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:173 vendor/lib/tabs/excerpts-tab.php:171
+msgid "Use custom fields for excerpts"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:184 vendor/lib/tabs/excerpts-tab.php:175
+#: vendor/lib/tabs/excerpts-tab.php:184
+msgid "Use custom field content for building excerpts"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:186 vendor/lib/tabs/excerpts-tab.php:187
+msgid ""
+"Use the custom fields setting for indexing for excerpt-making as well. "
+"Enabling this option will show custom field content in Relevanssi-generated "
+"excerpts."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:189 vendor/lib/tabs/excerpts-tab.php:190
+msgid "Enable this option to use PDF content for excerpts."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:194 vendor/lib/tabs/excerpts-tab.php:195
+msgid "Current custom field setting"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:197 vendor/lib/tabs/excerpts-tab.php:198
+msgid "all visible custom fields"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:199 vendor/lib/tabs/excerpts-tab.php:200
+msgid "all custom fields"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:203 vendor/lib/tabs/excerpts-tab.php:204
+msgid "Just PDF content"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:205 vendor/lib/tabs/excerpts-tab.php:206
+msgid "None selected"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:213 vendor/lib/tabs/excerpts-tab.php:214
+msgid "Search hit highlighting"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:224 vendor/lib/tabs/excerpts-tab.php:225
+msgid "Highlight type"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:234 vendor/lib/tabs/excerpts-tab.php:235
+msgid "No highlighting"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:238 lib/tabs/excerpts-tab.php:248
+#: vendor/lib/tabs/excerpts-tab.php:239 vendor/lib/tabs/excerpts-tab.php:249
+msgid "Text color"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:239 lib/tabs/excerpts-tab.php:262
+#: vendor/lib/tabs/excerpts-tab.php:240 vendor/lib/tabs/excerpts-tab.php:263
+msgid "Background color"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:240 vendor/lib/tabs/excerpts-tab.php:241
+msgid "CSS Style"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:241 vendor/lib/tabs/excerpts-tab.php:242
+msgid "CSS Class"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:243 lib/tabs/excerpts-tab.php:406
+#: vendor/lib/tabs/excerpts-tab.php:244 vendor/lib/tabs/excerpts-tab.php:422
+msgid "Requires custom snippets to work."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:276 vendor/lib/tabs/excerpts-tab.php:277
+msgid "CSS style for highlights"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:287 vendor/lib/tabs/excerpts-tab.php:288
+#, php-format
+msgid ""
+"The highlights will be wrapped in a %s with this CSS in the style parameter."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:292 vendor/lib/tabs/excerpts-tab.php:293
+msgid "CSS class for highlights"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:303 vendor/lib/tabs/excerpts-tab.php:304
+#, php-format
+msgid "The highlights will be wrapped in a %s with this class."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:308 vendor/lib/tabs/excerpts-tab.php:309
+msgid "Highlight in titles"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:319 vendor/lib/tabs/excerpts-tab.php:313
+#: vendor/lib/tabs/excerpts-tab.php:322
+msgid "Highlight query terms in titles"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:322 vendor/lib/tabs/excerpts-tab.php:326
+#, php-format
+msgid ""
+"Highlights in titles require changes to the search results template. You "
+"need to replace %1$s in the search results template with %2$s. For more "
+"information, see the contextual help."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:327 vendor/lib/tabs/excerpts-tab.php:331
+msgid "Highlight in documents"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:338 vendor/lib/tabs/excerpts-tab.php:335
+#: vendor/lib/tabs/excerpts-tab.php:344
+msgid "Highlight query terms in documents"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:341 vendor/lib/tabs/excerpts-tab.php:348
+#, php-format
+msgid ""
+"Highlights hits when user opens the post from search results. This requires "
+"an extra parameter (%s) to the links from the search results pages, which "
+"Relevanssi should add automatically."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:346 vendor/lib/tabs/excerpts-tab.php:353
+msgid "Highlight in comments"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:357 vendor/lib/tabs/excerpts-tab.php:357
+#: vendor/lib/tabs/excerpts-tab.php:366
+msgid "Highlight query terms in comments"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:359 vendor/lib/tabs/excerpts-tab.php:369
+msgid ""
+"Highlights hits in comments when user opens the post from search results."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:364
+msgid "Expand highlights"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:375
+msgid "Expand highlights to cover full words"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:377
+msgid ""
+"When a highlight matches part of the word, if this option is enabled, the "
+"highlight will be expanded to highlight the whole word."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:382 vendor/lib/tabs/excerpts-tab.php:395
+msgid "Breakdown of search results"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:393 vendor/lib/tabs/excerpts-tab.php:406
+msgid "Breakdown of search hits in excerpts"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:404 vendor/lib/tabs/excerpts-tab.php:419
+msgid "Show the breakdown of search hits in the excerpts."
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:411 vendor/lib/tabs/excerpts-tab.php:427
+msgid "The breakdown format"
+msgstr ""
+
+#: lib/tabs/excerpts-tab.php:421
+msgid ""
+"Use %body%, %title%, %categories%, %tags%, %taxonomies%, %comments%, "
+"%customfields%, %author%, %excerpt% and %mysqlcolumns% to display the number "
+"of hits (in different parts of the post), %total% for total hits, %score% to "
+"display the document weight and %terms% to show how many hits each search "
+"term got."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:117 vendor/lib/tabs/indexing-tab.php:112
+#, php-format
+msgid "%s empties the existing index and rebuilds it from scratch."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:117 vendor/lib/tabs/indexing-tab.php:112
+msgid "Build the index"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:119 vendor/lib/tabs/indexing-tab.php:114
+#, php-format
+msgid ""
+"%s doesn't empty the index and only indexes those posts that are not "
+"indexed. You can use it if you have to interrupt building the index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:119 vendor/lib/tabs/indexing-tab.php:114
+msgid "Index unindexed posts"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:122 vendor/lib/tabs/indexing-tab.php:117
+msgid "This doesn't index any taxonomy terms or users."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:129 vendor/lib/tabs/indexing-tab.php:124
+msgid "Time elapsed"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:129 vendor/lib/tabs/indexing-tab.php:124
+msgid "Time remaining"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:129 vendor/lib/tabs/indexing-tab.php:124
+msgid "some time"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:131 vendor/lib/tabs/indexing-tab.php:126
+msgid ""
+"Indexing should respond quickly. If nothing happens in couple of minutes, "
+"it's probably stuck. The most common reasons for indexing issues are "
+"incompatible shortcodes, so try disabling the shortcode expansion setting "
+"and try again. Also, if you've just updated Relevanssi, doing a hard refresh "
+"in your browser will make sure your browser is not trying to use an outdated "
+"version of the Relevanssi scripts."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:135 vendor/lib/tabs/indexing-tab.php:130
+msgid "State of the index"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:136 vendor/lib/tabs/indexing-tab.php:131
+msgid "document in the index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:138 vendor/lib/tabs/indexing-tab.php:133
+msgid "user in the index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:139 vendor/lib/tabs/indexing-tab.php:134
+msgid "taxonomy term in the index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:142 vendor/lib/tabs/indexing-tab.php:137
+msgid "term in the index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:143 vendor/lib/tabs/indexing-tab.php:138
+msgid "is the lowest post ID indexed."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:145
+#, php-format
+msgid ""
+"These values may be inaccurate. If you need exact values, %1$supdate the "
+"counts%2$s"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:155 vendor/lib/tabs/indexing-tab.php:148
+msgid ""
+"WARNING: You've chosen no post types to index. Nothing will be indexed. "
+"Choose some post types to index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:160 vendor/lib/tabs/indexing-tab.php:153
+msgid "Indexing options"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:162 vendor/lib/tabs/indexing-tab.php:155
+msgid ""
+"Any changes to the settings on this page require reindexing before they take "
+"effect."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:166 vendor/lib/tabs/indexing-tab.php:159
+msgid "Post types"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:170
+msgid "Post types to index"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:174 vendor/lib/tabs/indexing-tab.php:165
+msgid "Type"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:175 lib/tabs/indexing-tab.php:267
+#: vendor/lib/tabs/indexing-tab.php:166 vendor/lib/tabs/indexing-tab.php:226
+msgid "Index"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:176 vendor/lib/tabs/indexing-tab.php:167
+msgid "Excluded from search?"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:193
+#, php-format
+msgid "Index post type %s"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:195 lib/tabs/indexing-tab.php:289
+#: vendor/lib/tabs/indexing-tab.php:184 vendor/lib/tabs/indexing-tab.php:244
+msgid "yes"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:197
+#, php-format
+msgid "Post type %s is excluded from search"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:199 lib/tabs/indexing-tab.php:285
+#: vendor/lib/tabs/indexing-tab.php:186 vendor/lib/tabs/indexing-tab.php:242
+msgid "no"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:201
+#, php-format
+msgid "Post type %s can be searched"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:232 vendor/lib/tabs/indexing-tab.php:212
+msgid ""
+"If you want to index a post type that's marked 'Excluded from search', you "
+"can do that without worrying about it – but you need to uncheck the 'Respect "
+"exclude_from_search' setting from the Searching tab."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:244
+msgid "Index image files"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:249
+msgid "Index image attachments"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:251
+msgid ""
+"If this option is enabled, Relevanssi will include image attachments in the "
+"index. If the option is disabled, only other attachment types are included."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:253
+#, php-format
+msgid ""
+"For more detailed control over the attachment type indexing, see "
+"%1$sControlling attachment types in the Knowledge base%2$s."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:259 vendor/lib/tabs/indexing-tab.php:218
+msgid "Taxonomies"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:266 vendor/lib/tabs/indexing-tab.php:225
+msgid "Taxonomy"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:268 vendor/lib/tabs/indexing-tab.php:227
+msgid "Public?"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:284
+#, php-format
+msgid "Index taxonomy %s"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:287
+#, php-format
+msgid "Taxonomy %s is not public"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:291
+#, php-format
+msgid "Taxonomy %s is public"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:313 vendor/lib/tabs/indexing-tab.php:258
+msgid ""
+"If you check a taxonomy here, the terms for that taxonomy are indexed with "
+"the posts. If you for example choose \"post_tag\", searching for a tag will "
+"find all posts that have the tag."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:324 lib/tabs/indexing-tab.php:338
+#: vendor/lib/tabs/indexing-tab.php:269 vendor/lib/tabs/indexing-tab.php:283
+msgid "none"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:325 vendor/lib/tabs/indexing-tab.php:270
+msgid "comments"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:326 vendor/lib/tabs/indexing-tab.php:271
+msgid "comments and pingbacks"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:328 vendor/lib/tabs/indexing-tab.php:273
+msgid ""
+"If you choose to index comments, you can choose if you want to index just "
+"comments, or everything including comments and track- and pingbacks."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:339 vendor/lib/tabs/indexing-tab.php:284
+msgid "all"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:340 vendor/lib/tabs/indexing-tab.php:285
+msgid "visible"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:341 lib/tabs/indexing-tab.php:373
+#: vendor/lib/tabs/indexing-tab.php:286 vendor/lib/tabs/indexing-tab.php:318
+msgid "some"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:345 vendor/lib/tabs/indexing-tab.php:290
+msgid "'All' indexes all custom fields for posts."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:347 vendor/lib/tabs/indexing-tab.php:292
+msgid ""
+"'Visible' only includes the custom fields that are visible in the user "
+"interface (with names that don't start with an underscore)."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:349 vendor/lib/tabs/indexing-tab.php:294
+msgid "'Some' lets you choose individual custom fields to index."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:355 vendor/lib/tabs/indexing-tab.php:300
+msgid ""
+"Advanced Custom Fields has lots of invisible custom fields with meta data. "
+"Selecting \"all\" will include lots of garbage in the index and excerpts. "
+"\"Visible\" is usually a better option with ACF."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:366 vendor/lib/tabs/indexing-tab.php:311
+msgid "Custom fields to index"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:368 vendor/lib/tabs/indexing-tab.php:313
+msgid ""
+"Enter a comma-separated list of custom fields to include in the index. With "
+"Relevanssi Premium, you can also use 'fieldname_%_subfieldname' notation for "
+"ACF repeater fields."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:369 vendor/lib/tabs/indexing-tab.php:314
+msgid ""
+"You can use 'relevanssi_index_custom_fields' filter hook to adjust which "
+"custom fields are indexed."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:373 vendor/lib/tabs/indexing-tab.php:318
+#, php-format
+msgid ""
+"If you want the SKU included, choose %1$s and enter %2$s. Also see the "
+"contextual help for more details."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:380 vendor/lib/tabs/indexing-tab.php:325
+msgid "Author display names"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:385 vendor/lib/tabs/indexing-tab.php:329
+#: vendor/lib/tabs/indexing-tab.php:332
+msgid "Index the post author display name"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:387 vendor/lib/tabs/indexing-tab.php:334
+msgid ""
+"Searching for the post author display name will return posts by that author."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:398 vendor/lib/tabs/indexing-tab.php:345
+#: vendor/lib/tabs/indexing-tab.php:348 vendor/lib/tabs/indexing-tab.php:369
+msgid "Index the post excerpt"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:400 vendor/lib/tabs/indexing-tab.php:350
+msgid "Relevanssi will find posts by the content in the excerpt."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:402 vendor/lib/tabs/indexing-tab.php:352
+msgid ""
+"WooCommerce stores the product short description in the excerpt, so it's a "
+"good idea to index excerpts."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:409 vendor/lib/tabs/indexing-tab.php:360
+msgid "Shortcodes"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:414 vendor/lib/tabs/indexing-tab.php:365
+msgid "Expand shortcodes"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:419 vendor/lib/tabs/indexing-tab.php:372
+msgid "Expand shortcodes when indexing"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:422 vendor/lib/tabs/indexing-tab.php:375
+msgid ""
+"WooCommerce has shortcodes that don't work well with Relevanssi. With "
+"WooCommerce, make sure the option is disabled."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:424 vendor/lib/tabs/indexing-tab.php:377
+msgid ""
+"If checked, Relevanssi will expand shortcodes in post content before "
+"indexing. Otherwise shortcodes will be stripped."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:425 vendor/lib/tabs/indexing-tab.php:378
+msgid ""
+"If you use shortcodes to include dynamic content, Relevanssi will not keep "
+"the index updated, the index will reflect the status of the shortcode "
+"content at the moment of indexing."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:439 vendor/lib/tabs/indexing-tab.php:409
+msgid "Advanced indexing settings"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:441 vendor/lib/tabs/indexing-tab.php:411
+msgid "Show advanced settings"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:446 vendor/lib/tabs/indexing-tab.php:416
+msgid "Minimum word length"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:450 vendor/lib/tabs/indexing-tab.php:420
+msgid "Words shorter than this many letters will not be indexed."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:452 vendor/lib/tabs/indexing-tab.php:422
+#, php-format
+msgid ""
+"To enable one-letter searches, you need to add a filter function on the "
+"filter hook %1$s that returns %2$s."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:456 vendor/lib/tabs/indexing-tab.php:426
+msgid "Punctuation control"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:457 vendor/lib/tabs/indexing-tab.php:427
+msgid ""
+"Here you can adjust how the punctuation is controlled. For more information, "
+"see help. Remember that any changes here require reindexing, otherwise "
+"searches will fail to find posts they should."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:461 vendor/lib/tabs/indexing-tab.php:431
+msgid "Hyphens and dashes"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:465 lib/tabs/indexing-tab.php:492
+#: lib/tabs/indexing-tab.php:506 vendor/lib/tabs/indexing-tab.php:435
+#: vendor/lib/tabs/indexing-tab.php:462 vendor/lib/tabs/indexing-tab.php:476
+msgid "Keep"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:466 lib/tabs/indexing-tab.php:479
+#: lib/tabs/indexing-tab.php:493 lib/tabs/indexing-tab.php:507
+#: vendor/lib/tabs/indexing-tab.php:436 vendor/lib/tabs/indexing-tab.php:449
+#: vendor/lib/tabs/indexing-tab.php:463 vendor/lib/tabs/indexing-tab.php:477
+msgid "Replace with spaces"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:467 lib/tabs/indexing-tab.php:480
+#: lib/tabs/indexing-tab.php:494 lib/tabs/indexing-tab.php:508
+#: vendor/lib/tabs/indexing-tab.php:437 vendor/lib/tabs/indexing-tab.php:450
+#: vendor/lib/tabs/indexing-tab.php:464 vendor/lib/tabs/indexing-tab.php:478
+msgid "Remove"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:469 vendor/lib/tabs/indexing-tab.php:439
+msgid ""
+"How Relevanssi should handle hyphens and dashes (en and em dashes)? "
+"Replacing with spaces is generally the best option, but in some cases "
+"removing completely is the best option. Keeping them is rarely the best "
+"option."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:475 vendor/lib/tabs/indexing-tab.php:445
+msgid "Apostrophes and quotes"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:482 vendor/lib/tabs/indexing-tab.php:452
+msgid ""
+"How Relevanssi should handle apostrophes and quotes? It's not possible to "
+"keep them; that would lead to problems. Default behaviour is to replace with "
+"spaces, but sometimes removing makes sense."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:488 vendor/lib/tabs/indexing-tab.php:458
+msgid "Ampersands"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:496 vendor/lib/tabs/indexing-tab.php:466
+msgid ""
+"How Relevanssi should handle ampersands? Replacing with spaces is generally "
+"the best option, but if you talk a lot about D&amp;D, for example, keeping "
+"the ampersands is useful."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:502 vendor/lib/tabs/indexing-tab.php:472
+msgid "Decimal separators"
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:510 vendor/lib/tabs/indexing-tab.php:480
+msgid ""
+"How Relevanssi should handle periods between decimals? Replacing with spaces "
+"is the default option, but that often leads to the numbers being removed "
+"completely. If you need to search decimal numbers a lot, keep the periods."
+msgstr ""
+
+#: lib/tabs/indexing-tab.php:520 vendor/lib/tabs/indexing-tab.php:498
+msgid "Hide advanced settings"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:33 vendor/lib/tabs/logging-tab.php:33
+msgid "Enable logs"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:37 lib/tabs/logging-tab.php:40
+#: vendor/lib/tabs/logging-tab.php:37 vendor/lib/tabs/logging-tab.php:40
+msgid "Keep a log of user queries."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:47 vendor/lib/tabs/logging-tab.php:47
+#, php-format
+msgid ""
+"If enabled, Relevanssi will log user queries. The logs can be examined under "
+"'%1$s' on the Dashboard admin menu and are stored in the %2$s database table."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:57 vendor/lib/tabs/logging-tab.php:57
+msgid "Log user IP"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:61 lib/tabs/logging-tab.php:64
+#: vendor/lib/tabs/logging-tab.php:61 vendor/lib/tabs/logging-tab.php:64
+msgid "Log the user's IP with the queries."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:67 vendor/lib/tabs/logging-tab.php:67
+msgid ""
+"If enabled, Relevanssi will log user's IP adress with the queries. Note that "
+"this may be illegal where you live, and in EU will create a person registry "
+"that falls under the GDPR."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:72 vendor/lib/tabs/logging-tab.php:72
+msgid "Exclude users"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:76 vendor/lib/tabs/logging-tab.php:76
+msgid ""
+"Comma-separated list of numeric user IDs or user login names that will not "
+"be logged."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:86 vendor/lib/tabs/logging-tab.php:86
+msgid "Trim logs"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:90 vendor/lib/tabs/logging-tab.php:90
+msgid "How many days of logs to keep in the database."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:94 vendor/lib/tabs/logging-tab.php:94
+msgid ""
+"Big log database table will eventually start to slow down the search, so "
+"it's a good idea to use some level of automatic log trimming."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:99 vendor/lib/tabs/logging-tab.php:99
+#, php-format
+msgid " Set to %d for no trimming."
+msgstr ""
+
+#: lib/tabs/logging-tab.php:108 vendor/lib/tabs/logging-tab.php:108
+msgid "Export logs"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:111 vendor/lib/tabs/logging-tab.php:111
+msgid "Export the log as a CSV file"
+msgstr ""
+
+#: lib/tabs/logging-tab.php:112 vendor/lib/tabs/logging-tab.php:112
+msgid "Push the button to export the search log as a CSV file."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:22 vendor/lib/tabs/overview-tab.php:22
+msgid "Welcome to Relevanssi!"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:38 vendor/lib/tabs/overview-tab.php:38
+msgid "Getting started"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:40 vendor/lib/tabs/overview-tab.php:40
+msgid ""
+"You've already installed Relevanssi. That's a great first step towards good "
+"search experience!"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:44 vendor/lib/tabs/overview-tab.php:44
+#, php-format
+msgid ""
+"Now, you need an index. Head over to the %1$s%2$s%3$s tab to set up the "
+"basic indexing options and to build the index."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:45 vendor/lib/tabs/overview-tab.php:45
+msgid "You need to check at least the following options:"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:46 vendor/lib/tabs/overview-tab.php:46
+msgid "Make sure the post types you want to include in the index are indexed."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:48 vendor/lib/tabs/overview-tab.php:48
+#, php-format
+msgid ""
+"Do you use custom fields to store content you want included? If so, add "
+"those too. WooCommerce user? You probably want to include %s."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:49 vendor/lib/tabs/overview-tab.php:49
+msgid ""
+"Then just save the options and build the index. First time you have to do it "
+"manually, but after that, it's fully automatic: all changes are reflected in "
+"the index without reindexing. (That said, it's a good idea to rebuild the "
+"index once a year.)"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:52 vendor/lib/tabs/overview-tab.php:52
+msgid "Great, you already have an index!"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:56 vendor/lib/tabs/overview-tab.php:56
+#, php-format
+msgid ""
+"On the %1$s%2$s%3$s tab, choose whether you want the default operator to be "
+"AND (less results, but more precise) or OR (more results, less precise)."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:60 vendor/lib/tabs/overview-tab.php:60
+#, php-format
+msgid ""
+"The next step is the %1$s%2$s%3$s tab, where you can enable the custom "
+"excerpts that show the relevant part of post in the search results pages."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:61 vendor/lib/tabs/overview-tab.php:61
+msgid ""
+"There are couple of options related to that, so if you want highlighting in "
+"the results, you can adjust the styles for that to suit the look of your "
+"site."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:64 vendor/lib/tabs/overview-tab.php:64
+msgid ""
+"That's about it! Now you should have Relevanssi up and running. The rest of "
+"the options is mostly fine-tuning."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:67 vendor/lib/tabs/overview-tab.php:67
+msgid ""
+"Relevanssi doesn't have a separate search widget. Instead, Relevanssi uses "
+"the default search widget. Any standard search form will do!"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:71 vendor/lib/tabs/overview-tab.php:71
+msgid "Privacy and GDPR compliance"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:74 vendor/lib/tabs/overview-tab.php:74
+#, php-format
+msgid ""
+"%1$sGDPR Compliance at Relevanssi knowledge base%2$s explains how using "
+"Relevanssi affects the GDPR compliance and the privacy policies of your "
+"site. Relevanssi also supports the %3$sprivacy policy tool%2$s and the "
+"WordPress user data export and erase tools."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:78 vendor/lib/tabs/overview-tab.php:78
+msgid "For more information"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:80 vendor/lib/tabs/overview-tab.php:80
+msgid ""
+"Relevanssi uses the WordPress contextual help. Click 'Help' on the top right "
+"corner for more information on many Relevanssi topics."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:82 vendor/lib/tabs/overview-tab.php:82
+#, php-format
+msgid ""
+"%1$sRelevanssi knowledge base%2$s has lots of information about advanced "
+"Relevanssi use, including plenty of code samples."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:86 vendor/lib/tabs/overview-tab.php:86
+msgid "Do you like Relevanssi?"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:88 vendor/lib/tabs/overview-tab.php:88
+msgid ""
+"If you do, the best way to show your appreciation is to spread the word and "
+"perhaps give us a good review on WordPress.org."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:90 vendor/lib/tabs/overview-tab.php:90
+#, php-format
+msgid ""
+"If you like Relevanssi, leaving a five-star review on WordPress.org will "
+"help others discover Relevanssi. %1$sYou can add your review here%2$s."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:95 vendor/lib/tabs/overview-tab.php:95
+msgid "Relevanssi on Facebook"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:98 vendor/lib/tabs/overview-tab.php:98
+msgid ""
+"Check out the Relevanssi page on Facebook for news and updates about "
+"Relevanssi."
+msgstr ""
+
+#: lib/tabs/overview-tab.php:104 vendor/lib/tabs/overview-tab.php:104
+msgid "Buy Relevanssi Premium"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:107 vendor/lib/tabs/overview-tab.php:107
+msgid "Buy Relevanssi Premium now"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:109 vendor/lib/tabs/overview-tab.php:109
+#, php-format
+msgid ""
+"use coupon code %1$s for 20%% discount (valid at least until the end of %2$s)"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:110 vendor/lib/tabs/overview-tab.php:110
+msgid "Here are some improvements Relevanssi Premium offers:"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:112 vendor/lib/tabs/overview-tab.php:112
+msgid "PDF content indexing"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:113 vendor/lib/tabs/overview-tab.php:113
+msgid "A Related posts feature"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:114 vendor/lib/tabs/overview-tab.php:114
+msgid "Index and search user profile pages"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:115 vendor/lib/tabs/overview-tab.php:115
+msgid "Index and search taxonomy term pages"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:116 vendor/lib/tabs/overview-tab.php:116
+msgid "Multisite searches across many subsites"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:117 vendor/lib/tabs/overview-tab.php:117
+msgid "WP CLI commands"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:118 vendor/lib/tabs/overview-tab.php:118
+msgid "Adjust weights separately for each post type and taxonomy"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:119 vendor/lib/tabs/overview-tab.php:119
+msgid "Internal link anchors can be search terms for the target posts"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:120 vendor/lib/tabs/overview-tab.php:120
+msgid "Index and search any columns in the wp_posts database"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:121 vendor/lib/tabs/overview-tab.php:121
+msgid ""
+"Hide Relevanssi branding from the User Searches page on a client installation"
+msgstr ""
+
+#: lib/tabs/overview-tab.php:122 vendor/lib/tabs/overview-tab.php:122
+msgid "Redirect search queries to custom URLs"
+msgstr ""
+
+#: lib/tabs/redirects-tab.php:20 vendor/lib/tabs/redirects-tab.php:20
+msgid ""
+"With Relevanssi Premium, you can set up redirects. These are keywords that "
+"automatically redirect the user to certain page, without going through the "
+"usual search process. For example, you could set it up so that all searches "
+"for \"job\" automatically lead to your \"Careers\" page."
+msgstr ""
+
+#: lib/tabs/search-page.php:18 vendor/lib/tabs/search-page.php:18
+msgid ""
+"You can use this search to perform Relevanssi searches without any "
+"restrictions from WordPress. You can search all post types here."
+msgstr ""
+
+#: lib/tabs/search-page.php:24 vendor/lib/tabs/search-page.php:24
+msgid "Search terms"
+msgstr ""
+
+#: lib/tabs/search-page.php:32 vendor/lib/tabs/search-page.php:32
+msgid "Post type"
+msgstr ""
+
+#: lib/tabs/search-page.php:36 vendor/lib/tabs/search-page.php:36
+msgid "Any"
+msgstr ""
+
+#: lib/tabs/search-page.php:59 vendor/lib/tabs/search-page.php:59
+msgid "Posts per page"
+msgstr ""
+
+#: lib/tabs/search-page.php:63 vendor/lib/tabs/search-page.php:63
+msgid "All"
+msgstr ""
+
+#: lib/tabs/search-page.php:72 vendor/lib/tabs/search-page.php:72
+msgid "Search parameters"
+msgstr ""
+
+#: lib/tabs/search-page.php:77 vendor/lib/tabs/search-page.php:77
+#, php-format
+msgid ""
+"Use query parameter formatting here, the same that would appear on search "
+"page results URL. For example %s."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:66 vendor/lib/tabs/searching-tab.php:66
+msgid "Default operator"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:70 vendor/lib/tabs/searching-tab.php:70
+msgid "AND - require all terms"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:71 vendor/lib/tabs/searching-tab.php:71
+msgid "OR - any term present is enough"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:73 vendor/lib/tabs/searching-tab.php:73
+msgid "This setting determines the default operator for the search."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:77 vendor/lib/tabs/searching-tab.php:77
+#, php-format
+msgid ""
+"You can override this setting with the %1$s query parameter, like this: %2$s"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:84 vendor/lib/tabs/searching-tab.php:84
+msgid "Fallback to OR"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:88 lib/tabs/searching-tab.php:91
+#: vendor/lib/tabs/searching-tab.php:88 vendor/lib/tabs/searching-tab.php:91
+msgid "Disable the OR fallback."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:94 vendor/lib/tabs/searching-tab.php:94
+msgid ""
+"By default, if AND search fails to find any results, Relevanssi will switch "
+"the operator to OR and run the search again. You can prevent that by "
+"checking this option."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:99 vendor/lib/tabs/searching-tab.php:99
+msgid "Default order"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:103 vendor/lib/tabs/searching-tab.php:103
+msgid "Relevance (highly recommended)"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:104 vendor/lib/tabs/searching-tab.php:104
+msgid "Post date"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:107 vendor/lib/tabs/searching-tab.php:107
+#, php-format
+msgid ""
+"If you want to override this or use multi-layered ordering (eg. first order "
+"by relevance, but sort ties by post title), you can use the %s query "
+"variable. See Help for more information."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:109 vendor/lib/tabs/searching-tab.php:109
+msgid ""
+" If you want date-based results, see the recent post bonus in the Weights "
+"section."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:115 vendor/lib/tabs/searching-tab.php:115
+msgid "Keyword matching"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:119 vendor/lib/tabs/searching-tab.php:119
+msgid "Whole words"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:120 lib/tabs/searching-tab.php:125
+#: vendor/lib/tabs/searching-tab.php:120 vendor/lib/tabs/searching-tab.php:125
+msgid "Partial words"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:121 vendor/lib/tabs/searching-tab.php:121
+msgid "Partial words if no hits for whole words"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:125 vendor/lib/tabs/searching-tab.php:125
+#, php-format
+msgid ""
+"Choosing the \"%1$s\" option may lead to unexpected results. Most of the "
+"time the \"%2$s\" option is the better choice."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:125 vendor/lib/tabs/searching-tab.php:125
+msgid "Partial words if not hits for whole words"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:127 vendor/lib/tabs/searching-tab.php:127
+msgid ""
+"Whole words means Relevanssi only finds posts that include the whole search "
+"term."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:128 vendor/lib/tabs/searching-tab.php:128
+msgid ""
+"Partial words also includes cases where the word in the index begins or ends "
+"with the search term (searching for 'ana' will match 'anaconda' or 'banana', "
+"but not 'banal'). See Help, if you want to make Relevanssi match also inside "
+"words."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:133 vendor/lib/tabs/searching-tab.php:133
+msgid "Weights"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:136 vendor/lib/tabs/searching-tab.php:136
+msgid ""
+"All the weights in the table are multipliers. To increase the weight of an "
+"element, use a higher number. To make an element less significant, use a "
+"number lower than 1."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:140 vendor/lib/tabs/searching-tab.php:140
+msgid "Element"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:141 vendor/lib/tabs/searching-tab.php:141
+msgid "Weight"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:146 vendor/lib/tabs/searching-tab.php:146
+msgid "Content"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:154 vendor/lib/tabs/searching-tab.php:154
+msgid "Titles"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:167 vendor/lib/tabs/searching-tab.php:167
+msgid "Comment text"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:196 vendor/lib/tabs/searching-tab.php:196
+msgid "Boost exact matches"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:200 lib/tabs/searching-tab.php:203
+#: vendor/lib/tabs/searching-tab.php:200 vendor/lib/tabs/searching-tab.php:203
+msgid "Give boost to exact matches."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:207 vendor/lib/tabs/searching-tab.php:207
+#, php-format
+msgid ""
+"If you enable this option, matches where the search query appears in title "
+"or content as a phrase will get a weight boost. To adjust the boost, you can "
+"use the %s filter hook. See Help for more details."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:215 vendor/lib/tabs/searching-tab.php:215
+msgid "WPML"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:219 lib/tabs/searching-tab.php:222
+#: vendor/lib/tabs/searching-tab.php:219 vendor/lib/tabs/searching-tab.php:222
+msgid "Limit results to current language."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:225 vendor/lib/tabs/searching-tab.php:225
+msgid ""
+"Enabling this option will restrict the results to the currently active "
+"language. If the option is disabled, results will include posts in all "
+"languages."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:232 vendor/lib/tabs/searching-tab.php:232
+msgid "Polylang"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:236 lib/tabs/searching-tab.php:239
+#: vendor/lib/tabs/searching-tab.php:236 vendor/lib/tabs/searching-tab.php:239
+msgid "Allow results from all languages."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:242 vendor/lib/tabs/searching-tab.php:242
+msgid ""
+"By default Polylang restricts the search to the current language. Enabling "
+"this option will lift this restriction."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:252 lib/tabs/searching-tab.php:255
+#: vendor/lib/tabs/searching-tab.php:252 vendor/lib/tabs/searching-tab.php:255
+msgid "Use Relevanssi for admin searches."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:258 vendor/lib/tabs/searching-tab.php:258
+msgid ""
+"If checked, Relevanssi will be used for searches in the admin interface. The "
+"page search doesn't use Relevanssi, because WordPress works like that."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:264 vendor/lib/tabs/searching-tab.php:264
+#, php-format
+msgid "Respect %s"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:268 vendor/lib/tabs/searching-tab.php:268
+msgid "Respect exclude_from_search for custom post types"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:272 vendor/lib/tabs/searching-tab.php:272
+#, php-format
+msgid "Respect %s for custom post types"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:274 vendor/lib/tabs/searching-tab.php:274
+msgid ""
+"If checked, Relevanssi won't display posts of custom post types that have "
+"'exclude_from_search' set to true."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:286 vendor/lib/tabs/searching-tab.php:286
+msgid ""
+"You probably should uncheck this option, because you've set Relevanssi to "
+"index the following non-public post types:"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:299 vendor/lib/tabs/searching-tab.php:299
+msgid "Throttle searches"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:309 vendor/lib/tabs/searching-tab.php:309
+msgid "Throttling the search does not work when sorting the posts by date."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:319 lib/tabs/searching-tab.php:322
+#: vendor/lib/tabs/searching-tab.php:319 vendor/lib/tabs/searching-tab.php:322
+msgid "Throttle searches."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:326 vendor/lib/tabs/searching-tab.php:326
+msgid "Your database is so small that you don't need to enable this."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:328 vendor/lib/tabs/searching-tab.php:328
+msgid ""
+"If this option is checked, Relevanssi will limit search results to at most "
+"500 results per term. This will improve performance, but may cause some "
+"relevant documents to go unfound. See Help for more details."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:334 lib/tabs/searching-tab.php:340
+#: vendor/lib/tabs/searching-tab.php:334 vendor/lib/tabs/searching-tab.php:340
+msgid "Category restriction"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:360 vendor/lib/tabs/searching-tab.php:360
+msgid ""
+"You can restrict search results to a category for all searches. For "
+"restricting on a per-search basis and more options (eg. tag restrictions), "
+"see Help."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:365 lib/tabs/searching-tab.php:371
+#: vendor/lib/tabs/searching-tab.php:365 vendor/lib/tabs/searching-tab.php:371
+msgid "Category exclusion"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:391 vendor/lib/tabs/searching-tab.php:391
+msgid ""
+"Posts in these categories are not included in search results. To exclude the "
+"posts completely from the index, see Help."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:396 vendor/lib/tabs/searching-tab.php:396
+msgid "Post exclusion"
+msgstr ""
+
+#: lib/tabs/searching-tab.php:400 vendor/lib/tabs/searching-tab.php:400
+msgid ""
+"Enter a comma-separated list of post or page ID's to exclude those pages "
+"from the search results."
+msgstr ""
+
+#: lib/tabs/searching-tab.php:402 vendor/lib/tabs/searching-tab.php:402
+msgid ""
+"With Relevanssi Premium, it's better to use the check box on post edit "
+"pages. That will remove the posts completely from the index, and will work "
+"with multisite searches unlike this setting."
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:25 vendor/lib/tabs/stopwords-tab.php:25
+msgid "Content stopwords"
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:34 vendor/lib/tabs/stopwords-tab.php:31
+msgid ""
+"Content stopwords are a premium feature where you can set stopwords that "
+"only apply to the post content. Those stopwords will still be indexed if "
+"they appear in post titles, tags, categories, custom fields or other parts "
+"of the post. To use content stopwords, you need Relevanssi Premium."
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:64 vendor/lib/tabs/stopwords-tab.php:59
+msgid ""
+"Enter a word here to add it to the list of stopwords. The word will "
+"automatically be removed from the index, so re-indexing is not necessary. "
+"You can enter many words at the same time, separate words with commas."
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:72 vendor/lib/tabs/stopwords-tab.php:64
+msgid "Stopword(s) to add"
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:80 vendor/lib/tabs/stopwords-tab.php:72
+msgid ""
+"Here's a list of stopwords in the database. Click a word to remove it from "
+"stopwords. Removing stopwords won't automatically return them to index, so "
+"you need to re-index all posts after removing stopwords to get those words "
+"back to index."
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:85 vendor/lib/tabs/stopwords-tab.php:77
+msgid "Current stopwords"
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:122 lib/tabs/stopwords-tab.php:125
+#: vendor/lib/tabs/stopwords-tab.php:98 vendor/lib/tabs/stopwords-tab.php:101
+msgid "Exportable list of stopwords"
+msgstr ""
+
+#: lib/tabs/stopwords-tab.php:127 vendor/lib/tabs/stopwords-tab.php:103
+msgid ""
+"You can copy the list of stopwords here if you want to back up the list, "
+"copy it to a different blog or otherwise need the list."
+msgstr ""
+
+#: lib/tabs/synonyms-tab.php:35 vendor/lib/tabs/synonyms-tab.php:33
+msgid ""
+"Add synonyms here to make the searches find better results. If you notice "
+"your users frequently misspelling a product name, or for other reasons use "
+"many names for one thing, adding synonyms will make the results better."
+msgstr ""
+
+#: lib/tabs/synonyms-tab.php:37 vendor/lib/tabs/synonyms-tab.php:35
+msgid ""
+"Do not go overboard, though, as too many synonyms can make the search "
+"confusing: users understand if a search query doesn't match everything, but "
+"they get confused if the searches match to unexpected things."
+msgstr ""
+
+#: lib/tabs/synonyms-tab.php:41 vendor/lib/tabs/synonyms-tab.php:39
+msgid ""
+"The format here is <code>key = value</code>. If you add <code>dog = hound</"
+"code> to the list of synonyms, searches for <code>dog</code> automatically "
+"become a search for <code>dog hound</code> and will thus match to posts that "
+"include either <code>dog</code> or <code>hound</code>. This only works in OR "
+"searches: in AND searches the synonyms only restrict the search, as now the "
+"search only finds posts that contain <strong>both</strong> <code>dog</code> "
+"and <code>hound</code>."
+msgstr ""
+
+#: lib/tabs/synonyms-tab.php:43 vendor/lib/tabs/synonyms-tab.php:41
+msgid ""
+"The synonyms are one direction only. If you want both directions, add the "
+"synonym again, reversed: <code>hound = dog</code>."
+msgstr ""
+
+#: lib/tabs/synonyms-tab.php:45 vendor/lib/tabs/synonyms-tab.php:43
+msgid ""
+"It's possible to use phrases for the value, but not for the key. <code>dog = "
+"\"great dane\"</code> works, but <code>\"great dane\" = dog</code> doesn't."
+msgstr ""
+
+#: lib/tabs/synonyms-tab.php:48 vendor/lib/tabs/synonyms-tab.php:46
+msgid ""
+"If you want to use synonyms in AND searches, enable synonym indexing on the "
+"Indexing tab."
+msgstr ""
+
+#: lib/utils.php:926 vendor/lib/excerpts-highlights.php:24
+msgid "There is no excerpt because this is a protected post."
+msgstr ""
+
+#: vendor/lib/interface.php:637
+#, php-format
+msgid "To reset the logs, type \"reset\" into the box here %1$s and click %2$s"
+msgstr ""
+
+#: vendor/lib/interface.php:838
+msgid "Related"
+msgstr ""
+
+#: vendor/lib/interface.php:839
+msgid "Import / Export options"
+msgstr ""
+
+#: vendor/lib/log.php:171
+msgid "Logged seaches"
+msgstr ""
+
+#: vendor/lib/tabs/excerpts-tab.php:374
+msgid "Highlighting problems with non-ASCII alphabet?"
+msgstr ""
+
+#: vendor/lib/tabs/excerpts-tab.php:390
+msgid ""
+"If you use non-ASCII characters (like Cyrillic alphabet) and the highlights "
+"don't work, unchecking this option may make the highlights work."
+msgstr ""
+
+#: vendor/lib/tabs/excerpts-tab.php:410
+msgid "Show the breakdown of search hits in the excerpts"
+msgstr ""
+
+#: vendor/lib/tabs/excerpts-tab.php:437
+msgid ""
+"Use %body%, %title%, %tags% and %comments% to display the number of hits (in "
+"different parts of the post), %total% for total hits, %score% to display the "
+"document weight and %terms% to show how many hits each search term got."
+msgstr ""
+
+#: vendor/lib/tabs/indexing-tab.php:211
+#, php-format
+msgid ""
+"%1$s includes all attachment types. If you want to index only some "
+"attachments, see %2$sControlling attachment types in the Knowledge base%3$s."
+msgstr ""

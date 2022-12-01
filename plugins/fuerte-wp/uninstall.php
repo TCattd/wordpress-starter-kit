@@ -29,7 +29,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
 
-if ( $_REQUEST['plugin'] != 'fuerte-wp/fuerte-wp.php' && $_REQUEST['action'] != 'delete-plugin' ) {
+if ( isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] != 'fuerte-wp/fuerte-wp.php' && $_REQUEST['action'] != 'delete-plugin' ) {
 	wp_die('Error uninstalling: wrong plugin.');
 }
 

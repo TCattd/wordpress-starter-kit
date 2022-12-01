@@ -166,24 +166,25 @@ if ( is_admin() ){
 	add_action( 'admin_init', 'wppb_register_settings' );
 
 	// display the same extra profile fields in the admin panel also
-	if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists ( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/extra-fields.php' ) ){
-		require_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/extra-fields.php' );
+	if ( file_exists ( WPPB_PLUGIN_DIR.'/front-end/default-fields/fields-functions.php' ) ){
+		require_once( WPPB_PLUGIN_DIR.'/front-end/default-fields/fields-functions.php' );
 
-		add_action( 'show_user_profile', 'display_profile_extra_fields_in_admin', 10 );
-		add_action( 'edit_user_profile', 'display_profile_extra_fields_in_admin', 10 );
+		add_action( 'show_user_profile', 'wppb_display_fields_in_admin', 10 );
+		add_action( 'edit_user_profile', 'wppb_display_fields_in_admin', 10 );
         global $pagenow;
         if( $pagenow != 'user-new.php' )
-            add_action( 'user_profile_update_errors', 'wppb_validate_backend_fields', 10, 3 );
-		add_action( 'personal_options_update', 'save_profile_extra_fields_in_admin', 10 );
-		add_action( 'edit_user_profile_update', 'save_profile_extra_fields_in_admin', 10 );
+            add_action( 'user_profile_update_errors', 'wppb_validate_fields_in_admin', 10, 3 );
+		add_action( 'personal_options_update', 'wppb_save_fields_in_admin', 10 );
+		add_action( 'edit_user_profile_update', 'wppb_save_fields_in_admin', 10 );
 	}
 
-	/* we need to include the fields here for conditional fields when they run through ajax, the extra-fields were already included above for backend forms */
-    $wppb_generalSettings = get_option( 'wppb_general_settings' );
-	if( wp_doing_ajax() && wppb_conditional_fields_exists() && isset( $wppb_generalSettings['conditional_fields_ajax'] ) && $wppb_generalSettings['conditional_fields_ajax'] === 'yes' ) {
-        if (file_exists(WPPB_PLUGIN_DIR . '/front-end/default-fields/default-fields.php'))
-            require_once(WPPB_PLUGIN_DIR . '/front-end/default-fields/default-fields.php');
-    }
+	// Since 3.8.1 fields are loaded in the back-end all the time: for conditional logic, simple uploads, display fields in admin functionalities
+	if (file_exists(WPPB_PLUGIN_DIR . '/front-end/default-fields/default-fields.php'))
+		require_once(WPPB_PLUGIN_DIR . '/front-end/default-fields/default-fields.php');
+
+	if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/front-end/extra-fields/extra-fields.php'))
+		require_once(WPPB_PAID_PLUGIN_DIR . '/front-end/extra-fields/extra-fields.php');
+
 
 }else if ( !is_admin() ){
 	// include the stylesheet
@@ -241,7 +242,8 @@ function wppb_mail( $to, $subject, $message, $message_from = null, $context = nu
 
 	if ( $send_email ) {
 		//we add this filter to enable html encoding
-		add_filter('wp_mail_content_type', 'wppb_html_content_type' );
+		if( apply_filters( 'wppb_mail_enable_html', true, $context, $to, $subject, $message ) )
+			add_filter('wp_mail_content_type', 'wppb_html_content_type' );
 
 		$atts = apply_filters( 'wppb_mail', compact( 'to', 'subject', 'message', 'headers' ), $context );
 
@@ -376,6 +378,7 @@ function wppb_print_cpt_script( $hook ){
         ( strpos( $hook, 'profile-builder_page_' ) === 0 ) ||
         ( $hook == 'edit.php' && ( isset( $_GET['post_type'] ) && $_GET['post_type'] === 'wppb-roles-editor' ) ) ||
 		( $hook == 'admin_page_profile-builder-pms-promo') ||
+		( $hook == 'toplevel_page_profile-builder-register') || //multisite register version page
 		( $hook == 'admin_page_profile-builder-private-website') ) {
 			wp_enqueue_style( 'wppb-back-end-style', WPPB_PLUGIN_URL . 'assets/css/style-back-end.css', false, PROFILE_BUILDER_VERSION );
 	}
@@ -482,12 +485,15 @@ function wppb_changeDefaultAvatar( $avatar, $id_or_email, $size, $default, $alt 
 		if( !empty( $customUserAvatar ) ){
 			if( is_numeric( $customUserAvatar ) ){
 				$img_attr = wp_get_attachment_image_src( $customUserAvatar, 'wppb-avatar-size-'.$size );
-				if( $img_attr[3] === false ){
-					$img_attr = wp_get_attachment_image_src( $customUserAvatar, 'thumbnail' );
-					$avatar = "<img alt='{$alt}' src='{$img_attr[0]}' class='avatar avatar-{$size} photo avatar-default' height='{$size}' width='{$size}' />";
+
+				if( is_array( $img_attr ) ){
+					if( $img_attr[3] === false ){
+						$img_attr = wp_get_attachment_image_src( $customUserAvatar, 'thumbnail' );
+						$avatar = "<img alt='{$alt}' src='{$img_attr[0]}' class='avatar avatar-{$size} photo avatar-default' height='{$size}' width='{$size}' />";
+					}
+					else
+						$avatar = "<img alt='{$alt}' src='{$img_attr[0]}' class='avatar avatar-{$size} photo avatar-default' height='{$img_attr[2]}' width='{$img_attr[1]}' />";
 				}
-				else
-					$avatar = "<img alt='{$alt}' src='{$img_attr[0]}' class='avatar avatar-{$size} photo avatar-default' height='{$img_attr[2]}' width='{$img_attr[1]}' />";
 			}
 			else {
 				$customUserAvatar = get_user_meta($my_user_id, 'resized_avatar_' . $avatar_field['id'], true);
@@ -847,9 +853,19 @@ function wppb_password_strength_check(){
                         jQuery('#pass-strength-result').html( pwsL10n.empty );
                         return;
                     }
-
+            <?php
+            global $wp_version;
+            if ( version_compare( $wp_version, "4.8", ">" ) ) {
+                ?>
                     strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass2 );
-
+                <?php
+            }
+            else {
+                ?>
+                    strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputBlacklist(), pass2);
+                <?php
+            }
+            ?>
                     switch ( strength ) {
                         case 2:
                             jQuery('#pass-strength-result').addClass('bad').html( pwsL10n.bad );
@@ -1691,11 +1707,11 @@ function wppb_gdpr_delete_user() {
             $user = new WP_User( absint( $_REQUEST['wppb_user'] ) );
 
             if (!empty($user->roles)) {
-                foreach ($user->roles as $role) {
-                    if ($role != 'administrator') {
-                        wp_delete_user( absint( $_REQUEST['wppb_user'] ) );
-                    }
-                }
+				if( !in_array( 'administrator', $user->roles ) ){
+					wp_delete_user( absint( $_REQUEST['wppb_user'] ) );
+
+					do_action( 'wppb_gdpr_user_deleted', absint( $_REQUEST['wppb_user'] ) );
+				}
             }
 
             $args = array('wppb_user', 'wppb_action', 'wppb_nonce');
@@ -1704,6 +1720,22 @@ function wppb_gdpr_delete_user() {
         }
     }
 }
+
+/**
+ * Function that removes user information from comments when the User Account is deleted using Edit Profile Form
+ */
+function wppb_gdpr_remove_user_info_from_comments( $user_id ) {
+    $user_comments = get_comments('user_id='.$user_id);
+    foreach ( $user_comments as $comment ) {
+        $comment_data = array();
+        $comment_data['comment_ID'] = $comment->comment_ID;
+        $comment_data['comment_author'] = '';
+        $comment_data['comment_author_email'] = '';
+        $comment_data['comment_author_url'] = '';
+        wp_update_comment( $comment_data );
+    }
+}
+add_action( 'wppb_gdpr_user_deleted', 'wppb_gdpr_remove_user_info_from_comments' );
 
 
 /**
@@ -1793,4 +1825,33 @@ function wppb_check_if_add_on_is_active( $slug ){
     }
 
     return false;
+}
+
+/**
+ * Function that checks if Two-Factor Authentication is active
+ */
+
+function wppb_is_2fa_active(){
+    $wppb_two_factor_authentication_settings = get_option( 'wppb_two_factor_authentication_settings', 'not_found' );
+    if( isset( $wppb_two_factor_authentication_settings['enabled'] ) && $wppb_two_factor_authentication_settings['enabled'] === 'yes' ) {
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * Function that returns an array containing the User Listing names
+ */
+
+function wppb_get_userlisting_names(){
+    $ul_names = array();
+    $userlisting_posts = get_posts( array( 'posts_per_page' => -1, 'post_status' =>'publish', 'post_type' => 'wppb-ul-cpt', 'orderby' => 'post_date', 'order' => 'ASC' ) );
+    if( !empty( $userlisting_posts ) ){
+        foreach ( $userlisting_posts as $post ){
+            $ul_names[ $post->post_name ] = $post->post_title;
+        }
+    }
+    reset($ul_names);
+    return $ul_names;
 }

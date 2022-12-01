@@ -22,7 +22,7 @@ class piotnetforms_Divider extends Base_Widget_Piotnetforms {
 	}
 
 	public function get_keywords() {
-		return [ 'text' ];
+		return [ 'divider' ];
 	}
 
 	public function register_controls() {
@@ -361,12 +361,12 @@ class piotnetforms_Divider extends Base_Widget_Piotnetforms {
 						</span>
 							<?php
 						} else {
-							;
-							?>
+							; ?>
 						<span class="piotnetforms-divider__inner-separator-item">
 							<?php echo $content; ?>
 						</span>
-						<?php } ?>
+						<?php
+						} ?>
 				</span>
 			<?php } else { ?>
 				<span class="piotnetforms-divider__inner-no-border">

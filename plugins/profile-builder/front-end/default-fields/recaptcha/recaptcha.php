@@ -167,12 +167,12 @@ function wppb_recaptcha_script_footer(){
                 /* dont submit form if PMS gateway is Stripe */
                 if( jQuery(".pms_pay_gate[type=radio]").length > 0 ){
                     jQuery(".pms_pay_gate").each( function(){
-                        if( jQuery(this).is(":checked") && ( jQuery(this).val() == "stripe_intents" || jQuery(this).val() == "stripe" ) )
+                        if( jQuery(this).is(":checked") && !jQuery(this).is(":disabled") && ( jQuery(this).val() == "stripe_intents" || jQuery(this).val() == "stripe" ) )
                             submitForm = false
                     })
                 } else if( jQuery(".pms_pay_gate[type=hidden]").length > 0 ) {
 
-                    if( jQuery(".pms_pay_gate[type=hidden]").val() == "stripe_intents" || jQuery(".pms_pay_gate[type=hidden]").val() == "stripe" )
+                    if( !jQuery(".pms_pay_gate[type=hidden]").is(":disabled") && ( jQuery(".pms_pay_gate[type=hidden]").val() == "stripe_intents" || jQuery(".pms_pay_gate[type=hidden]").val() == "stripe" ) )
                         submitForm = false
 
                 }

@@ -74,14 +74,7 @@ function wppb_content_restriction_meta_box_output( $post ) {
                     ?>
                     <label class="wppb-meta-box-checkbox-label" for="wppb-content-restrict-user-role-<?php echo esc_attr( $wppb_role ) ?>">
                         <input type="checkbox" value="<?php echo esc_attr( $wppb_role ); ?>" <?php if( in_array( $wppb_role, $wppb_selected_roles ) ) echo 'checked="checked"'; ?> name="wppb-content-restrict-user-role[]" id="wppb-content-restrict-user-role-<?php echo esc_attr( $wppb_role ) ?>">
-                        <?php
-                        if( ! empty( $wppb_role_details['name'] ) ) {
-                            echo esc_html( $wppb_role_details['name'] );
-                        }
-                        else {
-                            echo esc_html( $wppb_role );
-                        }
-                        ?>
+                        <?php echo !empty( $wppb_role_details['name'] ) ? esc_html( $wppb_role_details['name'] ) : esc_html( $wppb_role ); ?>
                     </label>
                 <?php } ?>
 
@@ -95,6 +88,43 @@ function wppb_content_restriction_meta_box_output( $post ) {
             <?php } ?>
         </div>
     </div>
+
+    <?php if( isset( $post->post_type ) && $post->post_type == 'product' ) : ?>
+        <div class="wppb-meta-box-fields-wrapper">
+            <h4><?php esc_html_e( 'Purchase Options', 'profile-builder' ); ?></h4>
+
+            <?php
+            $wppb_purchase_user_status    = get_post_meta( $post->ID, 'wppb-purchase-restrict-user-status', true );
+            $wppb_selected_purchase_roles = get_post_meta( $post->ID, 'wppb-purchase-restrict-user-role' );
+            ?>
+
+            <!-- Who Can Purchase? options -->
+            <div class="wppb-meta-box-field-wrapper">
+                <label class="wppb-meta-box-field-label"><?php esc_html_e( 'Who can purchase?', 'profile-builder' ); ?></label>
+
+                <label class="wppb-meta-box-checkbox-label" for="wppb-purchase-restrict-user-status">
+                    <input type="checkbox" value="loggedin" <?php if( ! empty( $wppb_purchase_user_status ) ) checked($wppb_purchase_user_status, 'loggedin' ); ?> name="wppb-purchase-restrict-user-status" id="wppb-purchase-restrict-user-status">
+                    <?php esc_html_e( 'Logged In Users', 'profile-builder' ); ?>
+                </label>
+
+                <?php if( !empty( $wppb_roles ) ): foreach( $wppb_roles as $wppb_role => $wppb_role_details ): ?>
+
+                    <label class="wppb-meta-box-checkbox-label" for="wppb-purchase-restrict-user-role-<?php echo esc_attr( $wppb_role ) ?>">
+                        <input type="checkbox" value="<?php echo esc_attr( $wppb_role ); ?>" <?php if( in_array( $wppb_role, $wppb_selected_purchase_roles ) ) echo 'checked="checked"'; ?> name="wppb-purchase-restrict-user-role[]" id="wppb-purchase-restrict-user-role-<?php echo esc_attr( $wppb_role ) ?>">
+                        <?php echo !empty( $wppb_role_details['name'] ) ? esc_html( $wppb_role_details['name'] ) : esc_html( $wppb_role ); ?>
+                    </label>
+
+                <?php endforeach; ?>
+
+                    <p class="description" style="margin-top: 10px;">
+                        <?php esc_html_e( 'Select who can purchase this product.', 'profile-builder' ); ?>
+                    </p>
+
+                <?php endif; ?>
+
+            </div>
+        </div>
+    <?php endif; ?>
 
     <div id="wppb-meta-box-fields-wrapper-restriction-redirect-url" class="wppb-meta-box-fields-wrapper <?php echo ( $wppb_content_restrict_type == 'redirect' ? 'wppb-content-restriction-enabled' : '' ); ?>">
         <h4><?php echo esc_html__( 'Restriction Redirect URL', 'profile-builder' ); ?></h4>
@@ -146,6 +176,13 @@ function wppb_content_restriction_meta_box_output( $post ) {
 
             <p><strong><?php esc_html_e( 'Messages for logged-in users', 'profile-builder' ); ?></strong></p>
             <?php wp_editor( get_post_meta( $post->ID, 'wppb-content-restrict-message-logged_in', true ), 'wppb-content-restrict-message-logged_in', array( 'textarea_name' => 'wppb-content-restrict-message-logged_in', 'editor_height' => 200 ) ); ?>
+
+            <?php if( isset( $post->post_type ) && $post->post_type == 'product' ) : ?>
+                
+                <p><strong><?php esc_html_e( 'Messages for restricted product purchase', 'profile-builder' ); ?></strong></p>
+                <?php wp_editor( wp_kses_post( get_post_meta( $post->ID, 'wppb-content-restrict-message-purchasing_restricted', true ) ), 'wppb-content-restrict-message-purchasing_restricted', array( 'textarea_name' => 'wppb-content-restrict-message-purchasing_restricted', 'editor_height' => 200 ) ); ?>
+
+            <?php endif; ?>
         </div>
     </div>
 
@@ -204,6 +241,25 @@ function wppb_content_restriction_save_data( $post_id ) {
 
     update_post_meta( $post_id, 'wppb-content-restrict-message-logged_out', ( ! empty( $_POST['wppb-content-restrict-message-logged_out'] ) ? wp_kses_post( $_POST['wppb-content-restrict-message-logged_out'] ) : '' ) );
     update_post_meta( $post_id, 'wppb-content-restrict-message-logged_in', ( ! empty( $_POST['wppb-content-restrict-message-logged_in'] ) ? wp_kses_post( $_POST['wppb-content-restrict-message-logged_in'] ) : '' ) );
+
+    // Handle WooCommerce purchase settings
+    delete_post_meta( $post_id, 'wppb-purchase-restrict-user-role' );
+    if( isset( $_POST['wppb-purchase-restrict-user-role'] ) && is_array( $_POST['wppb-purchase-restrict-user-role'] ) ) {
+        $restrict_roles = array_map( 'sanitize_text_field', $_POST['wppb-purchase-restrict-user-role'] );
+        foreach ( $restrict_roles as $role ) {
+            if( !empty( $role ) )
+                add_post_meta($post_id, 'wppb-purchase-restrict-user-role', sanitize_text_field( $role ) );
+        }
+
+    }
+
+    if( isset( $_POST['wppb-purchase-restrict-user-status'] ) && $_POST['wppb-purchase-restrict-user-status'] === 'loggedin' )
+        update_post_meta( $post_id, 'wppb-purchase-restrict-user-status', 'loggedin' );
+    else
+        delete_post_meta( $post_id, 'wppb-purchase-restrict-user-status' );
+
+    // save custom "product purchase restricted" message
+    update_post_meta( $post_id, 'wppb-content-restrict-message-purchasing_restricted', ( ! empty( $_POST['wppb-content-restrict-message-purchasing_restricted'] ) ? wp_kses_post($_POST['wppb-content-restrict-message-purchasing_restricted']) : '' ) );
 
 }
 add_action( 'save_post', 'wppb_content_restriction_save_data' );

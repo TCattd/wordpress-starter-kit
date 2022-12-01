@@ -40,7 +40,7 @@ if ( ! class_exists( 'TranslationProxy_Basket' ) ) {
 
 		public static function get_basket( $force = false ) {
 			if ( ! isset( self::$basket ) || $force ) {
-				self::$basket = get_option( self::ICL_TRANSLATION_JOBS_BASKET );
+				self::$basket = get_option( self::ICL_TRANSLATION_JOBS_BASKET, [] );
 			}
 
 			return self::$basket;
@@ -55,7 +55,7 @@ if ( ! class_exists( 'TranslationProxy_Basket' ) ) {
 				}
 			}
 			if ( self::get_basket_items_count( true ) == 0 ) {
-				self::$basket = false;
+				self::$basket = [];
 			}
 			self::sync_target_languages();
 			self::update_basket_option( self::$basket );
@@ -567,7 +567,7 @@ if ( ! class_exists( 'TranslationProxy_Basket' ) ) {
 
 		// TODO: [WPML 3.3] implement this in the troubleshooting page
 		public static function delete_all_items_from_basket() {
-			self::$basket = false;
+			self::$basket = [];
 			delete_option( self::ICL_TRANSLATION_JOBS_BASKET );
 			self::update_basket();
 		}

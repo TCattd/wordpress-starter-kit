@@ -93,10 +93,7 @@ if ( ! class_exists( 'acf_field_textarea' ) ) :
 		*  @since   3.6
 		*  @date    23/01/13
 		*/
-
 		function render_field_settings( $field ) {
-
-			// default_value
 			acf_render_field_setting(
 				$field,
 				array(
@@ -106,19 +103,17 @@ if ( ! class_exists( 'acf_field_textarea' ) ) :
 					'name'         => 'default_value',
 				)
 			);
+		}
 
-			// placeholder
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Placeholder Text', 'acf' ),
-					'instructions' => __( 'Appears within the input', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'placeholder',
-				)
-			);
-
-			// maxlength
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
 			acf_render_field_setting(
 				$field,
 				array(
@@ -128,8 +123,18 @@ if ( ! class_exists( 'acf_field_textarea' ) ) :
 					'name'         => 'maxlength',
 				)
 			);
+		}
 
-			// rows
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+
 			acf_render_field_setting(
 				$field,
 				array(
@@ -141,7 +146,16 @@ if ( ! class_exists( 'acf_field_textarea' ) ) :
 				)
 			);
 
-			// formatting
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Placeholder Text', 'acf' ),
+					'instructions' => __( 'Appears within the input', 'acf' ),
+					'type'         => 'text',
+					'name'         => 'placeholder',
+				)
+			);
+
 			acf_render_field_setting(
 				$field,
 				array(
@@ -156,9 +170,7 @@ if ( ! class_exists( 'acf_field_textarea' ) ) :
 					),
 				)
 			);
-
 		}
-
 
 		/*
 		*  format_value()
@@ -223,6 +235,22 @@ if ( ! class_exists( 'acf_field_textarea' ) ) :
 
 			// Return.
 			return $valid;
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		function get_rest_schema( array $field ) {
+			$schema = parent::get_rest_schema( $field );
+
+			if ( ! empty( $field['maxlength'] ) ) {
+				$schema['maxLength'] = (int) $field['maxlength'];
+			}
+
+			return $schema;
 		}
 	}
 

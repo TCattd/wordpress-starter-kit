@@ -427,7 +427,7 @@ function wppb_signup_user_notification( $user, $user_email, $activation_key, $me
         else
             $post_content = '';
 
-		$registration_page_url = ( ( strpos( $post_content, '[wppb-register' ) !== false ) ? add_query_arg( array( 'activation_key' => $activation_key ), $permalink ) : add_query_arg( array( 'activation_key' => $activation_key ), get_bloginfo( 'url' ) ) );
+		$registration_page_url = ( ( ( strpos( $post_content, '[wppb-register' ) !== false ) || ( strpos( $post_content, '<!-- wp:wppb/register' ) !== false ) ) ? add_query_arg( array( 'activation_key' => $activation_key ), $permalink ) : add_query_arg( array( 'activation_key' => $activation_key ), get_bloginfo( 'url' ) ) );
 	}
 
     $wppb_generalSettings = get_option( 'wppb_general_settings' );

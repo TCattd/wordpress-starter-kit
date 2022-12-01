@@ -3,7 +3,7 @@
  * Plugin Name: Piotnetforms
  * Description: Piotnet Forms - Highly Customizable WordPress Form Builder
  * Plugin URI:  https://piotnetforms.com/
- * Version:     1.0.23
+ * Version:     1.0.25
  * Author:      Piotnet
  * Author URI:  https://piotnet.com/
  * Text Domain: piotnetforms
@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 require_once __DIR__ . '/inc/variables.php';
 
-define( 'PIOTNETFORMS_VERSION', '1.0.23' );
+define( 'PIOTNETFORMS_VERSION', '1.0.25' );
 
 class Piotnetforms extends Piotnetforms_Variables {
 
@@ -80,18 +80,19 @@ class Piotnetforms extends Piotnetforms_Variables {
             $upload_dir = $upload['basedir'];
             $upload_dir = $upload_dir . '/piotnetforms';
             if ( ! is_dir( $upload_dir ) ) {
-                mkdir( $upload_dir, 0755 );
-                mkdir( $upload_dir . '/css', 0755 );
-                mkdir( $upload_dir . '/files', 0755 );
+                mkdir( $upload_dir, 0775 );
             } else {
-                if ( ! is_dir( $upload_dir . '/files') ) {
-                    mkdir( $upload_dir . '/files', 0755 );
-                }
-                if ( @chmod( $upload_dir, 0700 ) ) {
-                    @chmod( $upload_dir, 0755 );
-                    @chmod( $upload_dir . '/css', 0755 );
-                    @chmod( $upload_dir . '/files', 0755 );
-                }
+                @chmod( $upload_dir, 0775 );
+            }
+            if ( ! is_dir( $upload_dir . '/css' ) ) {
+                mkdir( $upload_dir . '/css', 0775 );
+            } else {
+                @chmod( $upload_dir . '/css', 0775 );
+            }
+            if ( ! is_dir( $upload_dir . '/files' ) ) {
+                mkdir( $upload_dir . '/files', 0775 );
+            } else {
+                @chmod( $upload_dir . '/files', 0775 );
             }
 
             // Disable Directory Browsing

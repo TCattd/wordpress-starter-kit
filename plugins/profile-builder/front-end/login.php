@@ -270,8 +270,8 @@ function wppb_resend_confirmation_email() {
 
         include_once(plugin_dir_path(__FILE__) . '../features/email-confirmation/email-confirmation.php');
 
-        if ( !class_exists('PB_Mustache_Generate_Template') && defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
-            include_once( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+        if ( file_exists( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+            include_once( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
 
         global $wpdb;
         $sql_result = $wpdb->get_row( $wpdb->prepare("SELECT * FROM " . $wpdb->base_prefix . "signups WHERE user_email = %s", sanitize_email( $_GET['email'] )), ARRAY_A );
@@ -502,7 +502,7 @@ function wppb_front_end_login( $atts ){
 	global $wppb_login_shortcode;
 	$wppb_login_shortcode = true;
 
-    extract( shortcode_atts( array( 'display' => true, 'redirect' => '', 'redirect_url' => '', 'logout_redirect_url' => wppb_curpageurl(), 'register_url' => '', 'lostpassword_url' => '', 'redirect_priority' => 'normal', 'show_2fa_field' => '' ), $atts ) );
+    extract( shortcode_atts( array( 'display' => true, 'redirect' => '', 'redirect_url' => '', 'logout_redirect_url' => wppb_curpageurl(), 'register_url' => '', 'lostpassword_url' => '', 'redirect_priority' => 'normal', 'show_2fa_field' => '', 'block' => false ), $atts ) );
 
 	$wppb_generalSettings = get_option('wppb_general_settings');
 
@@ -512,7 +512,7 @@ function wppb_front_end_login( $atts ){
         $is_elementor_edit_mode = \Elementor\Plugin::$instance->editor->is_edit_mode();
     }
 
-	if( !is_user_logged_in() || $is_elementor_edit_mode ){
+	if( !is_user_logged_in() || $is_elementor_edit_mode || $block === 'true' ){
 		// set up the form arguments
 		$form_args = array( 'echo' => false, 'id_submit' => 'wppb-submit' );
 
@@ -579,6 +579,10 @@ function wppb_front_end_login( $atts ){
 		}
 		// build our form
 		$login_form .= '<div id="wppb-login-wrap" class="wppb-user-forms">';
+
+        if ( empty( $lostpassword_url ) )
+            $lostpassword_url = ( !empty( $wppb_generalSettings['lost_password_page'] ) ) ? $wppb_generalSettings['lost_password_page'] : '';
+
         $form_args['lostpassword_url'] = $lostpassword_url;
 		$login_form .= wppb_login_form( apply_filters( 'wppb_login_form_args', $form_args ) );
 

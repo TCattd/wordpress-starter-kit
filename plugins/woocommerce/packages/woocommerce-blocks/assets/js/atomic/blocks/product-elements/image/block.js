@@ -2,7 +2,7 @@
  * External dependencies
  */
 import PropTypes from 'prop-types';
-import { useState, Fragment } from '@wordpress/element';
+import { Fragment } from '@wordpress/element';
 import { __, sprintf } from '@wordpress/i18n';
 import classnames from 'classnames';
 import { PLACEHOLDER_IMG_SRC } from '@woocommerce/settings';
@@ -10,37 +10,49 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import {
+	useBorderProps,
+	useSpacingProps,
+	useTypographyProps,
+} from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { useStoreEvents } from '@woocommerce/base-context/hooks';
 
 /**
  * Internal dependencies
  */
-import ProductSaleBadge from './../sale-badge/block';
+import ProductSaleBadge from '../sale-badge/block';
 import './style.scss';
 
 /**
  * Product Image Block Component.
  *
- * @param {Object} props                  Incoming props.
- * @param {string} [props.className]      CSS Class name for the component.
- * @param {string} [props.imageSizing]    Size of image to use.
- * @param {boolean} [props.showProductLink]   Whether or not to display a link to the product page.
- * @param {boolean} [props.showSaleBadge] Whether or not to display the on sale badge.
- * @param {string} [props.saleBadgeAlign] How should the sale badge be aligned if displayed.
+ * @param {Object}            props                           Incoming props.
+ * @param {string}            [props.className]               CSS Class name for the component.
+ * @param {string|undefined}  [props.imageSizing]             Size of image to use.
+ * @param {boolean|undefined} [props.showProductLink]         Whether or not to display a link to the product page.
+ * @param {boolean}           [props.showSaleBadge]           Whether or not to display the on sale badge.
+ * @param {string|undefined}  [props.saleBadgeAlign]          How should the sale badge be aligned if displayed.
+ * @param {boolean}           [props.isDescendentOfQueryLoop] Whether or not be a children of Query Loop Block.
  * @return {*} The component.
  */
-export const Block = ( {
-	className,
-	imageSizing = 'full-size',
-	showProductLink = true,
-	showSaleBadge,
-	saleBadgeAlign = 'right',
-} ) => {
+export const Block = ( props ) => {
+	const {
+		className,
+		imageSizing = 'full-size',
+		showProductLink = true,
+		showSaleBadge,
+		saleBadgeAlign = 'right',
+	} = props;
+
 	const { parentClassName } = useInnerBlockLayoutContext();
-	const { product } = useProductDataContext();
-	const [ imageLoaded, setImageLoaded ] = useState( false );
+	const { product, isLoading } = useProductDataContext();
+
 	const { dispatchStoreEvent } = useStoreEvents();
+
+	const typographyProps = useTypographyProps( props );
+	const borderProps = useBorderProps( props );
+	const spacingProps = useSpacingProps( props );
 
 	if ( ! product.id ) {
 		return (
@@ -48,11 +60,17 @@ export const Block = ( {
 				className={ classnames(
 					className,
 					'wc-block-components-product-image',
-					'wc-block-components-product-image--placeholder',
 					{
-						[ `${ parentClassName }__product-image` ]: parentClassName,
-					}
+						[ `${ parentClassName }__product-image` ]:
+							parentClassName,
+					},
+					borderProps.className
 				) }
+				style={ {
+					...typographyProps.style,
+					...borderProps.style,
+					...spacingProps.style,
+				} }
 			>
 				<ImagePlaceholder />
 			</div>
@@ -68,7 +86,6 @@ export const Block = ( {
 	);
 	const anchorProps = {
 		href: product.permalink,
-		rel: 'nofollow',
 		...( ! hasProductImages && { 'aria-label': anchorLabel } ),
 		onClick: () => {
 			dispatchStoreEvent( 'product-view-link', {
@@ -84,8 +101,14 @@ export const Block = ( {
 				'wc-block-components-product-image',
 				{
 					[ `${ parentClassName }__product-image` ]: parentClassName,
-				}
+				},
+				borderProps.className
 			) }
+			style={ {
+				...typographyProps.style,
+				...borderProps.style,
+				...spacingProps.style,
+			} }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>
 				{ !! showSaleBadge && (
@@ -97,8 +120,7 @@ export const Block = ( {
 				<Image
 					fallbackAlt={ product.name }
 					image={ image }
-					onLoad={ () => setImageLoaded( true ) }
-					loaded={ imageLoaded }
+					loaded={ ! isLoading }
 					showFullSize={ imageSizing !== 'cropped' }
 				/>
 			</ParentComponent>
@@ -112,11 +134,10 @@ const ImagePlaceholder = () => {
 	);
 };
 
-const Image = ( { image, onLoad, loaded, showFullSize, fallbackAlt } ) => {
+const Image = ( { image, loaded, showFullSize, fallbackAlt } ) => {
 	const { thumbnail, src, srcset, sizes, alt } = image || {};
 	const imageProps = {
 		alt: alt || fallbackAlt,
-		onLoad,
 		hidden: ! loaded,
 		src: thumbnail,
 		...( showFullSize && { src, srcSet: srcset, sizes } ),
@@ -128,7 +149,7 @@ const Image = ( { image, onLoad, loaded, showFullSize, fallbackAlt } ) => {
 				/* eslint-disable-next-line jsx-a11y/alt-text */
 				<img data-testid="product-image" { ...imageProps } />
 			) }
-			{ ! loaded && <ImagePlaceholder /> }
+			{ ! image && <ImagePlaceholder /> }
 		</>
 	);
 };

@@ -40,6 +40,8 @@ class PB_Elementor_Login_Widget extends PB_Elementor_Widget {
 	 */
 	protected function register_controls() {
 
+        $page_titles = $this->get_all_pages();
+
         $this->start_controls_section(
             'pb_login_links',
             array(
@@ -52,8 +54,9 @@ class PB_Elementor_Login_Widget extends PB_Elementor_Widget {
             'pb_register_url',
             array(
                 'label'       => __( 'Registration', 'profile-builder' ),
-                'type'        => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __( 'Enter URL', 'profile-builder' ),
+                'type'        => \Elementor\Controls_Manager::SELECT,
+                'options'     => $page_titles,
+                'default'     => '',
             )
         );
 
@@ -61,8 +64,9 @@ class PB_Elementor_Login_Widget extends PB_Elementor_Widget {
             'pb_lostpassword_url',
             array(
                 'label'       => __( 'Recover Password', 'profile-builder' ),
-                'type'        => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __( 'Enter URL', 'profile-builder' ),
+                'type'        => \Elementor\Controls_Manager::SELECT,
+                'options'     => $page_titles,
+                'default'     => '',
             )
         );
 
@@ -94,8 +98,9 @@ class PB_Elementor_Login_Widget extends PB_Elementor_Widget {
             'pb_after_login_redirect_url',
             array(
                 'label'       => __( 'After Login', 'profile-builder' ),
-                'type'        => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __( 'Enter URL', 'profile-builder' ),
+                'type'        => \Elementor\Controls_Manager::SELECT,
+                'options'     => $page_titles,
+                'default'     => '',
             )
         );
 
@@ -103,8 +108,9 @@ class PB_Elementor_Login_Widget extends PB_Elementor_Widget {
             'pb_after_logout_redirect_url',
             array(
                 'label'       => __( 'After Logout', 'profile-builder' ),
-                'type'        => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __( 'Enter URL', 'profile-builder' ),
+                'type'        => \Elementor\Controls_Manager::SELECT,
+                'options'     => $page_titles,
+                'default'     => '',
             )
         );
 

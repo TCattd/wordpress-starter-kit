@@ -1,0 +1,71 @@
+#llar-admin-dashboard-widgets {
+
+  .widget-title {
+    //font-weight: bold;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e4e4e4;
+    font-size: 14px;
+    text-align: left;
+  }
+  .widget-content {
+    overflow: hidden;
+  }
+
+  .llar-widget {
+    margin-bottom: 20px;
+    background-color: #fff;
+    text-align: center;
+
+    .chart {
+      //margin-bottom: 10px;
+      max-width: 300px;
+      //display: inline-block;
+      position: relative;
+      margin-bottom: 15px;
+      margin-left: auto;
+      margin-right: auto;
+
+      .llar-retries-count {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 28px;
+        font-weight: bold;
+      }
+    }
+
+    .title {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .desc {
+      font-size: 15px;
+    }
+
+    .actions {
+      margin-top: 5px;
+    }
+
+    &.widget-2 {
+
+      .llar-chart-wrap {
+        width: 100%;
+        margin: 0 auto;
+        clear: both;
+
+        canvas {
+          height: 300px;
+        }
+      }
+
+      .chart-stats-legend {
+        text-align: center;
+        margin-top: 10px;
+      }
+    }
+  }
+}

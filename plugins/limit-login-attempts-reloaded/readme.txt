@@ -3,22 +3,22 @@ Contributors: wpchefgadget
 Donate link: https://www.paypal.com/donate?hosted_button_id=FKD4MYFCMNVQQ
 Tags: brute force, login, security, firewall, protection
 Requires at least: 3.0
-Tested up to: 5.8
-Stable tag: 2.23.2
+Tested up to: 6.1
+Stable tag: 2.25.9
 
-Reloaded version of the original Limit Login Attempts plugin for Login Protection by a team of WordPress developers. GDPR compliant.
+Block excessive login attempts and protect your site against brute force attacks. Simple, yet powerful tools to improve site performance.
 
 == Description ==
 
-Limit Login Attempts Reloaded stops brute-force attacks and optimizes your site performance by limiting the number of login attempts that are possible through the normal login as well as XMLRPC, Woocommerce and custom login pages.
+Limit Login Attempts Reloaded stops brute force attacks and optimizes your site performance by limiting the number of login attempts that are possible through the normal login as well as XMLRPC, Woocommerce and custom login pages. This is the only plugin you'll need for your login security needs with over 2 million downloads worldwide.
 
-This plugin will block an Internet address (IP) and/or username from making further attempts after a specified limit on retries has been reached, making a brute-force attack difficult or impossible.
+This plugin will block an Internet address (IP) and/or username from making further attempts after a specified limit on retries has been reached, making a brute force attack difficult or impossible.
 
-WordPress by default allows unlimited login attempts. This can lead to passwords being easily cracked via brute-force.
+WordPress by default allows unlimited login attempts. This can lead to passwords being easily cracked via brute force.
 
 Limit Login Attempts Reloaded 
 > <strong>Limit Login Attempts Reloaded Premium Cloud App</strong><br>
-> Enables cloud protection for Limit Login Attempts Reloaded plugin. It comes with all the great features you'll need to stop hackers and bots from brute-force attacks. The cloud app <a href="https://www.limitloginattempts.com/features/?from=wp-details">offers several features</a> including advanced protection out of the box, and the ability for site admins and agencies to sync safelists/blocklists across multiple domains. <a href="https://www.limitloginattempts.com/features/?from=wp-details-cta">Click here to activate the cloud app for the best WordPress security plugin now!</a>
+> Enables cloud protection for Limit Login Attempts Reloaded plugin and enhances your login security. It comes with all the great features you'll need to stop hackers and bots from brute force attacks. The cloud app <a href="https://www.limitloginattempts.com/features/?from=wp-details">offers several features</a> including advanced protection out of the box, and the ability for site admins and agencies to sync safelists/blocklists across multiple domains. <a href="https://www.limitloginattempts.com/features/?from=wp-details-cta">Click here to activate the cloud app for the best WordPress security plugin now!</a>
 
 https://www.youtube.com/watch?v=wzmPXu55zLU
 
@@ -38,7 +38,7 @@ https://www.youtube.com/watch?v=wzmPXu55zLU
 * **Custom IP origins** support (Cloudflare, Sucuri, etc.)
 
 = Features (Premium Cloud App): =
-* **Performance Optimizer** - Brute-force attacks absorbed in the cloud (Up to 100k requests monthly). 
+* **Performance Optimizer** - Brute force attacks absorbed in the cloud (Up to 100k requests monthly).
 * **Throttling** - Longer lockout intervals each time a hacker/bot tries to login unsuccessfully.
 * **Auto Backups of All Data**
 * **Intelligent IP Blocking/Unblocking** - Make sure the legitimate IP’s are allowed automatically.
@@ -97,6 +97,52 @@ By default, you will need to copy and paste the lists to each site manually. For
 Please follow this link: <a href="https://www.limitloginattempts.com/resources/">https://www.limitloginattempts.com/resources/</a>
 
 == Changelog ==
+
+= 2.25.9 =
+* Welcome page replaced with a modal.
+
+= 2.25.8 =
+* Email text, links updated.
+
+= 2.25.7 =
+* Country flags added to log.
+* Refresh button added to log.
+* Email text updated.
+
+= 2.25.6 =
+* Email links updated.
+
+= 2.25.5 =
+* Fixed Woocommerce integration.
+* Updated some interface links.
+
+= 2.25.4 =
+* Fixed session error in rare cases.
+* Access rules explained.
+* Improved session behavior on the login page.
+* Fixed warning on some GoDaddy installations.
+
+= 2.25.3 =
+* Improved compatibility with WordFence.
+* Better handling of HTTP_X_FORWARDED_FOR on Debug tab.
+* Added option to hide warning badge.
+
+= 2.25.2 =
+* Security indicator fixed for multisite.
+
+= 2.25.1 =
+* Added setting to turn the dashboard widged off.
+* The widget is visible to admins only.
+
+= 2.25.0 =
+* Dashboard widged added.
+* Security indicator added.
+
+= 2.24.1 =
+* Fixed E_ERROR occurring in rare cases when the log table is corrupted.
+
+= 2.24.0 =
+* Protection increased: bots can't parse lockout messages anymore.
 
 = 2.23.2 =
 * Cloud: better unlock UX.

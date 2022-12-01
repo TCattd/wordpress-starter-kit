@@ -35,10 +35,15 @@ class WPML_ACF_Translatable_Groups_Checker {
 	public function report_untranslated_groups() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<h2><?php esc_html_e( 'Some field groups are not translated.', 'acfml' ); ?></h2>
-			<p><?php esc_html_e( 'Field Groups are translatable, this will let you translate the ACF interface. If that\'s not a requirement for your website, consider setting the fields group to not Translatable. However some groups do not have a translation yet. This may create inconsistencies.', 'acfml' ); ?>
-				<?php esc_html_e( 'Read more about it on this ', 'acfml' ); ?>
-				<a href="https://wpml.org/documentation/related-projects/translate-sites-built-with-acf/#translating-field-groups"><?php esc_html_e( 'documentation article', 'acfml' ); ?></a>
+			<h2><?php esc_html__( 'Warning: Setting field groups to be translatable is not recommended and may cause issues.', 'acfml' ); ?></h2>
+			<p>
+				<?php
+				echo sprintf(
+					esc_html__( 'Need to translate field labels or labels for choices? Please %1$ssee our documentation%2$s for more information. ', 'acfml' ), // phpcs:ignore
+					'<a href="https://wpml.org/documentation/related-projects/translate-sites-built-with-acf/translating-acf-field-labels-and-labels-for-choices-with-wpml/" target="_blank">',
+					'</a>'
+				);
+				?>
 			</p>
 			<ul>
 				<?php foreach ( $this->untranslated_groups as $group ) { ?>
@@ -64,7 +69,7 @@ class WPML_ACF_Translatable_Groups_Checker {
 	 * @return void
 	 */
 	public function on_save_settings() {
-		/* phpcs:disable WordPress.Security.NonceVerification.Missing */
+		/* phpcs:disable WordPress.Security.NonceVerification.Missing,WordPress.CSRF.NonceVerification.NoNonceVerification,WordPress.VIP.SuperGlobalInputUsage.AccessDetected */
 		if ( \WPML\FP\Relation::propEq( 'icl_ajx_action', 'icl_custom_posts_sync_options', $_POST ) ) {
 			delete_transient( self::TRANSIENT_KEY );
 		}
@@ -81,9 +86,11 @@ class WPML_ACF_Translatable_Groups_Checker {
 	 * @return array
 	 */
 	private function get_untranslated_field_groups() {
+		/* phpcs:ignore WordPress.VIP.RestrictedFunctions.get_posts_get_posts */
 		$groups = get_posts(
 			[
 				'post_type'      => self::POST_TYPE,
+				/* phpcs:ignore WordPress.VIP.PostsPerPage.posts_per_page_posts_per_page */
 				'posts_per_page' => -1,
 				'post_status'    => 'any',
 			]

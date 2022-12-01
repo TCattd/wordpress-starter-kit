@@ -61,35 +61,6 @@ class WPML_TM_ATE_Jobs {
 	}
 
 	/**
-	 * We update the status from ATE only for non-completed ATE statuses
-	 * in all other cases, we mark the job as completed when we receive it
-	 * from ATE in `WPML_TM_ATE_Jobs::apply` which calls `wpml_tm_save_data`.
-	 *
-	 * @param int $wpml_job_id
-	 * @param int $ate_status
-	 */
-	public function set_wpml_status_from_ate( $wpml_job_id, $ate_status ) {
-		$ate_status = (int) $ate_status;
-
-		switch ( $ate_status ) {
-			case WPML_TM_ATE_AMS_Endpoints::ATE_JOB_STATUS_CREATED:
-				$wpml_status = ICL_TM_WAITING_FOR_TRANSLATOR;
-				break;
-
-			case WPML_TM_ATE_AMS_Endpoints::ATE_JOB_STATUS_TRANSLATING:
-				$wpml_status = ICL_TM_IN_PROGRESS;
-				break;
-
-			default:
-				$wpml_status = null;
-		}
-
-		if ( $wpml_status ) {
-			WPML_TM_Update_Translation_Status::by_job_id( $wpml_job_id, (int) $wpml_status );
-		}
-	}
-
-	/**
 	 * @todo: Check possible duplicated code / We already have functionality to import XLIFF files from Translator's queue
 	 *
 	 * @param string $xliff

@@ -32,7 +32,10 @@
 
                 <?php settings_fields( 'wppb_mci_settings' ); ?>
 
-                <h2><?php esc_html_e( 'MailChimp Integration', 'profile-builder' ); ?></h2>
+                <h2>
+                    <?php esc_html_e( 'MailChimp Integration', 'profile-builder' ); ?>
+                    <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/mailchimp/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+                </h2>
 
                 <?php echo wppb_in_mci_get_mailchimp_api_key_content( $wppb_mci_settings ); //phpcs:ignore ?>
 

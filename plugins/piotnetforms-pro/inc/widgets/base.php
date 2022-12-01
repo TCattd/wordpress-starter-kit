@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 require_once __DIR__ . '/../class/piotnet-base.php';
 
@@ -48,52 +50,71 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		$this->structure[] = &$tab;
 	}
 
-    public function acf_get_field_key( $field_name, $post_id ) {
-        global $wpdb;
-        $acf_fields = $wpdb->get_results( $wpdb->prepare( "SELECT ID,post_parent,post_name FROM $wpdb->posts WHERE post_excerpt=%s AND post_type=%s" , $field_name , 'acf-field' ) );
-        // get all fields with that name.
-        switch ( count( $acf_fields ) ) {
-            case 0: // no such field
-                return false;
-            case 1: // just one result.
-                return $acf_fields[0]->post_name;
-        }
-        // result is ambiguous
-        // get IDs of all field groups for this post
-        $field_groups_ids = array();
-        $field_groups = acf_get_field_groups( array(
-            'post_id' => $post_id,
-        ) );
-        foreach ( $field_groups as $field_group )
-            $field_groups_ids[] = $field_group['ID'];
+	public function acf_get_field_key( $field_name, $post_id ) {
+		global $wpdb;
+		$acf_fields = $wpdb->get_results( $wpdb->prepare( "SELECT ID,post_parent,post_name FROM $wpdb->posts WHERE post_excerpt=%s AND post_type=%s", $field_name, 'acf-field' ) );
+		// get all fields with that name.
+		switch ( count( $acf_fields ) ) {
+			case 0: // no such field
+				return false;
+			case 1: // just one result.
+				return $acf_fields[0]->post_name;
+		}
+		// result is ambiguous
+		// get IDs of all field groups for this post
+		$field_groups_ids = [];
+		$field_groups = acf_get_field_groups( [
+			'post_id' => $post_id,
+		] );
+		foreach ( $field_groups as $field_group ) {
+			$field_groups_ids[] = $field_group['ID'];
+		}
 
-        // Check if field is part of one of the field groups
-        // Return the first one.
-        foreach ( $acf_fields as $acf_field ) {
-            $acf_field_id = acf_get_field($acf_field->post_parent);
-            if ( in_array($acf_field_id['parent'],$field_groups_ids) ) {
-                return $acf_field->post_name;
-            }
-        }
-        return false;
-    }
+		// Check if field is part of one of the field groups
+		// Return the first one.
+		foreach ( $acf_fields as $acf_field ) {
+			$acf_field_id = acf_get_field( $acf_field->post_parent );
+			if ( in_array( $acf_field_id['parent'], $field_groups_ids ) ) {
+				return $acf_field->post_name;
+			}
+		}
+		return false;
+	}
 
-    public function jetengine_repeater_get_field_object( $field_name, $meta_field_id ) {
-        $meta_objects = get_option('jet_engine_meta_boxes');
-        foreach ( $meta_objects as $meta_object ) {
-            $meta_fields = $meta_object['meta_fields'];
-            foreach ( $meta_fields as $meta_field ) {
-                if ( ($meta_field['name'] == $meta_field_id) && ($meta_field['type'] == 'repeater') ) {
-                    $meta_repeater_fields = $meta_field['repeater-fields'];
-                    foreach ( $meta_repeater_fields as $meta_repeater_field ) {
-                        if ( $meta_repeater_field['name'] == $field_name ) {
-                            return $meta_repeater_field;
-                        }
-                    }
-                }
-            }
-        }
-    }
+	public function jetengine_repeater_get_field_object( $field_name, $meta_field_id ) {
+		$meta_objects = get_option( 'jet_engine_meta_boxes' );
+		foreach ( $meta_objects as $meta_object ) {
+			$meta_fields = $meta_object['meta_fields'];
+			foreach ( $meta_fields as $meta_field ) {
+				if ( ( $meta_field['name'] == $meta_field_id ) && ( $meta_field['type'] == 'repeater' ) ) {
+					$meta_repeater_fields = $meta_field['repeater-fields'];
+					foreach ( $meta_repeater_fields as $meta_repeater_field ) {
+						if ( $meta_repeater_field['name'] == $field_name ) {
+							return $meta_repeater_field;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public function metabox_group_get_field_object( $field_name, $meta_objects ) {
+		foreach ( $meta_objects as $meta_object ) {
+			$meta_fields = $meta_object['fields'];
+			foreach ( $meta_fields as $meta_field ) {
+				if ( ( $meta_field['type'] == 'group' ) && ( $meta_field['clone'] ) ) {
+					$meta_repeater_fields = $meta_field['fields'];
+					foreach ( $meta_repeater_fields as $meta_repeater_field ) {
+						if ( $meta_repeater_field['id'] == $field_name ) {
+							return $meta_repeater_field;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	protected function start_section( string $name, string $label, $args = [] ) {
 		if ( in_array( $name, $this->section_names ) ) {
@@ -137,6 +158,10 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		}
 		if ( ! $options['overwrite'] && ! empty( $name ) && $name !== '' ) {
 			array_push( $this->control_names, $name );
+
+			if ( stripos( $name, '__dynamic__' ) !== false ) {
+				$this->control_dynamic_css[$name] = $args['selectors'];
+			}
 		}
 
 		$args['name'] = $name;
@@ -406,7 +431,7 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 
 		$typography_args = [
 			'type'           => 'typography',
-			'label'          => isset($args['label']) ? $args['label'] : __( 'Typography', 'piotnetforms' ),
+			'label'          => isset( $args['label'] ) ? $args['label'] : __( 'Typography', 'piotnetforms' ),
 			'label_block'    => false,
 			'controls'       => $typography_controls,
 			'controls_query' => '.piotnet-tooltip__body',
@@ -427,8 +452,21 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 
 	protected function add_advanced_tab() {
 		$this->start_tab( 'advanced', 'Advanced' );
-		$this->start_section( 'advanced_section', 'Advanced' );
-		$this->add_advanced_controls();
+
+		$this->start_section( 'margin_section', 'Margin' );
+		$this->add_margin_controls();
+
+		$this->start_section( 'padding_section', 'Padding' );
+		$this->add_padding_controls();
+
+		$this->start_section( 'width_section', 'Size' );
+		$this->add_size_controls();
+
+		$this->start_section( 'box_shadow_section', 'Box Shadow' );
+		$this->add_box_shadow_controls();
+
+		$this->start_section( 'custom_class_id_section', 'Custom Class/ID' );
+		$this->add_custom_class_id_controls();
 
 		$this->start_section( 'border_section', 'Border' );
 		$this->add_border_controls();
@@ -436,7 +474,22 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		$this->start_section( 'background_section', 'Background' );
 		$this->add_background_controls();
 
+		$this->start_section( 'responsive_section', 'Responsive' );
+		$this->add_responsive_controls();
+
+		$this->start_section( 'position_section', 'Position' );
+		$this->add_position_controls();
+
+		$this->add_attributes_settings();
+
+		$this->start_section( 'custom_css_section', 'Custom CSS' );
+		$this->add_custom_css_controls();
+
 		$this->add_repeater_trigger_controls();
+
+		$this->add_next_prev_multi_step_form_controls();
+
+		$this->add_multi_step_form_animation_controls();
 
 		if ( $this->is_add_conditional_logic ) {
 			$this->start_section( 'section_conditional_logic_new', 'Conditional Logic' );
@@ -447,12 +500,11 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		$this->add_conditional_visibility_controls();
 	}
 
-	protected function add_advanced_controls() {
+	protected function add_margin_controls() {
 		$this->add_responsive_control(
 			'advanced_margin',
 			[
 				'type'        => 'dimensions',
-				'label'       => __( 'Margin', 'piotnetforms' ),
 				'value'       => [
 					'unit'   => 'px',
 					'top'    => '',
@@ -467,12 +519,13 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 				],
 			]
 		);
+	}
 
+	protected function add_padding_controls() {
 		$this->add_responsive_control(
 			'advanced_padding',
 			[
 				'type'        => 'dimensions',
-				'label'       => __( 'Padding', 'piotnetforms' ),
 				'value'       => [
 					'unit'   => 'px',
 					'top'    => '',
@@ -487,12 +540,15 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 				],
 			]
 		);
+	}
 
+	protected function add_size_controls() {
 		$this->add_responsive_control(
 			'advanced_width',
 			[
 				'type'        => 'number',
-				'label'       => __( 'Width', 'piotnetforms' ),
+				'label'       => __( 'Width (%)', 'piotnetforms' ),
+				'label_block' => true,
 				'selectors'   => [
 					'{{WRAPPER}}' => 'width: {{VALUE}}%;',
 					'{{WRAPPER_EDITOR}}' => 'width: {{VALUE}}%;',
@@ -500,10 +556,22 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 			]
 		);
 
-		$this->add_box_shadow_and_custom_id();
+		$this->add_responsive_control(
+			'advanced_width_custom',
+			[
+				'type'        => 'text',
+				'label'       => __( 'Custom Width', 'piotnetforms' ),
+				'label_block' => true,
+				'description' => __( 'Examples: 50%, 150px, calc(50% - 30px), auto', 'piotnetforms' ),
+				'selectors'   => [
+					'{{WRAPPER}}' => 'width: {{VALUE}};',
+					'{{WRAPPER_EDITOR}}' => 'width: {{VALUE}};',
+				],
+			]
+		);
 	}
 
-	protected function add_box_shadow_and_custom_id() {
+	protected function add_box_shadow_controls() {
 		$this->add_control(
 			'advanced_box_shadow',
 			[
@@ -517,7 +585,9 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 				],
 			]
 		);
+	}
 
+	protected function add_custom_class_id_controls() {
 		$this->add_control(
 			'advanced_custom_id',
 			[
@@ -690,7 +760,7 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 			'advanced_background_color',
 			[
 				'type'        => 'color',
-				'label'       => __( 'Background Color', 'piotnetforms' ),
+				'label'       => __( 'Color', 'piotnetforms' ),
 				'value'       => '',
 				'placeholder' => '',
 				'selectors'   => [
@@ -781,12 +851,320 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 					''        => 'Default',
 					'auto'    => 'Auto',
 					'cover'   => 'Cover',
-					'Contain' => 'Contain',
+					'contain' => 'Contain',
 					'initial' => 'Custom',
 				],
 				'selectors'   => [
 					'{{WRAPPER}}' => 'background-size: {{VALUE}}',
 				],
+			]
+		);
+		$this->add_responsive_control(
+			'advanced_background_size_custom',
+			[
+				'type'        => 'text',
+				'label'       => __( 'Custom Background Size', 'piotnetforms' ),
+				'value'       => '',
+				'label_block' => true,
+				'selectors'   => [
+					'{{WRAPPER}}' => 'background-size: {{VALUE}}',
+				],
+				'conditions'  => [
+					[
+						'name'     => 'advanced_background_size_responsive_desktop',
+						'operator' => '=',
+						'value'    => 'initial',
+					],
+				],
+			]
+		);
+	}
+
+	protected function add_responsive_controls() {
+		
+		$this->add_control(
+			'advanced_hide_desktop',
+			[
+				'label' => __( 'Hide On Desktop', 'piotnetforms' ),
+				'type' => 'switch',
+				'default' => '',
+				'label_on' => __( 'Hide', 'piotnetforms' ),
+				'label_off' => __( 'Show', 'piotnetforms' ),
+				'return_value' => 'piotnetforms-hidden-desktop',
+			]
+		);
+
+		$this->add_control(
+			'advanced_hide_tablet',
+			[
+				'label' => __( 'Hide On Tablet', 'piotnetforms' ),
+				'type' => 'switch',
+				'default' => '',
+				'label_on' => __( 'Hide', 'piotnetforms' ),
+				'label_off' => __( 'Show', 'piotnetforms' ),
+				'return_value' => 'piotnetforms-hidden-tablet',
+			]
+		);
+
+		$this->add_control(
+			'advanced_hide_mobile',
+			[
+				'label' => __( 'Hide On Mobile', 'piotnetforms' ),
+				'type' => 'switch',
+				'default' => '',
+				'label_on' => __( 'Hide', 'piotnetforms' ),
+				'label_off' => __( 'Show', 'piotnetforms' ),
+				'return_value' => 'piotnetforms-hidden-phone',
+			]
+		);
+	}
+
+	protected function add_custom_css_controls() {
+		$this->add_control(
+			'advanced_custom_css',
+			[
+				'type'        => 'textarea',
+				'label'       => __( 'Add your own custom CSS here', 'piotnetforms' ),
+				'description' => 'Use "{{WRAPPER}}" to target wrapper element. Examples:<br>
+					{{WRAPPER}} {color: red;} // For main element<br>
+					{{WRAPPER}} .child-element {margin: 10px;} // For child element<br>
+					.my-class {text-align: center;} // Or use any custom selector',
+				'label_block' => true,
+			]
+		);
+	}
+
+	protected function add_position_controls() {
+		$this->add_control(
+			'advanced_position',
+			[
+				'type'      => 'select',
+				'label'     => __( 'Position', 'piotnetforms' ),
+				'value'     => '',
+				'options'   => [
+					''       => 'Default',
+					'absolute'  => 'Absolute',
+				],
+				'selectors' => [
+					'{{WRAPPER_FRONTEND}}' => 'position:{{VALUE}};',
+					'{{WRAPPER_EDITOR}}' => 'position:{{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'advanced_z_index',
+			[
+				'type'      => 'number',
+				'label'     => __( 'Z-index', 'piotnetforms' ),
+				'value'     => '',
+				'selectors' => [
+					'{{WRAPPER_FRONTEND}}' => 'z-index:{{VALUE}};',
+					'{{WRAPPER_EDITOR}}' => 'z-index:{{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'advanced_position_absolute_top',
+			[
+				'type'      => 'slider',
+				'label'     => __( 'Top', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'size_units'  => [
+					'px' => [
+						'min'  => -1000,
+						'max'  => 1000,
+						'step' => 1,
+					],
+					'%'  => [
+						'min'  => -200,
+						'max'  => 200,
+						'step' => 1,
+					],
+				],
+				'selectors'   => [
+					'{{WRAPPER_FRONTEND}}' => 'top: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER_EDITOR}}' => 'top: {{SIZE}}{{UNIT}};',
+				],
+				'conditions'  => [
+					[
+						'name'     => 'advanced_position',
+						'operator' => '=',
+						'value'    => 'absolute',
+					],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'advanced_position_absolute_right',
+			[
+				'type'      => 'slider',
+				'label'     => __( 'Right', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'size_units'  => [
+					'px' => [
+						'min'  => -1000,
+						'max'  => 1000,
+						'step' => 1,
+					],
+					'%'  => [
+						'min'  => -200,
+						'max'  => 200,
+						'step' => 1,
+					],
+				],
+				'selectors'   => [
+					'{{WRAPPER_FRONTEND}}' => 'right: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER_EDITOR}}' => 'right: {{SIZE}}{{UNIT}};',
+				],
+				'conditions'  => [
+					[
+						'name'     => 'advanced_position',
+						'operator' => '=',
+						'value'    => 'absolute',
+					],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'advanced_position_absolute_bottom',
+			[
+				'type'      => 'slider',
+				'label'     => __( 'Bottom', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'size_units'  => [
+					'px' => [
+						'min'  => -1000,
+						'max'  => 1000,
+						'step' => 1,
+					],
+					'%'  => [
+						'min'  => -200,
+						'max'  => 200,
+						'step' => 1,
+					],
+				],
+				'selectors'   => [
+					'{{WRAPPER_FRONTEND}}' => 'bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER_EDITOR}}' => 'bottom: {{SIZE}}{{UNIT}};',
+				],
+				'conditions'  => [
+					[
+						'name'     => 'advanced_position',
+						'operator' => '=',
+						'value'    => 'absolute',
+					],
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'advanced_position_absolute_left',
+			[
+				'type'      => 'slider',
+				'label'     => __( 'Left', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'size_units'  => [
+					'px' => [
+						'min'  => -1000,
+						'max'  => 1000,
+						'step' => 1,
+					],
+					'%'  => [
+						'min'  => -200,
+						'max'  => 200,
+						'step' => 1,
+					],
+				],
+				'selectors'   => [
+					'{{WRAPPER_FRONTEND}}' => 'left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER_EDITOR}}' => 'left: {{SIZE}}{{UNIT}};',
+				],
+				'conditions'  => [
+					[
+						'name'     => 'advanced_position',
+						'operator' => '=',
+						'value'    => 'absolute',
+					],
+				],
+			]
+		);
+	}
+
+	protected function add_attributes_settings() {
+		$this->start_section( 'attributes_section', 'Attributes' );
+
+		$this->new_group_controls();
+		$this->add_control(
+			'attribute_name',
+			[
+				'type'        => 'text',
+				'get_fields'  => true,
+				'label'       => __( 'Name', 'piotnetforms' ),
+				'value'       => '',
+				'label_block' => true,
+			]
+		);
+		$this->add_control(
+			'attribute_value',
+			[
+				'type'        => 'text',
+				'get_fields'  => true,
+				'label'       => __( 'Value', 'piotnetforms' ),
+				'value'       => '',
+				'label_block' => true,
+			]
+		);
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
+		$repeater_items = $this->get_group_controls();
+		$this->new_group_controls();
+		$this->add_control(
+			'',
+			[
+				'type'           => 'repeater-item',
+				'remove_label'   => __( 'Remove Item', 'piotnetforms' ),
+				'controls'       => $repeater_items,
+				'controls_query' => '.piotnet-control-repeater-field',
+			]
+		);
+		$repeater_list = $this->get_group_controls();
+		$this->add_control(
+			'attributes',
+			[
+				'type'           => 'repeater',
+				'label'          => __( 'Attributes List', 'piotnetforms' ),
+				'value'          => 'or',
+				'label_block'    => true,
+				'add_label'      => __( 'Add Item', 'piotnetforms' ),
+				'controls'       => $repeater_list,
+				'controls_query' => '.piotnet-control-repeater-list',
 			]
 		);
 	}
@@ -807,7 +1185,7 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		$this->add_control(
 			'piotnetforms_repeater_form_id_trigger',
 			[
-				'type'        => 'text',
+				'type'        => 'hidden',
 				'label'       => __( 'Form ID* (Required)', 'piotnetforms' ),
 				'value'       => '',
 				'description' => __( 'Enter the same form id for all fields in a form, with latin character and no space. E.g order_form', 'piotnetforms' ),
@@ -858,6 +1236,94 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		);
 	}
 
+	protected function add_next_prev_multi_step_form_controls() {
+		$this->start_section( 'next_prev_multi_step_form_section', 'Next/Previous Multi Step Form' );
+
+		$this->add_control(
+			'next_prev_multi_step_form',
+			[
+				'type'         => 'switch',
+				'label'        => __( 'Enable', 'piotnetforms' ),
+				'value'        => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'next_prev_multi_step_form_action',
+			[
+				'type'        => 'select',
+				'label'       => __( 'Action', 'piotnetforms' ),
+				'options'     => [
+					'next'    => __( 'Next', 'piotnetforms' ),
+					'prev'    => __( 'Previous', 'piotnetforms' ),
+				],
+				'conditions'  => [
+					[
+						'name'     => 'next_prev_multi_step_form',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
+	}
+
+	protected function add_multi_step_form_animation_controls() {
+		$this->start_section( 'multi_step_form_animation_section', 'Multi Step Form Animation' );
+
+		$this->add_control(
+			'multi_step_form_animation',
+			[
+				'type'         => 'switch',
+				'label'        => __( 'Enable', 'piotnetforms' ),
+				'value'        => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+			]
+		);
+
+		$this->add_control(
+			'multi_step_form_animation_animate',
+			[
+				'type'        => 'select',
+				'label'       => __( 'Animation', 'piotnetforms' ),
+				'options'     => [
+					'fadeIn' => __( 'Fade In', 'piotnetforms' ),
+					'fadeInUp' => __( 'Fade In Up', 'piotnetforms' ),
+					'fadeInDown' => __( 'Fade In Down', 'piotnetforms' ),
+					'fadeInLeft' => __( 'Fade In Left', 'piotnetforms' ),
+					'fadeInRight' => __( 'Fade In Right', 'piotnetforms' ),
+				],
+				'conditions'  => [
+					[
+						'name'     => 'multi_step_form_animation',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'multi_step_form_animation_delay',
+			[
+				'type'        => 'number',
+				'label'       => __( 'Delay (ms)', 'piotnetforms' ),
+				'conditions'  => [
+					[
+						'name'     => 'multi_step_form_animation',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
+	}
+
 	private function add_conditional_logic_controls() {
 		$this->add_control(
 			'piotnetforms_conditional_logic_form_enable_new',
@@ -874,7 +1340,7 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		$this->add_control(
 			'piotnetforms_conditional_logic_form_form_id',
 			[
-				'type'       => 'text',
+				'type'       => 'hidden',
 				'label'      => __( 'Form ID', 'piotnetforms' ),
 				'value'      => '',
 				'conditions' => [
@@ -1011,9 +1477,9 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 			[
 				'type' => 'hidden',
 			],
-            [
-                'overwrite' => 'true',
-            ]
+			[
+				'overwrite' => 'true',
+			]
 		);
 		$repeater_items = $this->get_group_controls();
 		$this->new_group_controls();
@@ -1072,24 +1538,24 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 			$roles_array[ $key ] = $value['name'];
 		}
 
-        $this->add_control(
-            'conditional_visibility_by_roles',
-            [
-                'type'         => 'switch',
-                'label'        => __( 'Visibility For User', 'piotnetforms' ),
-                'value'        => '',
-                'label_on'     => 'Yes',
-                'label_off'    => 'No',
-                'return_value' => 'yes',
-                'conditions'   => [
-                    [
-                        'name'     => 'conditional_visibility_enable',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                ],
-            ]
-        );
+		$this->add_control(
+			'conditional_visibility_by_roles',
+			[
+				'type'         => 'switch',
+				'label'        => __( 'Visibility For User', 'piotnetforms' ),
+				'value'        => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+				'conditions'   => [
+					[
+						'name'     => 'conditional_visibility_enable',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
 
 		$this->add_control(
 			'conditional_visibility_roles',
@@ -1109,7 +1575,7 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 						'operator' => '==',
 						'value'    => 'yes',
 					],
-                    [
+					[
 						'name'     => 'conditional_visibility_by_roles',
 						'operator' => '==',
 						'value'    => 'yes',
@@ -1118,83 +1584,83 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 			]
 		);
 
-        $days_of_week = array('Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday','Friday', 'Saturday');
+		$days_of_week = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday','Thursday','Friday', 'Saturday' ];
 
-        $this->add_control(
-            'conditional_visibility_by_date_and_time',
-            [
-                'type'         => 'switch',
-                'label'        => __( 'Visibility By Date And Time', 'piotnetforms' ),
-                'value'        => '',
-                'label_on'     => 'Yes',
-                'label_off'    => 'No',
-                'return_value' => 'yes',
-                'conditions'   => [
-                    [
-                        'name'     => 'conditional_visibility_enable',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                ],
-            ]
-        );
+		$this->add_control(
+			'conditional_visibility_by_date_and_time',
+			[
+				'type'         => 'switch',
+				'label'        => __( 'Visibility By Date And Time', 'piotnetforms' ),
+				'value'        => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+				'conditions'   => [
+					[
+						'name'     => 'conditional_visibility_enable',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
 
-        $this->add_control(
-            'conditional_visibility_date_and_time_operators',
-            [
-                'type'        => 'select',
-                'label'       => __( 'OR, AND Operators', 'piotnetforms' ),
-                'value'       => 'or',
-                'label_block' => true,
-                'options'     => [
-                    'or'  => __( 'OR', 'piotnetforms' ),
-                    'and' => __( 'AND', 'piotnetforms' ),
-                ],
-                'conditions'   => [
-                    [
-                        'name'     => 'conditional_visibility_enable',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                    [
-                        'name'     => 'conditional_visibility_by_date_and_time',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                ],
-            ]
-        );
+		$this->add_control(
+			'conditional_visibility_date_and_time_operators',
+			[
+				'type'        => 'select',
+				'label'       => __( 'OR, AND Operators', 'piotnetforms' ),
+				'value'       => 'or',
+				'label_block' => true,
+				'options'     => [
+					'or'  => __( 'OR', 'piotnetforms' ),
+					'and' => __( 'AND', 'piotnetforms' ),
+				],
+				'conditions'   => [
+					[
+						'name'     => 'conditional_visibility_enable',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+					[
+						'name'     => 'conditional_visibility_by_date_and_time',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
 
-        $this->add_control(
-            'conditional_visibility_action_for_date_and_time',
-            [
-                'type'         => 'select',
-                'label'        => __( 'Action', 'piotnetforms' ),
-                'value'        => 'show',
-                'label_block'  => true,
-                'options'      => [
-                    'show' => __( 'Show', 'piotnetforms' ),
-                    'hide' => __( 'Hide', 'piotnetforms' ),
-                ],
-                'multiple'     => true,
-                'return_value' => 'yes',
-                'conditions'   => [
-                    [
-                        'name'     => 'conditional_visibility_enable',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                    [
-                        'name'     => 'conditional_visibility_by_date_and_time',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                ],
-            ]
-        );
-        $this->add_conditional_visibility_time_repeater_controls($days_of_week);
+		$this->add_control(
+			'conditional_visibility_action_for_date_and_time',
+			[
+				'type'         => 'select',
+				'label'        => __( 'Action', 'piotnetforms' ),
+				'value'        => 'show',
+				'label_block'  => true,
+				'options'      => [
+					'show' => __( 'Show', 'piotnetforms' ),
+					'hide' => __( 'Hide', 'piotnetforms' ),
+				],
+				'multiple'     => true,
+				'return_value' => 'yes',
+				'conditions'   => [
+					[
+						'name'     => 'conditional_visibility_enable',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+					[
+						'name'     => 'conditional_visibility_by_date_and_time',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
+		$this->add_conditional_visibility_time_repeater_controls( $days_of_week );
 
-        $this->add_control(
+		$this->add_control(
 			'conditional_visibility_by_backend',
 			[
 				'type'         => 'switch',
@@ -1244,116 +1710,115 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 		$this->add_conditional_visibility_repeater_controls();
 	}
 
-    private function add_conditional_visibility_time_repeater_controls($days_of_week) {
-        $this->new_group_controls();
-        $this->add_control(
-            'conditional_visibility_set_days_of_week',
-            [
-                'label'       => __( 'Choose Day', 'piotnetforms' ),
-                'type'        => 'select2',
-                'multiple'    => true,
-                'options'     => $days_of_week,
-                'label_block' => true,
+	private function add_conditional_visibility_time_repeater_controls( $days_of_week ) {
+		$this->new_group_controls();
+		$this->add_control(
+			'conditional_visibility_set_days_of_week',
+			[
+				'label'       => __( 'Choose Day', 'piotnetforms' ),
+				'type'        => 'select2',
+				'multiple'    => true,
+				'options'     => $days_of_week,
+				'label_block' => true,
 
-            ]
-        );
+			]
+		);
 
-        $this->add_control(
-            'conditional_visibility_start_date',
-            [
-                'label' => __( 'Start Date', 'piotnetforms' ),
-                'type' => 'date',
-                'label_block' => false,
-                'picker_options' => [
-                    'enableTime' => false,
-                ],
-            ]
-        );
+		$this->add_control(
+			'conditional_visibility_start_date',
+			[
+				'label' => __( 'Start Date', 'piotnetforms' ),
+				'type' => 'date',
+				'label_block' => false,
+				'picker_options' => [
+					'enableTime' => false,
+				],
+			]
+		);
 
-        $this->add_control(
-            'conditional_visibility_end_date',
-            [
-                'label' => __( 'End Date', 'piotnetforms' ),
-                'type' => 'date',
-                'label_block' => false,
-                'picker_options' => [
-                    'enableTime' => false,
-                ],
-            ]
-        );
+		$this->add_control(
+			'conditional_visibility_end_date',
+			[
+				'label' => __( 'End Date', 'piotnetforms' ),
+				'type' => 'date',
+				'label_block' => false,
+				'picker_options' => [
+					'enableTime' => false,
+				],
+			]
+		);
 
-        $this->add_control(
-            'conditional_visibility_time_start',
-            [
-                'type'        => 'text',
-                'label'       => __( 'Time Start', 'piotnetforms' ),
-                'default' => __( '', 'piotnetforms' ),
-                'placeholder' => __( 'HH:mm', 'piotnetforms' ),
-                'description' => __('It was setted in HH:mm format','piotnetforms'),
-            ]
-        );
-        $this->add_control(
-            'conditional_visibility_time_end',
-            [
-                'type'        => 'text',
-                'label'       => __( 'Time End', 'piotnetforms' ),
-                'default' => __( '', 'piotnetforms' ),
-                'placeholder' => __( 'HH:mm', 'piotnetforms' ),
-                'description' => __('It was setted in HH:mm format','piotnetforms'),
-            ]
-        );
+		$this->add_control(
+			'conditional_visibility_time_start',
+			[
+				'type'        => 'text',
+				'label'       => __( 'Time Start', 'piotnetforms' ),
+				'default' => __( '', 'piotnetforms' ),
+				'placeholder' => __( 'HH:mm', 'piotnetforms' ),
+				'description' => __( 'It was setted in HH:mm format', 'piotnetforms' ),
+			]
+		);
+		$this->add_control(
+			'conditional_visibility_time_end',
+			[
+				'type'        => 'text',
+				'label'       => __( 'Time End', 'piotnetforms' ),
+				'default' => __( '', 'piotnetforms' ),
+				'placeholder' => __( 'HH:mm', 'piotnetforms' ),
+				'description' => __( 'It was setted in HH:mm format', 'piotnetforms' ),
+			]
+		);
 
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
-        $repeater_items = $this->get_group_controls();
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
+		$repeater_items = $this->get_group_controls();
 
-        $this->new_group_controls();
-        $this->add_control(
-            '',
-            [
-                'type'           => 'repeater-item',
-                'remove_label'   => __( 'Remove Item', 'piotnetforms' ),
-                'controls'       => $repeater_items,
-                'controls_query' => '.piotnet-control-repeater-field',
-            ]
-        );
-        $repeater_list = $this->get_group_controls();
-        $this->add_control(
-            'conditional_visibility_time_repeater',
-            [
-                'type'           => 'repeater',
-                'label'          => __( 'Conditional List', 'piotnetforms' ),
-                'value'          => '',
-                'label_block'    => true,
-                'add_label'      => __( 'Add Item', 'piotnetforms' ),
-                'controls'       => $repeater_list,
-                'controls_query' => '.piotnet-control-repeater-list',
-                'conditions'     => [
-                    [
-                        'name'     => 'conditional_visibility_enable',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                    [
-                        'name'     => 'conditional_visibility_by_date_and_time',
-                        'operator' => '==',
-                        'value'    => 'yes',
-                    ],
-                ],
-            ]
-        );
+		$this->new_group_controls();
+		$this->add_control(
+			'',
+			[
+				'type'           => 'repeater-item',
+				'remove_label'   => __( 'Remove Item', 'piotnetforms' ),
+				'controls'       => $repeater_items,
+				'controls_query' => '.piotnet-control-repeater-field',
+			]
+		);
+		$repeater_list = $this->get_group_controls();
+		$this->add_control(
+			'conditional_visibility_time_repeater',
+			[
+				'type'           => 'repeater',
+				'label'          => __( 'Conditional List', 'piotnetforms' ),
+				'value'          => '',
+				'label_block'    => true,
+				'add_label'      => __( 'Add Item', 'piotnetforms' ),
+				'controls'       => $repeater_list,
+				'controls_query' => '.piotnet-control-repeater-list',
+				'conditions'     => [
+					[
+						'name'     => 'conditional_visibility_enable',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+					[
+						'name'     => 'conditional_visibility_by_date_and_time',
+						'operator' => '==',
+						'value'    => 'yes',
+					],
+				],
+			]
+		);
+	}
 
-    }
 
-
-    private function add_conditional_visibility_repeater_controls() {
+	private function add_conditional_visibility_repeater_controls() {
 		$this->new_group_controls();
 		$this->add_control(
 			'conditional_visibility_by_backend_select',
@@ -1632,9 +2097,9 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 
 	private function conditions_old_version( $args = [] ) {
 		if ( ! empty( $args['condition'] ) ) {
-            if ( empty( $args['conditions'] ) ) {
-                $args['conditions'] = [];
-            }
+			if ( empty( $args['conditions'] ) ) {
+				$args['conditions'] = [];
+			}
 
 			foreach ( $args['condition'] as $condition_key => $condition_value ) {
 				$condition_operator = '==';
@@ -1658,7 +2123,7 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 					'value'    => $condition_value,
 				];
 			}
-            unset( $args['condition'] );
+			unset( $args['condition'] );
 		}
 
 		if ( ! empty( $args['conditions'] ) ) {
@@ -1670,5 +2135,4 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 
 		return $args;
 	}
-
 }

@@ -45,6 +45,8 @@ function wppb_get_restriction_content_message( $message_type = '', $post_id = 0 
         $wppb_content_restriction_message = ( ( $wppb_content_restriction_settings != 'not_found' && ! empty( $wppb_content_restriction_settings['message_logged_out'] ) ) ? $wppb_content_restriction_settings['message_logged_out'] : __( 'You must be logged in to view this content.', 'profile-builder' ) );
     } elseif ( $message_type == 'logged_in' ) {
         $wppb_content_restriction_message = ( ( $wppb_content_restriction_settings != 'not_found' && ! empty( $wppb_content_restriction_settings['message_logged_in'] ) ) ? $wppb_content_restriction_settings['message_logged_in'] : __( 'This content is restricted for your user role.', 'profile-builder' ) );
+    } elseif ( $message_type == 'purchasing_restricted' ) {
+        $wppb_content_restriction_message = ( ( $wppb_content_restriction_settings != 'not_found' && ! empty( $wppb_content_restriction_settings['purchasing_restricted'] ) ) ? $wppb_content_restriction_settings['purchasing_restricted'] : __( 'This product cannot be purchased by your user role.', 'profile-builder' ) );
     } else {
         $wppb_content_restriction_message = apply_filters( 'wppb_get_restriction_content_message_default', $wppb_content_restriction_message, $message_type, $wppb_content_restriction_settings );
     }
@@ -129,6 +131,8 @@ function wppb_content_restriction_post_redirect() {
     if ( !($woo_shop_or_post instanceof WP_Post) ){
         return;
     }
+
+    $woo_shop_or_post->ID = apply_filters( 'wppb_restricted_post_redirect_post_id', $woo_shop_or_post->ID );
 
     $redirect_url             = '';
     $post_restriction_type    = get_post_meta( $woo_shop_or_post->ID, 'wppb-content-restrict-type', true );

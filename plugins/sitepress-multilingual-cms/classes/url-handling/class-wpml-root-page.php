@@ -73,7 +73,7 @@ class WPML_Root_Page {
 	public static function uses_html_root() {
 		$urls = icl_get_setting( 'urls' );
 
-		return isset( $urls['root_page'] ) && isset( $urls['show_on_root'] ) && $urls['show_on_root'] === 'html_file';
+		return isset( $urls['root_page'] ) && isset( $urls['show_on_root'] ) && $urls['directory_for_default_language'] && 'html_file' === $urls['show_on_root'];
 	}
 
 	/**

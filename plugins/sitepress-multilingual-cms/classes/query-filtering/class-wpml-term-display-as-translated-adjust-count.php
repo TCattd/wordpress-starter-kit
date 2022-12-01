@@ -76,26 +76,28 @@ class WPML_Term_Display_As_Translated_Adjust_Count {
             return $term;
         }
 
+		$table_prefix = $this->wpdb->prefix;
+
         $originalTermCount = (int) $this->wpdb->get_var(
            $this->wpdb->prepare( "
                 SELECT
                 (
                     SELECT term_taxonomy.count
-                    FROM wp_term_taxonomy term_taxonomy
-                    INNER JOIN wp_icl_translations translations
+                    FROM {$table_prefix}term_taxonomy term_taxonomy
+                    INNER JOIN {$table_prefix}icl_translations translations
                         ON translations.element_id = term_taxonomy.term_taxonomy_id
                     WHERE translations.trid = icl_t.trid
                     AND translations.language_code = %s
                 ) as `originalCount`
-                FROM wp_terms AS t
-                INNER JOIN wp_term_taxonomy AS tt
+                FROM {$table_prefix}terms AS t
+                INNER JOIN {$table_prefix}term_taxonomy AS tt
                     ON t.term_id = tt.term_id
-                LEFT JOIN wp_icl_translations icl_t
+                LEFT JOIN {$table_prefix}icl_translations icl_t
                     ON icl_t.element_id = tt.term_taxonomy_id
                 WHERE t.term_id = %d
                 ",
-                $this->sitepress->get_default_language(),
-                $term->term_id
+			   $this->sitepress->get_default_language(),
+			   $term->term_id
             )
         );
 

@@ -54,6 +54,19 @@ class Option {
 		self::set( self::TRANSLATED_LANGS, $langs );
 	}
 
+	/**
+	 * Sets service as default translation mode if there's a default Translation Service linked to this instance.
+	 *
+	 * @param bool $hasPreferredTranslationService
+	 */
+	public static function setDefaultTranslationMode( $hasPreferredTranslationService = false ) {
+		if ( self::get( self::WHO_MODE, null ) === null ) {
+
+			$defaultTranslationMode = $hasPreferredTranslationService ? 'service' : 'myself';
+			self::setTranslationMode( [ $defaultTranslationMode ] );
+		}
+	}
+
 	public static function setOnlyMyselfAsDefault() {
 		if ( self::get( self::WHO_MODE, null ) === null ) {
 			self::setTranslationMode( [ 'myself' ] );
@@ -126,8 +139,8 @@ class Option {
 		}
 	}
 
-	public static function getReviewMode() {
-		return self::get( self::REVIEW_MODE, self::HOLD_FOR_REVIEW );
+	public static function getReviewMode( $default = self::HOLD_FOR_REVIEW ) {
+		return self::get( self::REVIEW_MODE, $default );
 	}
 
 	public static function shouldBeReviewed() {
@@ -156,7 +169,14 @@ class Option {
 		return ( new OptionManager() )->set( self::OPTION_GROUP, $key, $value );
 	}
 
-	public static function getTranslateEverythingDefaultInSetup() {
+	/**
+	 * @param bool $hasPreferredTranslationService
+	 * @return bool
+	 */
+	public static function getTranslateEverythingDefaultInSetup( $hasPreferredTranslationService = false ) {
+		if ( $hasPreferredTranslationService ) {
+			return false;
+		}
 		return PostType::getPublishedCount( 'post' ) + PostType::getPublishedCount( 'page' ) > self::POSTS_LIMIT_FOR_AUTOMATIC_TRANSLATION
 			? false
 			: true;

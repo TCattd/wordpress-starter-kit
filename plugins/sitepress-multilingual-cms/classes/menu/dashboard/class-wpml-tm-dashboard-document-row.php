@@ -1,6 +1,7 @@
 <?php
 
 use WPML\TM\Menu\Dashboard\PostJobsRepository;
+use WPML\TM\API\Jobs;
 
 class WPML_TM_Dashboard_Document_Row {
 
@@ -201,11 +202,13 @@ class WPML_TM_Dashboard_Document_Row {
 						$job_id        = $job['job_id'];
 						$needsReview   = $job['needsReview'];
 						$automatic     = $job['automatic'];
+						$shouldBeSynced = Jobs::shouldBeATESynced( $job );
 					} else {
 						$status        = $this->get_status_in_lang( $code );
 						$job_entity_id = 0;
 						$job_id        = 0;
 						$automatic     = false;
+						$shouldBeSynced = false;
 					}
 
 					if ( $needsReview ) {
@@ -217,14 +220,14 @@ class WPML_TM_Dashboard_Document_Row {
 								break;
 							case ICL_TM_WAITING_FOR_TRANSLATOR:
 								$translation_status_text = $automatic
-									? esc_attr( __( 'Waiting for translation', 'wpml-translation-management' ) )
+									? esc_attr( __( 'Waiting for automatic translation', 'wpml-translation-management' ) )
 									: esc_attr( __( 'Waiting for translator', 'wpml-translation-management' ) );
 								break;
 							case ICL_TM_IN_BASKET:
 								$translation_status_text = esc_attr( __( 'In basket', 'wpml-translation-management' ) );
 								break;
 							case ICL_TM_IN_PROGRESS:
-								$translation_status_text = esc_attr( __( 'In progress', 'wpml-translation-management' ) );
+								$translation_status_text = esc_attr( __( 'Waiting for translation service', 'wpml-translation-management' ) );
 								$has_jobs_in_progress    = true;
 								break;
 							case ICL_TM_TRANSLATION_READY_TO_DOWNLOAD:
@@ -237,13 +240,13 @@ class WPML_TM_Dashboard_Document_Row {
 								$has_jobs_in_progress    = true;
 								break;
 							case ICL_TM_DUPLICATE:
-								$translation_status_text = esc_attr( __( 'Duplicate', 'wpml-translation-management' ) );
+								$translation_status_text = esc_attr( __( 'Duplicate of default language', 'wpml-translation-management' ) );
 								break;
 							case ICL_TM_COMPLETE:
-								$translation_status_text = esc_attr( __( 'Complete', 'wpml-translation-management' ) );
+								$translation_status_text = esc_attr( __( 'Translation completed', 'wpml-translation-management' ) );
 								break;
 							case ICL_TM_NEEDS_UPDATE:
-								$translation_status_text = ' - ' . esc_attr( __( 'needs update', 'wpml-translation-management' ) );
+								$translation_status_text = esc_attr( __( 'Needs update', 'wpml-translation-management' ) );
 								break;
 							case ICL_TM_ATE_NEEDS_RETRY:
 								$translation_status_text =  esc_attr( __( 'In progress', 'wpml-translation-management' ) ) . ' - ' . esc_attr( __( 'needs retry', 'wpml-translation-management' ) );
@@ -262,9 +265,13 @@ class WPML_TM_Dashboard_Document_Row {
 						  class="js-wpml-translate-link"
 						  data-tm-job-id="<?php echo esc_attr( $job_id ); ?>"
 						  data-automatic="<?php echo esc_attr( $automatic ); ?>"
+                          data-wpmlcc-lang="<?php echo esc_attr( $code ); ?>"
+                          data-should-ate-sync="<?php echo $shouldBeSynced ? '1' : '0' ?>"
 					>
-						<i class="<?php echo esc_attr( $status_icon_class ); ?>"
-						   title="<?php echo esc_attr( $lang['display_name'] ); ?>: <?php echo $translation_status_text; ?>"></i>
+						<i class="<?php echo esc_attr( $status_icon_class ); ?> js-otgs-popover-tooltip"
+						   title="<?php echo esc_attr( $lang['display_name'] ); ?>: <?php echo $translation_status_text; ?>"
+						   data-original-title="<?php echo esc_attr( $lang['display_name'] ); ?>: <?php echo $translation_status_text; ?>"
+						></i>
 					</span>
 					<?php
 				}

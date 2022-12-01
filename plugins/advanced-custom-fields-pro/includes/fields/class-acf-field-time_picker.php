@@ -66,7 +66,7 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 				'value' => $field['value'],
 			);
 			$text_input   = array(
-				'class' => 'input',
+				'class' => $field['class'] . ' input',
 				'type'  => 'text',
 				'value' => $display_value,
 			);
@@ -79,7 +79,7 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 
 			// Output.
 			?>
-		<div <?php acf_esc_attr_e( $div ); ?>>
+		<div <?php echo acf_esc_attrs( $div ); ?>>
 			<?php acf_hidden_input( $hidden_input ); ?>
 			<?php acf_text_input( $text_input ); ?>
 		</div>
@@ -100,19 +100,17 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 		*
 		*  @param   $field  - an array holding all the field's data
 		*/
-
 		function render_field_settings( $field ) {
-
-			// vars
 			$g_i_a = date_i18n( 'g:i a' );
 			$H_i_s = date_i18n( 'H:i:s' );
 
-			// display_format
+			echo '<div class="acf-field-settings-split">';
+
 			acf_render_field_setting(
 				$field,
 				array(
 					'label'        => __( 'Display Format', 'acf' ),
-					'instructions' => __( 'The format displayed when editing a post', 'acf' ),
+					'hint'         => __( 'The format displayed when editing a post', 'acf' ),
 					'type'         => 'radio',
 					'name'         => 'display_format',
 					'other_choice' => 1,
@@ -124,12 +122,11 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 				)
 			);
 
-			// return_format
 			acf_render_field_setting(
 				$field,
 				array(
 					'label'        => __( 'Return Format', 'acf' ),
-					'instructions' => __( 'The format returned via template functions', 'acf' ),
+					'hint'         => __( 'The format returned via template functions', 'acf' ),
 					'type'         => 'radio',
 					'name'         => 'return_format',
 					'other_choice' => 1,
@@ -141,8 +138,8 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 				)
 			);
 
+			echo '</div>';
 		}
-
 
 		/*
 		*  format_value()
@@ -166,6 +163,43 @@ if ( ! class_exists( 'acf_field_time_picker' ) ) :
 
 		}
 
+		/**
+		 *  This filter is applied to the $field after it is loaded from the database
+		 *  and ensures the return and display values are set.
+		 *
+		 *  @type    filter
+		 *  @since   5.11.0
+		 *  @date    28/09/21
+		 *
+		 *  @param array $field The field array holding all the field options.
+		 *
+		 *  @return array
+		 */
+		function load_field( $field ) {
+			if ( empty( $field['display_format'] ) ) {
+				$field['display_format'] = $this->defaults['display_format'];
+			}
+
+			if ( empty( $field['return_format'] ) ) {
+				$field['return_format'] = $this->defaults['return_format'];
+			}
+
+			return $field;
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			return array(
+				'type'        => array( 'string', 'null' ),
+				'description' => 'A `H:i:s` formatted time string.',
+				'required'    => ! empty( $field['required'] ),
+			);
+		}
 	}
 
 

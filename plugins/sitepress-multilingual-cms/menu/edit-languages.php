@@ -1,5 +1,6 @@
 <?php
 
+use WPML\API\Sanitize;
 use WPML\Element\API\Entity\LanguageMapping;
 use WPML\Element\API\Languages;
 use WPML\FP\Fns;
@@ -302,7 +303,7 @@ class SitePress_EditLanguages {
 
 		foreach ( $keys as $key ) {
 			if ( isset( $new_lang[ $key ] ) ) {
-				$new_lang[ $key ] = filter_var( $new_lang[ $key ], FILTER_SANITIZE_STRING );
+				$new_lang[ $key ] = Sanitize::stringProp( $key, $new_lang );
 			} else {
 				$new_lang[ $key ] = '';
 			}
@@ -741,7 +742,8 @@ class SitePress_EditLanguages {
 					if ( empty( $translation_value ) ) {
 						$translation_value = $data['english_name'];
 					}
-					$translation_code = filter_var( $_POST['icl_edit_languages']['add']['code'], FILTER_SANITIZE_STRING );
+					$translation_code = isset( $_POST['icl_edit_languages']['add']['code'] )
+                        ? Sanitize::string( $_POST['icl_edit_languages']['add']['code'] ) : false;
 				}
 
 				// Check if update.
@@ -1298,7 +1300,7 @@ class SitePress_EditLanguages {
 	 */
 	private function get_add_language_from_post_data( $id ) {
 		$value = isset( $_POST['icl_edit_languages'][ $id ]['translations']['add'] ) ? stripslashes_deep( $_POST['icl_edit_languages'][ $id ]['translations']['add'] ) : '';
-		$value = filter_var( $value, FILTER_SANITIZE_STRING );
+		$value = filter_var( $value, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		return $value;
 	}
@@ -1312,7 +1314,7 @@ class SitePress_EditLanguages {
 	private function get_translations_data( $lang, $translation ) {
 		if ( $lang['id'] == 'add' ) {
 			$value = isset( $_POST['icl_edit_languages']['add']['translations'][ $translation['code'] ] ) ? $_POST['icl_edit_languages']['add']['translations'][ $translation['code'] ] : '';
-			$value = filter_var( $value, FILTER_SANITIZE_STRING );
+			$value = filter_var( $value, FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 		} else {
 			$value = isset( $lang['translation'][ $translation['id'] ] ) ? $lang['translation'][ $translation['id'] ] : '';
 		}

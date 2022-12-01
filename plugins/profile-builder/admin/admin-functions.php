@@ -240,14 +240,14 @@ function wppb_add_plugin_notifications() {
     /* initiate the plugin notifications class */
     $notifications = WPPB_Plugin_Notifications::get_instance();
     /* this must be unique */
-    $notification_id = 'wppb_migrated_free_add_ons';
+    // $notification_id = 'wppb_migrated_free_add_ons';
 
-	$message = '<p style="margin-top: 16px; font-size: 15px;">' . __( 'All the free add-ons have been migrated to the main plugin. Their old individual plugins have been disabled and you can delete them from your site if you were using them: <ul><li>Profile Builder - Custom CSS Classes on fields</li><li>Profile Builder - Customization Toolbox Add-On</li><li>Profile Builder - Email Confirmation Field</li><li>Profile Builder - GDPR Communication Preferences</li><li>Profile Builder - Import and Export Add-On</li><li>Profile Builder - Labels Edit Add-On</li><li>Profile Builder - Maximum Character Length Add-On</li><li>Profile Builder - Multiple Admin E-mails Add-On</li><li>Profile Builder - Placeholder Labels Add-On</li></ul>', 'profile-builder' ) . '</p>';
-    // be careful to use wppb_dismiss_admin_notification as query arg
-    $message .= '<p><a href="https://www.cozmoslabs.com/277540-profile-builder-enhancements-free-addons-now-part-of-main-plugin/" target="_blank" class="button-primary">' . __( 'See details', 'profile-builder' ) . '</a></p>';
-    $message .= '<a href="' . add_query_arg( array( 'wppb_dismiss_admin_notification' => $notification_id ) ) . '" type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'profile-builder' ) . '</span></a>';
+	// $message = '<p style="margin-top: 16px; font-size: 15px;">' . __( 'All the free add-ons have been migrated to the main plugin. Their old individual plugins have been disabled and you can delete them from your site if you were using them: <ul><li>Profile Builder - Custom CSS Classes on fields</li><li>Profile Builder - Customization Toolbox Add-On</li><li>Profile Builder - Email Confirmation Field</li><li>Profile Builder - GDPR Communication Preferences</li><li>Profile Builder - Import and Export Add-On</li><li>Profile Builder - Labels Edit Add-On</li><li>Profile Builder - Maximum Character Length Add-On</li><li>Profile Builder - Multiple Admin E-mails Add-On</li><li>Profile Builder - Placeholder Labels Add-On</li></ul>', 'profile-builder' ) . '</p>';
+    // // be careful to use wppb_dismiss_admin_notification as query arg
+    // $message .= '<p><a href="https://www.cozmoslabs.com/277540-profile-builder-enhancements-free-addons-now-part-of-main-plugin/" target="_blank" class="button-primary">' . __( 'See details', 'profile-builder' ) . '</a></p>';
+    // $message .= '<a href="' . add_query_arg( array( 'wppb_dismiss_admin_notification' => $notification_id ) ) . '" type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'profile-builder' ) . '</span></a>';
 
-    $notifications->add_notification( $notification_id, $message, 'wppb-notice notice notice-info', false );
+    // $notifications->add_notification( $notification_id, $message, 'wppb-notice notice notice-info', false );
 
 	if ( did_action( 'elementor/loaded' ) ) {
 

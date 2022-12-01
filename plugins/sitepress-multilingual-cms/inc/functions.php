@@ -503,7 +503,7 @@ function wpml_strip_subdir_from_url( $url ) {
 	global $wpml_url_converter;
 
 	$subdir       = wpml_parse_url( $wpml_url_converter->get_abs_home(), PHP_URL_PATH );
-	$subdir_slugs = array_values( array_filter( explode( '/', $subdir ) ) );
+	$subdir_slugs = ! empty( $subdir ) ? array_values( array_filter( explode( '/', $subdir ) ) ) : [''];
 
 	$url_path_expl = explode( '/', preg_replace( '#^(http|https)://#', '', $url ) );
 	array_shift( $url_path_expl );

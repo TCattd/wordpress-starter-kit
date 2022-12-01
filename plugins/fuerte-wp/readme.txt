@@ -1,9 +1,9 @@
 === Fuerte-WP ===
 Contributors: tcattd
 Tags: security
-Stable tag: 1.3.7
+Stable tag: 1.4.3
 Requires at least: 5.8
-Tested up to: 5.8
+Tested up to: 6.1
 Requires PHP: 7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -20,6 +20,7 @@ Some features included are:
 - Enable and force auto updates for WordPress core, plugins, themes & translations.
 - Disables XML-RPC API.
 - Disables WordPress theme and plugin editor, for non super users.
+- Disables installation of new themes and/or plugins, for non super users.
 - Restrict editing or deleting super users, for non super users.
 - Restrict access to some pages inside WordPress admin panel, like plugins or theme uploads, for non super users. Restricted pages and areas can be extended vía configuration.
 - Remove (and restrict) items from WordPress menus, for non super users.

@@ -3,7 +3,8 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "lang": "en"
          },
          "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
             "Puoi selezionare gli articoli da tradurre dal <strong>dashboard di gestione delle traduzioni</strong>."
@@ -13,6 +14,15 @@
          ],
          "No, I want to translate some of these posts, but not all": [
             "No, intendo tradurre alcuni di questi articoli, ma non tutti"
+         ],
+         "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
+            "È necessario utilizzare l'editor di traduzione avanzato se si desidera tradurre automaticamente i contenuti."
+         ],
+         "Synchronize translators and translation managers with ATE": [
+            "Sincronizza traduttori e responsabili della traduzione con ATE"
+         ],
+         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
+            "Riprova tra qualche minuto. Se il problema persiste, contatta l'%sassistenza WPML%s."
          ],
          "Save": [
             "Salva"

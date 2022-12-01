@@ -45,7 +45,10 @@ if( !class_exists('WPPB_toolbox') ){
                 $this->active_tab = sanitize_text_field( $_GET['tab'] );
             ?>
             <div class="wrap wppb-wrap wppb-toolbox-wrap">
-                <h2><?php esc_html_e( 'Advanced Settings', 'profile-builder'); ?></h2>
+                <h2>
+                    <?php esc_html_e( 'Advanced Settings', 'profile-builder'); ?>
+                    <a href="https://www.cozmoslabs.com/docs/profile-builder-2/general-settings/advanced-settings/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+                </h2>
 
                 <?php settings_errors(); ?>
 

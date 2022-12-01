@@ -8,6 +8,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
@@ -22,9 +23,12 @@ import './style.scss';
  * @param {string} [props.className] CSS Class name for the component.
  * @return {*} The component.
  */
-const Block = ( { className } ) => {
+const Block = ( props ) => {
+	const { className } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+	const colorProps = useColorProps( props );
+	const typographyProps = useTypographyProps( props );
 
 	if ( ! product.id || ! product.is_purchasable ) {
 		return null;
@@ -38,15 +42,22 @@ const Block = ( { className } ) => {
 		<div
 			className={ classnames(
 				className,
+				colorProps.className,
 				'wc-block-components-product-stock-indicator',
 				{
-					[ `${ parentClassName }__stock-indicator` ]: parentClassName,
-					'wc-block-components-product-stock-indicator--in-stock': inStock,
-					'wc-block-components-product-stock-indicator--out-of-stock': ! inStock,
-					'wc-block-components-product-stock-indicator--low-stock': !! lowStock,
-					'wc-block-components-product-stock-indicator--available-on-backorder': !! isBackordered,
+					[ `${ parentClassName }__stock-indicator` ]:
+						parentClassName,
+					'wc-block-components-product-stock-indicator--in-stock':
+						inStock,
+					'wc-block-components-product-stock-indicator--out-of-stock':
+						! inStock,
+					'wc-block-components-product-stock-indicator--low-stock':
+						!! lowStock,
+					'wc-block-components-product-stock-indicator--available-on-backorder':
+						!! isBackordered,
 				}
 			) }
+			style={ { ...colorProps.style, ...typographyProps.style } }
 		>
 			{ lowStock
 				? lowStockText( lowStock )

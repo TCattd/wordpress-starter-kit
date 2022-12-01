@@ -13,6 +13,8 @@ $v = explode( ',', $this->get_option( 'lockout_notify' ) );
 $email_checked = in_array( 'email', $v ) ? ' checked ' : '';
 
 $show_top_level_menu_item = $this->get_option( 'show_top_level_menu_item' );
+$hide_dashboard_widget = $this->get_option( 'hide_dashboard_widget' );
+$show_warning_badge = $this->get_option( 'show_warning_badge' );
 
 $admin_notify_email = $this->get_option( 'admin_notify_email' );
 $admin_email_placeholder = (!is_multisite()) ? get_option( 'admin_email' ) : get_site_option( 'admin_email' );
@@ -102,6 +104,20 @@ $active_app_config = $this->get_custom_app_config();
         </tr>
         <tr>
             <th scope="row"
+                valign="top"><?php echo __( 'Hide Dashboard Widget', 'limit-login-attempts-reloaded' ); ?></th>
+            <td>
+                <input type="checkbox" name="hide_dashboard_widget" <?php checked( $hide_dashboard_widget ); ?>>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"
+                valign="top"><?php echo __( 'Show Warning Badge', 'limit-login-attempts-reloaded' ); ?></th>
+            <td>
+                <input type="checkbox" name="show_warning_badge" <?php checked( $show_warning_badge ); ?>> <?php _e( '(Reload the page to see the changes)', 'limit-login-attempts-reloaded' ) ?>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row"
                 valign="top"><?php echo __( 'Active App', 'limit-login-attempts-reloaded' ); ?></th>
             <td>
                 <select name="active_app" id="">
@@ -163,20 +179,21 @@ $active_app_config = $this->get_custom_app_config();
         <h3><?php echo ($active_app_config) ? $active_app_config['name'] : __('Custom App', 'limit-login-attempts-reloaded' ); ?></h3>
         <div class="custom-app-tab">
 
-			<?php if( $active_app === 'custom' ) : ?>
-                <a class="dashicons dashicons-admin-generic llar-show-app-fields" href="#"></a>
-			<?php endif; ?>
-
             <table class="form-table">
 
-                <tr class="llar-app-field <?php echo ( $active_app === 'local' || !$active_app_config ) ? 'active' : ''; ?>">
+                <tr>
                     <th scope="row"
                         valign="top"><?php echo __( 'Setup Code', 'limit-login-attempts-reloaded' ); ?></th>
                     <td>
-                        <input type="text" class="regular-text" id="limit-login-app-setup-code" value="<?php echo ( !empty( $app_setup_code ) ) ? esc_attr( $app_setup_code ) : ''; ?>">
-                        <button class="button" id="limit-login-app-setup"><?php echo __( 'Submit', 'limit-login-attempts-reloaded' ); ?></button>
-                        <span class="spinner llar-app-ajax-spinner"></span><br>
-                        <span class="llar-app-ajax-msg"></span>
+						<?php if( $active_app === 'custom') : ?>
+                            <a class="llar-toggle-setup-field" href="#"><?php _e( 'Edit', 'limit-login-attempts-reloaded' ); ?></a>
+						<?php endif; ?>
+                        <div class="setup-code-wrap <?php echo ( $active_app === 'local' || !$active_app_config ) ? 'active' : ''; ?>">
+                            <input type="text" class="regular-text" id="limit-login-app-setup-code" value="<?php echo ( !empty( $app_setup_code ) ) ? esc_attr( $app_setup_code ) : ''; ?>">
+                            <button class="button" id="limit-login-app-setup"><?php echo __( 'Submit', 'limit-login-attempts-reloaded' ); ?></button>
+                            <span class="spinner llar-app-ajax-spinner"></span><br>
+                            <span class="llar-app-ajax-msg"></span>
+                        </div>
 
 						<?php if( $active_app === 'local' ) : ?>
                         <p class="description"><?php echo sprintf(
@@ -199,7 +216,7 @@ $active_app_config = $this->get_custom_app_config();
                     </td>
                 </tr>
 				<?php if( $active_app === 'custom' && $active_app_config ) : ?>
-                <tr class="llar-app-field">
+                <tr class="app-form-field">
                     <th scope="row"
                         valign="top"><?php echo __( 'Configuration', 'limit-login-attempts-reloaded' ); ?></th>
                     <td>
@@ -299,11 +316,13 @@ $active_app_config = $this->get_custom_app_config();
 
                 });
 
-                $('.llar-show-app-fields').on('click', function(e){
+                $('.llar-toggle-setup-field').on('click', function(e){
                     e.preventDefault();
 
-                    $('.llar-app-field').toggleClass('active');
+                    $(this).hide();
 
+                    $('.setup-code-wrap').toggleClass('active');
+                    $('.app-form-field').toggleClass('active');
                 });
 
                 $('.llar-upgrade-to-cloud').on('click', function(e){

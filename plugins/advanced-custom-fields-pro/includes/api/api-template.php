@@ -57,88 +57,61 @@ function get_field( $selector, $post_id = false, $format_value = true ) {
 
 }
 
-
-/*
-*  the_field()
-*
-*  This function is the same as echo get_field().
-*
-*  @type    function
-*  @since   1.0.3
-*  @date    29/01/13
-*
-*  @param   $selector (string) the field name or key
-*  @param   $post_id (mixed) the post_id of which the value is saved against
-*  @return  n/a
-*/
-
+/**
+ *  This function is the same as echo get_field().
+ *
+ *  @since   1.0.3
+ *  @date    29/01/13
+ *
+ *  @param string $selector The field name or key.
+ *  @param mixed  $post_id  The post_id of which the value is saved against.
+ *  @return  void
+ */
 function the_field( $selector, $post_id = false, $format_value = true ) {
-
 	$value = get_field( $selector, $post_id, $format_value );
 
 	if ( is_array( $value ) ) {
-
-		$value = @implode( ', ', $value );
-
+		$value = implode( ', ', $value );
 	}
 
 	echo $value;
-
 }
 
-
-/*
-*  get_field_object()
-*
-*  This function will return an array containing all the field data for a given field_name
-*
-*  @type    function
-*  @since   3.6
-*  @date    3/02/13
-*
-*  @param   $selector (string) the field name or key
-*  @param   $post_id (mixed) the post_id of which the value is saved against
-*  @param   $format_value (boolean) whether or not to format the field value
-*  @param   $load_value (boolean) whether or not to load the field value
-*  @return  $field (array)
-*/
-
+/**
+ * This function will return an array containing all the field data for a given field_name.
+ *
+ * @since 3.6
+ * @date  3/02/13
+ *
+ * @param string $selector     The field name or key.
+ * @param mixed  $post_id      The post_id of which the value is saved against.
+ * @param bool   $format_value Whether to format the field value.
+ * @param bool   $load_value   Whether to load the field value.
+ *
+ * @return array|false $field
+ */
 function get_field_object( $selector, $post_id = false, $format_value = true, $load_value = true ) {
-
-	// compatibilty
-	if ( is_array( $format_value ) ) {
-		extract( $format_value );
+	// Compatibility with ACF ~4.
+	if ( is_array( $format_value ) && isset( $format_value['format_value'] ) ) {
+		$format_value = $format_value['format_value'];
 	}
 
-	// get valid post_id
 	$post_id = acf_get_valid_post_id( $post_id );
+	$field   = acf_maybe_get_field( $selector, $post_id );
 
-	// get field key
-	$field = acf_maybe_get_field( $selector, $post_id );
-
-	// bail early if no field found
 	if ( ! $field ) {
 		return false;
 	}
 
-	// load value
 	if ( $load_value ) {
-
 		$field['value'] = acf_get_value( $post_id, $field );
-
 	}
 
-	// format value
 	if ( $format_value ) {
-
-		// get value for field
 		$field['value'] = acf_format_value( $field['value'], $post_id, $field );
-
 	}
 
-	// return
 	return $field;
-
 }
 
 /*
@@ -197,7 +170,7 @@ function acf_maybe_get_field( $selector, $post_id = false, $strict = true ) {
 
 function acf_maybe_get_sub_field( $selectors, $post_id = false, $strict = true ) {
 
-	// bail ealry if not enough selectors
+	// bail early if not enough selectors
 	if ( ! is_array( $selectors ) || count( $selectors ) < 3 ) {
 		return false;
 	}
@@ -316,7 +289,7 @@ function get_field_objects( $post_id = false, $format_value = true, $load_value 
 	foreach ( $meta as $key => $value ) {
 
 		// bail if reference key does not exist
-		if ( ! isset( $meta[ "_$key" ] ) ) {
+		if ( ! isset( $meta[ "_$key" ] ) || ( ! is_string( $meta[ "_$key" ] ) && ! is_numeric( $meta[ "_$key" ] ) ) ) {
 			continue;
 		}
 
@@ -864,56 +837,73 @@ function get_row_layout() {
 
 }
 
-
-/*
-*  acf_shortcode()
-*
-*  This function is used to add basic shortcode support for the ACF plugin
-*  eg. [acf field="heading" post_id="123" format_value="1"]
-*
-*  @type    function
-*  @since   1.1.1
-*  @date    29/01/13
-*
-*  @param   $field (string) the field name or key
-*  @param   $post_id (mixed) the post_id of which the value is saved against
-*  @param   $format_value (boolean) whether or not to format the field value
-*  @return  (string)
-*/
-
+/**
+ * This function is used to add basic shortcode support for the ACF plugin
+ * eg. [acf field="heading" post_id="123" format_value="1"]
+ *
+ * @since 1.1.1
+ * @date  29/01/13
+ *
+ * @param array $atts The shortcode attributes.
+ *
+ * @return string
+ */
 function acf_shortcode( $atts ) {
-	// Mitigate issue where some AJAX requests can return ACF field data.
-	if ( wp_doing_ajax() && ! current_user_can( 'edit_posts' ) ) {
+	// Return if the ACF shortcode is disabled.
+	if ( ! acf_get_setting( 'enable_shortcode' ) ) {
 		return;
 	}
 
-	// extract attributs
-	extract(
-		shortcode_atts(
-			array(
-				'field'        => '',
-				'post_id'      => false,
-				'format_value' => true,
-			),
-			$atts
-		)
-	);
-
-	// get value and return it
-	$value = get_field( $field, $post_id, $format_value );
-
-	// array
-	if ( is_array( $value ) ) {
-
-		$value = @implode( ', ', $value );
-
+	if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) {
+		// Prevent the ACF shortcode in FSE block template parts by default.
+		if ( ! doing_filter( 'the_content' ) && ! apply_filters( 'acf/shortcode/allow_in_block_themes_outside_content', false ) ) {
+			return;
+		}
 	}
 
-	// return
+	// Limit previews of ACF shortcode data for users without publish_posts permissions.
+	$preview_capability = apply_filters( 'acf/shortcode/preview_capability', 'publish_posts' );
+	if ( is_preview() && ! current_user_can( $preview_capability ) ) {
+		return apply_filters( 'acf/shortcode/preview_capability_message', __( '[ACF shortcode value disabled for preview]', 'acf' ) );
+	}
+
+	// Mitigate issue where some AJAX requests can return ACF field data.
+	$ajax_capability = apply_filters( 'acf/ajax/shortcode_capability', 'edit_posts' );
+	if ( wp_doing_ajax() && ( $ajax_capability !== false ) && ! current_user_can( $ajax_capability ) ) {
+		return;
+	}
+
+	$atts = shortcode_atts(
+		array(
+			'field'        => '',
+			'post_id'      => false,
+			'format_value' => true,
+		),
+		$atts,
+		'acf'
+	);
+
+	$access_already_prevented = apply_filters( 'acf/prevent_access_to_unknown_fields', false );
+	$filter_applied           = false;
+
+	if ( ! $access_already_prevented ) {
+		$filter_applied = true;
+		add_filter( 'acf/prevent_access_to_unknown_fields', '__return_true' );
+	}
+
+	// Try to get the field value.
+	$value = get_field( $atts['field'], $atts['post_id'], $atts['format_value'] );
+
+	if ( $filter_applied ) {
+		remove_filter( 'acf/prevent_access_to_unknown_fields', '__return_true' );
+	}
+
+	if ( is_array( $value ) ) {
+		$value = implode( ', ', $value );
+	}
+
 	return $value;
-
 }
-
 add_shortcode( 'acf', 'acf_shortcode' );
 
 
@@ -1089,6 +1079,9 @@ function add_row( $selector, $row = false, $post_id = false ) {
 
 	// append
 	$value[] = $row;
+
+	// Paginated repeaters should be saved normally.
+	$field['pagination'] = false;
 
 	// update value
 	acf_update_value( $value, $post_id, $field );

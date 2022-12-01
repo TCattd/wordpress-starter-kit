@@ -8,6 +8,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { isEmpty } from 'lodash';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
@@ -23,9 +24,12 @@ import './style.scss';
  * @param {string} [props.className] CSS Class name for the component.
  * @return {*} The component.
  */
-const Block = ( { className } ) => {
+const Block = ( props ) => {
+	const { className } = props;
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+	const colorProps = useColorProps( props );
+	const typographyProps = useTypographyProps( props );
 
 	if ( isEmpty( product.tags ) ) {
 		return null;
@@ -35,11 +39,14 @@ const Block = ( { className } ) => {
 		<div
 			className={ classnames(
 				className,
+				colorProps.className,
 				'wc-block-components-product-tag-list',
 				{
-					[ `${ parentClassName }__product-tag-list` ]: parentClassName,
+					[ `${ parentClassName }__product-tag-list` ]:
+						parentClassName,
 				}
 			) }
+			style={ { ...colorProps.style, ...typographyProps.style } }
 		>
 			{ __( 'Tags:', 'woocommerce' ) }{ ' ' }
 			<ul>

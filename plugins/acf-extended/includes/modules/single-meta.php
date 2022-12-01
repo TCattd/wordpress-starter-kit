@@ -1,7 +1,8 @@
 <?php
 
-if(!defined('ABSPATH'))
+if(!defined('ABSPATH')){
     exit;
+}
 
 // Register store
 acf_register_store('acfe/meta')->prop('multisite', true);
@@ -391,12 +392,17 @@ class acfe_single_meta{
         
         // Enable compile to avoid multiple save
         acf_enable_filter("acfe/single_meta/compile/{$revision_id}");
+    
+        // get parent post id values when not in preview
+        if(acf_maybe_get_POST('wp-preview') !== 'dopreview'){
         
-        // Get acf meta
-        $value = acf_get_metadata($post_id, 'acf');
+            // Get acf meta
+            $value = acf_get_metadata($post_id, 'acf');
         
-        // Unslash for revision
-        $value = wp_unslash($value);
+            // Unslash for revision
+            $value = wp_unslash($value);
+        
+        }
     
         /**
          * @var $type

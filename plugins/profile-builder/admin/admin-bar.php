@@ -45,7 +45,10 @@ function wppb_show_hide_admin_bar_content() {
 
 	<div class="wrap wppb-wrap wppb-admin-bar">
 
-		<h2><?php esc_html_e( 'Admin Bar Settings', 'profile-builder' );?></h2>
+		<h2>
+            <?php esc_html_e( 'Admin Bar Settings', 'profile-builder' );?>
+            <a href="https://www.cozmoslabs.com/docs/profile-builder-2/admin-bar-settings/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+        </h2>
 
         <?php settings_errors(); ?>
 

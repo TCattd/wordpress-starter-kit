@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -12,32 +14,32 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 	}
 
 	public function get_title() {
-		return 'Woocommerce Checkout';
+		return 'Woo Checkout';
 	}
 
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-woocommerce-checkout.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-woocommerce-checkout.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'piotnetforms' ];
+		return [ 'form' ];
 	}
 
 	public function get_keywords() {
-		return [ 'button' ];
+		return [ 'woocommerce checkout' ];
 	}
 
 	public function get_script() {
-		return [ 
+		return [
 			'piotnetforms-woocommerce-sales-funnels-script',
 		];
 	}
 
 	public function get_style() {
-		return [ 
+		return [
 			'piotnetforms-woocommerce-sales-funnels-style'
 		];
 	}
@@ -53,7 +55,6 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 		return $this->structure;
 	}
 	private function setting_controls() {
-
 		$this->add_control(
 			'piotnetforms_woocommerce_checkout_note',
 			[
@@ -67,7 +68,7 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 			'piotnetforms_woocommerce_checkout_form_id',
 			[
 				'label' => __( 'Form ID* (Required)', 'piotnetforms' ),
-				'type' => 'text',
+				'type' => 'hidden',
 				'description' => __( 'Enter the same form id for all fields in a form', 'piotnetforms' ),
 			]
 		);
@@ -185,16 +186,16 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 				'return_value' => 'yes',
 			]
 		);
-		
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
 		$repeater_items = $this->get_group_controls();
 
 		$this->new_group_controls();
@@ -251,17 +252,28 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 	}
 
 	public function render() {
-
 		$settings = $this->settings;
+		global $woocommerce;
+		if ( is_null( $woocommerce->cart ) ) {
+			wc_load_cart();
+		}
+		$product_cart_id = WC()->cart->generate_cart_id( $settings['piotnetforms_woocommerce_checkout_product_id'] );
+		$cart_item_key = $woocommerce->cart->find_product_in_cart( $product_cart_id );
+		if ( empty( $cart_item_key ) ) {
+			$woocommerce->cart->add_to_cart( $settings['piotnetforms_woocommerce_checkout_product_id'] );
+		}
+		$form_post_id = $this->post_id;
+		$form_version = empty( get_post_meta( $form_post_id, '_piotnetforms_version', true ) ) ? 1 : get_post_meta( $form_post_id, '_piotnetforms_version', true );
+		$form_id = $form_version == 1 ? $settings['piotnetforms_woocommerce_checkout_form_id'] : $form_post_id;
 
 		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-btn' );
 
-		if (!empty($settings['piotnetforms_woocommerce_checkout_product_id'])) :
+		if ( !empty( $form_id ) ) :
 
-		?>
+			?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<div data-piotnetforms-woocommerce-checkout-form-id="<?php echo $settings['piotnetforms_woocommerce_checkout_form_id']; ?>" data-piotnetforms-woocommerce-checkout-product-id="<?php echo $settings['piotnetforms_woocommerce_checkout_product_id']; ?>" data-piotnetforms-woocommerce-checkout-post-id="<?php echo $this->post_id; ?>" data-piotnetforms-woocommerce-checkout-id="<?php echo $this->get_id(); ?>" >
-				<?php echo do_shortcode('[woocommerce_checkout]'); ?>
+			<div data-piotnetforms-woocommerce-checkout-form-id="<?php echo $form_id; ?>" data-piotnetforms-woocommerce-checkout-product-id="<?php echo $settings['piotnetforms_woocommerce_checkout_product_id']; ?>" data-piotnetforms-woocommerce-checkout-post-id="<?php echo $this->post_id; ?>" data-piotnetforms-woocommerce-checkout-id="<?php echo $this->get_id(); ?>" >
+				<?php echo do_shortcode( '[woocommerce_checkout]' ); ?>
 			</div>
 		</div>	
 		<?php
@@ -270,5 +282,4 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 
 	public function live_preview() {
 	}
-
 }

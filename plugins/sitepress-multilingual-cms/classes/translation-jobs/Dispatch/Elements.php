@@ -2,6 +2,8 @@
 
 namespace WPML\TM\Jobs\Dispatch;
 
+use Exception;
+use WPML\API\Sanitize;
 use WPML\FP\Fns;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
@@ -29,7 +31,7 @@ abstract class Elements {
 			Obj::propOr( [], 'tr_action', $data ),
 			FILTER_SANITIZE_NUMBER_INT
 		);
-		$sourceLanguage     = filter_var( $data['translate_from'], FILTER_SANITIZE_STRING );
+		$sourceLanguage = Sanitize::stringProp( 'translate_from', $data );
 
 		$targetLanguages = self::getTargetLanguages( $translationActions );
 		$translators     = self::getTranslators( $sourceLanguage, $targetLanguages );
@@ -99,7 +101,12 @@ abstract class Elements {
 	 * @param array    $elementsData
 	 * @param array    $targetLanguages
 	 *
+	 * phpcs:disable Squiz.Commenting.FunctionComment.InvalidNoReturn
 	 * @return array
+	 * @throws Exception Throws an exception if the method is not properly extended.
 	 */
-	abstract protected static function filterElements( Messages $messages, $elementsData, $targetLanguages );
+	protected static function filterElements( Messages $messages, $elementsData, $targetLanguages ) {
+		throw new Exception( ' this method is mandatory' );
+	}
+
 }

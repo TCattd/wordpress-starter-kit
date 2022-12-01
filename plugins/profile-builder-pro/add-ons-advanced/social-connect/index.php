@@ -1035,4 +1035,6 @@ class WPPB_IN_Social_Connect {
 
 }
 
+global $social_connect_instance;
+
 $social_connect_instance = new WPPB_IN_Social_Connect();

@@ -118,7 +118,13 @@ jQuery( function( $ ) {
 			// Init TipTip
 			$( '#tiptip_holder' ).removeAttr( 'style' );
 			$( '#tiptip_arrow' ).removeAttr( 'style' );
-			$( '.woocommerce_variations .tips, .woocommerce_variations .help_tip, .woocommerce_variations .woocommerce-help-tip', wrapper )
+			$(
+				'.woocommerce_variations .tips, ' +
+				'.woocommerce_variations .help_tip, ' +
+				'.woocommerce_variations .woocommerce-help-tip, ' +
+				'.toolbar-variations-defaults .woocommerce-help-tip',
+				wrapper
+			)
 				.tipTip({
 					'attribute': 'data-tip',
 					'fadeIn':    50,
@@ -350,7 +356,7 @@ jQuery( function( $ ) {
 				.on( 'click','.downloadable_files a.delete', this.input_changed );
 
 			$( document.body )
-				.on( 'change', '#variable_product_options .woocommerce_variations :input', this.input_changed )
+				.on( 'change input', '#variable_product_options .woocommerce_variations :input', this.input_changed )
 				.on( 'change', '.variations-defaults select', this.defaults_changed );
 
 			var postForm = $( 'form#post' );
@@ -705,12 +711,17 @@ jQuery( function( $ ) {
 		/**
 		 * Add new class when have changes in some input
 		 */
-		input_changed: function() {
+		input_changed: function( event ) {
 			$( this )
 				.closest( '.woocommerce_variation' )
 				.addClass( 'variation-needs-update' );
 
 			$( 'button.cancel-variation-changes, button.save-variation-changes' ).prop( 'disabled', false );
+
+			// Do not trigger 'woocommerce_variations_input_changed' for 'input' events for backwards compat.
+			if ( 'input' === event.type && $( this ).is( ':text' ) ) {
+				return;
+			}
 
 			$( '#variable_product_options' ).trigger( 'woocommerce_variations_input_changed' );
 		},
@@ -807,6 +818,10 @@ jQuery( function( $ ) {
 				default :
 					$( 'select.variation_actions' ).trigger( do_variation_action );
 					data = $( 'select.variation_actions' ).triggerHandler( do_variation_action + '_ajax_data', data );
+
+					if ( null === data ) {
+						return;
+					}
 					break;
 			}
 

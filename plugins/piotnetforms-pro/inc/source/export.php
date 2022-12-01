@@ -1,12 +1,21 @@
 <?php
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; }
+	exit;
+}
 
 function piotnetforms_get_css( $post_id ) {
-	$upload_dir = wp_upload_dir()['baseurl'] . '/piotnetforms/css/';
+	$upload_dir = wp_upload_dir()['basedir'] . '/piotnetforms/css/';
 	$css_path   = $upload_dir . $post_id . '.css';
-	return file_get_contents( $css_path );
+
+	$arrContextOptions=[
+		'ssl'=>[
+			'verify_peer'=>false,
+			'verify_peer_name'=>false,
+		],
+	];
+
+	return file_get_contents( $css_path, false, stream_context_create( $arrContextOptions ) );
 }
 
 function piotnetforms_remove_settings_in_content( $content ) {
@@ -37,7 +46,7 @@ function piotnetforms_export_post( $post_id ) {
 
 	return [
 		'title'   => $post->post_title,
-		'version' => $post_meta_settings['version'],
+		'version' => empty( get_post_meta( $post_id, '_piotnetforms_version', true ) ) ? $post_meta_settings['version'] : get_post_meta( $post_id, '_piotnetforms_version', true ),
 		'widgets' => $post_meta_settings['widgets'],
 		'content' => piotnetforms_remove_settings_in_content( $post_meta_settings['content'] ),
 		'css'     => piotnetforms_get_css( $post_id ),

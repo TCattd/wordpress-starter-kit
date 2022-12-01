@@ -57,7 +57,7 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 
 		function input_admin_enqueue_scripts() {
 
-			// bail ealry if no enqueue
+			// bail early if no enqueue
 			if ( ! acf_get_setting( 'enqueue_select2' ) ) {
 				return;
 			}
@@ -83,7 +83,7 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 			// v4
 			if ( $major == 4 ) {
 
-				$version = '4.0';
+				$version = '4.0.13';
 				$script  = acf_get_url( "assets/inc/select2/4/select2.full{$min}.js" );
 				$style   = acf_get_url( "assets/inc/select2/4/select2{$min}.css" );
 
@@ -290,6 +290,10 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 				'data-allow_null'  => $field['allow_null'],
 			);
 
+			if ( $field['aria-label'] ) {
+				$select['aria-label'] = $field['aria-label'];
+			}
+
 			// multiple
 			if ( $field['multiple'] ) {
 
@@ -322,6 +326,10 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 						'name' => $field['name'],
 					)
 				);
+			}
+
+			if ( ! empty( $field['query_nonce'] ) ) {
+				$select['data-query-nonce'] = $field['query_nonce'];
 			}
 
 			// append
@@ -358,7 +366,7 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 				$field,
 				array(
 					'label'        => __( 'Choices', 'acf' ),
-					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br /><br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><br />' . __( 'red : Red', 'acf' ),
+					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
 					'name'         => 'choices',
 					'type'         => 'textarea',
 				)
@@ -375,19 +383,23 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 				)
 			);
 
-			// allow_null
+			// return_format
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
-					'instructions' => '',
-					'name'         => 'allow_null',
-					'type'         => 'true_false',
-					'ui'           => 1,
+					'label'        => __( 'Return Format', 'acf' ),
+					'instructions' => __( 'Specify the value returned', 'acf' ),
+					'type'         => 'radio',
+					'name'         => 'return_format',
+					'layout'       => 'horizontal',
+					'choices'      => array(
+						'value' => __( 'Value', 'acf' ),
+						'label' => __( 'Label', 'acf' ),
+						'array' => __( 'Both (Array)', 'acf' ),
+					),
 				)
 			);
 
-			// multiple
 			acf_render_field_setting(
 				$field,
 				array(
@@ -399,19 +411,49 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 				)
 			);
 
-			// ui
+		}
+
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Stylised UI', 'acf' ),
+					'label'        => __( 'Allow Null?', 'acf' ),
 					'instructions' => '',
+					'name'         => 'allow_null',
+					'type'         => 'true_false',
+					'ui'           => 1,
+				)
+			);
+		}
+
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Stylized UI', 'acf' ),
+					'instructions' => __( 'Use a stylized checkbox using select2', 'acf' ),
 					'name'         => 'ui',
 					'type'         => 'true_false',
 					'ui'           => 1,
 				)
 			);
 
-			// ajax
 			acf_render_field_setting(
 				$field,
 				array(
@@ -427,25 +469,7 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 					),
 				)
 			);
-
-			// return_format
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Return Format', 'acf' ),
-					'instructions' => __( 'Specify the value returned', 'acf' ),
-					'type'         => 'select',
-					'name'         => 'return_format',
-					'choices'      => array(
-						'value' => __( 'Value', 'acf' ),
-						'label' => __( 'Label', 'acf' ),
-						'array' => __( 'Both (Array)', 'acf' ),
-					),
-				)
-			);
-
 		}
-
 
 		/*
 		*  load_value()
@@ -594,7 +618,7 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 
 		function format_value_single( $value, $post_id, $field ) {
 
-			// bail ealry if is empty
+			// bail early if is empty
 			if ( acf_is_empty( $value ) ) {
 				return $value;
 			}
@@ -625,6 +649,87 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 			// return
 			return $value;
 
+		}
+
+		/**
+		 * Validates select fields updated via the REST API.
+		 *
+		 * @param bool  $valid
+		 * @param int   $value
+		 * @param array $field
+		 *
+		 * @return bool|WP_Error
+		 */
+		public function validate_rest_value( $valid, $value, $field ) {
+			// rest_validate_request_arg() handles the other types, we just worry about strings.
+			if ( is_null( $value ) || is_array( $value ) ) {
+				return $valid;
+			}
+
+			$option_keys = array_diff(
+				array_keys( $field['choices'] ),
+				array_values( $field['choices'] )
+			);
+
+			$allowed = empty( $option_keys ) ? $field['choices'] : $option_keys;
+
+			if ( ! in_array( $value, $allowed ) ) {
+				$param = sprintf( '%s[%s]', $field['prefix'], $field['name'] );
+				$data  = array(
+					'param' => $param,
+					'value' => $value,
+				);
+				$error = sprintf(
+					__( '%1$s is not one of %2$s', 'acf' ),
+					$param,
+					implode( ', ', $allowed )
+				);
+
+				return new WP_Error( 'rest_invalid_param', $error, $data );
+			}
+
+			return $valid;
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			/**
+			 * If a user has defined keys for the select options,
+			 * we should use the keys for the available options to POST to,
+			 * since they are what is displayed in GET requests.
+			 */
+			$option_keys = array_diff(
+				array_keys( $field['choices'] ),
+				array_values( $field['choices'] )
+			);
+
+			$schema = array(
+				'type'     => array( 'string', 'array', 'int', 'null' ),
+				'required' => ! empty( $field['required'] ),
+				'items'    => array(
+					'type' => array( 'string', 'int' ),
+					'enum' => empty( $option_keys ) ? $field['choices'] : $option_keys,
+				),
+			);
+
+			if ( empty( $field['allow_null'] ) ) {
+				$schema['minItems'] = 1;
+			}
+
+			if ( empty( $field['multiple'] ) ) {
+				$schema['maxItems'] = 1;
+			}
+
+			if ( isset( $field['default_value'] ) && '' !== $field['default_value'] ) {
+				$schema['default'] = $field['default_value'];
+			}
+
+			return $schema;
 		}
 
 	}

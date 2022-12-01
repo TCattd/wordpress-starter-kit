@@ -1,7 +1,8 @@
 <?php
 
-if(!defined('ABSPATH'))
+if(!defined('ABSPATH')){
     exit;
+}
 
 /**
  * acfe_get_fields
@@ -35,7 +36,9 @@ function acfe_get_fields($post_id = false, $format_value = false){
     $meta = array();
     
     // bail early
-    if(!$fields) return false;
+    if(!$fields){
+        return false;
+    }
     
     // populate
     foreach($fields as $k => $field){
@@ -97,12 +100,16 @@ function acfe_get_meta($post_id = false){
     foreach($meta as $key => $value){
         
         // Bail early
-        if(!isset($meta["_$key"])) continue;
+        if(!isset($meta["_$key"])){
+            continue;
+        }
         
         $field_key = $meta["_$key"];
         
         // Bail early if field key isn't valid
-        if(!acf_is_field_key($field_key)) continue;
+        if(!acf_is_field_key($field_key)){
+            continue;
+        }
         
         // Get field
         $field = acf_get_field($field_key);
@@ -235,9 +242,7 @@ function acfe_delete_orphan_meta($post_id = 0, $confirm = true){
         $single_deleted = array();
     
         foreach($meta as $key => $val){
-            
             $single_deleted['single_meta'][ $key ] = $val;
-            
         }
     
         // store
@@ -247,9 +252,7 @@ function acfe_delete_orphan_meta($post_id = 0, $confirm = true){
         
         // delete single meta
         if($confirm){
-            
             acfe_delete_single_meta($post_id);
-            
         }
     
     }
@@ -360,6 +363,31 @@ function acfe_get_orphan_meta($post_id = 0){
                         
                         $allowed_fields[] = $cloned_key;
                         
+                        // get field group from cloned field
+                        $clone_field_group = acfe_get_field_group_from_field($cloned_key);
+    
+                        // add field group in the allowed list
+                        if($clone_field_group){
+                            $allowed_field_groups[] = $clone_field_group['key'];
+                        }
+                        
+                        // todo: enhance logic to only allow sub field of the targeted field
+                        /*
+                        $is_enabled = acf_is_filter_enabled('clone');
+                        
+                        if($is_enabled){
+                            acf_disable_filter('clone');
+                        }
+                        
+                        // also allow descendants in case of repeater, flexible content or group
+                        $descendants = acfe_get_field_descendants($cloned_key);
+                        $allowed_fields = array_merge($allowed_fields, $descendants);
+    
+                        if($is_enabled){
+                            acf_enable_filter('clone');
+                        }
+                        */
+                        
                     }
                     
                 }
@@ -389,7 +417,7 @@ function acfe_get_orphan_meta($post_id = 0){
         $field = $row['field'];
         $field_group = $row['field_group'];
         
-        // field doesn't exists
+        // field doesn't exist
         if(!$field){
             
             $delete[] = $row;
@@ -397,7 +425,7 @@ function acfe_get_orphan_meta($post_id = 0){
             
         }
         
-        // field group doesn't exists
+        // field group doesn't exist
         if(!$field_group){
             
             $delete[] = $row;

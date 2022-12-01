@@ -6,6 +6,9 @@
  */
 class WPML_Media_Post_Images_Translation implements IWPML_Action {
 
+	const ALT_PLACEHOLDER     = '{%ALT_TEXT%}';
+	const CAPTION_PLACEHOLDER = '{%CAPTION%}';
+
 	/**
 	 * @var WPML_Media_Translated_Images_Update
 	 */
@@ -280,13 +283,13 @@ class WPML_Media_Post_Images_Translation implements IWPML_Action {
 	
 	private function replace_placeholder_with_caption( $caption_shortcode, WPML_Media_Caption $caption, $new_caption ) {
 		$caption_content     = $caption->get_content();
-		$new_caption_content = str_replace( WPML_Media_Add_To_Translation_Package::CAPTION_PLACEHOLDER, $new_caption, $caption_content );
+		$new_caption_content = str_replace( self::CAPTION_PLACEHOLDER, $new_caption, $caption_content );
 
 		return str_replace( $caption_content, $new_caption_content, $caption_shortcode );
 	}
 
 	private function replace_placeholder_with_alt_text( $caption_shortcode, WPML_Media_Caption $caption, $new_alt_text ) {
-		return str_replace( 'alt="' . WPML_Media_Add_To_Translation_Package::ALT_PLACEHOLDER . '"', 'alt="' . $new_alt_text . '"', $caption_shortcode );
+		return str_replace( 'alt="' . self::ALT_PLACEHOLDER . '"', 'alt="' . $new_alt_text . '"', $caption_shortcode );
 	}
 
 	private function replace_caption_id_with_translated_id( $caption_shortcode, $attachment_id, $language ) {

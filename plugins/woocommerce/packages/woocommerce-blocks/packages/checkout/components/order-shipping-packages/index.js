@@ -22,9 +22,11 @@ const Slot = ( {
 	extensions,
 	cart,
 	components,
+	context,
+	shippingRates,
 } ) => {
 	const { fills } = useSlot( slotName );
-	const hasMultiplePackages = fills.length > 1;
+	const hasMultiplePackages = fills.length > 1 || shippingRates?.length > 1;
 	return (
 		<OrderShippingPackagesSlot
 			className={ classnames(
@@ -40,6 +42,7 @@ const Slot = ( {
 				extensions,
 				cart,
 				components,
+				context,
 			} }
 		/>
 	);

@@ -2,10 +2,11 @@
 
 namespace Controls_Piotnetforms;
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Control_Hidden extends piotnetforms_Base_Control {
-
 	public function get_type() {
 		return 'hidden';
 	}

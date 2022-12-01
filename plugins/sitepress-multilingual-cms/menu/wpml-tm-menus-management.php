@@ -1,5 +1,6 @@
 <?php
 
+use WPML\API\Sanitize;
 use WPML\Setup\Option;
 use WPML\TM\API\Basket;
 use WPML\TM\ATE\ClonedSites\Lock as AteApiLock;
@@ -150,24 +151,7 @@ class WPML_TM_Menus_Management extends WPML_TM_Menus {
 		$this->source_language  = TranslationProxy_Basket::get_source_language();
 
 		if ( isset( $_COOKIE['wp-translation_dashboard_filter'] ) ) {
-			parse_str( $_COOKIE['wp-translation_dashboard_filter'], $this->translation_filter );
-
-			$this->translation_filter = filter_var_array(
-				$this->translation_filter,
-				array(
-					'type'                 => FILTER_SANITIZE_STRING,
-					'parent_type'          => FILTER_SANITIZE_STRING,
-					'parent_id'            => FILTER_SANITIZE_NUMBER_INT,
-					'from_lang'            => FILTER_SANITIZE_STRING,
-					'to_lang'              => FILTER_SANITIZE_STRING,
-					'tstatus'              => FILTER_SANITIZE_NUMBER_INT,
-					'status'               => FILTER_SANITIZE_STRING,
-					'translation_priority' => FILTER_SANITIZE_NUMBER_INT,
-					'title'                => FILTER_SANITIZE_STRING,
-					'sort_by'              => FILTER_SANITIZE_STRING,
-					'sort_order'           => FILTER_SANITIZE_STRING,
-				)
-			);
+			parse_str( Sanitize::stringProp('wp-translation_dashboard_filter', $_COOKIE), $this->translation_filter );
 		}
 
 		if ( $this->source_language || ! isset( $this->translation_filter['from_lang'] ) ) {
@@ -175,7 +159,7 @@ class WPML_TM_Menus_Management extends WPML_TM_Menus {
 				$this->translation_filter['from_lang'] = $this->source_language;
 			} else {
 				$this->translation_filter['from_lang'] = $this->current_language;
-				if ( array_key_exists( 'lang', $_GET ) && $lang = filter_var( $_GET['lang'], FILTER_SANITIZE_STRING, FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) {
+				if ( $lang = Sanitize::stringProp( 'lang', $_GET ) ) {
 					$this->translation_filter['from_lang'] = $lang;
 				}
 			}
@@ -183,7 +167,7 @@ class WPML_TM_Menus_Management extends WPML_TM_Menus {
 
 		if ( ! isset( $this->translation_filter['to_lang'] ) ) {
 			$this->translation_filter['to_lang'] = '';
-			if ( array_key_exists( 'to_lang', $_GET ) && $lang = filter_var( $_GET['to_lang'], FILTER_SANITIZE_STRING, FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ) {
+			if ( $lang = Sanitize::stringProp( 'to_lang', $_GET ) ) {
 				$this->translation_filter['to_lang'] = $lang;
 			}
 		}
@@ -352,7 +336,7 @@ class WPML_TM_Menus_Management extends WPML_TM_Menus {
 				<?php do_action( 'wpml_tm_dashboard_word_count_estimation' ); ?>
 			</div>
 			<?php
-			if ( $this->dashboard_pagination && ! empty( $this->translation_filter['type'] ) ) {
+			if ( $this->dashboard_pagination ) {
 				do_action( 'wpml_tm_dashboard_pagination', $this->dashboard_pagination->get_items_per_page(), $this->found_documents );
 			}
 			?>
@@ -420,11 +404,13 @@ class WPML_TM_Menus_Management extends WPML_TM_Menus {
 			$do_nothing_checked = 'checked="checked"';
 		}
 
+		$hasMoreThan1SecondaryLanguage = count( $this->active_languages ) > 2;
 		?>
 		<div class="tm-dashboard-translation-options">
 
 
 			<table id="icl_tm_languages" class="widefat">
+				<?php if ( $hasMoreThan1SecondaryLanguage ) { ?>
 				<thead>
 				<tr>
 					<th><?php echo esc_html__( 'All Languages', 'wpml-translation-management' ); ?></th>
@@ -454,6 +440,7 @@ class WPML_TM_Menus_Management extends WPML_TM_Menus {
 					<td colspan="3" style="height:6px!important;"></td>
 				</tr>
 				</thead>
+				<?php } ?>
 				<tbody>
 				<?php foreach ( $this->active_languages as $lang ) : ?>
 					<?php

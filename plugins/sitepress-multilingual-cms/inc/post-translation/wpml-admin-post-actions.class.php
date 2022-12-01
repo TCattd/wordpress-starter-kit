@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 /**
  * Class WPML_Admin_Post_Actions
  *
@@ -192,7 +194,7 @@ class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 		}
 
 		if ( isset( $_POST['data']['icl_post_language'], $_POST['data']['icl_trid'] ) ) {
-			$_POST['icl_post_language'] = filter_var( $_POST['data']['icl_post_language'], FILTER_SANITIZE_STRING );
+			$_POST['icl_post_language'] = Sanitize::string( $_POST['data']['icl_post_language'] );
 			$_POST['icl_trid'] = filter_var( $_POST['data']['icl_trid'], FILTER_SANITIZE_NUMBER_INT );
 			return false;
 		}
@@ -266,7 +268,7 @@ class WPML_Admin_Post_Actions extends WPML_Post_Translation {
 		}
 
 		$referer = $_SERVER['HTTP_REFERER'];
-		$query   = wpml_parse_url( $referer, PHP_URL_QUERY );
+		$query   = (string) wpml_parse_url( $referer, PHP_URL_QUERY );
 		parse_str( $query, $query_parts );
 
 		return isset( $query_parts['source_lang'] ) ? $query_parts['source_lang'] : false;

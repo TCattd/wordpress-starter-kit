@@ -2,10 +2,11 @@
 
 namespace Controls_Piotnetforms;
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Control_Dimensions extends piotnetforms_Base_Control {
-
 	public function get_type() {
 		return 'dimensions';
 	}
@@ -37,7 +38,8 @@ class piotnetforms_Control_Dimensions extends piotnetforms_Base_Control {
 					<span class="piotnet-control-dimensions__label">LEFT</span>
 				</li>
 				<li class="piotnet-control-dimensions-islinked">
-					<input type="checkbox" class="fas fa-link" data-piotnet-control-dimensions="isLinked" value="1" checked="">
+					<input type="checkbox" data-piotnet-control-dimensions="isLinked" value="1"<% if(data['value']['isLinked'] == '1' || data['value']['isLinked'] == undefined) { %>checked=""<% } %>>
+					<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-link.svg'; ?>">
 				</li>
 			</ul>
 		</div>

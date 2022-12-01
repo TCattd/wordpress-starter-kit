@@ -60,8 +60,8 @@ class WPPB_Two_Factor_Authenticator {
      */
     function enqueue_2fa_scripts( ) {
         wp_enqueue_script( 'jquery' );
-        wp_enqueue_script( 'wppb_qrcode_script', plugin_dir_url( __FILE__ ) .'assets/js/jquery.qrcode.min.js', array( 'jquery' ), PROFILE_BUILDER_VERSION );
-        wp_enqueue_script( 'wppb_2fa_script', plugin_dir_url( __FILE__ ) .'assets/js/wppb-2fa.js', array( 'jquery', 'wppb_qrcode_script' ), PROFILE_BUILDER_VERSION );
+        wp_enqueue_script( 'wppb_qrcode_script', plugin_dir_url( __FILE__ ) .'assets/js/jquery.qrcode.min.js', array( 'jquery' ), PROFILE_BUILDER_VERSION, true);
+        wp_enqueue_script( 'wppb_2fa_script', plugin_dir_url( __FILE__ ) .'assets/js/wppb-2fa.js', array( 'jquery', 'wppb_qrcode_script' ), PROFILE_BUILDER_VERSION, true );
         wp_localize_script( 'wppb_2fa_script', 'wppb_2fa_script_vars', array(
                 'WPPBAuthNonce' => wp_create_nonce( 'WPPBAuthaction' ),
                 'ajaxurl'       => admin_url( 'admin-ajax.php' ),
@@ -106,7 +106,10 @@ class WPPB_Two_Factor_Authenticator {
 
         ?>
         <div class="wrap wppb-wrap wppb-two-factor-authentication">
-            <h2><?php esc_html_e( 'Two-Factor Authentication Settings', 'profile-builder' );?></h2>
+            <h2>
+                <?php esc_html_e( 'Two-Factor Authentication Settings', 'profile-builder' );?>
+                <a href="https://www.cozmoslabs.com/docs/profile-builder-2/general-settings/two-factor-authentication/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+            </h2>
 
             <?php settings_errors( ); ?>
 
@@ -259,7 +262,7 @@ class WPPB_Two_Factor_Authenticator {
                                         <input name="wppb_auth_passw" id="wppb_auth_passw" type="text"/>
                                     <li id="wppb_auth_verify_buttons" style="">
                                         <input name="wppb_auth_verify_button" id="wppb_auth_verify_button" value="' . esc_html__( 'Check', 'profile-builder' ) . '" type="button" class="button wppb_auth_button wppb_auth_verify_button" />
-                                        <input name="wppb_auth_verify_indicator" id="wppb_auth_verify_indicator" value="&nbsp" type="button" class="button wppb_auth_button wppb_auth_verify_indicator" disabled />
+                                        <input name="wppb_auth_verify_indicator" id="wppb_auth_verify_indicator" value="" type="button" class="button wppb_auth_button wppb_auth_verify_indicator" disabled />
                                         <input type="hidden" value="" name="wppb_auth_verify_result" id="wppb_auth_verify_result"/>
                                     </li>
                                     </li>
@@ -617,11 +620,9 @@ class WPPB_Two_Factor_Authenticator {
                             data["location"]= "frontend";
                             data["user"]	= jQuery("#user_login.input").val();
                             jQuery.post(ajaxurl, data, function(response) {
-                                if ( response ){
+                                if ( response && !jQuery(".login-auth").length ){
                                     jQuery("#wppb-login-wrap").before(response["notice"]);
                                     jQuery(".login-password").after(response["field"]);
-                                } else {
-                                    thisForm.submit();
                                 }
                             });
                         });

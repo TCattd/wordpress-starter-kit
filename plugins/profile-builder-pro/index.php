@@ -3,7 +3,7 @@
 Plugin Name: Profile Builder Pro
 Plugin URI: https://www.cozmoslabs.com/wordpress-profile-builder/
 Description: Get the best out of Profile Builder and enjoy fully customizable login, registration, and edit profile forms, along with front-end user listing, multiple registration & edit profile forms, custom redirects, email customizer, and more.
-Version: 3.7.6
+Version: 3.8.4
 Author: Cozmoslabs
 Author URI: https://www.cozmoslabs.com/
 Text Domain: profile-builder
@@ -27,6 +27,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
+define( 'PROFILE_BUILDER_PAID_VERSION', '3.8.4' );
 
 register_activation_hook(__FILE__, 'wppb_pro_activate');
 function wppb_pro_activate( $network_wide ) {
@@ -55,7 +57,7 @@ function wppb_pro_admin_notice(){
             $other_plugin_name = 'Profile Builder - Elite';
         else if( is_plugin_active('profile-builder-basic/index.php') )
             $other_plugin_name = 'Profile Builder - Basic';
-        else if( is_plugin_active('pprofile-builder-unlimited/index.php') )
+        else if( is_plugin_active('profile-builder-unlimited/index.php') )
             $other_plugin_name = 'Profile Builder - Unlimited';
         ?>
         <div class="error">
@@ -71,7 +73,10 @@ function wppb_pro_admin_notice(){
     }
 
     // Notifications for base plugin missing or actions done from this notice
-    $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
+    if( is_multisite() )
+        $did_upgrade = get_network_option( null, 'wppb_repackage_initial_upgrade', false );
+    else
+        $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
 
     if( $did_upgrade != false ){
 
@@ -124,7 +129,10 @@ add_action( 'admin_init', 'wppb_pro_initial_upgrade', 1 );
 function wppb_pro_initial_upgrade() {
 
     // Install & Activate Profile Builder Free on initial upgrade
-    $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
+    if( is_multisite() )
+        $did_upgrade = get_network_option( null, 'wppb_repackage_initial_upgrade', false );
+    else
+        $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
 
     if( $did_upgrade === false ){
 
@@ -138,7 +146,10 @@ function wppb_pro_initial_upgrade() {
 
         }
 
-        update_option( 'wppb_repackage_initial_upgrade', 'yes', false );
+        if( is_multisite() )
+            update_network_option( null, 'wppb_repackage_initial_upgrade', 'yes' );
+        else
+            update_option( 'wppb_repackage_initial_upgrade', 'yes', false );
 
         // Free version
         wp_safe_redirect( add_query_arg( [
@@ -221,7 +232,10 @@ function wppb_pro_on_plugin_update( $upgrader_object, $options ) {
     if( !isset( $options['action'] ) || !isset( $options['type'] ) )
         return;
 
-    $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
+    if( is_multisite() )
+        $did_upgrade = get_network_option( null, 'wppb_repackage_initial_upgrade', false );
+    else
+        $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
 
     if( $did_upgrade === false ){
         $current_plugin_path_name = plugin_basename( __FILE__ );
@@ -241,7 +255,10 @@ function wppb_pro_on_plugin_update( $upgrader_object, $options ) {
                     if ( !is_wp_error( $installed ) && $installed )
                         $activate = activate_plugin( $free_plugin_slug );
 
-                    update_option( 'wppb_repackage_initial_upgrade', 'yes', false );
+                    if( is_multisite() )
+                        update_network_option( null, 'wppb_repackage_initial_upgrade', 'yes' );
+                    else
+                        update_option( 'wppb_repackage_initial_upgrade', 'yes', false );
                     
                     break;
 
@@ -257,7 +274,10 @@ function wppb_pro_on_plugin_update( $upgrader_object, $options ) {
 add_action( 'automatic_updates_complete', 'wppb_pro_on_plugin_automatic_update' );
 function wppb_pro_on_plugin_automatic_update( $results ) {
 
-    $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
+    if( is_multisite() )
+        $did_upgrade = get_network_option( null, 'wppb_repackage_initial_upgrade', false );
+    else
+        $did_upgrade = get_option( 'wppb_repackage_initial_upgrade', false );
 
     if( $did_upgrade === false ){
         $current_plugin_path_name = plugin_basename( __FILE__ );
@@ -275,8 +295,11 @@ function wppb_pro_on_plugin_automatic_update( $results ) {
                 if ( !is_wp_error( $installed ) && $installed )
                     $activate = activate_plugin( $free_plugin_slug );
 
-                update_option( 'wppb_repackage_initial_upgrade', 'yes', false );
-                
+                if( is_multisite() )
+                    update_network_option( null, 'wppb_repackage_initial_upgrade', 'yes' );
+                else
+                    update_option( 'wppb_repackage_initial_upgrade', 'yes', false );
+                        
                 break;
 
             }

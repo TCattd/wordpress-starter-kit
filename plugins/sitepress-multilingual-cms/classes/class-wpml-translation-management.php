@@ -1,6 +1,7 @@
 <?php
 
 use WPML\TM\ATE\ClonedSites\Lock as AteApiLock;
+use function WPML\Container\make;
 
 /**
  * Class WPML_Translation_Management
@@ -840,12 +841,8 @@ class WPML_Translation_Management {
 	}
 
 	private function add_translation_queue_hooks() {
-		if ( $this->sitepress->get_wp_api()
-							 ->is_translation_queue_page() ) {
-
-			$translation_queue_factory = wpml_tm_translation_queue_factory();
-
-			$this->tm_queue = $translation_queue_factory->create();
+		if ( \WPML\UIPage::isTranslationQueue( $_GET ) ) {
+			$this->tm_queue = make(\WPML_Translations_Queue::class);
 			$this->tm_queue->init_hooks();
 		}
 	}

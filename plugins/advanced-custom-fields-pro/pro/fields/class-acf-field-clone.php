@@ -188,7 +188,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				return $fields;
 			}
 
-			// bail ealry if already cloning this field (avoid infinite looping)
+			// bail early if already cloning this field (avoid infinite looping)
 			if ( isset( $this->cloning[ $field['key'] ] ) ) {
 				return $fields;
 			}
@@ -419,7 +419,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			$length = strlen( $field['_name'] );
 			$prefix = substr( $field['name'], 0, -$length );
 
-			// bail ealry if _name is not found at the end of name (unknown potential error)
+			// bail early if _name is not found at the end of name (unknown potential error)
 			if ( $prefix . $field['_name'] !== $field['name'] ) {
 				return $field;
 			}
@@ -528,6 +528,37 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 
 		}
 
+		/**
+		 * Apply basic formatting to prepare the value for default REST output.
+		 *
+		 * @param mixed      $value
+		 * @param string|int $post_id
+		 * @param array      $field
+		 * @return mixed
+		 */
+		public function format_value_for_rest( $value, $post_id, array $field ) {
+			if ( empty( $value ) || ! is_array( $value ) ) {
+				return $value;
+			}
+
+			if ( ! is_array( $field ) || ! isset( $field['sub_fields'] ) || ! is_array( $field['sub_fields'] ) ) {
+				return $value;
+			}
+
+			// Loop through each row and within that, each sub field to process sub fields individually.
+			foreach ( $field['sub_fields'] as $sub_field ) {
+
+				// Extract the sub field 'field_key'=>'value' pair from the $value and format it.
+				$sub_value = acf_extract_var( $value, $sub_field['key'] );
+				$sub_value = acf_format_value_for_rest( $sub_value, $post_id, $sub_field );
+
+				// Add the sub field value back to the $value but mapped to the field name instead
+				// of the key reference.
+				$value[ $sub_field['name'] ] = $sub_value;
+			}
+
+			return $value;
+		}
 
 		/*
 		*  update_value()
@@ -552,7 +583,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				return null;
 			}
 
-			// bail ealry if no sub fields
+			// bail early if no sub fields
 			if ( empty( $field['sub_fields'] ) ) {
 				return null;
 			}
@@ -732,7 +763,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				}
 
 				?>
-			<th <?php acf_esc_attr_e( $attrs ); ?>>
+			<th <?php echo acf_esc_attrs( $attrs ); ?>>
 				<?php acf_render_field_label( $sub_field ); ?>
 				<?php acf_render_field_instructions( $sub_field ); ?>
 			</th>
@@ -835,13 +866,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'   => __( 'Prefix Field Labels', 'acf' ),
-					'message' => $instructions,
-					// 'instructions_placement'  => 'field',
-					'name'    => 'prefix_label',
-					'class'   => 'setting-prefix-label',
-					'type'    => 'true_false',
-					'ui'      => 1,
+					'label'        => __( 'Prefix Field Labels', 'acf' ),
+					'instructions' => $instructions,
+					'name'         => 'prefix_label',
+					'class'        => 'setting-prefix-label',
+					'type'         => 'true_false',
+					'ui'           => 1,
 				)
 			);
 
@@ -851,13 +881,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'   => __( 'Prefix Field Names', 'acf' ),
-					'message' => $instructions,
-					// 'instructions_placement'  => 'field',
-					'name'    => 'prefix_name',
-					'class'   => 'setting-prefix-name',
-					'type'    => 'true_false',
-					'ui'      => 1,
+					'label'        => __( 'Prefix Field Names', 'acf' ),
+					'instructions' => $instructions,
+					'name'         => 'prefix_name',
+					'class'        => 'setting-prefix-name',
+					'type'         => 'true_false',
+					'ui'           => 1,
 				)
 			);
 
@@ -923,12 +952,14 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				return '';
 			}
 
+			// phpcs:disable WordPress.Security.NonceVerification.Missing -- Verified elsewhere.
 			// ajax_fields
 			if ( isset( $_POST['fields'][ $selector ] ) ) {
 
-				return $this->get_clone_setting_field_choice( $_POST['fields'][ $selector ] );
+				return $this->get_clone_setting_field_choice( acf_sanitize_request_args( $_POST['fields'][ $selector ] ) );
 
 			}
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 			// field
 			if ( acf_is_field_key( $selector ) ) {
@@ -1147,7 +1178,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 				// loop
 				foreach ( $children as $child ) {
 
-					// bail ealry if no key (fake field group or corrupt field)
+					// bail early if no key (fake field group or corrupt field)
 					if ( ! $child ) {
 						continue;
 					}
@@ -1230,7 +1261,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 
 		function acf_prepare_field( $field ) {
 
-			// bail ealry if not cloned
+			// bail early if not cloned
 			if ( empty( $field['_clone'] ) ) {
 				return $field;
 			}
@@ -1291,6 +1322,53 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			// return
 			return $valid;
 
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			$schema = array(
+				'type'     => array( 'object', 'null' ),
+				'required' => ! empty( $field['required'] ) ? array() : false,
+				'items'    => array(
+					'type'       => 'object',
+					'properties' => array(),
+				),
+			);
+
+			foreach ( $field['sub_fields'] as $sub_field ) {
+				/** @var acf_field $type */
+				$type = acf_get_field_type( $sub_field['type'] );
+
+				if ( ! $type ) {
+					continue;
+				}
+
+				$sub_field_schema = $type->get_rest_schema( $sub_field );
+
+				// Passing null to nested fields has no effect. Remove this as a possible type to prevent
+				// confusion in the schema.
+				$null_type_index = array_search( 'null', $sub_field_schema['type'] );
+				if ( $null_type_index !== false ) {
+					unset( $sub_field_schema['type'][ $null_type_index ] );
+				}
+
+				$schema['items']['properties'][ $sub_field['name'] ] = $sub_field_schema;
+
+				/**
+				 * If the clone field itself is marked as required, all subfields are required,
+				 * regardless of the status of the original fields.
+				 */
+				if ( is_array( $schema['required'] ) ) {
+					$schema['required'][] = $sub_field['name'];
+				}
+			}
+
+			return $schema;
 		}
 
 	}

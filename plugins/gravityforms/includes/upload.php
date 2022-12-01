@@ -124,6 +124,28 @@ class GFAsyncUpload {
 			}
 		}
 
+		$chunk         = isset( $_REQUEST['chunk'] ) ? intval( $_REQUEST['chunk'] ) : 0;
+		$chunks        = isset( $_REQUEST['chunks'] ) ? intval( $_REQUEST['chunks'] ) : 0;
+		$chunk_data    = $chunks && $file_name ? rgar( $_REQUEST, str_replace( '.', '_', $file_name ) ) : array();
+		$tmp_file_name = '';
+
+		if ( $chunk ) {
+			if ( empty( $chunk_data['hash'] ) || ( $chunk_data['hash'] !== wp_hash( $chunk_data['temp_filename'] . ( $chunk - 1 ) . $form_id . $field_id ) ) ) {
+				self::die_error( 105, __( 'Upload unsuccessful', 'gravityforms' ) . ' ' . $uploaded_filename );
+			}
+			$tmp_file_name = $chunk_data['temp_filename'];
+		}
+
+		if ( empty( $tmp_file_name ) ) {
+			$tmp_file_name = $form_unique_id . '_input_' . $field_id . '_' . GFCommon::random_str( 16 ) . '_' . $file_name;
+		}
+
+		$tmp_file_name = sanitize_file_name( $tmp_file_name );
+		$file_path     = $target_dir . $tmp_file_name;
+
+		// Only validate if chunking is disabled, or if the final chunk has been uploaded.
+		$check_chunk = $chunks === 0 || $chunk === ( $chunks - 1 );
+
 		/**
 		 * Allows the disabling of file upload whitelisting
 		 *
@@ -131,16 +153,23 @@ class GFAsyncUpload {
 		 */
 		$whitelisting_disabled = apply_filters( 'gform_file_upload_whitelisting_disabled', false );
 
-		if ( ! $whitelisting_disabled ) {
+		if ( ! $whitelisting_disabled && $check_chunk ) {
+
+			$file_array = $_FILES['file'];
+
+			if ( $chunks ) {
+				$file_array['tmp_name'] = $file_path;
+			}
+
 			// Whitelist the file type
-			$valid_uploaded_filename = GFCommon::check_type_and_ext( $_FILES['file'], $uploaded_filename );
+			$valid_uploaded_filename = GFCommon::check_type_and_ext( $file_array, $uploaded_filename );
 
 			if ( is_wp_error( $valid_uploaded_filename ) ) {
 				GFCommon::log_debug( sprintf( '%s(): %s; %s; %s', __METHOD__, $uploaded_filename, $valid_uploaded_filename->get_error_code(), $valid_uploaded_filename->get_error_message() ) );
 				self::die_error( $valid_uploaded_filename->get_error_code(), $valid_uploaded_filename->get_error_message() );
 			}
 
-			$valid_file_name = GFCommon::check_type_and_ext( $_FILES['file'], $file_name );
+			$valid_file_name = GFCommon::check_type_and_ext( $file_array, $file_name );
 
 			if ( is_wp_error( $valid_file_name ) ) {
 				GFCommon::log_debug( sprintf( '%s(): %s; %s; %s', __METHOD__, $file_name, $valid_file_name->get_error_code(), $valid_file_name->get_error_message() ) );
@@ -148,13 +177,7 @@ class GFAsyncUpload {
 			}
 		}
 
-		$tmp_file_name = $form_unique_id . '_input_' . $field_id . '_' . GFCommon::random_str( 16 ) . '_' . $file_name;
-
-		$tmp_file_name = sanitize_file_name( $tmp_file_name );
-
-		$file_path = $target_dir . $tmp_file_name;
-
-		$cleanup_target_dir = true; // Remove old files
+		$cleanup_target_dir = apply_filters( 'gform_cleanup_target_dir', true ); // Remove old files
 		$max_file_age = 5 * 3600; // Temp file age in seconds
 
 		// Remove old temp files
@@ -183,9 +206,6 @@ class GFAsyncUpload {
 		if ( isset( $_SERVER['CONTENT_TYPE'] ) ) {
 			$contentType = $_SERVER['CONTENT_TYPE'];
 		}
-
-		$chunk  = isset( $_REQUEST['chunk'] ) ? intval( $_REQUEST['chunk'] ) : 0;
-		$chunks = isset( $_REQUEST['chunks'] ) ? intval( $_REQUEST['chunks'] ) : 0;
 
 		// Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
 		if ( strpos( $contentType, 'multipart' ) !== false ) {
@@ -265,6 +285,10 @@ class GFAsyncUpload {
 				'uploaded_filename' => str_replace( "\\'", "'", urldecode( $uploaded_filename ) ) //Decoding filename to prevent file name mismatch.
 			)
 		);
+
+		if ( $chunks && ( $chunk != $chunks - 1 ) ) {
+			$output['data']['hash'] = wp_hash( $tmp_file_name . $chunk . $form_id . $field_id );
+		}
 
 		$output = json_encode( $output );
 

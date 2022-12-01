@@ -72,7 +72,10 @@ function wppb_in_bbpress_settings_content() {
             <?php $wppb_bbpress_settings = get_option( 'wppb_bbpress_settings' ); ?>
             <?php settings_fields( 'wppb_bbpress_settings' ); ?>
 
-            <h2><?php esc_html_e( 'bbPress Integration', 'profile-builder' ); ?></h2>
+            <h2>
+                <?php esc_html_e( 'bbPress Integration', 'profile-builder' ); ?>
+                <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/bbpress/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+            </h2>
 
             <table class="form-table">
 

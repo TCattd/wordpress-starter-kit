@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Button extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,12 +20,12 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-button.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-button.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'piotnetforms' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
@@ -96,6 +98,7 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 			[
 				'type'         => 'select',
 				'label'        => __( 'Alignment', 'piotnetforms' ),
+				'label_block'  => true,
 				'value'        => '',
 				'options'      => [
 					''       => __( 'Default', 'piotnetforms' ),
@@ -125,10 +128,39 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 			[
 				'type'       => 'select',
 				'label'      => __( 'Icon Position', 'piotnetforms' ),
-				'value'      => 'left',
 				'options'    => [
 					'before' => __( 'Before', 'piotnetforms' ),
 					'after'  => __( 'After', 'piotnetforms' ),
+				],
+				'conditions' => [
+					[
+						'name'     => 'button_icon',
+						'operator' => '!=',
+						'value'    => '',
+					],
+				],
+			]
+		);
+		$this->add_responsive_control(
+			'button_icon_spacing',
+			[
+				'type'        => 'slider',
+				'label'       => __( 'Icon Spacing', 'piotnetforms' ),
+				'value'       => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'label_block' => true,
+				'size_units'  => [
+					'px' => [
+						'min'  => 1,
+						'max'  => 100,
+						'step' => 1,
+					],
+				],
+				'selectors'   => [
+					'{{WRAPPER}} .piotnet-button--icon-before i' => 'margin-right:{{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .piotnet-button--icon-after i' => 'margin-left:{{SIZE}}{{UNIT}}',
 				],
 				'conditions' => [
 					[
@@ -173,7 +205,7 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 		$normal_controls = $this->add_button_style_controls(
 			'normal',
 			[
-				'selectors' => '{{WRAPPER}}.piotnetforms-btn a',
+				'selectors' => '{{WRAPPER}}.piotnetforms-btn .piotnet-button, {{WRAPPER}}.piotnetforms-btn a',
 			]
 		);
 		$this->add_control(
@@ -206,7 +238,7 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 		);
 	}
 
-	private function add_button_style_controls(string $name, $args = []) {
+	private function add_button_style_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['selectors'] ) ? $args['selectors'] : '{{WRAPPER}}';
 		$previous_controls = $this->new_group_controls();
 		$this->add_control(
@@ -363,29 +395,42 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 	}
 
 	public function render() {
-
 		$settings = $this->settings;
 
 		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-btn' );
 
 		$button_icon = isset( $settings['button_icon'] ) ? $settings['button_icon'] : '';
-		$button_link = isset( $settings['button_link'] ) ? $settings['button_link'] : '';
-		$button_id   = isset( $settings['button_id'] ) ? $settings['button_id'] : '';
 		$button_text = isset( $settings['button_text'] ) ? $settings['button_text'] : '';
-		$target = isset($settings['button_link_target']) ? 'target="'.$settings['button_link_target'].'"' : '';
+		$button_tag = 'span';
 
-		?>
+		$this->add_render_attribute( 'button', 'class', 'piotnet-button' );
+
+		if ( !empty( $settings['button_link'] ) ) {
+			$this->add_render_attribute( 'button', 'href', $settings['button_link'] );
+			$button_tag = 'a';
+		}
+
+		if ( !empty( $settings['button_link_target'] ) ) {
+			$this->add_render_attribute( 'button', 'target', $settings['button_link_target'] );
+		}
+
+		if ( !empty( $settings['button_id'] ) ) {
+			$this->add_render_attribute( 'button', 'id', $settings['button_id'] );
+		} ?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
 			<?php
 			if ( !empty( $settings['button_icon'] ) ) {
+				$this->add_render_attribute( 'button', 'class', 'piotnet-button--icon-' . $settings['button_icon_position'] );
 				if ( $settings['button_icon_position'] == 'before' ) {
 					?>
-					<a href="<?php echo $button_link; ?>" <?php echo $target ?> class="piotnet-button" id="<?php echo $button_id; ?>"><i class="<?php echo $button_icon; ?>"></i><?php echo $button_text; ?></a>
-				<?php } else { ?>
-					<a href="<?php echo $button_link; ?>" <?php echo $target ?> id="<?php echo $button_id; ?>"><?php echo $button_text; ?> <i class="<?php echo $button_icon; ?>"></i></a>
+					<<?php echo $button_tag; ?> <?php echo $this->get_render_attribute_string( 'button' ); ?>><i class="<?php echo $button_icon; ?>"></i><?php echo $button_text; ?></<?php echo $button_tag; ?>>
+				<?php
+				} else { ?>
+					<<?php echo $button_tag; ?> <?php echo $this->get_render_attribute_string( 'button' ); ?>><?php echo $button_text; ?> <i class="<?php echo $button_icon; ?>"></i></<?php echo $button_tag; ?>>
 				<?php } ?>
-			<?php } else { ?>
-				<a href="<?php echo $button_link; ?>" <?php echo $target ?> class="piotnet-button" id="<?php echo $button_id; ?>"><?php echo $button_text; ?></a>
+			<?php
+			} else { ?>
+				<<?php echo $button_tag; ?> <?php echo $this->get_render_attribute_string( 'button' ); ?>><?php echo $button_text; ?></<?php echo $button_tag; ?>>
 			<?php } ?>
 		</div>	
 		<?php
@@ -394,22 +439,23 @@ class piotnetforms_Button extends Base_Widget_Piotnetforms {
 		?>
 		<%
 			view.add_attribute('wrapper', 'class', 'piotnetforms-btn');
+			view.add_attribute('button', 'class', 'piotnet-button');
 			view.add_attribute('button_icon', 'class', data.widget_settings.button_icon);
 
 			var target = data.widget_settings.button_link_target != undefined ? data.widget_settings.button_link_target : '';
 		%>
 		<div <%= view.render_attributes('wrapper') %>>
 			<% if(data.widget_settings.button_icon){
+				view.add_attribute('button', 'class', 'piotnet-button--icon-' + data.widget_settings.button_icon_position );
 				if(data.widget_settings.button_icon_position == 'before'){ %>
-					<a href="<%= data.widget_settings.button_link %>" target="<%= target %>" class="piotnet-button" id="<%= data.widget_settings.button_id %>"><i <%= view.render_attributes('button_icon') %>></i> <%= data.widget_settings.button_text %></a>
+					<a href="<%= data.widget_settings.button_link %>" target="<%= target %>" <%= view.render_attributes('button') %> id="<%= data.widget_settings.button_id %>"><i <%= view.render_attributes('button_icon') %>></i> <%= data.widget_settings.button_text %></a>
 				<% }else{ %>
-					<a href="<%= data.widget_settings.button_link %>" target="<%= target %>" class="piotnet-button" id="<%= data.widget_settings.button_id %>"><%= data.widget_settings.button_text %> <i <%= view.render_attributes('button_icon') %>></i></a>
+					<a href="<%= data.widget_settings.button_link %>" target="<%= target %>" <%= view.render_attributes('button') %> id="<%= data.widget_settings.button_id %>"><%= data.widget_settings.button_text %> <i <%= view.render_attributes('button_icon') %>></i></a>
 				<% } %>
 			<% }else{ %>
-				<a href="<%= data.widget_settings.button_link %>" target="<%= target %>" class="piotnet-button" id="<%= data.widget_settings.button_id %>"><%= data.widget_settings.button_text %></a>
+				<a href="<%= data.widget_settings.button_link %>" target="<%= target %>" <%= view.render_attributes('button') %> id="<%= data.widget_settings.button_id %>"><%= data.widget_settings.button_text %></a>
 			<% } %>
 		</div>
 		<?php
 	}
-
 }

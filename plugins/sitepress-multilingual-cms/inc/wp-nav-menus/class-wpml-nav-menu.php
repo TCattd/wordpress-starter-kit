@@ -1,4 +1,7 @@
 <?php
+
+use WPML\API\Sanitize;
+
 class WPML_Nav_Menu {
 	private $current_menu;
 	private $current_lang;
@@ -642,8 +645,8 @@ class WPML_Nav_Menu {
 		$debug_backtrace = $sitepress->get_backtrace( 5 ); // Ignore objects and limit to first 5 stack frames, since 4 is the highest index we use
 
 		if ( isset( $debug_backtrace[4] ) && $debug_backtrace[4]['function'] === '_wp_auto_add_pages_to_menu' && ! empty( $val['auto_add'] ) ) {
-			$post_lang = isset( $_POST['icl_post_language'] ) ? filter_var( $_POST['icl_post_language'], FILTER_SANITIZE_STRING ) : false;
-			$post_lang = ! $post_lang && isset( $_POST['lang'] ) ? filter_var( $_POST['lang'], FILTER_SANITIZE_STRING ) : $post_lang;
+			$post_lang = Sanitize::stringProp( 'icl_post_language', $_POST );
+			$post_lang = ! $post_lang && isset( $_POST['lang'] ) ? Sanitize::string( $_POST['lang'] ) : $post_lang;
 			$post_lang = ! $post_lang && $this->is_duplication_mode() ? $sitepress->get_current_language() : $post_lang;
 
 			if ( $post_lang ) {

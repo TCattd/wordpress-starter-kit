@@ -1,36 +1,29 @@
 <?php
 
-
 namespace WPML\TM\ATE;
-
 
 use WPML\API\Settings;
 use WPML\DocPage;
-use WPML\Element\API\Languages;
 use WPML\FP\Fns;
-use WPML\FP\Logic;
 use WPML\FP\Lst;
 use WPML\FP\Obj;
-use WPML\FP\Relation;
+use WPML\LIB\WP\Hooks;
 use WPML\LIB\WP\User;
+use WPML\Setup\Option;
 use WPML\TM\ATE\AutoTranslate\Endpoint\AutoTranslate;
-use WPML\TM\ATE\AutoTranslate\Endpoint\EnableATE;
 use WPML\TM\ATE\AutoTranslate\Endpoint\CancelJobs;
+use WPML\TM\ATE\AutoTranslate\Endpoint\EnableATE;
 use WPML\TM\ATE\AutoTranslate\Endpoint\GetATEJobsToSync;
 use WPML\TM\ATE\AutoTranslate\Endpoint\GetCredits;
 use WPML\TM\ATE\AutoTranslate\Endpoint\GetStatus;
 use WPML\TM\ATE\AutoTranslate\Endpoint\RefreshJobsStatus;
 use WPML\TM\ATE\AutoTranslate\Endpoint\SyncLock;
 use WPML\TM\ATE\Download\Queue;
-use WPML\TM\ATE\Review\ReviewStatus;
 use WPML\TM\ATE\Sync\Trigger;
 use WPML\TM\WP\App\Resources;
 use WPML\UIPage;
 use function WPML\Container\make;
 use function WPML\FP\invoke;
-use function WPML\FP\pipe;
-use WPML\LIB\WP\Hooks;
-use WPML\Setup\Option;
 
 class Loader implements \IWPML_Backend_Action {
 
@@ -43,6 +36,10 @@ class Loader implements \IWPML_Backend_Action {
 			// which do not separate between ajax and non-ajax calls and loads this whenever is_admin() is true.
 			// Problem: ALL ajax calls return true for is_admin() - also on the frontend and for non logged-in users.
 			// TODO: Remove once wpmltm-4351 is done.
+			return;
+		}
+
+		if ( UIPage::isTMJobs( $_GET ) ) {
 			return;
 		}
 
@@ -67,48 +64,40 @@ class Loader implements \IWPML_Backend_Action {
 	}
 
 	public static function getData() {
-		$jobsToSync = Jobs::getJobsWithStatus( [
-			ICL_TM_WAITING_FOR_TRANSLATOR,
-			ICL_TM_IN_PROGRESS,
-			ICL_TM_ATE_NEEDS_RETRY
-		] );
+		$jobsToSync = Jobs::getJobsToSync();
+
+		$anyJobsExist = Jobs::isThereJob();
 
 		$ateTab = admin_url( UIPage::getTMATE() );
 
 		return [
 			'name' => 'ate_jobs_sync',
 			'data' => [
-				'endpoints'            => self::getEndpoints(),
-				'urls'                 => self::getUrls( $ateTab ),
-				'jobIdPlaceHolder'     => self::JOB_ID_PLACEHOLDER,
-				'notices'              => StatusBar::getNotices(),
-				'isTranslationManager' => User::getCurrent()->has_cap( \WPML_Manage_Translations_Role::CAPABILITY ),
+				'endpoints'                 => self::getEndpoints(),
+				'urls'                      => self::getUrls( $ateTab ),
+				'jobIdPlaceHolder'          => self::JOB_ID_PLACEHOLDER,
+				'notices'                   => StatusBar::getNotices(),
+				'isTranslationManager'      => User::getCurrent()->has_cap( \WPML_Manage_Translations_Role::CAPABILITY ),
 
-				'jobsToSync'       => $jobsToSync,
-				'totalJobsCount'   => Jobs::getTotal(),
-				'needsReviewCount' => count( Jobs::getJobsWithStatus( [ ICL_TM_NEEDS_REVIEW ] ) ),
+				'jobsToSync'                => $jobsToSync,
+				'anyJobsExist'              => $anyJobsExist,
+				'totalJobsCount'            => Jobs::getTotal(),
+				'needsReviewCount'          => count( Jobs::getJobsWithStatus( [ ICL_TM_NEEDS_REVIEW ] ) ),
 
 				'shouldTranslateEverything' => Option::shouldTranslateEverything() && ! TranslateEverything::isEverythingProcessed( true ),
 
-				'isAutomaticTranslations' => Option::shouldTranslateEverything(),
-				'isSyncRequired'          => self::isSyncRequired() || count( $jobsToSync ),
-				'needsFetchCredit'        => Option::shouldTranslateEverything() && UIPage::isTMDashboard( $_GET ),
+				'isAutomaticTranslations'   => Option::shouldTranslateEverything(),
+				'isSyncRequired'            => count( $jobsToSync ),
+				'needsFetchCredit'          => Option::shouldTranslateEverything() && UIPage::isTMDashboard( $_GET ),
 
-				'strings'     => self::getStrings(),
-				'ateConsole'  => self::getAteData( Lst::pluck( 'ateJobId', $jobsToSync ) ),
-				'isAteActive' => \WPML_TM_ATE_Status::is_enabled_and_activated(),
-				'editorMode'  => Settings::pathOr( false, [ 'translation-management', 'doc_translation_method' ] )
+				'strings'                   => self::getStrings(),
+				'ateConsole'                => self::getAteData( Lst::pluck( 'ateJobId', $jobsToSync ) ),
+				'isAteActive'               => \WPML_TM_ATE_Status::is_enabled_and_activated(),
+				'editorMode'                => Settings::pathOr( false, [ 'translation-management', 'doc_translation_method' ] ),
 			],
 		];
 	}
-
-	/**
-	 * @return bool
-	 */
-	private static function isSyncRequired() {
-		return make( Trigger::class )->isSyncRequired();
-	}
-
+	
 	/**
 	 * @return string
 	 */

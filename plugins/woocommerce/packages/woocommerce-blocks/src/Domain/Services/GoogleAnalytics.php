@@ -46,18 +46,22 @@ class GoogleAnalytics {
 	 */
 	public function enqueue_scripts() {
 		$settings = $this->get_google_analytics_settings();
+		$prefix   = strstr( strtoupper( $settings['ga_id'] ), '-', true );
 
 		// Require tracking to be enabled with a valid GA ID.
-		if ( ! stristr( $settings['ga_id'], 'G-' ) ) {
+		if ( ! in_array( $prefix, [ 'G', 'GT' ], true ) ) {
 			return;
 		}
 
 		/**
 		 * Filter to disable Google Analytics tracking.
 		 *
+		 * @internal Matches filter name in GA extension.
+		 * @since 4.9.0
+		 *
 		 * @param boolean $disable_tracking If true, tracking will be disabled.
 		 */
-		if ( ! stristr( $settings['ga_id'], 'G-' ) || apply_filters( 'woocommerce_ga_disable_tracking', ! wc_string_to_bool( $settings['ga_event_tracking_enabled'] ) ) ) {
+		if ( apply_filters( 'woocommerce_ga_disable_tracking', ! wc_string_to_bool( $settings['ga_event_tracking_enabled'] ) ) ) {
 			return;
 		}
 

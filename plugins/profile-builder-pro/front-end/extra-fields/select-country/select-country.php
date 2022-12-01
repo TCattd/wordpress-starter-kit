@@ -20,6 +20,8 @@ function wppb_country_select_handler( $output, $form_location, $field, $user_id,
 
         $input_value = ( isset( $request_data[wppb_handle_meta_name( $field['meta-name'] )] ) ? $country_array[trim( $request_data[wppb_handle_meta_name( $field['meta-name'] )] )] : $input_value );
 
+        $input_value = apply_filters( 'wppb_' . $form_location . '_country_select_custom_field_input_value', $input_value, $field, $form_location );
+
         if ( $form_location != 'back_end' ){
             $error_mark = ( ( $field['required'] == 'Yes' ) ? '<span class="wppb-required" title="'.wppb_required_field_error($field["field-title"]).'">*</span>' : '' );
 
@@ -37,6 +39,7 @@ function wppb_country_select_handler( $output, $form_location, $field, $user_id,
 			}
 
             foreach( $country_array as $iso => $country ){
+
                 $output .= '<option value="'.$iso.'"';
 
                 if ( $input_value === $country )

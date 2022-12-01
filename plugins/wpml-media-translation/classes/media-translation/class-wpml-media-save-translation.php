@@ -262,6 +262,12 @@ class WPML_Media_Save_Translation implements IWPML_Action {
 			$media_file = $this->media_file_factory->create( $attachment_id );
 			$media_file->delete();
 
+			// Saving the GUID of media before updating it so it can be used in WPML_Media_Translated_Images_Update::replace_images_with_translations
+			// The reason for that is the update function in line 270 here is running before replace_images_with_translations.,
+			// So when replace_images_with_translations tries to get attachment ID of media with its GUID from DB it fails.,
+			// and this is causing media update in post fails if it's done more than one time.
+			$_POST['pre-update-translated-media-guid'] = get_post_field( 'guid', $attachment_id );
+
 			$post_data = $this->get_attachment_post_data( $file );
 			$this->wpdb->update( $this->wpdb->posts, $post_data, array( 'ID' => $attachment_id ) );
 			update_attached_file( $attachment_id, $file['file'] );

@@ -1,4 +1,5 @@
 <?php
+
 add_action( 'wp_ajax_piotnetforms_booking', 'piotnetforms_booking' );
 add_action( 'wp_ajax_nopriv_piotnetforms_booking', 'piotnetforms_booking' );
 
@@ -30,7 +31,7 @@ function piotnetforms_booking() {
 		$widgets  = $data['widgets'];
 		$settings = $widgets[ $element_id ]['settings'];
 
-		if (!empty($_POST['multi_step_form_id'])) {
+		if ( !empty( $_POST['multi_step_form_id'] ) ) {
 			$settings['piotnetforms_booking_form_id'] = $_POST['multi_step_form_id'];
 		}
 

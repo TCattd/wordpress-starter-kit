@@ -13,7 +13,7 @@ use Gravity_Forms\Gravity_Forms\External_API\GF_API_Response_Factory;
  *
  * Connector providing methods to communicate with the License API.
  *
- * @since 2.5
+ * @since 2.5.11
  *
  * @package Gravity_Forms\Gravity_Forms\License
  */
@@ -43,6 +43,8 @@ class GF_License_API_Connector extends GF_API_Connector {
 	/**
 	 * Check if cache debug is enabled.
 	 *
+	 * @since 2.5.11
+	 *
 	 * @return bool
 	 */
 	public function is_debug() {
@@ -52,7 +54,7 @@ class GF_License_API_Connector extends GF_API_Connector {
 	/**
 	 * If the site was registered with the legacy process.
 	 *
-	 * @since 2.5
+	 * @since 2.5.11
 	 *
 	 * @return bool
 	 */
@@ -62,6 +64,13 @@ class GF_License_API_Connector extends GF_API_Connector {
 
 	}
 
+	/**
+	 * Clear the cache for a given key.
+	 *
+	 * @since 2.5.11
+	 *
+	 * @param string $key
+	 */
 	public function clear_cache_for_key( $key ) {
 		$this->cache->delete( 'rg_gforms_license_info_' . $key );
 	}
@@ -69,21 +78,29 @@ class GF_License_API_Connector extends GF_API_Connector {
 	/**
 	 * Get the license info.
 	 *
-	 * @since 2.5
+	 * @since 2.5.11
 	 *
+	 * @param string $key
+	 * @param bool   $cache
 	 *
 	 * @return GF_API_Response
 	 */
 	public function check_license( $key = false, $cache = true ) {
-		$key          = $key ? trim( $key ) : $this->strategy->get_key();
-		$license_info = $this->cache->get( 'rg_gforms_license_info_' . $key );
+		$license_info      = false;
+		$key               = $key ? trim( $key ) : $this->strategy->get_key();
+		$license_info_data = $this->cache->get( 'rg_gforms_license_info_' . $key );
 
 		if ( $this->is_debug() ) {
 			$cache = false;
 		}
 
-		if ( $license_info && $cache ) {
-			return unserialize( $license_info );
+		if ( $license_info_data && $cache ) {
+			$license_info = GFCommon::safe_unserialize( $license_info_data, GF_API_Response::class );
+			if ( $license_info ) {
+				return $license_info;
+			} else {
+				$this->clear_cache_for_key( $key );
+			}
 		}
 
 		$license_info = $this->response_factory->create(
@@ -99,41 +116,9 @@ class GF_License_API_Connector extends GF_API_Connector {
 	}
 
 	/**
-	 * Get the license info.
-	 *
-	 * @since 2.5
-	 *
-	 *
-	 * @return GF_API_Response
-	 */
-	public function get_license_info_for_site( $cache = true, $key = false ) {
-		$key          = $key ? $key : $this->strategy->get_key();
-		$license_info = $this->cache->get( 'rg_gforms_license_' . $key );
-
-		if ( $this->is_debug() ) {
-			$cache = false;
-		}
-
-		if ( $license_info && $cache ) {
-			return unserialize( $license_info );
-		}
-
-		$license_info = $this->response_factory->create(
-			$this->strategy->check_license( $key )
-		);
-
-		if ( $license_info->is_valid() ) {
-			$this->cache->set( 'rg_gforms_license_' . $key, serialize( $license_info ), true, DAY_IN_SECONDS );
-		}
-
-
-		return $license_info;
-	}
-
-	/**
 	 * Check if the saved license key is valid.
 	 *
-	 * @since 2.5
+	 * @since 2.5.11
 	 *
 	 * @return true|WP_Error
 	 */
@@ -147,7 +132,7 @@ class GF_License_API_Connector extends GF_API_Connector {
 	 * Registers a site to the specified key, or if $new_key is blank, unlinks a key from an existing site.
 	 * Requires that the $new_key is saved in options before calling this function
 	 *
-	 * @since 2.5 Implement the license enforcement process.
+	 * @since 2.5.11 Implement the license enforcement process.
 	 *
 	 * @param string $new_key Unhashed Gravity Forms license key.
 	 *
@@ -181,7 +166,9 @@ class GF_License_API_Connector extends GF_API_Connector {
 	/**
 	 * Purge site credentials if the license info contains certain errors.
 	 *
-	 * @since 2.5
+	 * @since 2.5.11
+	 *
+	 * @return void
 	 */
 	public function maybe_purge_site_credentials() {
 
@@ -207,18 +194,20 @@ class GF_License_API_Connector extends GF_API_Connector {
 	/**
 	 * Retrieve a list of plugins from the API.
 	 *
+	 * @since 2.5.11
+	 *
 	 * @param bool $cache Whether to respect the cached data.
 	 *
 	 * @return mixed
 	 */
 	public function get_plugins( $cache = true ) {
-		$plugins = $this->cache->get( 'rg_gforms_plugins' );
+		$plugins = $this->cache->get( 'rg_gforms_plugins', $found_in_cache );
 
 		if ( $this->is_debug() ) {
 			$cache = false;
 		}
 
-		if ( $plugins && $cache ) {
+		if ( $found_in_cache && $cache ) {
 			return $plugins;
 		}
 

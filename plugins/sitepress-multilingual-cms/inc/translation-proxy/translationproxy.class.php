@@ -30,18 +30,25 @@ class TranslationProxy {
 	}
 
 	public static function get_tp_default_suid() {
-		$tp_default_suid = false;
-
 		if ( defined( 'WPML_TP_DEFAULT_SUID' ) ) {
-			$tp_default_suid = WPML_TP_DEFAULT_SUID;
+			return WPML_TP_DEFAULT_SUID;
 		}
 
-		$preferred_translation_service = self::get_preferred_translation_service();
-		if ( $preferred_translation_service && ! $tp_default_suid ) {
-			$tp_default_suid = $preferred_translation_service;
-		}
+		return self::get_preferred_translation_service() ?: false;
+	}
 
-		return $tp_default_suid;
+	/**
+	 * @param string $suid
+	 * @return 'wpml_list'|'config'|'account'
+	 */
+	public static function get_service_linked_by_suid( $suid ) {
+		if ( defined( 'WPML_TP_DEFAULT_SUID' ) && WPML_TP_DEFAULT_SUID === $suid ) {
+			return 'config';
+		}
+		if ( self::get_preferred_translation_service() === $suid ) {
+			return 'account';
+		}
+		return 'wpml_list';
 	}
 
 	public static function has_preferred_translation_service() {
@@ -469,7 +476,7 @@ class TranslationProxy {
 	public static function is_current_service_active_and_authenticated() {
 		$active_service = self::get_current_service();
 
-		return $active_service && ( ! self::service_requires_authentication() || TranslationProxy_Service::is_authenticated( $active_service ) );
+		return $active_service && TranslationProxy_Service::is_authenticated( $active_service );
 	}
 
 	/**
@@ -527,7 +534,7 @@ class TranslationProxy {
 
 		$translation_service = self::get_current_service();
 		if ( $translation_service && ! $force_reload ) {
-			return null !== $translation_service->custom_fields ? $translation_service->custom_fields : false;
+			return $translation_service->custom_fields ?: false;
 		}
 
 		return self::get_tp_client()->services()->get_custom_fields( $service_id );

@@ -1,0 +1,61 @@
+### 1.5 | 2020-09-24
+- Added support for Gravity Forms 2.5
+- Fixed an issue with cache expiration when using the [gform_chainedselects_import_file](https://docs.gravityforms.com/gform_chainedselects_import_file/) filter.
+
+
+### 1.4 | 2020-05-11
+- Added translations for Hebrew, Hindi, Japanese, and Turkish.
+- Fixed an issue where the import stalls with the spinner displayed if the uploaded csv contains malformed UTF-8 characters.
+- Fixed an issue with Gravity Forms 2.4.15.5+ where the placeholder choice is replaced with a duplicate first choice when the select is populated by the Ajax request.
+- Fixed an issue where dynamic population parameter names are lost when re-importing the csv file.
+- Fixed choices being imported from the csv file with leading and trailing spaces which could prevent the selected choice being saved on submission.
+
+
+### 1.3 | 2019-08-07
+- Added security enhancements.
+
+
+### 1.2 | 2019-05-15
+- Updated the entry list page field filters to include a choice for each select instead of one choice for the entire field.
+- Fixed an issue where Chained Selects conditional logic is evaluated for any field with the matching ID when multiple forms are on the page.
+- Fixed a PHP notice which can occur when using the [gform_chained_selects_input_choices](https://docs.gravityforms.com/gform_chained_selects_input_choices/) filter and the choice isSelected property is not defined.
+- Fixed an issue where pre-selected choice in first dropdown does not correctly populate choices in second dropdown.
+- Fixed a PHP warning on form display when the {all_fields} merge tag is used in the review page content.
+- Fixed calculations and conditional logic not being triggered when the isSelected property is enabled for a choice using the *[gform_chained_selects_input_choices](https://docs.gravityforms.com/gform_chained_selects_input_choices/)* filter.
+- Fixes issue where input names are overwritten when import file is re-imported.
+
+
+### 1.1
+- Added index parameter to *[gform_chained_selects_input_choices](https://docs.gravityforms.com/gform_chained_selects_input_choices/)* filter.
+- Added *[gform_chainedselects_column_unique_values_limit](https://docs.gravityforms.com/gform_chainedselects_column_unique_values_limit/)* filter to bring the *[gravityformschainedselects_column_unique_values_limit](https://docs.gravityforms.com/gform_chainedselects_column_unique_values_limit/)* filter inline with RG naming conventions.
+- Added support for better error messages when uploading a CSV for a Chained Selects field.
+- Added support for honoring isSelected field on chained select choices (can only be set programmatically).
+- Added GPL to plugin header.
+- Updated file import filter feature to not cache empty files (preserving existing choices).
+- Updated Plugin URI and Author URI to use https.
+- Fixed issue where a chained select with no choices used the first select's choices.
+- Fixed an issue where the wrong choice could be selected when the field is redisplayed post paging.
+- Fixed a PHP fatal error which could occur when conditional logic evaluation is triggered by GravityView.
+- Fixed an issue where choice values of 0 were not imported resulting in some choices appearing in the wrong drop downs.
+- Fixed issue with chunking file uploads (introduced in GF 2.3).
+- Fixed issue where choice values were not properly sanitized when populating the next select's choices.
+
+
+### 1.0
+- Updated output of field value in entry detail and all fields merge tag.
+- Fixed conditional logic support; miscellaneous bugs.
+- Added support for Chained Selects conditional logic on Notifications and Confirmations.
+- Fixed issue with poorly formatted import file.
+- Fixed a timing issue with the inclusion of the GF_Chained_Field_Select class.
+- Fixed issue where unsaved changes warning showed even after clicking update.
+- Updated choice UI to include left and right facing arrows to better indicate navigational direction between drop downs.
+- Update drop down preview to be clickable; navigates to the select drop down edit view.
+- Added warning if deleting choice with children.
+- Updated "Choices" field setting label to match new styling in GF2.0.
+- Added confirmation prompt if modal is closed with unsaved changes.
+- Added "Update" button in Manage Choices modal; data is only saved when Update button is clicked.
+- Added support for resizing vertically-aligned chained selects based on largest select.
+- Updated "Add Choices" label to "Manage Choices".
+- Updated modal styles and resizing behavior when new choices and drop downs are added.
+- Fixed issue where chained selects with "Hide Inactive Drop Downs" setting disabled would still hide inactive drop downs after first selection.
+- Everything is awesome!

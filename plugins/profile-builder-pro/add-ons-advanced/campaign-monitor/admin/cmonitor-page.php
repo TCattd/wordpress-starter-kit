@@ -35,7 +35,7 @@
                     settings_fields( 'wppb_cmi_settings' );
 
                     // Page title
-                    echo '<h2>' . esc_html__( 'Campaign Monitor Integration', 'profile-builder' ) . '</h2>';
+                    echo '<h2>' . esc_html__( 'Campaign Monitor Integration', 'profile-builder' ) . '<a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/campaign-monitor/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help" style="margin-left: 5px;"></a></h2>';
 
                     // Display the API key settings input
                     echo wppb_in_cmi_get_page_api_key_content( $wppb_cmi_settings ); //phpcs:ignore

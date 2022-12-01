@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 class WPML_ST_Strings {
 
 	const EMPTY_CONTEXT_LABEL = 'empty-context-domain';
@@ -53,7 +55,7 @@ class WPML_ST_Strings {
 		}
 
 		if ( array_key_exists( 'context', $_GET ) ) {
-			$context = filter_var( $_GET['context'], FILTER_SANITIZE_STRING );
+			$context = Sanitize::stringProp( 'context', $_GET );
 
 			if ( self::EMPTY_CONTEXT_LABEL === $context ) {
 				$context = '';

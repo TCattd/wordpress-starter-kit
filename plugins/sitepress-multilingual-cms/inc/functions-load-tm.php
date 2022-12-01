@@ -95,18 +95,6 @@ if ( ! \WPML\Plugins::isTMActive() && ( ! wpml_is_setup_complete() || false !== 
 	}
 
 	/**
-	 * @return \WPML_Translations_Queue_Factory
-	 */
-	function wpml_tm_translation_queue_factory() {
-		static $translation_queue_factory;
-		if ( ! $translation_queue_factory ) {
-			$translation_queue_factory = new WPML_Translations_Queue_Factory();
-		}
-
-		return $translation_queue_factory;
-	}
-
-	/**
 	 * @return \WPML_UI_Screen_Options_Factory
 	 */
 	function wpml_ui_screen_options_factory() {
@@ -339,7 +327,6 @@ if ( ! \WPML\Plugins::isTMActive() && ( ! wpml_is_setup_complete() || false !== 
 
 				$sync_jobs_ajax_handler = new WPML_TP_Sync_Ajax_Handler(
 					wpml_tm_get_tp_sync_jobs(),
-					new WPML_TM_Sync_Installer_Wrapper(),
 					new WPML_TM_Last_Picked_Up( $sitepress )
 				);
 				$sync_jobs_ajax_handler->add_hooks();
@@ -487,6 +474,7 @@ if ( ! \WPML\Plugins::isTMActive() && ( ! wpml_is_setup_complete() || false !== 
 		$rid = \WPML\TM\API\Job\Map::fromJobId( $job_id );
 
 		$job            = new WPML_TM_ATE_Models_Job_Create();
+		$job->id		= $job_id;
 		$job->source_id = $rid;
 
 		$previousStatus = \WPML_TM_ICL_Translation_Status::makeByRid( $rid )->previous();
@@ -658,10 +646,11 @@ if ( ! \WPML\Plugins::isTMActive() && ( ! wpml_is_setup_complete() || false !== 
 	 *
 	 * @param bool $forceReload
 	 * @param bool $loadObsoleteStringQuery
+	 * @param bool $dontCache
 	 *
 	 * @return \WPML_TM_Jobs_Repository
 	 */
-	function wpml_tm_get_jobs_repository( $forceReload = false, $loadObsoleteStringQuery = true ) {
+	function wpml_tm_get_jobs_repository( $forceReload = false, $loadObsoleteStringQuery = true, $dontCache = false ) {
 		static $repository;
 
 		if ( ! $repository || $forceReload ) {
@@ -691,7 +680,7 @@ if ( ! \WPML\Plugins::isTMActive() && ( ! wpml_is_setup_complete() || false !== 
 				);
 			}
 
-			$repository = new WPML_TM_Jobs_Repository(
+			$result = new WPML_TM_Jobs_Repository(
 				$wpdb,
 				new CompositeQuery(
 					$subqueries,
@@ -700,6 +689,12 @@ if ( ! \WPML\Plugins::isTMActive() && ( ! wpml_is_setup_complete() || false !== 
 				),
 				new WPML_TM_Job_Elements_Repository( $wpdb )
 			);
+
+			if ( $dontCache ) {
+				return $result;
+			} else {
+				$repository = $result;
+			}
 		}
 
 		return $repository;

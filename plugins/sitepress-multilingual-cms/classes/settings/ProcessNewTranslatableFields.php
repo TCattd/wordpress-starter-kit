@@ -46,7 +46,9 @@ class ProcessNewTranslatableFields {
 				"SELECT DISTINCT post_id
 						FROM {$wpdb->prefix}postmeta
 						WHERE meta_key IN ({$fieldsIn}) AND meta_key <> ''
-						LIMIT {$limit} OFFSET {$offset}"
+						LIMIT %d OFFSET %d",
+				$limit,
+				$offset
 			)
 		);
 	}

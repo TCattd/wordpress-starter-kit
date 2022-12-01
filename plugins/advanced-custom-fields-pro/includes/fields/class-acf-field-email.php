@@ -107,10 +107,7 @@ if ( ! class_exists( 'acf_field_email' ) ) :
 		*
 		*  @param   $field  - an array holding all the field's data
 		*/
-
 		function render_field_settings( $field ) {
-
-			// default_value
 			acf_render_field_setting(
 				$field,
 				array(
@@ -120,8 +117,17 @@ if ( ! class_exists( 'acf_field_email' ) ) :
 					'name'         => 'default_value',
 				)
 			);
+		}
 
-			// placeholder
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
 			acf_render_field_setting(
 				$field,
 				array(
@@ -132,7 +138,6 @@ if ( ! class_exists( 'acf_field_email' ) ) :
 				)
 			);
 
-			// prepend
 			acf_render_field_setting(
 				$field,
 				array(
@@ -143,7 +148,6 @@ if ( ! class_exists( 'acf_field_email' ) ) :
 				)
 			);
 
-			// append
 			acf_render_field_setting(
 				$field,
 				array(
@@ -153,7 +157,6 @@ if ( ! class_exists( 'acf_field_email' ) ) :
 					'name'         => 'append',
 				)
 			);
-
 		}
 
 		/**
@@ -176,6 +179,19 @@ if ( ! class_exists( 'acf_field_email' ) ) :
 			}
 
 			return $valid;
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			$schema           = parent::get_rest_schema( $field );
+			$schema['format'] = 'email';
+
+			return $schema;
 		}
 
 	}

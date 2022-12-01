@@ -1,0 +1,13 @@
+.piotnetforms-icon {
+	width: 28px;
+	height: 28px;
+	display: block;
+    margin: 0 auto;
+	background-size: contain;
+	background-repeat: no-repeat;
+    background-position: center;
+}
+
+.piotnetforms-icon--form {
+	background-image: url('../../icons/i-form-oxygen.svg');
+}

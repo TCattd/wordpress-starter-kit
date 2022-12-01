@@ -8,12 +8,11 @@ class LLA_Helpers {
     /**
      * @param string $msg
      */
-    public static function show_error( $msg = '' ) {
-        if( empty( $msg ) ) {
-            return;
-        }
+    public static function show_message( $msg = '', $is_error = false ) {
+        if( empty( $msg ) ) return;
 
-        echo '<div id="message" class="updated fade"><p>' . $msg . '</p></div>';
+        $class = $is_error ? 'error' : 'updated';
+        echo '<div id="message" class="' . $class . ' fade"><p>' . $msg . '</p></div>';
     }
 
     /**

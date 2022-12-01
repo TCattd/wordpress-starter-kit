@@ -10,9 +10,33 @@ var GFTaxonomyMap = function( options ) {
 		self.options.formFields = JSON.parse( self.options.formFields );
 		self.options.preloadedTerms = JSON.parse( self.options.preloadedTerms );
 
+		self.parsePreloadedTerms();
 		self.bindEvents();
 		self.setupData();
 		self.setupRepeater();
+	};
+
+	/**
+	 * Use jQuery to decode HTML entities passed via JSON.
+	 *
+	 * @param html
+	 * @return string
+	 */
+
+	self.decodeHtml = function( html ) {
+		return jQuery('<textarea/>').html( html ).text();
+	}
+
+	/**
+	 * Parse preloaded terms to encode any HTML entities.
+	 *
+	 * @return void
+	 */
+
+	self.parsePreloadedTerms = function() {
+		for ( key in self.options.preloadedTerms ) {
+			self.options.preloadedTerms[ key ] = self.decodeHtml( self.options.preloadedTerms[ key ] );
+		}
 	};
 
 	self.bindEvents = function() {

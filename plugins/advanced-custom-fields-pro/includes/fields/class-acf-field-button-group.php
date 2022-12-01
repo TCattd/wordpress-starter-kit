@@ -134,36 +134,20 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 		 *  @param   array $field The field settings array
 		 *  @return  n/a
 		 */
-
 		function render_field_settings( $field ) {
-
-			// encode choices (convert from array)
+			// Encode choices (convert from array).
 			$field['choices'] = acf_encode_choices( $field['choices'] );
 
-			// choices
 			acf_render_field_setting(
 				$field,
 				array(
 					'label'        => __( 'Choices', 'acf' ),
-					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br /><br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><br />' . __( 'red : Red', 'acf' ),
+					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
 					'type'         => 'textarea',
 					'name'         => 'choices',
 				)
 			);
 
-			// allow_null
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
-					'instructions' => '',
-					'name'         => 'allow_null',
-					'type'         => 'true_false',
-					'ui'           => 1,
-				)
-			);
-
-			// default_value
 			acf_render_field_setting(
 				$field,
 				array(
@@ -174,23 +158,6 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 				)
 			);
 
-			// layout
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Layout', 'acf' ),
-					'instructions' => '',
-					'type'         => 'radio',
-					'name'         => 'layout',
-					'layout'       => 'horizontal',
-					'choices'      => array(
-						'horizontal' => __( 'Horizontal', 'acf' ),
-						'vertical'   => __( 'Vertical', 'acf' ),
-					),
-				)
-			);
-
-			// return_format
 			acf_render_field_setting(
 				$field,
 				array(
@@ -209,6 +176,51 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 
 		}
 
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Allow Null?', 'acf' ),
+					'instructions' => '',
+					'name'         => 'allow_null',
+					'type'         => 'true_false',
+					'ui'           => 1,
+				)
+			);
+		}
+
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Layout', 'acf' ),
+					'instructions' => '',
+					'type'         => 'radio',
+					'name'         => 'layout',
+					'layout'       => 'horizontal',
+					'choices'      => array(
+						'horizontal' => __( 'Horizontal', 'acf' ),
+						'vertical'   => __( 'Vertical', 'acf' ),
+					),
+				)
+			);
+		}
 
 		/*
 		*  update_field()
@@ -286,6 +298,40 @@ if ( ! class_exists( 'acf_field_button_group' ) ) :
 
 			return acf_get_field_type( 'radio' )->format_value( $value, $post_id, $field );
 
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		function get_rest_schema( array $field ) {
+			$schema = parent::get_rest_schema( $field );
+
+			if ( isset( $field['default_value'] ) && '' !== $field['default_value'] ) {
+				$schema['default'] = $field['default_value'];
+			}
+
+			/**
+			 * If a user has defined keys for the buttons,
+			 * we should use the keys for the available options to POST to,
+			 * since they are what is displayed in GET requests.
+			 */
+			$button_keys = array_diff(
+				array_keys( $field['choices'] ),
+				array_values( $field['choices'] )
+			);
+
+			$schema['enum']   = empty( $button_keys ) ? $field['choices'] : $button_keys;
+			$schema['enum'][] = null;
+
+			// Allow null via UI will value to empty string.
+			if ( ! empty( $field['allow_null'] ) ) {
+				$schema['enum'][] = '';
+			}
+
+			return $schema;
 		}
 
 	}

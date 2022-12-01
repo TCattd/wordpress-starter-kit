@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 require_once __DIR__ . '/../widgets/division_base.php';
 
@@ -26,7 +28,7 @@ class piotnetforms_Column extends Division_Base_Widget_Piotnetforms {
 	}
 
 	public function get_keywords() {
-		return [ 'input', 'form', 'field' ];
+		return [ 'section','column' ];
 	}
 
 	public function register_controls() {
@@ -59,18 +61,56 @@ class piotnetforms_Column extends Division_Base_Widget_Piotnetforms {
 		);
 
 		$this->add_responsive_control(
+			'flex_order',
+			[
+				'type'        => 'number',
+				'label'       => __( 'Flex Order', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => '',
+				'selectors'   => [
+					'{{WRAPPER}}' => 'order: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
 			'vertical_align',
 			[
 				'type'        => 'select',
-				'label'       => __( 'Vertical Align', 'piotnetforms' ),
+				'label'       => __( 'Align Items', 'piotnetforms' ),
+				'label_block' => true,
 				'value'       => '',
 				'options'     => [
-					''              => __( 'Default', 'piotnetforms' ),
-					'center'    => __( 'Middle', 'piotnetforms' ),
-					'flex-end'      => __( 'Bottom', 'piotnetforms' ),
+					'' => __( 'Default', 'piotnetforms' ),
+					'center' => __( 'center', 'piotnetforms' ),
+					'flex-start' => __( 'flex-start', 'piotnetforms' ),
+					'flex-end' => __( 'flex-end', 'piotnetforms' ),
+					'baseline' => __( 'baseline', 'piotnetforms' ),
 				],
 				'selectors'   => [
 					'{{WRAPPER}}>.piotnet-column__inner' => 'align-items: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'align_content',
+			[
+				'type'        => 'select',
+				'label'       => __( 'Align Content', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => '',
+				'options'     => [
+					'' => __( 'Default', 'piotnetforms' ),
+					'center' => __( 'center', 'piotnetforms' ),
+					'flex-start' => __( 'flex-start', 'piotnetforms' ),
+					'flex-end' => __( 'flex-end', 'piotnetforms' ),
+					'space-between' => __( 'space-between', 'piotnetforms' ),
+					'space-around' => __( 'space-around', 'piotnetforms' ),
+					'space-evenly' => __( 'space-evenly', 'piotnetforms' ),
+				],
+				'selectors'   => [
+					'{{WRAPPER}}>.piotnet-column__inner' => 'align-content: {{VALUE}};',
 				],
 			]
 		);
@@ -87,8 +127,9 @@ class piotnetforms_Column extends Division_Base_Widget_Piotnetforms {
 					'center'        => __( 'center', 'piotnetforms' ),
 					'flex-start'    => __( 'flex-start', 'piotnetforms' ),
 					'flex-end'      => __( 'flex-end', 'piotnetforms' ),
-					'space-around'  => __( 'space-around', 'piotnetforms' ),
 					'space-between' => __( 'space-between', 'piotnetforms' ),
+					'space-around' => __( 'space-around', 'piotnetforms' ),
+					'space-evenly' => __( 'space-evenly', 'piotnetforms' ),
 				],
 				'selectors'   => [
 					'{{WRAPPER}}>.piotnet-column__inner' => 'justify-content: {{VALUE}};',
@@ -175,14 +216,14 @@ class piotnetforms_Column extends Division_Base_Widget_Piotnetforms {
 		?>
 			<?php if ( $editor ) : ?>
 				<div class="piotnet-column__controls" data-piotnet-column-controls>
-					<div class="piotnet-column__controls-item piotnet-column__controls-item--edit" title="Edit" data-piotnet-control-edit>
-						<i class="fas fa-th"></i>
+					<div class="piotnet-column__controls-item piotnet-column__controls-item--edit" title="Edit" draggable="false" data-piotnet-control-edit>
+						<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-control-edit.svg'; ?>" draggable="false">
 					</div>
-					<div class="piotnet-column__controls-item piotnet-column__controls-item--duplicate" title="Duplicate" data-piotnet-control-duplicate>
-						<i class="far fa-clone"></i>
+					<div class="piotnet-column__controls-item piotnet-column__controls-item--duplicate" title="Duplicate" draggable="false" data-piotnet-control-duplicate>
+						<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-control-duplicate.svg'; ?>" draggable="false">
 					</div>
-					<div class="piotnet-column__controls-item piotnet-column__controls-item--remove" title="Delete" data-piotnet-control-remove>
-						<i class="fas fa-times"></i>
+					<div class="piotnet-column__controls-item piotnet-column__controls-item--remove" title="Delete" draggable="false" data-piotnet-control-remove>
+						<img src="<?php echo plugin_dir_url( __FILE__ ) . '../../assets/icons/e-control-remove.svg'; ?>" draggable="false">
 					</div>
 				</div>
 			<?php endif; ?>

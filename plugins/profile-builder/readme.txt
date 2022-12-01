@@ -3,8 +3,8 @@ Contributors: cozmoslabs, reflectionmedia, sareiodata, adispiac, madalin.ungurea
 Donate link: http://www.cozmoslabs.com/wordpress-profile-builder/
 Tags: user registration, user profile, registration, profile, user registration form, user fields, edit profile, user custom fields, front-end login, front-end edit profile, front-end user registration, email confirmation, login form, content restriction, restrict content
 Requires at least: 3.1
-Tested up to: 6.0
-Stable tag: 3.7.6
+Tested up to: 6.1
+Stable tag: 3.8.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -38,7 +38,9 @@ You can use the following shortcode list to display the forms:
 == Profile Builder Features ==
 
 * drag & drop to reorder user profile fields
+* add Avatar Upload field for users to manage their avatar on your website
 * enable **Email Confirmation** (on registration users will receive a notification to [confirm their email address](https://www.cozmoslabs.com/14722-wordpress-email-confirmation/))
+* Email Customizer - Personalize all emails sent to your users or admins; customize default WordPress registration email
 * choose between login with **only Username, Email** or **both**
 * enforce [WordPress password requirements](https://www.cozmoslabs.com/28998-wordpress-minimum-password-length-strength/) by setting up a **minimum password length** and **minimum password strength** (using the default WordPress password strength meter)
 * assign users a specific role at registration (using **[wppb-register role="desired_role"]** shortcode argument for the register form)
@@ -62,8 +64,7 @@ You can use the following shortcode list to display the forms:
 
 The [Pro version](http://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wp.org&utm_medium=pb-description-page&utm_campaign=PBFree) has the following extra features:
 
-* Create Extra User Fields (Heading, Input, Hidden Input, Number, Checkbox, Agree to Terms Checkbox, Radio Buttons, , Textarea, WYSIWYG, reCAPTCHA, Upload fields, Selects, User Role Select, Country Select, Timezone Select, Avatar Upload, Map, HTML, Phone, Datepicker, Timepicker, Colorpicker, Custom Validation field, Currency Select, CPT Select)
-* Add Avatar Upload for users
+* Create Extra User Fields (Hidden Input, Agree to Terms Checkbox WYSIWYG, Upload fields, User Role Select, Country Select, Timezone Select Upload, Map, HTML, Phone, Datepicker, Timepicker, Colorpicker, Custom Validation field, Currency Select, CPT Select)
 * Support for Conditional Fields
 * Front-end User Listing (fully customizable, sorting included)
 * Create Multiple User Listings
@@ -72,7 +73,6 @@ The [Pro version](http://www.cozmoslabs.com/wordpress-profile-builder/?utm_sourc
 * Multiple Registration Forms (set up [multiple registration forms](https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/multiple-registration-forms/?utm_source=wp.org&utm_medium=pb-description-page&utm_campaign=PBFree) with different profile fields for certain user roles)
 * Multiple Edit Profile Forms
 * Admin Approval ([approve new users from dashboard or via email](https://www.cozmoslabs.com/112321-approve-users-from-admin-email-using-profile-builder/))
-* Email Customizer (Personalize all emails sent to your users or admins; customize default WordPress registration email)
 * Advanced Add-ons (e.g. custom redirects, user listing, multiple registration forms etc.)
 * Access to support and documentation
 * 1 Year of Updates / Priority Support
@@ -177,6 +177,57 @@ This plugin adds/removes user fields in the front-end. Both default and extra pr
 15. Edit or Add New User Role
 
 == Changelog ==
+= 3.8.5 =
+* Fix: Do not load Gutenberg blocks on older versions of WordPress
+* Fix: Notices regarding Avatar field
+* Misc: Moved Select User To Edit script from admin edit profile to footer
+
+= 3.8.4 =
+* Fix: an issue regarding the new Email Customizer functionality not working correctly in a case
+* Fix: notices appearing in the dashboard in some cases
+* Fix: password visibility toggle was not placed correctly on mobile
+* Misc: quality of life improvements for Elementor Widgets
+
+= 3.8.3 =
+* Feature: Added Gutenberg Blocks for Register, Edit Profile, Login and Recover Password forms
+* Fix: issue with Email Customizer not changing all emails in some cases
+* Fix: incompatibility issue between Select2 and newer block themes
+* Fix: some notices appearing in some cases
+* Fix: issue between invisible reCaptcha and Paid Member Subscriptions Plans being present in the form
+* Misc: added links to documentation on settings pages
+* Misc: added a filter that can disable HTML in Emails sent by the plugin `wppb_mail_enable_html`
+
+= 3.8.2 =
+* Fix: compatibility issue with paid version MSF
+* Fix: issue with some fields not appearing on the back-end users page
+
+= 3.8.1 =
+* Feature: added new field types: Heading, Input, Textarea, Select, Select2, Checkbox, Radio
+* Feature: added Avatar field which lets your users manage their avatar on your website from the Profile Builder forms
+* Feature: added Email Customizer feature which lets you edit all the emails that the plugin sends with custom content and tags for the defined fields
+* Fix: issue with licence activation not working on multisite
+
+= 3.8.0 =
+* Feature: added the possibility to restrict the purchase of WooCommerce Products based on User Roles
+* Misc: fix some cases where HTML was displaying in the back-end
+
+= 3.7.9 =
+* Fix: Bug happening with the Elementor Registration widget in some cases
+* Fix: Backwards compatibility issues with Password Strength feature on older versions of WordPress
+* Misc: The Delete Account button of the GDPR functionality is now also anonymizing comments made by that user
+
+= 3.7.8 =
+* Fix: issue regarding unique display names and email confirmation
+* Misc: improved description message for `Redirect users to a page if they have empty required fields` option
+* Changes regarding how paid version updates are handled
+
+= 3.7.7 =
+* Fix: fix some issues regarding the unique display name option
+* Fix: more multisite compatibility changes
+* Fix: some broken strings
+* Misc: add Elementor styling options for the password strength and length text
+* Misc: added a hook after a user deletes his own account through the GDPR functionality: wppb_gdpr_user_deleted
+
 = 3.7.6 =
 * Elementor Integration: added Content Restriction compatibility with the new Elementor containers feature
 * Elementor Integration: added option to style the Multi Step Forms buttons

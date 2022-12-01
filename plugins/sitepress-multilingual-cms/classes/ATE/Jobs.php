@@ -27,7 +27,7 @@ class Jobs {
 
 		$needsReviewCondition = '1=0';
 		if ( Lst::includes( ICL_TM_NEEDS_REVIEW, $statuses ) ) {
-			$reviewStatuses             = wpml_prepare_in( [ ReviewStatus::NEEDS_REVIEW, ReviewStatus::EDITING ], '%d' );
+			$reviewStatuses             = wpml_prepare_in( [ ReviewStatus::NEEDS_REVIEW, ReviewStatus::EDITING ] );
 			$needsReviewCondition = 'translation_status.review_status IN ( ' . $reviewStatuses . ' )';
 		}
 
@@ -39,11 +39,15 @@ class Jobs {
 				translation_status.review_status, jobs.ate_sync_count > " . static::LONGSTANDING_AT_ATE_SYNC_COUNT . " as isLongstanding
 			FROM {$wpdb->prefix}icl_translate_job as jobs
 			INNER JOIN {$wpdb->prefix}icl_translation_status translation_status ON translation_status.rid = jobs.rid
-			LEFT JOIN {$wpdb->prefix}icl_translations translations ON translation_status.translation_id = translations.translation_id 
+			INNER JOIN {$wpdb->prefix}icl_translations translations ON translation_status.translation_id = translations.translation_id
+			INNER JOIN {$wpdb->prefix}icl_translations parent_translations ON translations.trid = parent_translations.trid
+			AND parent_translations.source_language_code IS NULL
+			INNER JOIN {$wpdb->prefix}posts posts ON parent_translations.element_id = posts.ID 
 			WHERE 
 				jobs.editor = %s 
 				AND ( translation_status.status IN ({$statuses}) OR $needsReviewCondition )
-				AND translations.language_code IN ({$languages})				
+				AND translations.language_code IN ({$languages})
+				AND posts.post_status <> 'trash'											
 			GROUP BY jobs.rid;
 		";
 
@@ -61,7 +65,7 @@ class Jobs {
 	 * @return array
 	 */
 	public static function getJobsToSync() {
-		return self::getJobsWithStatus( [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS ] );
+		return self::getJobsWithStatus( [ ICL_TM_WAITING_FOR_TRANSLATOR, ICL_TM_IN_PROGRESS, ICL_TM_ATE_NEEDS_RETRY ] );
 	}
 
 	/**
@@ -84,5 +88,18 @@ class Jobs {
 		";
 
 		return (int) $wpdb->get_var( $wpdb->prepare( $sql, \WPML_TM_Editors::ATE ) );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public static function isThereJob() {
+		global $wpdb;
+
+		$noOfRowsToFetch = 1;
+
+		$sql = $wpdb->prepare( "SELECT EXISTS(SELECT %d FROM {$wpdb->prefix}icl_translate_job)", $noOfRowsToFetch );
+
+		return boolval( $wpdb->get_var( $sql ) );
 	}
 }

@@ -3,7 +3,8 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "lang": "en"
          },
          "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
             "U kunt kiezen welke berichten vertaald moeten worden op het <strong>Translation Management-dashboard</strong>."
@@ -13,6 +14,15 @@
          ],
          "No, I want to translate some of these posts, but not all": [
             "Nee, ik wil sommige van deze berichten vertalen, maar niet alle"
+         ],
+         "You must use the Advanced Translation Editor if you want to translate your content automatically.": [
+            "U moet de Advanced Translation Editor gebruiken als u uw inhoud automatisch wilt vertalen."
+         ],
+         "Synchronize translators and translation managers with ATE": [
+            "Synchroniseer vertalers en vertaalmanagers met ATE"
+         ],
+         "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
+            "Probeer het over een paar minuten opnieuw. Als het probleem aanhoudt, neem dan contact op met: %sWPML-ondersteuning%s."
          ],
          "Save": [
             "Opslaan"

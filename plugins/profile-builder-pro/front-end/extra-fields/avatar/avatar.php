@@ -109,7 +109,7 @@ add_filter( 'wppb_admin_output_form_field_avatar', 'wppb_avatar_handler', 10, 6 
 function wppb_save_avatar_value( $field, $user_id, $request_data, $form_location ){
 	if( $field['field'] == 'Avatar' ){
         $field['meta-name'] = Wordpress_Creation_Kit_PB::wck_generate_slug( $field['meta-name'] );
-        if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) {
+        if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && ( !isset( $field[ 'woocommerce-checkout-field' ] ) || $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) ) {
             //Save data in the case the simple upload field is used
             $field_name = 'simple_upload_' . wppb_handle_meta_name( $field[ 'meta-name' ] );
             if( isset( $_FILES[ $field_name ] ) ) {
@@ -148,9 +148,7 @@ add_action( 'wppb_backend_save_form_field', 'wppb_save_avatar_value', 10, 4 );
  * @param $field_name
  * @return string|WP_Error
  */
-function wppb_avatar_save_simple_upload_file ( $field_name, $field ){
-    wppb_add_avatar_sizes( $field );
-    wppb_userlisting_avatar();
+function wppb_avatar_save_simple_upload_file ( $field_name ){
 
     require_once( ABSPATH . 'wp-admin/includes/file.php' );
     $upload_overrides = array( 'test_form' => false );
@@ -188,7 +186,7 @@ function wppb_avatar_add_upload_for_user_signup( $field_value, $field, $request_
     // Save the uploaded file
     // It will have no author until the user's email is confirmed
     if( $field['field'] == 'Avatar' ) {
-        if( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] === 'yes' && $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) {
+        if( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] === 'yes' && ( !isset( $field[ 'woocommerce-checkout-field' ] ) || $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) ) {
             $field_name = 'simple_upload_' . $field['meta-name'];
 
             if (isset($_FILES[$field_name]) &&
@@ -214,7 +212,7 @@ add_filter( 'wppb_add_to_user_signup_form_field_avatar', 'wppb_avatar_add_upload
 function wppb_woo_simple_avatar(){
     check_ajax_referer( 'wppb_woo_simple_upload', 'nonce' );
     if ( isset($_POST["name"]) ) {
-        echo json_encode( wppb_save_simple_upload_file( sanitize_text_field( $_POST["name"] ) ) );
+        echo json_encode( wppb_avatar_save_simple_upload_file( sanitize_text_field( $_POST["name"] ) ) );
     }
     wp_die();
 }
@@ -226,7 +224,7 @@ function wppb_check_avatar_value( $message, $field, $request_data, $form_locatio
 	if( $field['field'] == 'Avatar' ){
         if( $field['required'] == 'Yes' ){
             $field['meta-name'] = Wordpress_Creation_Kit_PB::wck_generate_slug( $field['meta-name'] );
-            if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) {
+            if ( isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' && ( !isset( $field[ 'woocommerce-checkout-field' ] ) || $field[ 'woocommerce-checkout-field' ] !== 'Yes' ) ) {
                 //Check the required field in case simple upload is used
                 $field_name = 'simple_upload_' . wppb_handle_meta_name( $field[ 'meta-name' ] );
                 if ( (!isset( $_FILES[ $field_name ] ) || ( isset( $_FILES[ $field_name ] ) && isset( $_FILES[ $field_name ][ 'size' ] ) && $_FILES[ $field_name ][ 'size' ] == 0 ) || !wppb_valid_simple_upload( $field, $_FILES[ $field_name ] ) ) && isset( $request_data[ $field[ 'meta-name' ] ] ) && empty( $request_data[ $field[ 'meta-name' ] ] ) ){ /* phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized */ /* no need here for wppb_valid_simple_upload() */
@@ -249,7 +247,7 @@ add_filter( 'wppb_check_form_field_avatar', 'wppb_check_avatar_value', 10, 4 );
 /* register image size defined in avatar field */
 add_action( 'after_setup_theme', 'wppb_add_avatar_image_sizes' );
 function wppb_add_avatar_image_sizes() {
-    if ( isset($_REQUEST['action']) && 'upload-attachment' == $_REQUEST['action'] && isset($_REQUEST['wppb_upload']) && 'true' == $_REQUEST['wppb_upload'] ) {
+    if ( isset($_REQUEST['action']) && ( ( 'upload-attachment' == $_REQUEST['action'] && isset($_REQUEST['wppb_upload']) && 'true' == $_REQUEST['wppb_upload'] ) || 'wppb_woo_simple_avatar' == $_REQUEST['action'] ) ) {
 
         $all_fields = get_option('wppb_manage_fields');
         if( !empty( $all_fields ) ) {

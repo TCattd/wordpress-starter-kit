@@ -5,6 +5,10 @@
  * @package query-monitor
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class QM_Output_Html_Request extends QM_Output_Html {
 
 	/**
@@ -19,10 +23,16 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		add_filter( 'qm/output/menus', array( $this, 'admin_menu' ), 50 );
 	}
 
+	/**
+	 * @return string
+	 */
 	public function name() {
 		return __( 'Request', 'query-monitor' );
 	}
 
+	/**
+	 * @return void
+	 */
 	public function output() {
 
 		$data = $this->collector->get_data();
@@ -33,10 +43,10 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$this->before_non_tabular_output();
 
 		foreach ( array(
-			'request'       => __( 'Request', 'query-monitor' ),
-			'matched_rule'  => __( 'Matched Rule', 'query-monitor' ),
+			'request' => __( 'Request', 'query-monitor' ),
+			'matched_rule' => __( 'Matched Rule', 'query-monitor' ),
 			'matched_query' => __( 'Matched Query', 'query-monitor' ),
-			'query_string'  => __( 'Query String', 'query-monitor' ),
+			'query_string' => __( 'Query String', 'query-monitor' ),
 		) as $item => $name ) {
 			if ( is_admin() && ! isset( $data['request'][ $item ] ) ) {
 				continue;
@@ -60,7 +70,7 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 		echo '</div>';
 
-		echo '<div class="qm-boxed qm-boxed-wrap">';
+		echo '<div class="qm-boxed">';
 
 		if ( ! empty( $data['matching_rewrites'] ) ) {
 			echo '<section>';
@@ -90,10 +100,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		if ( $db_queries ) {
 			$db_queries_data = $db_queries->get_data();
 			if ( ! empty( $db_queries_data['dbs']['$wpdb']->has_main_query ) ) {
-				printf(
-					'<p><button class="qm-filter-trigger" data-qm-target="db_queries-wpdb" data-qm-filter="caller" data-qm-value="qm-main-query">%s</button></p>',
-					esc_html__( 'View Main Query', 'query-monitor' )
-				);
+				echo '<p>';
+				echo self::build_filter_trigger( 'db_queries-wpdb', 'caller', 'qm-main-query', esc_html__( 'View Main Query', 'query-monitor' ) ); // WPCS: XSS ok;
+				echo '</p>';
 			}
 		}
 
@@ -177,9 +186,9 @@ class QM_Output_Html_Request extends QM_Output_Html {
 			echo '<table>';
 
 			foreach ( array(
-				'ip'     => __( 'Remote IP', 'query-monitor' ),
+				'ip' => __( 'Remote IP', 'query-monitor' ),
 				'method' => __( 'HTTP method', 'query-monitor' ),
-				'url'    => __( 'Requested URL', 'query-monitor' ),
+				'url' => __( 'Requested URL', 'query-monitor' ),
 			) as $item => $name ) {
 				echo '<tr>';
 				echo '<th scope="row">' . esc_html( $name ) . '</td>';
@@ -195,9 +204,13 @@ class QM_Output_Html_Request extends QM_Output_Html {
 		$this->after_non_tabular_output();
 	}
 
+	/**
+	 * @param array<string, mixed[]> $menu
+	 * @return array<string, mixed[]>
+	 */
 	public function admin_menu( array $menu ) {
 
-		$data  = $this->collector->get_data();
+		$data = $this->collector->get_data();
 		$count = isset( $data['plugin_qvars'] ) ? count( $data['plugin_qvars'] ) : 0;
 
 		$title = ( empty( $count ) )
@@ -217,6 +230,11 @@ class QM_Output_Html_Request extends QM_Output_Html {
 
 }
 
+/**
+ * @param array<string, QM_Output> $output
+ * @param QM_Collectors $collectors
+ * @return array<string, QM_Output>
+ */
 function register_qm_output_html_request( array $output, QM_Collectors $collectors ) {
 	$collector = QM_Collectors::get( 'request' );
 	if ( $collector ) {

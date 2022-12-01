@@ -69,9 +69,13 @@ jQuery(function ($) {
         });
     }
 
-	if (jQuery('#icl_login_page_translation').length) {
-		jQuery('#icl_login_page_translation').submit(iclSaveForm);
-	}
+		jQuery('#login_page_translation').click(function() {
+			jQuery('#show_login_page_language_switcher_sub_section').toggle();
+		})
+
+		if (jQuery('#icl_login_page_translation').length) {
+			jQuery('#icl_login_page_translation').submit(iclSaveForm);
+		}
 
     jQuery('.icl_sync_custom_posts').change(function(){
         var val = WPML_core.sanitize( jQuery(this).val() );

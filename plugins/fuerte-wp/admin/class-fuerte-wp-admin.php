@@ -143,7 +143,22 @@ class Fuerte_Wp_Admin {
 					/* translators: %s: site domain */
 					->set_help_text( sprintf( __('Admin recovery email. If empty, dev@%s will be used.<br/>This email will receive fatal errors from WP, and not the administration email in the General Settings. Check <a href="https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/" target="_blank">fatal error recovery mode</a>.', 'fuerte-wp' ), $domain ) ),
 
+				Field::make( 'checkbox', 'fuertewp_sender_email_enable', __( 'Use a different sender email.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( sprintf( __( 'Use a different email (than the <a href="%s">administrator one</a>) for all emails that WordPress sends.', 'fuerte-wp' ), admin_url('options-general.php') ), ),
+
 				Field::make( 'text', 'fuertewp_sender_email', __( 'Sender email.', 'fuerte-wp' ) )
+					->set_conditional_logic(
+						[
+							'relation' => 'AND',
+								[
+								'field' => 'fuertewp_sender_email_enable',
+								'value' => true,
+								'compare' => '=',
+							],
+						]
+					)
 					->set_default_value( '' )
 					->set_attribute( 'type', 'email' )
 					/* translators: %s: site domain */
@@ -235,21 +250,32 @@ class Fuerte_Wp_Admin {
 					->set_help_text( __( 'Receipt: network admin.', 'fuerte-wp' ) ),
 			) )
 
+			->add_tab( __('REST API', 'fuerte-wp'), [
+				Field::make( 'html', 'fuertewp_restapi_restrictions_header', __( 'Note:' ) )
+					->set_html( __( '<p>REST API restrictions.</p>', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_restapi_loggedin_only', __( 'Restrict REST API usage to logged in users only.', 'fuerte-wp' ) )
+					->set_default_value( '' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Modern WordPress depends on his REST API. The entire new editor, Gutenberg, uses it. And many more usage instances are common the WP core. You should not disable the REST API entirely, or WordPress will brake. This is the second best option: limit his usage to only logged in users. <a href="https://developer.wordpress.org/rest-api/frequently-asked-questions/" target="_blank">Learn more</a>.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_restapi_disable_app_passwords', __( 'Disable app passwords.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disable generation of App Passwords, used for the REST API. <a href="https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/" target="_blank">Check here</a> for more info.', 'fuerte-wp' ) ),
+
+			] )
+
 			->add_tab( __('Restrictions', 'fuerte-wp'), array(
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_xmlrpc', __( 'Disable XML-RPC API.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
-					->set_help_text( __( 'Disable the old and insecure XML-RPC API in WordPress.', 'fuerte-wp' ) ),
+					->set_help_text( __( 'Disable the old and insecure XML-RPC API in WordPress. <a href="https://blog.wpscan.com/is-wordpress-xmlrpc-a-security-problem/" target="_blank">Learn more</a>.', 'fuerte-wp' ) ),
 
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_admin_create_edit', __( 'Disable admin creation/edition.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
 					->set_help_text( __( 'Disable the creation of new admin accounts and the editing of existing admin accounts.', 'fuerte-wp' ) ),
-
-				Field::make( 'checkbox', 'fuertewp_restrictions_disable_app_passwords', __( 'Disable app passwords.', 'fuerte-wp' ) )
-					->set_default_value( 'yes' )
-					->set_option_value( 'yes' )
-					->set_help_text( __( 'Disable WordPress app passwords. <a href="https://make.wordpress.org/core/2020/11/05/application-passwords-integration-guide/" target="_blank">Check here</a> for more info.', 'fuerte-wp' ) ),
 
 				Field::make( 'checkbox', 'fuertewp_restrictions_disable_weak_passwords', __( 'Disable weak passwords.', 'fuerte-wp' ) )
 					->set_default_value( 'yes' )
@@ -295,6 +321,11 @@ class Fuerte_Wp_Admin {
 					->set_default_value( 'yes' )
 					->set_option_value( 'yes' )
 					->set_help_text( __( 'Disables installation of new Plugins.', 'fuerte-wp' ) ),
+
+				Field::make( 'checkbox', 'fuertewp_restrictions_disable_customizer_css', __( 'Disable Customizer CSS Editor.', 'fuerte-wp' ) )
+					->set_default_value( 'yes' )
+					->set_option_value( 'yes' )
+					->set_help_text( __( 'Disables Customizer Additional CSS Editor.', 'fuerte-wp' ) ),
 			) )
 
 			->add_tab( __('Advanced Restrictions', 'fuerte-wp'), array(
@@ -313,6 +344,7 @@ update-core.php' )
 					->set_rows( 4 )
 					->set_default_value( 'wprocket
 updraftplus
+better-search-replace
 backwpup
 backwpupjobs
 backwpupeditjob
@@ -321,10 +353,10 @@ backwpupbackups
 backwpupsettings
 limit-login-attempts
 wp_stream_settings
+transients-manager
 pw-transients-manager
 envato-market
-elementor-license
-elementor-connect' )
+elementor-license' )
 					->set_help_text( __( 'One per line. Restricted pages by "page" URL variable.<br/>In wp-admin, checks for URLs like: <i>admin.php?page=</i>', 'fuerte-wp' ) ),
 
 				Field::make( 'textarea', 'fuertewp_removed_menus', __( 'Removed Menus.', 'fuerte-wp' ) )
@@ -342,7 +374,9 @@ options-general.php|limit-login-attempts
 options-general.php|mainwp_child_tab
 options-general.php|wprocket
 tools.php|export.php
-tools.php|pw-transients-manager' )
+tools.php|transients-manager
+tools.php|pw-transients-manager
+tools.php|better-search-replace' )
 					->set_help_text( __( 'One per line. Submenus to be removed. Use: <i>parent-menu-slug<strong>|</strong>submenu-slug</i>, separared with a pipe.<br/>These will be thrown into <a href="https://developer.wordpress.org/reference/functions/remove_submenu_page/" target="_blank">remove_submenu_page</a>.', 'fuerte-wp' ) ),
 
 				Field::make( 'textarea', 'fuertewp_removed_adminbar_menus', __( 'Removed Admin Bar menus.', 'fuerte-wp' ) )
@@ -382,7 +416,8 @@ updraft_admin_node' )
 		}
 
 		// Clears options cache
-		delete_transient( 'fuertewp_cache_config' );
+		$version_to_string = str_replace( '.', '', FUERTEWP_VERSION );
+		delete_transient( 'fuertewp_cache_config_' . $version_to_string );
 	}
 
 	/**

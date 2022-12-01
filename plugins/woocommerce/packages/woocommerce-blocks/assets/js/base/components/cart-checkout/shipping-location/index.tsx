@@ -2,17 +2,17 @@
  * External dependencies
  */
 import { __, sprintf } from '@wordpress/i18n';
-import { EnteredAddress, getSetting } from '@woocommerce/settings';
+import { ShippingAddress, getSetting } from '@woocommerce/settings';
 import { decodeEntities } from '@wordpress/html-entities';
 
 interface ShippingLocationProps {
-	address: EnteredAddress;
+	address: ShippingAddress;
 }
 
 /**
  * Shows a formatted shipping location.
  *
- * @param {Object} props Incoming props for the component.
+ * @param {Object} props         Incoming props for the component.
  * @param {Object} props.address Incoming address information.
  */
 const ShippingLocation = ( {

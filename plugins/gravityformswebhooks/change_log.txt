@@ -1,0 +1,33 @@
+### 1.5 | 2021-05-06
+- Fixed an issue that prevents saving feed settings for a request URL that contains encoded values.
+- Fixed an issue where the add-on icon is missing on the Form Settings page for Gravity Forms 2.5.
+- Fixed an issue where script tags are being output above the document head element.
+
+
+### 1.4 | 2020-09-10
+- Added support for Gravity Forms 2.5.
+
+
+### 1.3 | 2020-05-13
+- Added translations for Hebrew, Hindi, Japanese, and Turkish.
+- Added security enhancements.
+- Updated stylesheets to use minified versions.
+- Fixed a PHP error which could occur when using the https_local_ssl_verify filter with WP 5.1+.
+
+
+### 1.2 | 2019-04-25
+- Added "gform_webhooks_post_request" action.
+- Added GPL to plugin header.
+- Added support for delaying feed processing until after payment has been successfully completed using the PayPal Standard Add-On.
+- Added support for feed duplication.
+- Added support for using the {admin_ajax_url} and {rest_api_url} merge tags in the Request URL setting.
+- Updated logging statement.
+- Updated Plugin URI and Author URI to use https.
+
+
+### 1.1 | 2017-08-23
+- Fixed data from selected fields not being included in the request.
+
+
+### 1.0 | 2017-08-08
+- It's all new!

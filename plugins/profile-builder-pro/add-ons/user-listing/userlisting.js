@@ -131,9 +131,125 @@ jQuery( function() {
     });
 
 
+    /* Show/Hide Filters for User-Listing Vergrid Theme (all users template)  */
+    jQuery(document).on('click', '.wppb-ul-filter-button', function() {
 
+        if ( jQuery( '.wppb-ul-filter-button' ).hasClass( 'active' ) ) {
+            localStorage.removeItem('wppb_ul_filters_button_class');
+            jQuery( '.wppb-ul-filter-button' ).removeClass( 'active' );
+            jQuery( '.wppb-ul-filters' ).hide(300);
+        }
+        else {
+            localStorage.setItem('wppb_ul_filters_button_class', 'active');
+            jQuery( '.wppb-ul-filter-button' ).addClass( 'active' );
+            jQuery( '.wppb-ul-filters' ).show(300);
+        }
+
+    });
+
+    wppbMaybeShowFilters();
 
 });
+
+
+/**
+ * Function that displays the User-Listing Theme Filters if activated
+ */
+function wppbMaybeShowFilters() {
+    if ( jQuery( '.wppb-faceted-list' ).length === 0 )
+        jQuery( '.wppb-ul-filter-button' ).hide();
+
+    let filter_button_state = localStorage.getItem('wppb_ul_filters_button_class');
+
+    if ( filter_button_state === 'active' ) {
+        jQuery( '.wppb-ul-filter-button' ).addClass( filter_button_state );
+        jQuery( '.wppb-ul-filters' ).show();
+    }
+}
+
+/**
+ * Function that activates Tab and shows content for User-Listing Glimplist Theme (single user template)
+ */
+function activateTab( activeTab, activeContent ) {
+    let i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("wppb-ul-tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("wppb-ul-tab-title");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(activeContent).style.display = "block";
+    document.getElementById(activeTab).className += " active";
+}
+
+/**
+ * Function for scrolling User-Listing Glimplist Theme (single user template) Tabs
+ *
+ */
+jQuery(function($) {
+    let scrollContainer = $('#wppb-ul-theme-glimplist .wppb-ul-headers'),
+        items = scrollContainer.children();
+
+    if ( typeof scrollContainer == 'undefined' || !(scrollContainer.length > 0) )
+        return;
+
+    if ( scrollContainer[0].offsetWidth < scrollContainer[0].scrollWidth) {
+        scrollContainer.before('<div id="wppb-ul-themes-left-button" style="display: none"><a href="#"><</a></div>');
+        scrollContainer.after('<div id="wppb-ul-themes-right-button"><a href="#">></a></div>');
+    }
+
+    $('#wppb-ul-themes-right-button').click(function(event) {
+        event.preventDefault();
+
+        items.each(function (){
+            let left = Math.round( $(this).position().left ),
+                width = Math.round( $(this).width() ),
+                right = left + width,
+                nextElement = this.nextElementSibling;
+
+            if ( nextElement != null && left <= 0 && right > 0 ) {
+                nextElement.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'start'});
+
+                $('#wppb-ul-themes-left-button').show();
+
+                if ( left < 0 && right > 0 )
+                    $('#wppb-ul-themes-right-button').hide();
+            }
+
+        });
+
+    });
+
+    $('#wppb-ul-themes-left-button').click(function(event) {
+        event.preventDefault();
+
+        items.each(function (){
+            let left = Math.round( $(this).position().left ),
+                width = Math.round( $(this).width() ),
+                right = left + width,
+                prevElement = this.previousElementSibling;
+
+            if ( prevElement != null && left <= 0 && right > 0 ) {
+                prevElement.scrollIntoView({behavior: 'smooth', block: 'nearest', inline: 'start'});
+
+                $('#wppb-ul-themes-right-button').show();
+
+                if ( prevElement.previousElementSibling == null )
+                    $('#wppb-ul-themes-left-button').hide();
+            }
+
+        });
+
+    });
+
+    return false;
+
+});
+
+
+
 
 function wppbHandleFacet( facetObj ){
     console.log(facetObj);
@@ -362,6 +478,7 @@ function wppbGetFacetPage( url, setParam, paramName ) {
         else
             jQuery('.wppb-faceted-list').trigger("wppbFacetRemoveGetCompleted", [url, paramName]);
 
+        wppbMaybeShowFilters();
     });
 }
 

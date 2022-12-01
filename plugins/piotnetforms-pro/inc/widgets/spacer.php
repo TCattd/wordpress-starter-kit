@@ -14,21 +14,24 @@ class piotnetforms_Space extends Base_Widget_Piotnetforms {
 	}
 
 	public function get_icon() {
-		return 'fas fa-arrows-alt-v';
+		return [
+			'type'  => 'image',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-spacer.svg',
+		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
-		return [ 'text' ];
+		return [ 'spacer' ];
 	}
 
 	public function register_controls() {
 		$this->start_tab( 'settings', 'Settings' );
 
-		$this->start_section( 'space_settings_section', 'Divider Settings' );
+		$this->start_section( 'space_settings_section', 'Space Settings' );
 		$this->add_setting_controls();
 
 		$this->add_advanced_tab();
@@ -80,7 +83,7 @@ class piotnetforms_Space extends Base_Widget_Piotnetforms {
 		$settings = $this->settings;
 		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-spacer' ); ?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<div class="piotnetforms-space"></div>
+			<div class="piotnetforms-spacer"></div>
 		</div>
 		<?php
 	}
@@ -91,5 +94,4 @@ class piotnetforms_Space extends Base_Widget_Piotnetforms {
 		</div>
 		<?php
 	}
-
 }

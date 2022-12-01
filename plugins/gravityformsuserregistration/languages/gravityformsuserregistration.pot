@@ -1,0 +1,812 @@
+# Copyright (C) 2022 Gravity Forms
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms User Registration Add-On 5.0\n"
+"Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
+"Last-Translator: Gravity Forms <support@gravityforms.com>\n"
+"Language-Team: Gravity Forms <support@gravityforms.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-06-13T18:05:04+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: gravityformsuserregistration\n"
+
+#. Plugin Name of the plugin
+msgid "Gravity Forms User Registration Add-On"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://gravityforms.com"
+msgstr ""
+
+#. Description of the plugin
+msgid "Allows WordPress users to be automatically created upon submitting a Gravity Form."
+msgstr ""
+
+#. Author of the plugin
+msgid "Gravity Forms"
+msgstr ""
+
+#: class-gf-user-registration.php:89
+msgid "Process the feed only when a payment is received."
+msgstr ""
+
+#: class-gf-user-registration.php:207
+msgid "User Activation URL"
+msgstr ""
+
+#: class-gf-user-registration.php:208
+msgid "Set Password URL"
+msgstr ""
+
+#: class-gf-user-registration.php:501
+msgid "Passwords may not contain the character \"\\\""
+msgstr ""
+
+#: class-gf-user-registration.php:584
+msgid "The email address can not be empty"
+msgstr ""
+
+#: class-gf-user-registration.php:595
+#: class-gf-user-registration.php:597
+msgid "This email address is already registered"
+msgstr ""
+
+#: class-gf-user-registration.php:609
+msgid "The username can not be empty"
+msgstr ""
+
+#: class-gf-user-registration.php:615
+msgid "This username is invalid because it uses illegal characters. Please enter a valid username."
+msgstr ""
+
+#: class-gf-user-registration.php:621
+msgid "The username can only contain alphanumeric characters (A-Z, 0-9), underscores and dashes"
+msgstr ""
+
+#: class-gf-user-registration.php:627
+msgid "This username is already registered"
+msgstr ""
+
+#: class-gf-user-registration.php:1096
+msgid "Use the password you set at registration to login."
+msgstr ""
+
+#: class-gf-user-registration.php:1098
+msgid "Forgot your password? Visit the following address to reset your password:"
+msgstr ""
+
+#: class-gf-user-registration.php:1155
+msgid "Oops! You need to be logged in to use this form."
+msgstr ""
+
+#: class-gf-user-registration.php:1927
+msgid "Select BuddyPress Field"
+msgstr ""
+
+#: class-gf-user-registration.php:2111
+#: includes/class-gf-login-widget.php:226
+msgid "Register"
+msgstr ""
+
+#: class-gf-user-registration.php:2113
+msgid "Forgot Password"
+msgstr ""
+
+#: class-gf-user-registration.php:2215
+msgid "You are currently logged in as %s%s%s. %sLog out?%s"
+msgstr ""
+
+#: class-gf-user-registration.php:2220
+#: includes/class-gf-login-widget.php:220
+msgid "Logout"
+msgstr ""
+
+#: class-gf-user-registration.php:2384
+msgid "Login Form"
+msgstr ""
+
+#: class-gf-user-registration.php:2388
+#: includes/class-gf-login-widget.php:36
+#: includes/class-gf-login-widget.php:211
+msgid "Login"
+msgstr ""
+
+#: class-gf-user-registration.php:2398
+#: class-gf-user-registration.php:2787
+#: class-gf-user-registration.php:2795
+#: includes/class-gf-field-username.php:78
+#: includes/class-gf-pending-activations-list.php:18
+msgid "Username"
+msgstr ""
+
+#: class-gf-user-registration.php:2406
+#: class-gf-user-registration.php:2855
+#: class-gf-user-registration.php:2863
+msgid "Password"
+msgstr ""
+
+#: class-gf-user-registration.php:2415
+#: class-gf-user-registration.php:2422
+msgid "Remember Me"
+msgstr ""
+
+#: class-gf-user-registration.php:2530
+#: class-gf-user-registration.php:2535
+msgid "Access denied."
+msgstr ""
+
+#: class-gf-user-registration.php:2655
+msgid "Global Settings"
+msgstr ""
+
+#: class-gf-user-registration.php:2660
+#: class-gf-user-registration.php:2668
+msgid "Custom Registration Page"
+msgstr ""
+
+#: class-gf-user-registration.php:2664
+msgid "Enable Custom Registration Page"
+msgstr ""
+
+#: class-gf-user-registration.php:2668
+msgid "When users attempt to access the default WordPress registration page, they will be redirected to this custom page instead."
+msgstr ""
+
+#: class-gf-user-registration.php:2673
+msgid "Registration Page"
+msgstr ""
+
+#: class-gf-user-registration.php:2675
+msgid "Select a Page"
+msgstr ""
+
+#: class-gf-user-registration.php:2700
+msgid "Pages"
+msgstr ""
+
+#: class-gf-user-registration.php:2717
+msgid "Other"
+msgstr ""
+
+#: class-gf-user-registration.php:2720
+msgid "Custom URL"
+msgstr ""
+
+#: class-gf-user-registration.php:2749
+msgid "Feed Settings"
+msgstr ""
+
+#: class-gf-user-registration.php:2754
+#: class-gf-user-registration.php:2758
+#: class-gf-user-registration.php:3700
+msgid "Name"
+msgstr ""
+
+#: class-gf-user-registration.php:2758
+msgid "Enter a feed name to uniquely identify this setup."
+msgstr ""
+
+#: class-gf-user-registration.php:2762
+#: class-gf-user-registration.php:2767
+#: class-gf-user-registration.php:3701
+msgid "Action"
+msgstr ""
+
+#: class-gf-user-registration.php:2768
+msgid "Select the type of feed you would like to create. \"Create\" feeds will create a new user. \"Update\" feeds will update users."
+msgstr ""
+
+#: class-gf-user-registration.php:2769
+msgid "A form can have multiple \"Create\" feeds <strong>or</strong> a single \"Update\" feed. A form cannot have both a \"Create\" feed and an \"Update\" feed."
+msgstr ""
+
+#: class-gf-user-registration.php:2778
+msgid "User Settings"
+msgstr ""
+
+#: class-gf-user-registration.php:2795
+msgid "Select the form field that should be used for the user's username."
+msgstr ""
+
+#: class-gf-user-registration.php:2803
+#: class-gf-user-registration.php:2809
+msgid "First Name"
+msgstr ""
+
+#: class-gf-user-registration.php:2809
+msgid "Select the form field that should be used for the user's first name."
+msgstr ""
+
+#: class-gf-user-registration.php:2813
+#: class-gf-user-registration.php:2819
+msgid "Last Name"
+msgstr ""
+
+#: class-gf-user-registration.php:2819
+msgid "Select the form field that should be used for the user's last name."
+msgstr ""
+
+#: class-gf-user-registration.php:2823
+#: class-gf-user-registration.php:2829
+msgid "Nickname"
+msgstr ""
+
+#: class-gf-user-registration.php:2829
+msgid "Select the form field that should be used for the user's nickname."
+msgstr ""
+
+#: class-gf-user-registration.php:2833
+#: class-gf-user-registration.php:2837
+msgid "Display Name"
+msgstr ""
+
+#: class-gf-user-registration.php:2837
+msgid "Select how the user's name should be displayed publicly."
+msgstr ""
+
+#: class-gf-user-registration.php:2841
+#: class-gf-user-registration.php:2851
+msgid "Email Address"
+msgstr ""
+
+#: class-gf-user-registration.php:2850
+msgid "You must have at least one Email Address field."
+msgstr ""
+
+#: class-gf-user-registration.php:2851
+msgid "Select the form field that should be used for the user's email address."
+msgstr ""
+
+#: class-gf-user-registration.php:2863
+msgid "Select the form field that should be used for the user's password or select \"Set Password via Email Link\" to have a URL emailed to the user where they can set their password."
+msgstr ""
+
+#: class-gf-user-registration.php:2867
+#: class-gf-user-registration.php:2872
+msgid "Role"
+msgstr ""
+
+#: class-gf-user-registration.php:2872
+msgid "Select the role the user should be assigned."
+msgstr ""
+
+#: class-gf-user-registration.php:2883
+msgid "User Meta"
+msgstr ""
+
+#: class-gf-user-registration.php:2903
+msgid "BuddyPress Profile"
+msgstr ""
+
+#: class-gf-user-registration.php:2926
+msgid "Network Options"
+msgstr ""
+
+#: class-gf-user-registration.php:2939
+msgid "Create new site when a user registers."
+msgstr ""
+
+#: class-gf-user-registration.php:2947
+#: class-gf-user-registration.php:2950
+msgid "Site Address"
+msgstr ""
+
+#: class-gf-user-registration.php:2950
+msgid "Select the form field that should be used for the site address."
+msgstr ""
+
+#: class-gf-user-registration.php:2959
+#: class-gf-user-registration.php:2962
+msgid "Site Title"
+msgstr ""
+
+#: class-gf-user-registration.php:2962
+msgid "Select the form field that should be used for the site title."
+msgstr ""
+
+#: class-gf-user-registration.php:2972
+#: class-gf-user-registration.php:2976
+msgid "Site Role"
+msgstr ""
+
+#: class-gf-user-registration.php:2976
+msgid "Select role the user should be assigned on the newly created site."
+msgstr ""
+
+#: class-gf-user-registration.php:2985
+#: class-gf-user-registration.php:2989
+msgid "Current Site Role"
+msgstr ""
+
+#: class-gf-user-registration.php:2989
+msgid "Select role the user should be assigned on the site they registered from. This option overrides the \"Role\" option under User Settings."
+msgstr ""
+
+#: class-gf-user-registration.php:2998
+#: class-gf-user-registration.php:3008
+#: class-gf-user-registration.php:3024
+#: class-gf-user-registration.php:3055
+msgid "Send Email?"
+msgstr ""
+
+#: class-gf-user-registration.php:3002
+msgid "Send the new site details to the user by email."
+msgstr ""
+
+#: class-gf-user-registration.php:3008
+msgid "Specify whether to send the new site details to the user by email. %sEnabled by default.%s"
+msgstr ""
+
+#: class-gf-user-registration.php:3015
+msgid "Additional Options"
+msgstr ""
+
+#: class-gf-user-registration.php:3027
+msgid "Send the new user an email about their account."
+msgstr ""
+
+#: class-gf-user-registration.php:3028
+msgid "Send the new user an email about their account:"
+msgstr ""
+
+#: class-gf-user-registration.php:3035
+#: class-gf-user-registration.php:3072
+msgid "by email from WordPress"
+msgstr ""
+
+#: class-gf-user-registration.php:3039
+msgid "by form notification"
+msgstr ""
+
+#: class-gf-user-registration.php:3045
+msgid "Send Email Options"
+msgstr ""
+
+#: class-gf-user-registration.php:3047
+msgid ""
+"%3$s\n"
+"\t\t\t\t\t\t\t\t\t%1$sBy email from WordPress:%2$s%3$s WordPress will send the user an email with their login and a login URL. If the %1$sPassword%2$s setting is configured to \"Set Password via Email Link\", WordPress will include a link where the user can set their password.%3$s%3$s\n"
+"\t\t\t\t\t\t\t\t\t%1$sBy form notification:%2$s%3$s Configure a form notification for the desired User Registration event. If the %1$sPassword%2$s setting is configured to \"Set Password via Email Link\", you must include the %4$s{set_password_url}%5$s merge tag in your notification to provide a URL where the user can set their password."
+msgstr ""
+
+#: class-gf-user-registration.php:3055
+msgid "Specify whether an email (or notification) should be sent to the new user about their account. %sEnabled by default.%s"
+msgstr ""
+
+#: class-gf-user-registration.php:3063
+#: class-gf-user-registration.php:3090
+msgid "User Activation"
+msgstr ""
+
+#: class-gf-user-registration.php:3066
+msgid "Enable user activation."
+msgstr ""
+
+#: class-gf-user-registration.php:3067
+msgid "Enable user activation:"
+msgstr ""
+
+#: class-gf-user-registration.php:3076
+msgid "manually or by form notification"
+msgstr ""
+
+#: class-gf-user-registration.php:3081
+msgid "User Activation Type"
+msgstr ""
+
+#: class-gf-user-registration.php:3083
+msgid ""
+"%3$s\n"
+"\t\t\t\t\t\t\t\t%1$sBy Email:%2$s%3$sWordPress will send the user an email with an activation link.%3$s%3$s\n"
+"\t\t\t\t\t\t\t\t%1$sManually:%2$s%3$sActivate each user manually from the Pending Activations page or send a form notification for the User Activation event with an activation link (via the %4$s{activation_url}%5$s merge tag)."
+msgstr ""
+
+#: class-gf-user-registration.php:3090
+msgid "Send users an email with an activation link. Users are only registered once they have activated their accounts."
+msgstr ""
+
+#: class-gf-user-registration.php:3098
+#: class-gf-user-registration.php:3103
+msgid "Update Condition"
+msgstr ""
+
+#: class-gf-user-registration.php:3098
+#: class-gf-user-registration.php:3104
+msgid "Registration Condition"
+msgstr ""
+
+#: class-gf-user-registration.php:3100
+msgid "Enable"
+msgstr ""
+
+#: class-gf-user-registration.php:3101
+msgid "Update user if"
+msgstr ""
+
+#: class-gf-user-registration.php:3101
+msgid "Register user if"
+msgstr ""
+
+#: class-gf-user-registration.php:3103
+msgid "When the update condition is enabled, form submissions will only update the user when the condition is met. The user data will always be populated into the form."
+msgstr ""
+
+#: class-gf-user-registration.php:3104
+msgid "When the registration condition is enabled, form submissions will only register the user when the condition is met."
+msgstr ""
+
+#: class-gf-user-registration.php:3114
+#: class-gf-user-registration.php:3124
+msgid "Set Post Author"
+msgstr ""
+
+#: class-gf-user-registration.php:3118
+msgid "Set user as post author."
+msgstr ""
+
+#: class-gf-user-registration.php:3124
+msgid "When a form submission creates a post and registers a user, set the new user as the post author. %sEnabled by default.%s"
+msgstr ""
+
+#: class-gf-user-registration.php:3306
+msgid "Set as %s"
+msgstr ""
+
+#: class-gf-user-registration.php:3316
+msgid "Deactivate site"
+msgstr ""
+
+#: class-gf-user-registration.php:3320
+msgid "Delete site"
+msgstr ""
+
+#: class-gf-user-registration.php:3342
+msgid "Standard User Meta"
+msgstr ""
+
+#: class-gf-user-registration.php:3345
+msgid "Website"
+msgstr ""
+
+#: class-gf-user-registration.php:3349
+msgid "AIM"
+msgstr ""
+
+#: class-gf-user-registration.php:3353
+msgid "Yahoo"
+msgstr ""
+
+#: class-gf-user-registration.php:3357
+msgid "Jabber / Google Talk"
+msgstr ""
+
+#: class-gf-user-registration.php:3361
+msgid "Biographical Information"
+msgstr ""
+
+#: class-gf-user-registration.php:3414
+msgid "Other User Meta"
+msgstr ""
+
+#: class-gf-user-registration.php:3421
+msgid "Add Custom Meta"
+msgstr ""
+
+#: class-gf-user-registration.php:3426
+msgid "Select Meta Key"
+msgstr ""
+
+#: class-gf-user-registration.php:3508
+msgid "&mdash; Preserve current email &mdash;"
+msgstr ""
+
+#: class-gf-user-registration.php:3524
+msgid "&mdash; Preserve current password &mdash;"
+msgstr ""
+
+#: class-gf-user-registration.php:3529
+msgid "Set Password via Email Link"
+msgstr ""
+
+#: class-gf-user-registration.php:3540
+msgid "Create User"
+msgstr ""
+
+#: class-gf-user-registration.php:3545
+msgid "Update User"
+msgstr ""
+
+#: class-gf-user-registration.php:3642
+msgid "&mdash; Preserve current display name &mdash;"
+msgstr ""
+
+#: class-gf-user-registration.php:3665
+msgid "Select a Role"
+msgstr ""
+
+#: class-gf-user-registration.php:3682
+msgid "&mdash; Preserve current role &mdash;"
+msgstr ""
+
+#: class-gf-user-registration.php:3689
+msgid "&mdash; No role for this site &mdash;"
+msgstr ""
+
+#: class-gf-user-registration.php:3833
+msgid "User Registration Options"
+msgstr ""
+
+#: class-gf-user-registration.php:3842
+msgid "Delay User Registration"
+msgstr ""
+
+#: class-gf-user-registration.php:3855
+msgid "Update User on Cancel"
+msgstr ""
+
+#: class-gf-user-registration.php:3858
+msgid "Update user when subscription is cancelled."
+msgstr ""
+
+#: class-gf-user-registration.php:3869
+msgid "Update Site on Cancel"
+msgstr ""
+
+#: class-gf-user-registration.php:3872
+msgid "Update site when subscription is cancelled."
+msgstr ""
+
+#: class-gf-user-registration.php:4454
+msgid "Site is created"
+msgstr ""
+
+#: class-gf-user-registration.php:4455
+msgid "User is pending activation"
+msgstr ""
+
+#: class-gf-user-registration.php:4456
+msgid "User is activated"
+msgstr ""
+
+#: class-gf-user-registration.php:4457
+msgid "User is registered"
+msgstr ""
+
+#: class-gf-user-registration.php:4458
+msgid "User is updated"
+msgstr ""
+
+#: class-gf-user-registration.php:4459
+msgid "User pending activation deleted"
+msgstr ""
+
+#: includes/activate.php:62
+msgid "Activation Key Required"
+msgstr ""
+
+#: includes/activate.php:65
+msgid "Activation Key:"
+msgstr ""
+
+#: includes/activate.php:69
+#: includes/class-gf-pending-activations-list.php:96
+#: includes/class-gf-pending-activations-list.php:121
+msgid "Activate"
+msgstr ""
+
+#: includes/activate.php:81
+#: includes/activate.php:118
+msgid "Your account is now active!"
+msgstr ""
+
+#. translators: 1: Opening a tag with login URL, 2: Closing a tag, 3: Username, 4: User email address, 5: Opening a tag with lost password URL.
+#: includes/activate.php:87
+msgid "Your account has been activated. You may now %1$slog in%2$s to the site using your chosen username of &#8220;%3$s&#8221;. Please check your email inbox at %4$s for your login instructions. If you do not receive an email, please check your junk or spam folder. If you still do not receive an email within an hour, you can %5$sreset your password%2$s."
+msgstr ""
+
+#. translators: 1: Site link, 2: Username, 3: User email address, 4: Opening a tag with lost password URL, 5: Closing a tag.
+#: includes/activate.php:98
+msgid "Your site at %1$s is active. You may now log in to your site using your chosen username of &#8220;%2$s&#8221;. Please check your email inbox at %3$s for your login instructions. If you do not receive an email, please check your junk or spam folder. If you still do not receive an email within an hour, you can %4$sreset your password%5$s."
+msgstr ""
+
+#: includes/activate.php:109
+msgid "An error occurred during the activation"
+msgstr ""
+
+#: includes/activate.php:121
+msgid "Username:"
+msgstr ""
+
+#: includes/activate.php:124
+msgid "Password:"
+msgstr ""
+
+#: includes/activate.php:127
+msgid "Set at registration."
+msgstr ""
+
+#: includes/activate.php:129
+msgid "Check your email for the set password link."
+msgstr ""
+
+#: includes/activate.php:131
+msgid "Set your password."
+msgstr ""
+
+#. translators: 1: Opening a tag with site URL, 2: Closing a tag, 3: Opening a tag with login URL.
+#: includes/activate.php:142
+msgid "Your account is now activated. %1$sView your site%2$s or %3$sLog in%2$s"
+msgstr ""
+
+#. translators: 1: Opening a tag with login URL, 2: Closing a tag, 3: Opening a tag with home URL.
+#: includes/activate.php:154
+msgid "Your account is now activated. %1$sLog in%2$s or go back to the %3$shomepage%2$s."
+msgstr ""
+
+#: includes/class-gf-field-username.php:89
+msgid "Allows users to choose their own username when registering a new account."
+msgstr ""
+
+#: includes/class-gf-login-widget.php:39
+msgid "Gravity Forms Login Widget"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:230
+msgid "Forgot Password?"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:250
+#: includes/class-gf-login-widget.php:308
+msgid "Title"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:266
+msgid "Login Redirect URL"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:267
+msgid "Current Page"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:271
+#: includes/class-gf-login-widget.php:319
+msgid "Links"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:279
+#: includes/class-gf-login-widget.php:287
+#: includes/class-gf-login-widget.php:327
+#: includes/class-gf-login-widget.php:335
+msgid "Link Text"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:281
+#: includes/class-gf-login-widget.php:289
+#: includes/class-gf-login-widget.php:329
+#: includes/class-gf-login-widget.php:337
+msgid "Link URL"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:294
+#: includes/class-gf-login-widget.php:342
+msgid "Add Link"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:298
+msgid "Tab Index Start"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:314
+msgid "Welcome Message"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:346
+msgid "Logout Redirect URL"
+msgstr ""
+
+#: includes/class-gf-login-widget.php:353
+msgid "Show user avatar"
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:19
+msgid "Email"
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:96
+msgid "Activate this sign up"
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:96
+msgid "Activate this sign up? "
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:96
+msgid "\\'Cancel\\' to stop, \\'OK\\' to activate."
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:99
+msgid "View the entry associated with this sign up"
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:99
+msgid "View Entry"
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:102
+msgid "Delete this sign up?"
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:102
+msgid "Delete this sign up? "
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:102
+msgid "\\'Cancel\\' to stop, \\'OK\\' to delete."
+msgstr ""
+
+#: includes/class-gf-pending-activations-list.php:102
+#: includes/class-gf-pending-activations-list.php:122
+msgid "Delete"
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:176
+#: includes/class-gf-pending-activations.php:232
+#: includes/class-gf-pending-activations.php:542
+#: includes/class-gf-pending-activations.php:543
+msgid "Pending Activations"
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:433
+#: includes/class-gf-pending-activations.php:489
+msgid "User registration deleted."
+msgid_plural "User registrations deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-gf-pending-activations.php:442
+msgid "There was an issue deleting this user registration."
+msgid_plural "There was an issue deleting one or more selected user registrations."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-gf-pending-activations.php:460
+msgid "There was an issue activating this item"
+msgid_plural "There was an issue activating one or more selected items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-gf-pending-activations.php:464
+#: includes/class-gf-pending-activations.php:496
+msgid "User activated."
+msgid_plural "Users activated."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-gf-pending-activations.php:614
+msgid "User Registration"
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:638
+msgid "Activate User"
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:640
+msgid "Pending Activation"
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:640
+msgid "This entry created a user who is pending activation. Click the \"Activate User\" button to activate the user."
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:647
+msgid "Are you sure you want to activate this user?"
+msgstr ""
+
+#: includes/class-gf-pending-activations.php:667
+msgid "User Activated Successfully!"
+msgstr ""

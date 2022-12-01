@@ -41,12 +41,13 @@ function wppb_content_restriction_settings_defaults() {
 
     add_option( 'wppb_content_restriction_settings',
         array(
-            'restrict_type'         =>  'message',
-            'redirect_url'          =>  '',
-            'message_logged_out'    =>  '',
-            'message_logged_in'     =>  '',
-            'post_preview'          =>  'none',
-            'post_preview_length'   =>  '20',
+            'restrict_type'         => 'message',
+            'redirect_url'          => '',
+            'message_logged_out'    => '',
+            'message_logged_in'     => '',
+            'purchasing_restricted' => '',
+            'post_preview'          => 'none',
+            'post_preview_length'   => '20',
         )
     );
 
@@ -60,7 +61,10 @@ function wppb_content_restriction_content() {
 
     ?>
     <div class="wrap wppb-content-restriction-wrap">
-        <h2><?php esc_html_e( 'Content Restriction Settings', 'profile-builder' ); ?></h2>
+        <h2>
+            <?php esc_html_e( 'Content Restriction Settings', 'profile-builder' ); ?>
+            <a href="https://www.cozmoslabs.com/docs/profile-builder-2/general-settings/content-restriction/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+        </h2>
 
         <?php settings_errors(); ?>
 
@@ -126,14 +130,25 @@ function wppb_content_restriction_content() {
                     <?php wp_editor( wppb_get_restriction_content_message( 'logged_in' ), 'message_logged_in', array( 'textarea_name' => 'wppb_content_restriction_settings[message_logged_in]', 'editor_height' => 250 ) ); ?>
                 </div>
 
+                <?php if ( ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) || ( is_plugin_active_for_network('woocommerce/woocommerce.php') ) ) : ?>
+                    <h4 class="pms-subsection-title"><?php esc_html_e( 'WooCommerce Restriction Messages', 'profile-builder' ); ?></h4>
+
+                    <div class="wppb-restriction-fields-group">
+
+                        <label class="wppb-restriction-label"><?php esc_html_e( 'Messages for restricted product purchase', 'profile-builder' ); ?></label>
+                        <?php wp_editor( wppb_get_restriction_content_message( 'purchasing_restricted' ), 'messages_purchasing_restricted', array( 'textarea_name' => 'wppb_content_restriction_settings[purchasing_restricted]', 'editor_height' => 250 ) ); ?>
+
+                    </div>
+                <?php endif; ?>
+
                 <div class="wppb-restriction-fields-group">
-                    <label class="wppb-restriction-label" for="restricted-posts-preview"><?php echo esc_html__( 'Restricted Posts Preview', 'profile-builder' ) ?></label>
+                    <label class="wppb-restriction-label" for="restricted-posts-preview"><?php esc_html_e( 'Restricted Posts Preview', 'profile-builder' ) ?></label>
 
                     <div class="wppb-restriction-post-preview">
                         <div>
                             <label>
                                 <input type="radio" name="wppb_content_restriction_settings[post_preview]" value="none" <?php echo ( ( $wppb_content_restriction_settings != 'not_found' ) && $wppb_content_restriction_settings['post_preview'] == 'none' ? 'checked' : '' ); ?> />
-                                <span><?php echo esc_html__( 'None', 'profile-builder' ); ?></span>
+                                <span><?php esc_html_e( 'None', 'profile-builder' ); ?></span>
                             </label>
                         </div>
 

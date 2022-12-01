@@ -1,0 +1,8 @@
+## 1.1 | 2021-07-21
+- Fixed an issue where an undefined variable notice appears on the add-on settings page.
+- Fixed an issue where forms can fail validation if they include dynamically added fields such as the honeypot.
+- Fixed an issue where the reCAPTCHA response is saved and output by merge tags.
+- Fixed an issue where submissions from the User Registration Add-On login form are blocked.
+
+## 1.0 | 2021-06-23
+- It's all new!

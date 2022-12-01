@@ -1,9 +1,10 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class Piotnetforms_Field extends Base_Widget_Piotnetforms {
-
 	protected $is_add_conditional_logic = false;
 
 	public function get_type() {
@@ -21,23 +22,29 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-field.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-field.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'piotnetforms' ];
+		return [ 'form' ];
 	}
 
 	public function get_keywords() {
-		return [ 'field' ];
+		return [ 'field', 'input' ];
 	}
 
 	public function register_controls() {
 		$this->start_tab( 'settings', 'Settings' );
 
-		$this->start_section( 'piotnetforms_field', 'Settings' );
-		$this->add_setting_controls();
+		$this->start_section( 'section_settings_general', 'General' );
+		$this->add_settings_controls();
+
+		$this->start_section( 'section_settings_advanced', 'Other Options' );
+		$this->add_settings_advanced_controls();
+
+		$this->start_section( 'section_icon', 'Icon' );
+		$this->add_icon_controls();
 
 		$this->start_section(
 			'input_mask_section',
@@ -119,12 +126,65 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 		$this->add_calculated_fields_style_controls();
 
-		$this->start_section( 'section_style_piotnet_form_label', 'Label' );
+		$this->start_section(
+			'section_style_piotnet_form_label',
+			'Label',
+			[
+				'condition' => [
+					'modern_upload_field_style!' => 'true',
+				],
+			]
+		);
 		$this->add_label_style_controls();
+
+		$this->start_section(
+			'section_style_piotnet_form_modern_upload_style',
+			'Modern Upload Style',
+			[
+				'condition' => [
+					'modern_upload_field_style' => 'true',
+				],
+			]
+		);
+		$this->add_modern_upload_field_style_controls();
 
 		$this->start_section( 'section_style_piotnet_form_field', 'Field' );
 		$this->add_field_style_controls();
-		$this->start_section( 'section_style_piotnet_form_password', 'Password Preview' );
+
+		$this->start_section(
+			'section_style_field_description',
+			'Field Description',
+			[
+				'conditions'   => [
+					'terms' => [
+						[
+							'name'     => 'field_description',
+							'operator' => '!=',
+							'value'    => ''
+						]
+					],
+				],
+			]
+		);
+		$this->add_field_description_style_controls();
+
+		$this->start_section(
+			'section_style_piotnet_form_password',
+			'Password Preview',
+			[
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'password',
+							],
+						],
+					],
+				],
+			]
+		);
 		$this->add_password_compare_style_controls();
 
 		$this->add_advanced_tab();
@@ -132,7 +192,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		return $this->structure;
 	}
 
-	private function add_setting_controls() {
+	private function add_settings_controls() {
 		$field_types = [
 			'text'              => __( 'Text', 'piotnetforms' ),
 			'email'             => __( 'Email', 'piotnetforms' ),
@@ -159,7 +219,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'stripe_payment'    => __( 'Stripe Payment', 'piotnetforms' ),
 			'honeypot'          => __( 'Honeypot', 'piotnetforms' ),
 			'color'             => __( 'Color Picker', 'piotnetforms' ),
-			'iban'             => __( 'Iban', 'piotnetforms' )
+			'iban'             => __( 'Iban', 'piotnetforms' ),
+			'confirm' 			=> __( 'Confirm', 'piotnetforms' ),
 		];
 
 		if ( get_option( 'piotnetforms-features-submit-post', 2 ) == 2 || get_option( 'piotnetforms-features-submit-post', 2 ) == 1 ) {
@@ -179,45 +240,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		}
 
 		$this->add_control(
-			'form_id',
-			[
-				'label'       => __( 'Form ID* (Required)', 'piotnetforms' ),
-				'type'        => 'text',
-				'description' => __( 'Enter the same form id for all fields in a form', 'piotnetforms' ),
-			]
-		);
-
-		$this->add_control(
-			'field_id',
-			[
-				'label'       => __( 'Field ID* (Required)', 'piotnetforms' ),
-				'type'        => 'text',
-				'description' => __( 'Field ID have to be unique in a form, with latin character and no space, no number. Please do not enter Field ID = product. E.g your_field_id', 'piotnetforms' ),
-			]
-		);
-
-		$this->add_control(
-			'shortcode',
-			[
-				'label'   => __( 'Shortcode', 'piotnetforms' ),
-				'type'    => 'text',
-				'classes' => 'piotnetforms-field-shortcode',
-				'attr'    => 'readonly',
-			]
-		);
-
-		$this->add_control(
-			'live_preview_code',
-			[
-				'label'   => __( 'Live Preview Code', 'piotnetforms' ),
-				'type'    => 'text',
-				'classes' => 'piotnetforms-live-preview-code',
-				'attr'    => 'readonly',
-				'description' => __( 'Paste this code to anywhere to live preview this field value', 'piotnetforms' ),
-			]
-		);
-
-		$this->add_control(
 			'field_type',
 			[
 				'label'       => __( 'Type', 'piotnetforms' ),
@@ -227,6 +249,94 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'description' => 'TinyMCE, Range Slider Field only works on the frontend.',
 			]
 		);
+
+		$this->add_control(
+			'confirm_type',
+			[
+				'label'   => __( 'Confirm Type', 'piotnetforms' ),
+				'type'    => 'select',
+				'options' => [
+					'text' => __( 'Text', 'piotnetforms' ),
+					'email' => __( 'Email', 'piotnetforms' ),
+					'url' => __( 'url', 'piotnetforms' ),
+					'tel' => __( 'Tel', 'piotnetforms' ),
+				],
+				'default' => 'text',
+				'condition'   => [
+					'field_type' => 'confirm'
+				]
+
+			]
+		);
+
+		$this->add_control(
+			'confirm_field_name',
+			[
+				'label'       => __( 'Confirm Field ID*', 'piotnetforms' ),
+				'type'        => 'text',
+				'condition' => [
+					'field_type' => 'confirm'
+				]
+			]
+		);
+
+		$this->add_control(
+			'confirm_error_msg',
+			[
+				'label'       => __( 'Confirm error messenger', 'piotnetforms' ),
+				'type'        => 'text',
+				'default' => "Field don't match",
+				'condition' => [
+					'field_type' => 'confirm'
+				]
+			]
+		);
+
+		$this->add_control(
+			'field_id',
+			[
+				'label'       => __( 'Field ID*', 'piotnetforms' ),
+				'type'        => 'text',
+				'description' => __( 'Field ID have to be unique in a form, with latin character and no space, no number. Please do not enter Field ID = product. E.g your_field_id', 'piotnetforms' ),
+			]
+		);
+
+		$this->add_control(
+			'field_label',
+			[
+				'label'   => __( 'Label', 'piotnetforms' ),
+				'label_block' => true,
+				'type'    => 'text',
+				'default' => '',
+			]
+		);
+
+		// $this->add_control(
+		//     'field_label_placement',
+		//     [
+		//         'label'       => __( 'Label Placement', 'piotnetforms' ),
+		//         'label_block' => true,
+		//         'type'        => 'select',
+		//         'options'     => [
+		//             '' => __( 'Default', 'piotnetforms' ),
+		//             'top' => __( 'Top', 'piotnetforms' ),
+		//             'right' => __( 'Right', 'piotnetforms' ),
+		//             'bottom' => __( 'Bottom', 'piotnetforms' ),
+		//             'left' => __( 'Left', 'piotnetforms' ),
+		//             'hide' => __( 'Hide', 'piotnetforms' ),
+		//         ],
+		//     ]
+		// );
+
+		$this->add_control(
+			'form_id',
+			[
+				'label'       => __( 'Form ID* (Required)', 'piotnetforms' ),
+				'type'        => 'hidden',
+				'description' => __( 'Enter the same form id for all fields in a form', 'piotnetforms' ),
+			]
+		);
+
 		$this->add_control(
 			'show_icon_password_options',
 			[
@@ -730,14 +840,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		$this->add_control(
-			'field_label',
-			[
-				'label'   => __( 'Label', 'piotnetforms' ),
-				'type'    => 'text',
-				'default' => '',
-			]
-		);
+
 
 		$this->add_control(
 			'field_label_show',
@@ -764,7 +867,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'default'      => '',
 			]
 		);
-		$this->add_control(
+		$this->add_responsive_control(
 			'field_label_inline_width',
 			[
 				'label'      => __( 'Label Width', 'piotnetforms' ),
@@ -789,33 +892,34 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 			]
 		);
-        $this->add_control(
-            'image_upload_field_input_width',
-            [
-                'label'      => __( 'Image Upload Input Width', 'piotnetforms' ),
-                'type'       => 'slider',
-                'size_units' => [ '%' ],
-                'range'      => [
-                    '%'  => [
-                        'min' => 0,
-                        'max' => 100,
-                    ],
-                ],
-                'default'    => [
-                    'unit' => '%',
-                ],
-                'selectors'  => [
-                    '{{WRAPPER}} .piotnetforms-field-group .piotnetforms-image-upload-placeholder' => 'width: {{SIZE}}{{UNIT}}!important;',
-                ],
-                'condition'  => [
-                    'field_type' => 'image_upload',
-                ],
-            ]
-        );
+		$this->add_control(
+			'image_upload_field_input_width',
+			[
+				'label'      => __( 'Image Upload Input Width', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ '%' ],
+				'range'      => [
+					'%'  => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => '%',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-group .piotnetforms-image-upload-placeholder' => 'width: {{SIZE}}{{UNIT}}!important;',
+				],
+				'condition'  => [
+					'field_type' => 'image_upload',
+				],
+			]
+		);
 		$this->add_control(
 			'field_placeholder',
 			[
 				'label'      => __( 'Placeholder', 'piotnetforms' ),
+				'label_block' => true,
 				'type'       => 'text',
 				'default'    => '',
 				'conditions' => [
@@ -838,397 +942,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							],
 						],
 					],
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_icon_enable',
-			[
-				'label'        => __( 'Icon', 'piotnetforms' ),
-				'type'         => 'switch',
-				'label_on'     => __( 'On', 'piotnetforms' ),
-				'label_off'    => __( 'Off', 'piotnetforms' ),
-				'return_value' => 'true',
-				'default'      => '',
-			]
-		);
-
-		$this->add_control(
-			'field_icon_type',
-			[
-				'label'     => __( 'Icon Type', 'piotnetforms' ),
-				'type'      => 'select',
-				'options'   => [
-					'font_awesome' => __( 'Font Awesome', 'piotnetforms' ),
-					'image'        => __( 'Image', 'piotnetforms' ),
-				],
-				'default'   => 'font_awesome',
-				'condition' => [
-					'field_icon_enable!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_icon_font_awesome',
-			[
-				'label'          => __( 'Icon', 'piotnetforms' ),
-				'type'           => 'icon',
-				'options_source' => 'fontawesome',
-				'condition'      => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'font_awesome',
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_icon_image',
-			[
-				'label'     => __( 'Icon Image', 'piotnetforms' ),
-				'type'      => 'media',
-				'condition' => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'image',
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_icon_image_focus',
-			[
-				'label'     => __( 'Icon Image Focus', 'piotnetforms' ),
-				'type'      => 'media',
-				'condition' => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'image',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'field_icon_width',
-			[
-				'label'      => __( 'Icon Width', 'piotnetforms' ),
-				'type'       => 'slider',
-				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'default'    => [
-					'unit' => 'px',
-					'size' => '',
-				],
-				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'padding-left: {{SIZE}}{{UNIT}} !important;',
-					'{{WRAPPER}} .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual' => 'padding-left: {{SIZE}}{{UNIT}} !important;',
-					'{{WRAPPER}} .piotnetforms-field-icon' => 'width: {{SIZE}}{{UNIT}};',
-				],
-				'condition'  => [
-					'field_icon_enable!' => '',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'field_icon_size',
-			[
-				'label'      => __( 'Icon Size', 'piotnetforms' ),
-				'type'       => 'slider',
-				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'default'    => [
-					'unit' => 'px',
-					'size' => '',
-				],
-				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-icon' => 'font-size: {{SIZE}}{{UNIT}};',
-				],
-				'condition'  => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'font_awesome',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'field_icon_image_width',
-			[
-				'label'      => __( 'Icon Size', 'piotnetforms' ),
-				'type'       => 'slider',
-				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'default'    => [
-					'unit' => 'px',
-				],
-				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-icon img' => 'width: {{SIZE}}{{UNIT}};',
-				],
-				'condition'  => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'image',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'field_icon_x',
-			[
-				'label'      => __( 'Icon Position X', 'piotnetforms' ),
-				'type'       => 'slider',
-				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [
-						'min' => 0,
-						'max' => 100,
-					],
-				],
-				'default'    => [
-					'unit' => 'px',
-					'size' => '',
-				],
-				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-icon i, {{WRAPPER}} .piotnetforms-field-icon img' => 'margin-left: {{SIZE}}{{UNIT}};',
-				],
-				'condition'  => [
-					'field_icon_enable!' => '',
-				],
-			]
-		);
-
-		$this->add_responsive_control(
-			'field_icon_y',
-			[
-				'label'      => __( 'Icon Position Y', 'piotnetforms' ),
-				'type'       => 'slider',
-				'size_units' => [ 'px' ],
-				'range'      => [
-					'px' => [
-						'min' => -20,
-						'max' => 100,
-					],
-				],
-				'default'    => [
-					'unit' => 'px',
-					'size' => '',
-				],
-				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-icon i, {{WRAPPER}} .piotnetforms-field-icon img' => 'margin-top: {{SIZE}}{{UNIT}};',
-				],
-				'condition'  => [
-					'field_icon_enable!' => '',
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_icon_color',
-			[
-				'label'     => __( 'Icon Color', 'piotnetforms' ),
-				'type'      => 'color',
-				'selectors' => [
-					'{{WRAPPER}} .piotnetforms-field-icon i' => 'color: {{VALUE}};',
-				],
-				'condition' => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'font_awesome',
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_icon_color_focus',
-			[
-				'label'     => __( 'Icon Color Focus', 'piotnetforms' ),
-				'type'      => 'color',
-				'selectors' => [
-					'{{WRAPPER}}.piotnetforms-field-focus .piotnetforms-field-icon i' => 'color: {{VALUE}};',
-				],
-				'condition' => [
-					'field_icon_enable!' => '',
-					'field_icon_type'    => 'font_awesome',
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_pattern',
-			[
-				'label'      => __( 'Pattern', 'piotnetforms' ),
-				'type'       => 'text',
-				'default'    => '[0-9()#&+*-=.]+',
-				'conditions' => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => 'in',
-							'value'    => [
-								'tel',
-							],
-						],
-					],
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_pattern_not_tel',
-			[
-				'label'      => __( 'Pattern', 'piotnetforms' ),
-				'type'       => 'text',
-				'conditions' => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => 'in',
-							'value'    => [
-								'text',
-								'email',
-								'textarea',
-								'url',
-								'number',
-								'password',
-							],
-						],
-					],
-				],
-			]
-		);
-
-		$this->add_control(
-			'field_autocomplete',
-			[
-				'label'        => __( 'Autocomplete', 'piotnetforms' ),
-				'type'         => 'switch',
-				'label_on'     => __( 'On', 'piotnetforms' ),
-				'label_off'    => __( 'Off', 'piotnetforms' ),
-				'return_value' => 'true',
-				'default'      => 'true',
-				'condition'    => [
-					'field_type!' => 'html',
-				],
-			]
-		);
-
-		$this->add_control(
-			'file_sizes',
-			[
-				'label'       => __( 'Max. File Size', 'piotnetforms' ),
-				'type'        => 'select',
-				'condition'   => [
-					'field_type' => 'upload',
-				],
-				'options'     => $this->get_upload_file_size_options(),
-				'description' => __( 'If you need to increase max upload size please contact your hosting.', 'piotnetforms' ),
-			]
-		);
-
-		$this->add_control(
-			'file_sizes_message',
-			[
-				'label'       => __( 'Max. File Size Error Message', 'piotnetforms' ),
-				'label_block' => true,
-				'type'        => 'text',
-				'default'     => __( 'File size must be less than 1MB', 'piotnetforms' ),
-				'condition'   => [
-					'field_type' => 'upload',
-				],
-			]
-		);
-
-		$this->add_control(
-			'file_types',
-			[
-				'label'       => __( 'Allowed File Types', 'piotnetforms' ),
-				'type'        => 'text',
-				'condition'   => [
-					'field_type' => 'upload',
-				],
-				'description' => __( 'Enter the allowed file types, separated by a comma (jpg, gif, pdf, etc).', 'piotnetforms' ),
-			]
-		);
-
-		$this->add_control(
-			'file_types_message',
-			[
-				'label'       => __( 'Allowed File Types Error Message', 'piotnetforms' ),
-				'label_block' => true,
-				'type'        => 'text',
-				'default'     => __( 'Please enter a value with a valid mimetype.', 'piotnetforms' ),
-				'condition'   => [
-					'field_type' => 'upload',
-				],
-			]
-		);
-
-		$this->add_control(
-			'allow_multiple_upload',
-			[
-				'label'        => __( 'Multiple Files', 'piotnetforms' ),
-				'type'         => 'switch',
-				'return_value' => 'true',
-				'conditions'   => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => 'in',
-							'value'    => [
-								'upload',
-								'image_upload',
-							],
-						],
-					],
-				],
-			]
-		);
-
-		$this->add_control(
-			'max_files',
-			[
-				'label'     => __( 'Max Files', 'piotnetforms' ),
-				'type'      => 'number',
-				'condition' => [
-					'field_type'            => 'image_upload',
-					'allow_multiple_upload' => 'true',
-				],
-			]
-		);
-
-		// $this->add_control(
-		// 	'max_files' => [
-		// 		'label' => __( 'Max. Files', 'piotnetforms' ),
-		// 		'type' => 'number',
-		// 		'condition' => [
-		// 			'field_type' => 'upload',
-		// 			'allow_multiple_upload' => 'yes',
-		// 		],
-		// 		'tab' => 'content',
-		// 		'inner_tab' => 'form_fields_content_tab',
-		// 		'tabs_wrapper' => 'form_fields_tabs',
-		// 	],
-		// );
-
-		$this->add_control(
-			'attach_files',
-			[
-				'label'     => __( 'Attach files to email, not upload to uploads folder', 'piotnetforms' ),
-				'type'      => 'switch',
-				'condition' => [
-					'field_type' => 'upload',
 				],
 			]
 		);
@@ -1258,64 +971,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_control(
-			'invalid_message',
-			[
-				'label'      => __( 'Invalid Message', 'piotnetforms' ),
-				'type'       => 'text',
-				'conditions' => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => '!in',
-							'value'    => [
-								'recaptcha',
-								'hidden',
-								'html',
-								'honeypot',
-								'iban'
-							],
-						],
-					],
-				],
-			]
-		);
-		$this->add_control(
-			'iban_invalid_message',
-			[
-				'label'      => __( 'Invalid Message', 'piotnetforms' ),
-				'type'       => 'text',
-				'default'	 => 'This BBAN is invalid.',
-				'condition' => [
-					'field_type' => 'iban'
-				],
-			]
-		);
-		$this->add_control(
-			'max_length',
-			[
-				'label'      => __( 'Max Length', 'piotnetforms' ),
-				'type'       => 'number',
-				'conditions' => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => 'in',
-							'value'    => [
-								'text',
-								'email',
-								'textarea',
-								'url',
-								'tel',
-								'number',
-								'password',
-							],
-						],
-					],
-				],
-			]
-		);
-
-		$this->add_control(
 			'mark_required',
 			[
 				'label'     => __( 'Required Mark', 'piotnetforms' ),
@@ -1323,8 +978,19 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label_on'  => __( 'Show', 'piotnetforms' ),
 				'label_off' => __( 'Hide', 'piotnetforms' ),
 				'default'   => '',
-				'condition' => [
-					'field_label!' => '',
+				'conditions'   => [
+					'terms' => [
+						[
+							'name'     => 'field_label',
+							'operator' => '!=',
+							'value'    => '',
+						],
+						[
+							'name'     => 'field_required',
+							'operator' => '!=',
+							'value'    => '',
+						],
+					],
 				],
 			]
 		);
@@ -1370,7 +1036,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							'value'    => [
 								'checkbox',
 								'radio',
-                                'acceptance',
+								'acceptance',
 							],
 						],
 					],
@@ -1447,15 +1113,15 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 			]
 		);
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
 		$repeater_items = $this->get_group_controls();
 
 		$this->new_group_controls();
@@ -1489,12 +1155,13 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'field_options',
 			[
 				'label'       => __( 'Options', 'piotnetforms' ),
+				'label_block' => true,
 				'type'        => 'textarea',
 				'default'     => '',
 				'dynamic'     => [
 					'active' => true,
 				],
-				'description' => __( 'Enter each option in a separate line. To differentiate between label and value, separate them with a pipe char ("|"). For example: First Name|f_name.<br>Select option group:<br>[optgroup label="Swedish Cars"]<br>Volvo|volvo<br>Saab|saab<br>[/optgroup]<br>[optgroup label="German Cars"]<br>Mercedes|mercedes<br>Audi|audi<br>[/optgroup]', 'piotnetforms' ),
+				'description' => __( 'Enter each option in a separate line. To differentiate between label and value, separate them with a pipe char ("|"). For example: First Name|f_name.<br>Select option group:<br>[optgroup label="Swedish Cars"]<br>Volvo|volvo<br>Saab|saab<br>[/optgroup]<br>[optgroup label="German Cars"]<br>Mercedes|mercedes<br>Audi|audi<br>[/optgroup]<br><br>The get posts shortcode for ACF Relationship Field [piotnetforms_get_posts post_type="post" value="id"]', 'piotnetforms' ),
 				'conditions'  => [
 					'terms' => [
 						[
@@ -1512,6 +1179,40 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							'name'     => 'piotnetforms_style_checkbox_type',
 							'operator' => '!=',
 							'value'    => 'button',
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'piotnetforms_image_select_field_gallery',
+			[
+				'label'     => __( 'Add Images', 'piotnetforms' ),
+				'type'      => 'gallery',
+				'default'   => [],
+				'condition' => [
+					'field_type' => 'image_select',
+				],
+			]
+		);
+
+		$this->add_control(
+			'allow_multiple',
+			[
+				'label'        => __( 'Multiple Selection', 'piotnetforms' ),
+				'type'         => 'switch',
+				'return_value' => 'true',
+				'conditions'   => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'select',
+								'image_select',
+								'terms_select',
+							],
 						],
 					],
 				],
@@ -1583,7 +1284,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							'value'    => [
 								'select',
 								'image_select',
-								'terms_select',
 								'checkbox',
 								'radio',
 							],
@@ -1654,14 +1354,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_control(
-			'remove_this_field_from_repeater',
-			[
-				'label'        => __( 'Remove this field from Repeater', 'piotnetforms' ),
-				'type'         => 'switch',
-				'return_value' => 'true',
-			]
-		);
-		$this->add_control(
 			'stripe_icon_color',
 			[
 				'type'        => 'color',
@@ -1726,7 +1418,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					],
 				],
 			]
-		);$this->add_control(
+		);
+		$this->add_control(
 			'stripe_placeholder_color',
 			[
 				'type'        => 'color',
@@ -1861,33 +1554,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'default'     => 'select',
 				'options'     => [
 					'select'   => __( 'Select', 'piotnetforms' ),
+					'select2'  => __( 'Select 2', 'piotnetforms' ),
 					'checkbox' => __( 'Checkbox', 'piotnetforms' ),
 					'radio'    => __( 'Radio', 'piotnetforms' ),
 				],
 				'condition'   => [
 					'field_type' => 'terms_select',
-				],
-			]
-		);
-
-		$this->add_control(
-			'allow_multiple',
-			[
-				'label'        => __( 'Multiple Selection', 'piotnetforms' ),
-				'type'         => 'switch',
-				'return_value' => 'true',
-				'conditions'   => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => 'in',
-							'value'    => [
-								'select',
-								'image_select',
-								'terms_select',
-							],
-						],
-					],
 				],
 			]
 		);
@@ -1901,6 +1573,18 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'condition' => [
 					'field_type'     => 'image_select',
 					'allow_multiple' => 'true',
+				],
+			]
+		);
+
+		$this->add_control(
+			'checkbox_limit_multiple',
+			[
+				'label'     => __( 'Limit Multiple Selects', 'piotnetforms' ),
+				'type'      => 'number',
+				'default'   => 0,
+				'condition' => [
+					'field_type'     => 'checkbox',
 				],
 			]
 		);
@@ -1934,6 +1618,155 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_control(
+			'file_sizes',
+			[
+				'label'       => __( 'Max. File Size', 'piotnetforms' ),
+				'type'        => 'select',
+				'condition'   => [
+					'field_type' => 'upload',
+				],
+				'options'     => $this->get_upload_file_size_options(),
+				'description' => __( 'If you need to increase max upload size please contact your hosting.', 'piotnetforms' ),
+			]
+		);
+
+		$this->add_control(
+			'file_sizes_message',
+			[
+				'label'       => __( 'Max. File Size Error Message', 'piotnetforms' ),
+				'label_block' => true,
+				'type'        => 'text',
+				'default'     => __( 'File size must be less than 1MB', 'piotnetforms' ),
+				'condition'   => [
+					'field_type' => 'upload',
+				],
+			]
+		);
+
+		$this->add_control(
+			'file_types',
+			[
+				'label'       => __( 'Allowed File Types', 'piotnetforms' ),
+				'type'        => 'text',
+				'condition'   => [
+					'field_type' => 'upload',
+					'field_type!' => 'image_upload',
+				],
+				'description' => __( 'Enter the allowed file types, separated by a comma (jpg, gif, pdf, etc).', 'piotnetforms' ),
+			]
+		);
+
+		$this->add_control(
+			'file_types_message',
+			[
+				'label'       => __( 'Allowed File Types Error Message', 'piotnetforms' ),
+				'label_block' => true,
+				'type'        => 'text',
+				'default'     => __( 'Please enter a value with a valid mimetype.', 'piotnetforms' ),
+				'condition'   => [
+					'field_type' => 'upload',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_upload_field_style',
+			[
+				'label'        => __( 'Modern Style', 'piotnetforms' ),
+				'type'         => 'switch',
+				'label_on'     => __( 'Show', 'piotnetforms' ),
+				'label_off'    => __( 'Hide', 'piotnetforms' ),
+				'return_value' => 'true',
+				'default'      => '',
+				'condition'    => [
+					'field_type' => 'upload',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_upload_field_text',
+			[
+				'label'       => __( 'Upload File Custom Text', 'piotnetforms' ),
+				'label_block' => true,
+				'type'        => 'text',
+				'default'     => __( 'Upload File', 'piotnetforms' ),
+				'conditions'   => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => '=',
+							'value'    => 'upload',
+						],
+						[
+							'name'     => 'modern_upload_field_style',
+							'operator' => '=',
+							'value'    => 'true',
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'allow_multiple_upload',
+			[
+				'label'        => __( 'Multiple Files', 'piotnetforms' ),
+				'type'         => 'switch',
+				'return_value' => 'true',
+				'conditions'   => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'upload',
+								'image_upload',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'max_files',
+			[
+				'label'     => __( 'Max Files', 'piotnetforms' ),
+				'type'      => 'number',
+				'condition' => [
+					'field_type'            => 'image_upload',
+					'allow_multiple_upload' => 'true',
+				],
+			]
+		);
+
+		// $this->add_control(
+		// 	'max_files' => [
+		// 		'label' => __( 'Max. Files', 'piotnetforms' ),
+		// 		'type' => 'number',
+		// 		'condition' => [
+		// 			'field_type' => 'upload',
+		// 			'allow_multiple_upload' => 'yes',
+		// 		],
+		// 		'tab' => 'content',
+		// 		'inner_tab' => 'form_fields_content_tab',
+		// 		'tabs_wrapper' => 'form_fields_tabs',
+		// 	],
+		// );
+
+		$this->add_control(
+			'attach_files',
+			[
+				'label'     => __( 'Attach files to email, do not upload to upload folder', 'piotnetforms' ),
+				'type'      => 'switch',
+				'condition' => [
+					'field_type' => ['upload', 'image_upload']
+				],
+			]
+		);
+
+		$this->add_control(
 			'field_html',
 			[
 				'label'      => __( 'HTML', 'piotnetforms' ),
@@ -1948,6 +1781,31 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							'value' => 'html',
 						],
 					],
+				],
+			]
+		);
+
+        $this->add_control(
+			'alignment_html',
+			[
+				'label'      => __( 'Alignment', 'piotnetforms' ),
+				'type'       => 'select',
+				'default'    => '',
+				'options'    => [
+                    'flex-start'      => __( 'Default', 'piotnetforms' ),
+					'center'  => __( 'Center', 'piotnetforms' ),
+                    'flex-end' => __( 'Right', 'piotnetforms' ),
+				],
+				'conditions' => [
+					'terms' => [
+						[
+							'name'  => 'field_type',
+							'value' => 'html',
+						],
+					],
+				],
+                'selectors'   => [
+					'{{WRAPPER}} .piotnetforms-field-container' => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -1969,20 +1827,20 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-        $this->add_control(
-            'min_select',
-            [
-                'label'     => __( 'Min Select', 'piotnetforms' ),
-                'type'      => 'number',
-                'default'   => 0,
-                'condition' => [
-                    'field_type'     => 'image_select',
-                    'allow_multiple' => 'true',
-                ],
-            ]
-        );
-        
-        $this->add_control(
+		$this->add_control(
+			'min_select',
+			[
+				'label'     => __( 'Min Select', 'piotnetforms' ),
+				'type'      => 'number',
+				'default'   => 0,
+				'condition' => [
+					'field_type'     => 'image_select',
+					'allow_multiple' => 'true',
+				],
+			]
+		);
+
+		$this->add_control(
 			'min_select_required_message',
 			[
 				'label'       => __( 'Required Message', 'piotnetforms' ),
@@ -1992,13 +1850,13 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label_block' => true,
 				'render_type' => 'none',
 				'condition' => [
-                    'field_type'     => 'image_select',
-                    'allow_multiple' => 'true',
-                ],
+					'field_type'     => 'image_select',
+					'allow_multiple' => 'true',
+				],
 			]
 		);
 
-        $this->add_control(
+		$this->add_control(
 			'recaptcha_size',
 			[
 				'label'      => __( 'Size', 'piotnetforms' ),
@@ -2054,6 +1912,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'field_value',
 			[
 				'label'      => __( 'Default Value', 'piotnetforms' ),
+				'label_block' => true,
 				'type'       => 'text',
 				'default'    => '',
 				'dynamic'    => [
@@ -2147,43 +2006,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 			]
 		);
-		$this->add_control(
-			'field_remove_option_value',
-			[
-				'label'      => __( 'Remove option value?', 'piotnetforms' ),
-				'type'       => 'switch',
-				'default'    => '',
-				'label_on'   => 'Yes',
-				'label_off'  => 'No',
-				'description' => 'Working with remove empty field in button section.',
-				'condution' => [
-					'field_type' => 'number'
-				]
-			]
-		);
-		$this->add_control(
-			'field_value_remove',
-			[
-				'label'      => __( 'Remove value', 'piotnetforms' ),
-				'type'       => 'text',
-				'default'    => '',
-				'dynamic'    => [
-					'active' => true,
-				],
-				'conditions' => [
-					[
-						'name' => 'field_type',
-						'operator' => '==',
-						'value' => 'number'
-					],
-					[
-						'name' => 'field_remove_option_value',
-						'operator' => '==',
-						'value' => 'true'
-					]
-				]
-			]
-		);
+
 		$this->add_control(
 			'number_spiner',
 			[
@@ -2707,15 +2530,15 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'type'  => 'text',
 			]
 		);
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
 		$repeater_items = $this->get_group_controls();
 
 		$this->new_group_controls();
@@ -2746,6 +2569,36 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_control(
+			'piotnetforms_calculated_fields_form_calculation',
+			[
+				'label'       => __( 'Calculation', 'piotnetforms' ),
+				'label_block' => true,
+				'type'        => 'textarea',
+				'dynamic'     => true,
+				'get_fields'  => true,
+				'description' => __( 'E.g [field id="quantity"]*[field id="price"]+10', 'piotnetforms' ),
+				'condition'   => [
+					'field_type' => 'calculated_fields',
+					'piotnetforms_calculated_fields_form_distance_calculation!' => 'yes',
+				],
+			]
+		);
+
+		$this->add_control(
+			'piotnetforms_calculated_fields_form_coupon_code',
+			[
+				'label'       => __( 'Coupon Code Field Shortcode', 'piotnetforms' ),
+				'label_block' => true,
+				'type'        => 'select',
+				'get_fields'  => true,
+				'description' => __( 'E.g [field id="coupon_code"]', 'piotnetforms' ),
+				'condition'   => [
+					'field_type' => 'calculated_fields',
+				],
+			]
+		);
+
+		$this->add_control(
 			'piotnetforms_calculated_fields_form_distance_calculation',
 			[
 				'label'        => __( 'Distance Calculation', 'piotnetforms' ),
@@ -2769,8 +2622,9 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label_on'     => 'Yes',
 				'label_off'    => 'No',
 				'return_value' => 'yes',
-				'condition'    => [
+				'condition'   => [
 					'field_type' => 'calculated_fields',
+					'piotnetforms_calculated_fields_form_distance_calculation' => 'yes',
 				],
 			]
 		);
@@ -2815,8 +2669,9 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label_on'     => 'Yes',
 				'label_off'    => 'No',
 				'return_value' => 'yes',
-				'condition'    => [
+				'condition'   => [
 					'field_type' => 'calculated_fields',
+					'piotnetforms_calculated_fields_form_distance_calculation' => 'yes',
 				],
 			]
 		);
@@ -2866,34 +2721,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'condition'   => [
 					'field_type' => 'calculated_fields',
 					'piotnetforms_calculated_fields_form_distance_calculation' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'piotnetforms_calculated_fields_form_calculation',
-			[
-				'label'       => __( 'Calculation', 'piotnetforms' ),
-				'label_block' => true,
-				'type'        => 'text',
-				'description' => __( 'E.g [field id="quantity"]*[field id="price"]+10', 'piotnetforms' ),
-				'condition'   => [
-					'field_type' => 'calculated_fields',
-					'piotnetforms_calculated_fields_form_distance_calculation!' => 'yes',
-				],
-			]
-		);
-
-		$this->add_control(
-			'piotnetforms_calculated_fields_form_coupon_code',
-			[
-				'label'       => __( 'Coupon Code Field Shortcode', 'piotnetforms' ),
-				'label_block' => true,
-				'type'        => 'select',
-				'get_fields'  => true,
-				'description' => __( 'E.g [field id="coupon_code"]', 'piotnetforms' ),
-				'condition'   => [
-					'field_type' => 'calculated_fields',
 				],
 			]
 		);
@@ -2974,49 +2801,9 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 			]
 		);
-
-		$this->add_control(
-			'piotnetforms_image_select_field_gallery',
-			[
-				'label'     => __( 'Add Images', 'piotnetforms' ),
-				'type'      => 'gallery',
-				'default'   => [],
-				'condition' => [
-					'field_type' => 'image_select',
-				],
-			]
-		);
-
-		$this->add_control(
-			'multi_step_form_autonext',
-			[
-				'label'        => __( 'Automatically move to the next step after selecting - Multi Step Form', 'piotnetforms' ),
-				'type'         => 'switch',
-				'default'      => '',
-				'label_on'     => 'Yes',
-				'label_off'    => 'No',
-				'return_value' => 'yes',
-				'conditions'   => [
-					'terms' => [
-						[
-							'name'     => 'field_type',
-							'operator' => 'in',
-							'value'    => [
-								'select',
-								'select_autocomplete',
-								'image_select',
-								'checkbox',
-								'radio',
-							],
-						],
-					],
-				],
-			]
-		);
-
 	}
 
-	public function checkbox_button_style_controls(string $name, $args = []) {
+	public function checkbox_button_style_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['selectors'] ) ? $args['selectors'] : '{{WRAPPER}}';
 		$previous_controls = $this->new_group_controls();
 		$this->add_control(
@@ -3030,6 +2817,9 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 			]
 		);
+
+		// pf-f-o-i = piotnetforms-field-option-icon
+
 		$this->add_control(
 			$name.'_icon_color',
 			[
@@ -3037,7 +2827,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'       => __( 'Icon Color', 'piotnetforms' ),
 				'label_block' => true,
 				'selectors'   => [
-					$wrapper . ' .piotnetforms-field-option-icon-font-awesome' => 'color: {{VALUE}};',
+					$wrapper . ' .pf-f-o-i-font-awesome' => 'color: {{VALUE}};',
 				],
 			]
 		);
@@ -3142,8 +2932,326 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		return $this->get_group_controls( $previous_controls );
 	}
 
-	public function add_input_mask_controls() {
+	private function add_settings_advanced_controls() {
+		$this->add_control(
+			'field_description',
+			[
+				'label'      => __( 'Description', 'piotnetforms' ),
+				'label_block' => true,
+				'type'       => 'text',
+			]
+		);
 
+		$this->add_control(
+			'field_pattern',
+			[
+				'label'      => __( 'Pattern', 'piotnetforms' ),
+				'label_block' => true,
+				'type'       => 'text',
+				'default'    => '[0-9()#&+*-=.]+',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'tel',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_pattern_not_tel',
+			[
+				'label'      => __( 'Pattern', 'piotnetforms' ),
+				'label_block' => true,
+				'type'       => 'text',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'text',
+								'email',
+								'textarea',
+								'url',
+								'number',
+								'password',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_dial_code',
+			[
+				'label'        => __( 'International Telephone Input', 'piotnetforms' ),
+				'type'         => 'switch',
+				'label_on'     => __( 'On', 'piotnetforms' ),
+				'label_off'    => __( 'Off', 'piotnetforms' ),
+				'return_value' => 'true',
+				'default'      => '',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'tel',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'invalid_message',
+			[
+				'label'      => __( 'Invalid Message', 'piotnetforms' ),
+				'label_block' => true,
+				'type'       => 'text',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => '!in',
+							'value'    => [
+								'recaptcha',
+								'hidden',
+								'html',
+								'honeypot',
+								'iban'
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'iban_invalid_message',
+			[
+				'label'      => __( 'Invalid Message', 'piotnetforms' ),
+				'type'       => 'text',
+				'default'	 => 'This IBAN is invalid.',
+				'condition' => [
+					'field_type' => 'iban'
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_autocomplete',
+			[
+				'label'        => __( 'Autocomplete', 'piotnetforms' ),
+				'type'         => 'switch',
+				'label_on'     => __( 'On', 'piotnetforms' ),
+				'label_off'    => __( 'Off', 'piotnetforms' ),
+				'return_value' => 'true',
+				'default'      => 'true',
+				'condition'    => [
+					'field_type!' => 'html',
+				],
+			]
+		);
+
+		$this->add_control(
+			'max_length',
+			[
+				'label'      => __( 'Max Length', 'piotnetforms' ),
+				'type'       => 'number',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'text',
+								'email',
+								'textarea',
+								'url',
+								'tel',
+								'number',
+								'password',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'min_length',
+			[
+				'label'      => __( 'Min Length', 'piotnetforms' ),
+				'type'       => 'number',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'tel',
+								'textarea',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'remove_this_field_from_repeater',
+			[
+				'label'        => __( 'Remove this field from the Repeater in the email', 'piotnetforms' ),
+				'type'         => 'switch',
+				'return_value' => 'true',
+			]
+		);
+
+		$this->add_control(
+			'field_remove_option_value',
+			[
+				'label'      => __( 'Remove this field from email message', 'piotnetforms' ),
+				'type'       => 'switch',
+				'default'    => '',
+				'label_on'   => 'Yes',
+				'label_off'  => 'No',
+			]
+		);
+
+		$this->add_control(
+			'field_value_remove',
+			[
+				'label'      => __( 'If Field Value is equal', 'piotnetforms' ),
+				'type'       => 'text',
+				'default'    => '',
+				'dynamic'    => [
+					'active' => true,
+				],
+				'conditions' => [
+					[
+						'name' => 'field_remove_option_value',
+						'operator' => '==',
+						'value' => 'true'
+					]
+				]
+			]
+		);
+
+		$this->add_control(
+			'multi_step_form_autonext',
+			[
+				'label'        => __( 'Automatically move to the next step after selecting - Multi Step Form', 'piotnetforms' ),
+				'type'         => 'switch',
+				'default'      => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+				'conditions'   => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'select',
+								'select_autocomplete',
+								'image_select',
+								'checkbox',
+								'radio',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'shortcode',
+			[
+				'label'   => __( 'Shortcode', 'piotnetforms' ),
+				'type'    => 'text',
+				'classes' => 'piotnetforms-field-shortcode',
+				'attr'    => 'readonly',
+				'copy'    => true,
+			]
+		);
+
+		$this->add_control(
+			'live_preview_code',
+			[
+				'label'   => __( 'Live Preview Code', 'piotnetforms' ),
+				'type'    => 'text',
+				'classes' => 'piotnetforms-live-preview-code',
+				'attr'    => 'readonly',
+				'description' => __( 'Paste this code to anywhere to live preview this field value', 'piotnetforms' ),
+				'condition' => [
+					'field_type!' => 'image_upload'
+				]
+			]
+		);
+
+		$this->add_control(
+			'live_preview_image',
+			[
+				'label'   => __( 'Live Preview Code', 'piotnetforms' ),
+				'type'    => 'text',
+				'classes' => 'piotnetforms-live-preview-code',
+				'attr'    => 'readonly',
+				'description' => __( 'Paste this code to anywhere to live preview this field value', 'piotnetforms' ),
+				'condition' => [
+					'field_type' => 'image_upload'
+				]
+			]
+		);
+
+		$this->add_control(
+			'live_preview_image_width',
+			[
+				'label'     => __( 'Width', 'piotnetforms' ),
+				'type'      => 'number',
+				'default'	=> 150,
+				'condition' => [
+					'field_type' => 'image_upload'
+				]
+			]
+		);
+
+		$this->add_control(
+			'live_preview_image_height',
+			[
+				'label'     => __( 'Height', 'piotnetforms' ),
+				'type'      => 'number',
+				'default'	=> 150,
+				'condition' => [
+					'field_type' => 'image_upload'
+				]
+			]
+		);
+
+		$this->add_control(
+			'live_preview_show_label',
+			[
+				'label'       => __( 'Show label preview', 'piotnetforms' ),
+				'type'        => 'switch',
+				'label_on'    => __( 'Yes', 'piotnetforms' ),
+				'label_off'   => __( 'No', 'piotnetforms' ),
+				'default'     => '',
+				'condition'  => [
+					'field_type' => ['select', 'checkbox', 'radio']
+				]
+			]
+		);
+	}
+
+	public function add_input_mask_controls() {
 		$this->add_control(
 			'input_mask_enable',
 			[
@@ -3160,7 +3268,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			[
 				'label'       => __( 'Mask', 'piotnetforms' ),
 				'type'        => 'text',
-				'description' => __( 'E.g (00) 0000-0000 . Documents: https://igorescobar.github.io/jQuery-Mask-Plugin/docs.html', 'piotnetforms' ),
+				'description' => __( 'E.g (00) 0000-0000.<br>Documents:<br>https://igorescobar.github.io/jQuery-Mask-Plugin/docs.html', 'piotnetforms' ),
 				'condition'   => [
 					'input_mask_enable!' => '',
 				],
@@ -3183,8 +3291,269 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 	}
 
-	private function add_checkbox_style_controls() {
+	private function add_icon_controls() {
+		$this->add_control(
+			'field_icon_enable',
+			[
+				'label'        => __( 'Enable', 'piotnetforms' ),
+				'type'         => 'switch',
+				'label_on'     => __( 'On', 'piotnetforms' ),
+				'label_off'    => __( 'Off', 'piotnetforms' ),
+				'return_value' => 'true',
+				'default'      => '',
+			]
+		);
 
+		$this->add_control(
+			'field_icon_type',
+			[
+				'label'     => __( 'Icon Type', 'piotnetforms' ),
+				'type'      => 'select',
+				'options'   => [
+					'font_awesome' => __( 'Font Awesome', 'piotnetforms' ),
+					'image'        => __( 'Image', 'piotnetforms' ),
+				],
+				'default'   => 'font_awesome',
+				'condition' => [
+					'field_icon_enable!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_icon_font_awesome',
+			[
+				'label'          => __( 'Icon', 'piotnetforms' ),
+				'type'           => 'icon',
+				'options_source' => 'fontawesome',
+				'condition'      => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'font_awesome',
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_icon_image',
+			[
+				'label'     => __( 'Icon Image', 'piotnetforms' ),
+				'type'      => 'media',
+				'condition' => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'image',
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_icon_image_focus',
+			[
+				'label'     => __( 'Icon Image Focus', 'piotnetforms' ),
+				'type'      => 'media',
+				'condition' => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'image',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_icon_width',
+			[
+				'label'      => __( 'Icon Width', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'padding-left: {{SIZE}}{{UNIT}} !important;',
+					'{{WRAPPER}} .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual' => 'padding-left: {{SIZE}}{{UNIT}} !important;',
+					'{{WRAPPER}} .piotnetforms-field-icon' => 'width: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'field_icon_enable!' => '',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_icon_size',
+			[
+				'label'      => __( 'Icon Size', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'font_awesome',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_icon_image_width',
+			[
+				'label'      => __( 'Icon Size', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-icon img' => 'width: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'image',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_icon_x',
+			[
+				'label'      => __( 'Icon Position X', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px', '%' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-icon, {{WRAPPER}} .piotnetforms-field-icon' => 'left: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'field_icon_enable!' => '',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_icon_x_right',
+			[
+				'label'      => __( 'Icon Position X from right', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px', '%' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+					'%' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-icon, {{WRAPPER}} .piotnetforms-field-icon' => 'right: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'field_icon_enable!' => '',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_icon_y',
+			[
+				'label'      => __( 'Icon Position Y', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px', '%' ],
+				'range'      => [
+					'px' => [
+						'min' => -100,
+						'max' => 100,
+					],
+					'%' => [
+						'min' => -100,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+					'size' => '',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-icon, {{WRAPPER}} .piotnetforms-field-icon' => 'bottom: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'field_icon_enable!' => '',
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_icon_color',
+			[
+				'label'     => __( 'Icon Color', 'piotnetforms' ),
+				'type'      => 'color',
+				'selectors' => [
+					'{{WRAPPER}} .piotnetforms-field-icon i' => 'color: {{VALUE}};',
+				],
+				'condition' => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'font_awesome',
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_icon_color_focus',
+			[
+				'label'     => __( 'Icon Color Focus', 'piotnetforms' ),
+				'type'      => 'color',
+				'selectors' => [
+					'{{WRAPPER}}.piotnetforms-field-focus .piotnetforms-field-icon i' => 'color: {{VALUE}};',
+				],
+				'condition' => [
+					'field_icon_enable!' => '',
+					'field_icon_type'    => 'font_awesome',
+				],
+			]
+		);
+	}
+
+	private function add_checkbox_style_controls() {
 		$checkbox_horizontal_spacing = is_rtl() ? 'margin-left: {{SIZE}}{{UNIT}};' : 'margin-right: {{SIZE}}{{UNIT}};';
 
 		$this->add_control(
@@ -3206,7 +3575,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 				'selectors'  => [
 					'{{WRAPPER}} input' => $checkbox_horizontal_spacing,
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => $checkbox_horizontal_spacing,
+					'{{WRAPPER}} .pf-f-o-i' => $checkbox_horizontal_spacing,
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button','native'],
@@ -3282,7 +3651,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					'size' => '',
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'margin-bottom: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .pf-f-o-i' => 'margin-bottom: {{SIZE}}{{UNIT}};',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button'],
@@ -3301,7 +3670,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					'absolute' => __( 'Absolute', 'piotnetforms' ),
 				],
 				'selectors'    => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'position: {{VALUE}}',
+					'{{WRAPPER}} .pf-f-o-i' => 'position: {{VALUE}}',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button'],
@@ -3317,7 +3686,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'type'    => 'text',
 				'default' => 'auto',
 				'selectors'    => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'top: {{VALUE}}',
+					'{{WRAPPER}} .pf-f-o-i' => 'top: {{VALUE}}',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button'],
@@ -3334,7 +3703,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'type'    => 'text',
 				'default' => 'auto',
 				'selectors'    => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'right: {{VALUE}}',
+					'{{WRAPPER}} .pf-f-o-i' => 'right: {{VALUE}}',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button'],
@@ -3351,7 +3720,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'type'    => 'text',
 				'default' => 'auto',
 				'selectors'    => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'bottom: {{VALUE}}',
+					'{{WRAPPER}} .pf-f-o-i' => 'bottom: {{VALUE}}',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button'],
@@ -3368,7 +3737,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'type'    => 'text',
 				'default' => 'auto',
 				'selectors'    => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'left: {{VALUE}}',
+					'{{WRAPPER}} .pf-f-o-i' => 'left: {{VALUE}}',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button'],
@@ -3483,7 +3852,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'piotnetforms_style_checkbox_item_vertical_spacing',
 			[
 				'label'      => __( 'Item Vertical Spacing', 'piotnetforms' ),
@@ -3510,7 +3879,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'piotnetforms_style_checkbox_square_item_horizontal_spacing',
 			[
 				'label'      => __( 'Item Horizontal Spacing', 'piotnetforms' ),
@@ -3537,7 +3906,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'piotnetforms_style_checkbox_item_horizontal_spacing',
 			[
 				'label'      => __( 'Item Horizontal Spacing', 'piotnetforms' ),
@@ -3657,7 +4026,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					'size' => '',
 				],
 				'selectors'  => [
-					'{{WRAPPER}} .piotnetforms-field-option-icon' => 'width: {{SIZE}}{{UNIT}}; font-size: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .pf-f-o-i' => 'width: {{SIZE}}{{UNIT}}; font-size: {{SIZE}}{{UNIT}}',
 				],
 				'condition'  => [
 					'piotnetforms_style_checkbox_type' => ['button', 'native'],
@@ -3665,7 +4034,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		$this->add_control(
+		$this->add_responsive_control(
 			'piotnetforms_style_checkbox_square_size',
 			[
 				'label'      => __( 'Size', 'piotnetforms' ),
@@ -3725,7 +4094,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			[
 				'label'     => __( 'Border Color', 'piotnetforms' ),
 				'type'      => 'color',
-				'default'   => '#23a455',
+				'default'   => '#000000',
 				'selectors' => [
 					'{{WRAPPER}} span.piotnetforms-field-option label:before' => 'border-color: {{VALUE}};',
 				],
@@ -3740,7 +4109,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			[
 				'label'     => __( 'Checked Background Color', 'piotnetforms' ),
 				'type'      => 'color',
-				'default'   => '#23a455',
+				'default'   => '#000000',
 				'selectors' => [
 					'{{WRAPPER}} span.piotnetforms-field-option input:checked ~ label:before' => 'background: {{VALUE}};',
 				],
@@ -3751,6 +4120,31 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_control(
+			'piotnetforms_style_checkbox_square_border_radius',
+			[
+				'label'      => __( 'Border Radius', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px' ],
+				'range'      => [
+					'px' => [
+						'min'  => 0,
+						'max'  => 100,
+						'step' => 1,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} span.piotnetforms-field-option label:before' => 'border-radius: {{SIZE}}{{UNIT}};',
+				],
+				'condition'  => [
+					'piotnetforms_style_checkbox_type' => 'square',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
 			'piotnetforms_style_checkbox_square_spacing',
 			[
 				'label'      => __( 'Spacing', 'piotnetforms' ),
@@ -3778,7 +4172,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 	}
 
 	private function add_number_style_controls() {
-
 		$this->add_responsive_control(
 			'piotnetforms_style_spiner_width',
 			[
@@ -3953,12 +4346,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'     => __( 'Border Type', 'piotnetforms' ),
 				'type'      => 'select',
 				'options'   => [
-					''       => __( 'None', 'elementor' ),
-					'solid'  => _x( 'Solid', 'Border Control', 'elementor' ),
-					'double' => _x( 'Double', 'Border Control', 'elementor' ),
-					'dotted' => _x( 'Dotted', 'Border Control', 'elementor' ),
-					'dashed' => _x( 'Dashed', 'Border Control', 'elementor' ),
-					'groove' => _x( 'Groove', 'Border Control', 'elementor' ),
+					''       => __( 'None', 'piotnetforms' ),
+					'solid'  => _x( 'Solid', 'Border Control', 'piotnetforms' ),
+					'double' => _x( 'Double', 'Border Control', 'piotnetforms' ),
+					'dotted' => _x( 'Dotted', 'Border Control', 'piotnetforms' ),
+					'dashed' => _x( 'Dashed', 'Border Control', 'piotnetforms' ),
+					'groove' => _x( 'Groove', 'Border Control', 'piotnetforms' ),
 				],
 				'selectors' => [
 					$wrapper => 'border-style: {{VALUE}};',
@@ -3994,7 +4387,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 	}
 
 	private function add_image_select_style_controls() {
-
 		$this->add_text_typography_controls(
 			'piotnetforms_image_select_field_typography',
 			[
@@ -4003,7 +4395,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 
 		$this->add_responsive_control(
-			'piotnetforms_image_select_field_image_align',
+			'piotnetforms_image_select_field_image_alignment',
 			[
 				'type'        => 'select',
 				'label'       => __( 'Image Align', 'piotnetforms' ),
@@ -4011,12 +4403,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'value'       => '',
 				'options'     => [
 					''       => __( 'Default', 'piotnetforms' ),
-					'flex-start'   => __( 'Left', 'piotnetforms' ),
+					'left'   => __( 'Left', 'piotnetforms' ),
 					'center' => __( 'Center', 'piotnetforms' ),
-					'flex-end'  => __( 'Right', 'piotnetforms' ),
+					'right'  => __( 'Right', 'piotnetforms' ),
 				],
 				'selectors'   => [
-					'{{WRAPPER}} .piotnetforms-image-select-field .image_picker_selector' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} .image_picker_selector .thumbnail' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -4034,6 +4426,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					'center' => __( 'Center', 'piotnetforms' ),
 					'right'  => __( 'Right', 'piotnetforms' ),
 				],
+				'default'   => 'left',
 				'selectors'   => [
 					'{{WRAPPER}} .image_picker_selector .thumbnail p' => 'text-align: {{VALUE}};',
 				],
@@ -4056,6 +4449,25 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 		$columns_margin  = is_rtl() ? '-{{SIZE}}{{UNIT}} -{{SIZE}}{{UNIT}} -{{SIZE}}{{UNIT}} -{{SIZE}}{{UNIT}};' : '-{{SIZE}}{{UNIT}} -{{SIZE}}{{UNIT}} -{{SIZE}}{{UNIT}} -{{SIZE}}{{UNIT}};';
 		$columns_padding = is_rtl() ? '{{SIZE}}{{UNIT}} !important;' : '{{SIZE}}{{UNIT}} !important;';
+
+		$this->add_responsive_control(
+			'piotnetforms_image_select_field_image_align',
+			[
+				'type'        => 'select',
+				'label'       => __( 'Item Align', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => '',
+				'options'     => [
+					''       => __( 'Default', 'piotnetforms' ),
+					'flex-start'   => __( 'Left', 'piotnetforms' ),
+					'center' => __( 'Center', 'piotnetforms' ),
+					'flex-end'  => __( 'Right', 'piotnetforms' ),
+				],
+				'selectors'   => [
+					'{{WRAPPER}} .piotnetforms-image-select-field .image_picker_selector' => 'justify-content: {{VALUE}};',
+				],
+			]
+		);
 
 		$this->add_responsive_control(
 			'piotnetforms_image_select_field_item_spacing',
@@ -4184,7 +4596,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'controls_query' => '.piotnet-start-controls-tab',
 			]
 		);
-
 	}
 
 	private function add_image_select_thumbnail_style( string $name, $args = [] ) {
@@ -4197,12 +4608,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'     => __( 'Item Border Type', 'piotnetforms' ),
 				'type'      => 'select',
 				'options'   => [
-					''       => __( 'None', 'elementor' ),
-					'solid'  => _x( 'Solid', 'Border Control', 'elementor' ),
-					'double' => _x( 'Double', 'Border Control', 'elementor' ),
-					'dotted' => _x( 'Dotted', 'Border Control', 'elementor' ),
-					'dashed' => _x( 'Dashed', 'Border Control', 'elementor' ),
-					'groove' => _x( 'Groove', 'Border Control', 'elementor' ),
+					''       => __( 'None', 'piotnetforms' ),
+					'solid'  => _x( 'Solid', 'Border Control', 'piotnetforms' ),
+					'double' => _x( 'Double', 'Border Control', 'piotnetforms' ),
+					'dotted' => _x( 'Dotted', 'Border Control', 'piotnetforms' ),
+					'dashed' => _x( 'Dashed', 'Border Control', 'piotnetforms' ),
+					'groove' => _x( 'Groove', 'Border Control', 'piotnetforms' ),
 				],
 				'selectors' => [
 					$wrapper => 'border-style: {{VALUE}};',
@@ -4267,7 +4678,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 	}
 
 	private function add_conditional_logic_controls() {
-
 		$this->add_control(
 			'piotnetforms_conditional_logic_form_enable',
 			[
@@ -4428,15 +4838,25 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'default'     => 'or',
 			]
 		);
-        $this->add_control(
-            'repeater_id',
-            [
-                'type' => 'hidden',
-            ],
-            [
-                'overwrite' => 'true',
-            ]
-        );
+
+		$this->add_control(
+			'repeater_id',
+			[
+				'type' => 'hidden',
+			],
+			[
+				'overwrite' => 'true',
+			]
+		);
+
+		$this->add_control(
+			'repeater_item_title',
+			[
+				'type' => 'hidden',
+				'default' => '{{{ piotnetforms_conditional_logic_form_if }}} {{{ piotnetforms_conditional_logic_form_comparison_operators }}} {{{ piotnetforms_conditional_logic_form_value }}}',
+			]
+		);
+
 		$repeater_items = $this->get_group_controls();
 
 		$this->new_group_controls();
@@ -4460,9 +4880,11 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'add_label'      => __( 'Add Item', 'piotnetforms' ),
 				'controls'       => $repeater_list,
 				'controls_query' => '.piotnet-control-repeater-list',
+				'condition' => [
+					'piotnetforms_conditional_logic_form_enable!' => '',
+				],
 			]
 		);
-
 	}
 
 	private function add_calculated_fields_style_controls() {
@@ -4489,7 +4911,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 	}
 
 	private function add_label_style_controls() {
-
 		$this->add_control(
 			'label_spacing',
 			[
@@ -4559,7 +4980,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'range'     => [
 					'px' => [
 						'min' => 0,
-						'max' => 60,
+						'max' => 100,
 					],
 				],
 				'conditions'   => [
@@ -4581,13 +5002,13 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'     => __( 'Label Animation Focus Spacing', 'piotnetforms' ),
 				'type'      => 'slider',
 				'default'   => [
-					'size' => 24,
+					'size' => 0,
 					'unit' => 'px',
 				],
 				'range'     => [
 					'px' => [
-						'min' => 1,
-						'max' => 60,
+						'min' => 0,
+						'max' => 100,
 					],
 				],
 				'conditions'   => [
@@ -4598,7 +5019,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					]
 				],
 				'selectors' => [
-					'{{WRAPPER}}.piotnetforms-label-animation.piotnetforms-label-animated label' => 'transform: translate3d(0,-{{SIZE}}{{UNIT}},10px);',
+					'{{WRAPPER}}.piotnetforms-label-animation.piotnetforms-label-animated label' => 'transform: translateX(0);',
+					'{{WRAPPER}}.piotnetforms-label-animation.piotnetforms-label-animated label' => 'top:  {{SIZE}}{{UNIT}};',
 				]
 			]
 		);
@@ -4655,10 +5077,131 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'controls_query' => '.piotnet-start-controls-tab',
 			]
 		);
+	}
+	private function add_modern_upload_field_style_controls() {
+		$this->add_responsive_control(
+			'modern_upload_field_text_padding',
+			[
+				'label'      => __( 'Padding', 'piotnetforms' ),
+				'type'       => 'dimensions',
+				'size_units' => [ 'px', 'em', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-upload-field-modern-text' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
 
+		$this->add_responsive_control(
+			'modern_upload_field_text_align',
+			[
+				'type'        => 'select',
+				'label'       => __( 'Text Align', 'piotnetforms' ),
+				'label_block' => true,
+				'value'       => '',
+				'options'     => [
+					''       => __( 'Default', 'piotnetforms' ),
+					'left'   => __( 'Left', 'piotnetforms' ),
+					'center' => __( 'Center', 'piotnetforms' ),
+					'right'  => __( 'Right', 'piotnetforms' ),
+				],
+				'selectors'   => [
+					'{{WRAPPER}} .piotnetforms-upload-field-modern-text' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'',
+			[
+				'type' => 'heading-tab',
+				'tabs' => [
+					[
+						'name'   => 'modern_upload_field_normal_tab',
+						'title'  => __( 'NORMAL', 'piotnetforms' ),
+						'active' => true,
+					],
+					[
+						'name'  => 'modern_upload_field_hover_tab',
+						'title' => __( 'HOVER', 'piotnetforms' ),
+					],
+				],
+			]
+		);
+
+		$normal_controls = $this->modern_upload_field_style_tab_controls(
+			'',
+			[
+				'wrapper' => '{{WRAPPER}} .piotnetforms-upload-field-modern-text',
+			]
+		);
+		$this->add_control(
+			'modern_upload_field_normal_tab',
+			[
+				'type'           => 'content-tab',
+				'label'          => __( 'Normal', 'piotnetforms' ),
+				'value'          => '',
+				'active'         => true,
+				'controls'       => $normal_controls,
+				'controls_query' => '.piotnet-start-controls-tab',
+			]
+		);
+
+		$hover_controls = $this->modern_upload_field_style_tab_controls(
+			'hover',
+			[
+				'wrapper' => '{{WRAPPER}} .piotnetforms-upload-field-modern-text:hover',
+			]
+		);
+		$this->add_control(
+			'modern_upload_field_hover_tab',
+			[
+				'type'           => 'content-tab',
+				'label'          => __( 'Hover', 'piotnetforms' ),
+				'value'          => '',
+				'controls'       => $hover_controls,
+				'controls_query' => '.piotnet-start-controls-tab',
+			]
+		);
 	}
 
-	private function label_style_tab_controls(string $name, $args = []){
+	private function modern_upload_field_style_tab_controls( string $name, $args = [] ) {
+		$wrapper = isset( $args['wrapper'] ) ? $args['wrapper'] : '{{WRAPPER}}';
+		$name = !empty( $name ) ? '_' . $name : '';
+		$previous_controls = $this->new_group_controls();
+
+		$this->add_control(
+			'modern_upload_field_color' . $name,
+			[
+				'label'     => __( 'Texts Color', 'piotnetforms' ),
+				'type'      => 'color',
+				'selectors' => [
+					$wrapper => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'modern_upload_field_background_color' . $name,
+			[
+				'label'     => __( 'Background Color', 'piotnetforms' ),
+				'type'      => 'color',
+				'selectors' => [
+					$wrapper => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_text_typography_controls(
+			'modern_upload_field_typography' . $name,
+			[
+				'selectors' => $wrapper,
+			]
+		);
+
+		return $this->get_group_controls( $previous_controls );
+	}
+
+	private function label_style_tab_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['wrapper'] ) ? $args['wrapper'] : '{{WRAPPER}}';
 		$name = !empty( $name ) ? '_' . $name : '';
 		$previous_controls = $this->new_group_controls();
@@ -4681,10 +5224,10 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'type'      => 'color',
 				'default'   => '',
 				'selectors' => [
-					$wrapper . ' .piotnetforms-mark-required .piotnetforms-field-label:after' => 'color: {{COLOR}};',
+					$wrapper . ' .piotnetforms-mark-required .piotnetforms-field-label:after' => 'color: {{VALUE}};',
 				],
 				'condition' => [
-					'mark_required' => 'yes',
+					'mark_required' => 'true',
 				],
 			]
 		);
@@ -4699,7 +5242,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		return $this->get_group_controls( $previous_controls );
 	}
 
-	private function field_style_controls(string $name, $args = []){
+	private function field_style_controls( string $name, $args = [] ) {
 		$wrapper = isset( $args['wrapper'] ) ? $args['wrapper'] : '{{WRAPPER}}';
 		$name = !empty( $name ) ? '_' . $name : '';
 		$previous_controls = $this->new_group_controls();
@@ -4718,7 +5261,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				],
 				'selectors'   => [
 					$wrapper . ' .piotnetforms-field-group .piotnetforms-field' => 'text-align: {{VALUE}};',
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field-subgroup' => 'justify-content: {{VALUE}};',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field-subgroup' => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -4729,9 +5272,9 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'     => __( 'Text Color', 'piotnetforms' ),
 				'type'      => 'color',
 				'selectors' => [
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field .piotnetforms-field-textual option' => 'color: {{VALUE}};',
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field .selectize-control .selectize-dropdown .selectize-dropdown-content' => 'color: {{VALUE}};',
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field .selectize-control .selectize-input' => 'color: {{VALUE}};',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field .piotnetforms-field-textual option' => 'color: {{VALUE}};',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field .selectize-control .selectize-dropdown .selectize-dropdown-content' => 'color: {{VALUE}};',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field .selectize-control .selectize-input' => 'color: {{VALUE}};',
 					$wrapper . ' .piotnetforms-field-group .piotnetforms-field' => 'color: {{VALUE}};',
 				],
 			]
@@ -4748,6 +5291,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'field_background_color' . $name,
 			[
 				'label'     => __( 'Background Color', 'piotnetforms' ),
+				'label_block' => true,
 				'type'      => 'color',
 				'selectors' => [
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'background: {{VALUE}}!important;',
@@ -4782,38 +5326,40 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'selectors'  => [
 					$wrapper . ' .piotnetforms-field-group .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'max-width: {{SIZE}}{{UNIT}}!important;',
 					$wrapper . ' .piotnetforms-field-group .piotnetforms-field .piotnetforms-field-textual' => 'max-width: {{SIZE}}{{UNIT}}!important;',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field.piotnetforms-select-drop-down' => 'max-width: {{SIZE}}{{UNIT}}!important;',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field select.piotnetforms-field-textual' => 'max-width: unset !important;',
 				],
 			]
 		);
 
-        $this->add_responsive_control(
-            'input_height' . $name,
-            [
-                'label'      => __( 'Input Height', 'piotnetforms' ),
-                'type'       => 'slider',
-                'size_units' => [ 'px', 'em', '%' ],
-                'range'      => [
-                    'px' => [
-                        'min' => 0,
-                        'max' => 1000,
-                    ],
-                    '%'  => [
-                        'min' => 0,
-                        'max' => 100,
-                    ],
-                ],
-                'default'    => [
-                    'unit' => 'px',
-                ],
-                'selectors'  => [
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field-container .mce-tinymce iframe' => 'height: {{SIZE}}{{UNIT}}!important;',
-                    $wrapper . ' .piotnetforms-field-group .piotnetforms-field-textual' => 'height: {{SIZE}}{{UNIT}}!important;',
-                ],
-                'condition'  => [
-                    'field_type' => 'tinymce',
-                ],
-            ]
-        );
+		$this->add_responsive_control(
+			'input_height' . $name,
+			[
+				'label'      => __( 'Input Height', 'piotnetforms' ),
+				'type'       => 'slider',
+				'size_units' => [ 'px', 'em', '%' ],
+				'range'      => [
+					'px' => [
+						'min' => 0,
+						'max' => 1000,
+					],
+					'%'  => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default'    => [
+					'unit' => 'px',
+				],
+				'selectors'  => [
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field-container .mce-tinymce iframe' => 'height: {{SIZE}}{{UNIT}}!important;',
+					$wrapper . ' .piotnetforms-field-group .piotnetforms-field-textual' => 'height: {{SIZE}}{{UNIT}}!important;',
+				],
+				'condition'  => [
+					'field_type' => 'tinymce',
+				],
+			]
+		);
 
 		$this->add_responsive_control(
 			'input_padding' . $name,
@@ -4837,6 +5383,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'input_placeholder_color' . $name,
 			[
 				'label'     => __( 'Input Placeholder Color', 'piotnetforms' ),
+				'label_block' => true,
 				'type'      => 'color',
 				'default'   => '',
 				'selectors' => [
@@ -4852,6 +5399,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field.piotnetforms-field-textual::-moz-placeholder' => 'color: {{VALUE}}; opacity: 1;',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field.piotnetforms-field-textual:-ms-input-placeholder' => 'color: {{VALUE}}; opacity: 1;',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field.piotnetforms-field-textual:-moz-placeholder' => 'color: {{VALUE}}; opacity: 1;',
+					$wrapper . ' .flatpickr-mobile:before' => 'color: {{VALUE}}; opacity: 1;',
 				],
 			]
 		);
@@ -4859,18 +5407,19 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'field_border_type' . $name,
 			[
-				'label'     => _x( 'Border Type', 'Border Control', 'elementor' ),
+				'label'     => _x( 'Border Type', 'Border Control', 'piotnetforms' ),
 				'type'      => 'select',
 				'options'   => [
-					''       => __( 'None', 'elementor' ),
-					'solid'  => _x( 'Solid', 'Border Control', 'elementor' ),
-					'double' => _x( 'Double', 'Border Control', 'elementor' ),
-					'dotted' => _x( 'Dotted', 'Border Control', 'elementor' ),
-					'dashed' => _x( 'Dashed', 'Border Control', 'elementor' ),
-					'groove' => _x( 'Groove', 'Border Control', 'elementor' ),
+					''       => __( 'None', 'piotnetforms' ),
+					'solid'  => _x( 'Solid', 'Border Control', 'piotnetforms' ),
+					'double' => _x( 'Double', 'Border Control', 'piotnetforms' ),
+					'dotted' => _x( 'Dotted', 'Border Control', 'piotnetforms' ),
+					'dashed' => _x( 'Dashed', 'Border Control', 'piotnetforms' ),
+					'groove' => _x( 'Groove', 'Border Control', 'piotnetforms' ),
 				],
 				'selectors' => [
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'border-style: {{VALUE}};',
+					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual' => 'border-style: {{VALUE}};',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual .selectize-input' => 'border-style: {{VALUE}};',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .selectize-control .selectize-dropdown' => 'border-style: {{VALUE}};',
 					$wrapper . ' .piotnetforms-signature canvas' => 'border-style: {{VALUE}};',
@@ -4881,10 +5430,11 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$this->add_responsive_control(
 			'field_border_width' . $name,
 			[
-				'label'     => _x( 'Width', 'Border Control', 'elementor' ),
+				'label'     => _x( 'Width', 'Border Control', 'piotnetforms' ),
 				'type'      => 'dimensions',
 				'selectors' => [
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual .selectize-input' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .selectize-control .selectize-dropdown' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					$wrapper . ' .piotnetforms-signature canvas' => 'border-width: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
@@ -4898,11 +5448,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'field_border_color' . $name,
 			[
-				'label'     => _x( 'Color', 'Border Control', 'elementor' ),
+				'label'     => _x( 'Color', 'Border Control', 'piotnetforms' ),
 				'type'      => 'color',
 				'default'   => '',
 				'selectors' => [
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field:not(.piotnetforms-select-wrapper)' => 'border-color: {{VALUE}};',
+					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual' => 'border-color: {{VALUE}};',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .piotnetforms-field-textual .selectize-input' => 'border-color: {{VALUE}};',
 					$wrapper . ' .piotnetforms-field-group:not(.piotnetforms-field-type-upload) .piotnetforms-field .selectize-control .selectize-dropdown' => 'border-color: {{VALUE}};',
 					$wrapper . ' .piotnetforms-signature canvas' => 'border-color: {{VALUE}};',
@@ -4945,7 +5496,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 		return $this->get_group_controls( $previous_controls );
 	}
-	private function add_password_compare_style_controls(){
+	private function add_password_compare_style_controls() {
 		$this->add_control(
 			'icon_password_size',
 			[
@@ -5043,7 +5594,66 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		);
 	}
 
-	protected function make_textarea_field( $item, $item_index, $form_id, $tinymce = false ,$i=0) {
+	private function add_field_description_style_controls() {
+		$this->add_control(
+			'field_description_margin_top',
+			[
+				'label'     => __( 'Margin Top', 'piotnetforms' ),
+				'type'      => 'slider',
+				'default'   => [
+					'size' => '',
+					'unit' => 'px',
+				],
+				'range'     => [
+					'px' => [
+						'min' => 0,
+						'max' => 50,
+					],
+				],
+				'selectors' => [
+					'{{WRAPPER}} .piotnetforms-field-description' => 'margin-top: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_description_color',
+			[
+				'type'        => 'color',
+				'label'       => __( 'Color', 'piotnetforms' ),
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-description' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'field_description_align',
+			[
+				'type'        => 'select',
+				'label'       => __( 'Align', 'piotnetforms' ),
+				'label_block' => true,
+				'options'     => [
+					'' => 'Default',
+					'left' => 'Left',
+					'right' => 'Right',
+					'center' => 'Center',
+				],
+				'selectors'  => [
+					'{{WRAPPER}} .piotnetforms-field-description' => 'text-align: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_text_typography_controls(
+			'field_description_typography',
+			[
+				'selectors' => '{{WRAPPER}} .piotnetforms-field-description',
+			]
+		);
+	}
+
+	protected function make_textarea_field( $item, $item_index, $form_id, $tinymce = false, $i=0 ) {
 		$this->add_render_attribute(
 			'textarea' . $item_index,
 			[
@@ -5058,22 +5668,31 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		if ( $item['field_placeholder'] ) {
+		if ( ! empty( $item['field_placeholder'] ) ) {
 			$this->add_render_attribute( 'textarea' . $item_index, 'placeholder', $item['field_placeholder'] );
 		}
 
 		if ( $tinymce ) {
 			$rtl = is_rtl() ? 'rtl' : 'ltr';
-            $this->add_render_attribute( 'textarea' . $item_index, 'data-piotnetforms-tinymce' );
-			$this->add_render_attribute( 'textarea' . $item_index, 'data-piotnetforms-tinymce-rtl',  $rtl);
+			$this->add_render_attribute( 'textarea' . $item_index, 'data-piotnetforms-tinymce' );
+			$this->add_render_attribute( 'textarea' . $item_index, 'data-piotnetforms-tinymce-rtl', $rtl );
 		}
 
-		if ( $item['field_required'] ) {
+		if ( !empty( $item['field_required'] ) ) {
 			$this->add_required_attribute( 'textarea' . $item_index );
+		}
+
+		if ( ! empty( $item['invalid_message'] ) ) {
+			$this->add_render_attribute( 'textarea' . $i, 'oninvalid', "this.setCustomValidity('" . $item['invalid_message'] . "')" );
+			$this->add_render_attribute( 'textarea' . $i, 'onchange', "this.setCustomValidity('')" );
 		}
 
 		if ( ! empty( $item['max_length'] ) ) {
 			$this->add_render_attribute( 'textarea' . $i, 'maxlength', $item['max_length'] );
+		}
+
+		if ( ! empty( $item['min_length'] ) ) {
+			$this->add_render_attribute( 'textarea' . $i, 'minlength', $item['min_length'] );
 		}
 
 		if ( ! empty( $item['field_pattern_not_tel'] ) ) {
@@ -5088,8 +5707,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$value = $this->get_value_edit_post( $name );
 
 		if ( empty( $value ) ) {
-			$value = $item['field_value'];
-			$this->add_render_attribute( 'textarea' . $item_index, 'data-piotnetforms-default-value', $item['field_value'] );
+			$value = isset( $item['field_value'] ) ? $item['field_value'] : '';
+			$this->add_render_attribute( 'textarea' . $item_index, 'data-piotnetforms-default-value', $value );
 		}
 
 		// if ( ! empty( $value ) ) {
@@ -5101,25 +5720,40 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		return '<textarea ' . $this->get_render_attribute_string( 'textarea' . $item_index ) . '>' . $value . '</textarea>';
 	}
 
-	protected function make_select_field( $item, $i, $form_id, $image_select = false, $terms_select = false, $select_autocomplete = false ) {
+	protected function make_select_field( $item, $i, $form_id, $image_select = false, $terms_select = false, $select_autocomplete = false, $select2 = false ) {
+		$preview_class = !empty( $item['live_preview_label'] ) ? 'piotnetforms-preview-label' : '';
+		$multiple_class = !empty( $item['allow_multiple'] ) ? ' piotnetforms-select-multiple' : '';
+		$select_class = $item['field_type'] == 'select' ? ' piotnetforms-select-drop-down' : '';
 		$this->add_render_attribute(
 			[
 				'select-wrapper' . $i => [
 					'class' => [
 						'piotnetforms-field',
-						'piotnetforms-select-wrapper',
+						'piotnetforms-select-wrapper' . $multiple_class . $select_class,
 					],
 				],
 				'select' . $i         => [
 					'name'  => $this->get_attribute_name( $item ) . ( ! empty( $item['allow_multiple'] ) ? '[]' : '' ),
 					'id'    => $this->get_attribute_id( $item ),
 					'class' => [
-						'piotnetforms-field-textual',
+						'piotnetforms-field-textual' . $preview_class,
 						'piotnetforms-size-' . $item['input_size'],
 					],
+					'data-piotnetforms-type' => 'select'
 				],
 			]
 		);
+
+		if ( $select2 ) {
+			$this->add_render_attribute(
+				['select' . $i => [
+						'class' => [
+							'piotnetforms-type-select2',
+						],
+					],
+				]
+			);
+		}
 
 		if ( $image_select ) {
 			$list           = $item['piotnetforms_image_select_field_gallery'];
@@ -5143,24 +5777,25 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							],
 						]
 					);
+					wp_enqueue_script( $this->slug . '-advanced2-script' );
 				}
 
-                if ( ! empty( $min_select ) ) {
-                    $this->add_render_attribute(
-                        [
-                            'select' . $i => [
-                                'data-piotnetforms-image-select-min-select' => $min_select,
-                            ],
-                        ]
-                    );
-                    $this->add_render_attribute(
-                        [
-                            'select' . $i => [
-                                'data-piotnetforms-image-select-min-select-message' => $min_select_message,
-                            ],
-                        ]
-                    );
-                }
+				if ( ! empty( $min_select ) ) {
+					$this->add_render_attribute(
+						[
+							'select' . $i => [
+								'data-piotnetforms-image-select-min-select' => $min_select,
+							],
+						]
+					);
+					$this->add_render_attribute(
+						[
+							'select' . $i => [
+								'data-piotnetforms-image-select-min-select-message' => $min_select_message,
+							],
+						]
+					);
+				}
 			}
 		}
 
@@ -5198,7 +5833,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			$this->add_render_attribute( 'select' . $i, 'data-piotnetforms-payment-methods-select-field-value-for-paypal', $item['payment_methods_select_field_value_for_paypal'] );
 		}
 
-		$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
+		$options = preg_split( '/\\r\\n|\\r|\\n/', $item['field_options'] );
 
 		if ( $terms_select ) {
 			if ( ! empty( $item['field_taxonomy_slug'] ) ) {
@@ -5230,6 +5865,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					],
 				]
 			);
+
+			wp_enqueue_script( $this->slug . '-advanced2-script' );
 		}
 
 		ob_start();
@@ -5240,8 +5877,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 		if ( empty( $value ) ) {
 			$this->add_render_attribute( 'select' . $i, 'data-piotnetforms-default-value', $item['field_value'] );
-		}
-		?>
+		} ?>
 		<div <?php echo $this->get_render_attribute_string( 'select-wrapper' . $i ); ?>>
 			<select <?php echo $this->get_render_attribute_string( 'select' . $i ); ?> data-options='<?php echo json_encode( $options ); ?>'>
 				<?php
@@ -5250,62 +5886,61 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					array_unshift( $options, $item['field_placeholder'] . '|' . '' );
 				}
 
-				foreach ( $options as $key => $option ) {
-					$option_id    = $key;
-					$option_value = esc_attr( $option );
-					$option_label = esc_html( $option );
+		foreach ( $options as $key => $option ) {
+			$option_id    = $key;
+			$option_value = esc_attr( $option );
+			$option_label = esc_html( $option );
 
-					if ( false !== strpos( $option, '|' ) ) {
-						list( $label, $value ) = explode( '|', $option );
-						$option_value          = esc_attr( $value );
-						$option_label          = esc_html( $label );
-					}
+			if ( false !== strpos( $option, '|' ) ) {
+				list( $label, $value ) = explode( '|', $option );
+				$option_value          = esc_attr( $value );
+				$option_label          = esc_html( $label );
+			}
 
-					$this->add_render_attribute( $option_id, 'value', $option_value );
+			$this->add_render_attribute( $option_id, 'value', $option_value );
 
-					$name  = $this->get_field_name_shortcode( $this->get_attribute_name( $item ) );
-					$value = $this->get_value_edit_post( $name );
+			$name  = $this->get_field_name_shortcode( $this->get_attribute_name( $item ) );
+			$value = $this->get_value_edit_post( $name );
 
-					if ( empty( $value ) ) {
-						$value = $item['field_value'];
-					}
+			if ( empty( $value ) ) {
+				$value = $item['field_value'];
+			}
 
-					if ( ! empty( $value ) && $option_value === $value ) {
+			if ( ! empty( $value ) && $option_value === $value ) {
+				$this->add_render_attribute( $option_id, 'selected', 'selected' );
+			}
+
+			if ( ! $select_autocomplete ) {
+				$values = explode( ',', $value );
+
+				foreach ( $values as $value_item ) {
+					if ( $option_value === $value_item ) {
 						$this->add_render_attribute( $option_id, 'selected', 'selected' );
 					}
-
-					if ( ! $select_autocomplete ) {
-						$values = explode( ',', $value );
-
-                        foreach ( $values as $value_item ) {
-                            if ( $option_value === $value_item ) {
-                                $this->add_render_attribute( $option_id, 'selected', 'selected' );
-                            }
-                        }
-					}
-
-					if ( $item['send_data_by_label'] ) {
-						$this->add_render_attribute( $option_id, 'data-piotnetforms-send-data-by-label', $option_label );
-					}
-
-					if ( ! empty( $item['remove_this_field_from_repeater'] ) ) {
-						$this->add_render_attribute( $option_id, 'data-piotnetforms-remove-this-field-from-repeater', $option_label );
-					}
-
-					if ( $key == ( count( $options ) - 1 ) && trim( $option_value ) == '' ) {
-						# code...
-					} else {
-						if ( false !== strpos( $option_value, '[optgroup' ) ) {
-							$optgroup = str_replace( '&quot;', '', str_replace( ']', '', str_replace( '[optgroup label=', '', $option_value ) ) ); // fix alert ]
-							echo '<optgroup label="' . esc_attr( $optgroup ) . '">';
-						} elseif ( false !== strpos( $option_value, '[/optgroup]' ) ) {
-							echo '</optgroup>';
-						} else {
-							echo '<option ' . $this->get_render_attribute_string( $option_id ) . '>' . $option_label . '</option>';
-						}
-					}
 				}
-				?>
+			}
+
+			if ( $item['send_data_by_label'] ) {
+				$this->add_render_attribute( $option_id, 'data-piotnetforms-send-data-by-label', $option_label );
+			}
+
+			if ( ! empty( $item['remove_this_field_from_repeater'] ) ) {
+				$this->add_render_attribute( $option_id, 'data-piotnetforms-remove-this-field-from-repeater', $option_label );
+			}
+
+			if ( $key == ( count( $options ) - 1 ) && trim( $option_value ) == '' ) {
+				# code...
+			} else {
+				if ( false !== strpos( $option_value, '[optgroup' ) ) {
+					$optgroup = str_replace( '&quot;', '', str_replace( ']', '', str_replace( '[optgroup label=', '', $option_value ) ) ); // fix alert ]
+					echo '<optgroup label="' . esc_attr( $optgroup ) . '">';
+				} elseif ( false !== strpos( $option_value, '[/optgroup]' ) ) {
+					echo '</optgroup>';
+				} else {
+					echo '<option ' . $this->get_render_attribute_string( $option_id ) . '>' . $option_label . '</option>';
+				}
+			}
+		} ?>
 			</select>
 		</div>
 		<?php
@@ -5315,21 +5950,21 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 	}
 
 	protected function make_radio_checkbox_field( $item, $item_index, $type, $form_id, $terms_select = false ) {
-		if(!empty($item['field_options'])) {
-			$options = preg_split( "/\\r\\n|\\r|\\n/", $item['field_options'] );
+		if ( !empty( $item['field_options'] ) ) {
+			$options = preg_split( '/\\r\\n|\\r|\\n/', $item['field_options'] );
 		}
-		
+
 		if ( $item['piotnetforms_style_checkbox_type'] ) {
-			if ($item['piotnetforms_style_checkbox_type'] == 'button' ) {
+			if ( $item['piotnetforms_style_checkbox_type'] == 'button' ) {
 				if ( $item['checkbox_style_button_with_icon_list'] ) {
-					if ( count($item['checkbox_style_button_with_icon_list']) > 0 ) {
+					if ( count( $item['checkbox_style_button_with_icon_list'] ) > 0 ) {
 						$options = [];
 						$options_list = $item['checkbox_style_button_with_icon_list'];
-						for ( $i = 0; $i < count($options_list); $i++ ) {
-							if (!empty( $options_list[$i]['value'] ) && !empty( $options_list[$i]['label'] )) {
-								$options[] = $options_list[$i]['label'] . '|' . $options_list[$i]['value']; 
+						for ( $i = 0; $i < count( $options_list ); $i++ ) {
+							if ( !empty( $options_list[$i]['value'] ) && !empty( $options_list[$i]['label'] ) ) {
+								$options[] = $options_list[$i]['label'] . '|' . $options_list[$i]['value'];
 							} else {
-								if ($options_list[$i]['label']) {
+								if ( $options_list[$i]['label'] ) {
 									$options[] = $options_list[$i]['label'];
 								} else {
 									$options[] = $options_list[$i]['value'];
@@ -5362,7 +5997,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$html = '';
 		if ( $options ) {
 			$checkbox_replacement_class = $item['piotnetforms_style_checkbox_replacement'] && $item['piotnetforms_style_checkbox_type'] == 'native' ? ' piotnetforms-field-subgroup--checkbox-replacement' : '';
-			$html .= '<form>';
+			// $html .= '<form>';
 			$html .= '<div class="piotnetforms-field-subgroup piotnetforms-field-subgroup--' . $item['piotnetforms_style_checkbox_type'] . ' ' . $checkbox_replacement_class . ' ' . $item['inline_list'] . '">';
 			$index = 0;
 			foreach ( $options as $key => $option ) {
@@ -5389,26 +6024,34 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				$name  = $this->get_field_name_shortcode( $this->get_attribute_name( $item ) );
 				$value = $this->get_value_edit_post( $name );
 
+				if ( ! empty( $item['checkbox_limit_multiple'] ) ) {
+					$this->add_render_attribute( $element_id, 'data-piotnetforms-checkbox-limit-multiple', $item['checkbox_limit_multiple'] );
+				}
+
 				if ( empty( $value ) ) {
 					$value = $item['field_value'];
 					$this->add_render_attribute( $element_id, 'data-piotnetforms-default-value', $item['field_value'] );
 				}
-
+				if ( !empty( $item['live_preview_show_label'] ) ) {
+					$this->add_render_attribute( $element_id, 'class', 'piotnetforms-preview-label' );
+				}
 				if ( ! empty( $item['invalid_message'] ) ) {
 					// if ( $index == 1 ) {
 					// 	$this->add_render_attribute( $element_id, 'oninvalid', "this.setCustomValidity('" . $item['invalid_message'] . "')" );
 					// 	$this->add_render_attribute( $element_id, 'onchange', "this.setCustomValidity('')" );
 					// } else {
-						$this->add_render_attribute( $element_id, 'onclick', 'clearValidity(this)' );
-						$this->add_render_attribute( $element_id, 'oninvalid', "this.setCustomValidity('" . $item['invalid_message'] . "')" );
-						$this->add_render_attribute( $element_id, 'onchange', "this.setCustomValidity('')" );
+					$this->add_render_attribute( $element_id, 'onclick', 'clearValidity(this)' );
+					$this->add_render_attribute( $element_id, 'oninvalid', "this.setCustomValidity('" . $item['invalid_message'] . "')" );
+					$this->add_render_attribute( $element_id, 'onchange', "this.setCustomValidity('')" );
 					// }
+					wp_enqueue_script( $this->slug . '-advanced2-script' );
 				}
 
 				if ( ! empty( $item['payment_methods_select_field_enable'] ) ) {
 					$this->add_render_attribute( $element_id, 'data-piotnetforms-payment-methods-select-field', '' );
 					$this->add_render_attribute( $element_id, 'data-piotnetforms-payment-methods-select-field-value-for-stripe', $item['payment_methods_select_field_value_for_stripe'] );
 					$this->add_render_attribute( $element_id, 'data-piotnetforms-payment-methods-select-field-value-for-paypal', $item['payment_methods_select_field_value_for_paypal'] );
+					wp_enqueue_script( $this->slug . '-advanced-script' );
 				}
 
 				if ( ! empty( $value ) && $option_value === $value ) {
@@ -5447,42 +6090,42 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 				if ( $item['piotnetforms_style_checkbox_replacement'] && $item['piotnetforms_style_checkbox_type'] == 'native' ) {
 					if ( $item['piotnetforms_style_checkbox_replacement_icon_type'] == 'font_awesome' ) {
-						if ($item['piotnetforms_style_checkbox_replacement_icon_font_awesome'] || $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked']) {
+						if ( $item['piotnetforms_style_checkbox_replacement_icon_font_awesome'] || $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] ) {
 							wp_enqueue_style( $this->slug . '-fontawesome-style' );
-							$icon_html_wrapper_class = $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+							$icon_html_wrapper_class = $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
-							if ($item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] && !$item['piotnetforms_style_checkbox_replacement_icon_font_awesome']) {
-								$icon_html_wrapper_class .= ' piotnetforms-field-option-icon--only-checked';
+							if ( $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] && !$item['piotnetforms_style_checkbox_replacement_icon_font_awesome'] ) {
+								$icon_html_wrapper_class .= ' pf-f-o-i--only-checked';
 							}
 
 							$icon_html = '<span class="' . $icon_html_wrapper_class . '">';
 
-							if ($item['piotnetforms_style_checkbox_replacement_icon_font_awesome']) {
-								$icon_html .= '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--normal ' . $item['piotnetforms_style_checkbox_replacement_icon_font_awesome'] . '"></i>';
+							if ( $item['piotnetforms_style_checkbox_replacement_icon_font_awesome'] ) {
+								$icon_html .= '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--normal ' . $item['piotnetforms_style_checkbox_replacement_icon_font_awesome'] . '"></i>';
 							}
 
-							if ($item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked']) {
-								$icon_html .= '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--checked ' . $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] . '"></i>';
+							if ( $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] ) {
+								$icon_html .= '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--checked ' . $item['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] . '"></i>';
 							}
 
 							$icon_html .= '</span>';
 						}
 					} else {
-						if ($item['piotnetforms_style_checkbox_replacement_icon_image'] || $item['piotnetforms_style_checkbox_replacement_icon_image_checked']) {
-							$icon_html_wrapper_class = $item['piotnetforms_style_checkbox_replacement_icon_image_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+						if ( $item['piotnetforms_style_checkbox_replacement_icon_image'] || $item['piotnetforms_style_checkbox_replacement_icon_image_checked'] ) {
+							$icon_html_wrapper_class = $item['piotnetforms_style_checkbox_replacement_icon_image_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
-							if ($item['piotnetforms_style_checkbox_replacement_icon_image_checked'] && !$item['piotnetforms_style_checkbox_replacement_icon_image']) {
-								$icon_html_wrapper_class .= ' piotnetforms-field-option-icon--only-checked';
+							if ( $item['piotnetforms_style_checkbox_replacement_icon_image_checked'] && !$item['piotnetforms_style_checkbox_replacement_icon_image'] ) {
+								$icon_html_wrapper_class .= ' pf-f-o-i--only-checked';
 							}
 
 							$icon_html = '<span class="' . $icon_html_wrapper_class . '">';
 
-							if ($item['piotnetforms_style_checkbox_replacement_icon_image']) {
-								$icon_html .= '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--normal" src="' . $item['piotnetforms_style_checkbox_replacement_icon_image']['url'] . '">';
+							if ( $item['piotnetforms_style_checkbox_replacement_icon_image'] ) {
+								$icon_html .= '<img class="pf-f-o-i-image pf-f-o-i-image--normal" src="' . $item['piotnetforms_style_checkbox_replacement_icon_image']['url'] . '">';
 							}
 
-							if ($item['piotnetforms_style_checkbox_replacement_icon_image_checked']) {
-								$icon_html .= '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--checked" src="' . $item['piotnetforms_style_checkbox_replacement_icon_image_checked']['url'] . '">';
+							if ( $item['piotnetforms_style_checkbox_replacement_icon_image_checked'] ) {
+								$icon_html .= '<img class="pf-f-o-i-image pf-f-o-i-image--checked" src="' . $item['piotnetforms_style_checkbox_replacement_icon_image_checked']['url'] . '">';
 							}
 
 							$icon_html .= '</span>';
@@ -5494,42 +6137,42 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					$icon_list = $item['checkbox_style_button_with_icon_list'];
 					if ( count( $icon_list ) > 0 ) {
 						if ( $icon_list[$key]['icon_type'] == 'font_awesome' ) {
-							if ($icon_list[$key]['icon_font_awesome'] || $icon_list[$key]['icon_font_awesome_checked']) {
+							if ( $icon_list[$key]['icon_font_awesome'] || $icon_list[$key]['icon_font_awesome_checked'] ) {
 								wp_enqueue_style( $this->slug . '-fontawesome-style' );
-								$icon_html_wrapper_class = $icon_list[$key]['icon_font_awesome_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+								$icon_html_wrapper_class = $icon_list[$key]['icon_font_awesome_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
-								if ($icon_list[$key]['icon_font_awesome_checked'] && !$icon_list[$key]['icon_font_awesome']) {
-									$icon_html_wrapper_class .= ' piotnetforms-field-option-icon--only-checked';
+								if ( $icon_list[$key]['icon_font_awesome_checked'] && !$icon_list[$key]['icon_font_awesome'] ) {
+									$icon_html_wrapper_class .= ' pf-f-o-i--only-checked';
 								}
 
 								$icon_html = '<span class="' . $icon_html_wrapper_class . '">';
 
-								if ($icon_list[$key]['icon_font_awesome']) {
-									$icon_html .= '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--normal ' . $icon_list[$key]['icon_font_awesome'] . '"></i>';
+								if ( $icon_list[$key]['icon_font_awesome'] ) {
+									$icon_html .= '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--normal ' . $icon_list[$key]['icon_font_awesome'] . '"></i>';
 								}
 
-								if ($icon_list[$key]['icon_font_awesome_checked']) {
-									$icon_html .= '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--checked ' . $icon_list[$key]['icon_font_awesome_checked'] . '"></i>';
+								if ( $icon_list[$key]['icon_font_awesome_checked'] ) {
+									$icon_html .= '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--checked ' . $icon_list[$key]['icon_font_awesome_checked'] . '"></i>';
 								}
 
 								$icon_html .= '</span>';
 							}
 						} else {
-							if ($icon_list[$key]['icon_image'] || $icon_list[$key]['icon_image_checked']) {
-								$icon_html_wrapper_class = $icon_list[$key]['icon_image_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+							if ( $icon_list[$key]['icon_image'] || $icon_list[$key]['icon_image_checked'] ) {
+								$icon_html_wrapper_class = $icon_list[$key]['icon_image_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
-								if ($icon_list[$key]['icon_image_checked'] && !$icon_list[$key]['icon_image']) {
-									$icon_html_wrapper_class .= ' piotnetforms-field-option-icon--only-checked';
+								if ( $icon_list[$key]['icon_image_checked'] && !$icon_list[$key]['icon_image'] ) {
+									$icon_html_wrapper_class .= ' pf-f-o-i--only-checked';
 								}
 
 								$icon_html = '<span class="' . $icon_html_wrapper_class . '">';
 
-								if ($icon_list[$key]['icon_image']) {
-									$icon_html .= '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--normal" src="' . $icon_list[$key]['icon_image']['url'] . '">';
+								if ( $icon_list[$key]['icon_image'] ) {
+									$icon_html .= '<img class="pf-f-o-i-image pf-f-o-i-image--normal" src="' . $icon_list[$key]['icon_image']['url'] . '">';
 								}
 
-								if ($icon_list[$key]['icon_image_checked']) {
-									$icon_html .= '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--checked" src="' . $icon_list[$key]['icon_image_checked']['url'] . '">';
+								if ( $icon_list[$key]['icon_image_checked'] ) {
+									$icon_html .= '<img class="pf-f-o-i-image pf-f-o-i-image--checked" src="' . $icon_list[$key]['icon_image_checked']['url'] . '">';
 								}
 
 								$icon_html .= '</span>';
@@ -5544,15 +6187,32 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			}
 
 			$html .= '</div>';
-			$html .= '</form>';
+			// $html .= '</form>';
 		}
 
 		return $html;
 	}
 
 	protected function form_fields_render_attributes( $i, $instance, $item ) {
-		$label_inline = !empty($item['field_label_inline']) ? ' piotnetforms-label-inline' : '';
-		$box_flex = !empty($item['field_label_inline']) ? 'piotnetforms-column-flex' : '';
+		$label_inline = !empty( $item['field_label_inline'] ) ? ' piotnetforms-label-inline' : '';
+		$box_flex = !empty( $item['field_label_inline'] ) ? 'piotnetforms-column-flex' : '';
+
+		if(!empty($item['piotnetforms_range_slider_field_options'])){
+			if($this->piotnetforms_is_json($item['piotnetforms_range_slider_field_options'])){
+				$rage_setting_encode = $item['piotnetforms_range_slider_field_options'];
+			}else{
+				$range_slider_set = explode(',', $item['piotnetforms_range_slider_field_options']);
+				$range_slider_options = [];
+				foreach($range_slider_set as $val){
+					$slider_item = explode(':', $val);
+					$range_slider_options[str_replace(['"', ' '], '', $slider_item[0])] = str_replace(['"'," "], '', $slider_item[1]);
+				}
+				$rage_setting_encode = wp_json_encode($range_slider_options);
+			}
+		}else{
+			$rage_setting_encode = '';
+		}
+
 		$this->add_render_attribute(
 			[
 				'field-group' . $i       => [
@@ -5578,7 +6238,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 						'piotnetforms-field',
 						'piotnetforms-size-' . $item['input_size'],
 					],
-					'data-piotnetforms-range-slider' => $item['piotnetforms_range_slider_field_options'],
+					'data-piotnetforms-range-slider' => $rage_setting_encode,
 				],
 				'calculated_fields' . $i => [
 					'type'                                => 'text',
@@ -5588,13 +6248,13 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 						'piotnetforms-field',
 						'piotnetforms-size-' . $item['input_size'],
 					],
-					'data-piotnetforms-calculated-fields' => $item['piotnetforms_calculated_fields_form_calculation'],
-					'data-piotnetforms-calculated-fields-before' => $item['piotnetforms_calculated_fields_form_before'],
-					'data-piotnetforms-calculated-fields-after' => $item['piotnetforms_calculated_fields_form_after'],
+					'data-piotnetforms-calculated-fields' => isset( $item['piotnetforms_calculated_fields_form_calculation'] ) ? $item['piotnetforms_calculated_fields_form_calculation'] : '',
+					'data-piotnetforms-calculated-fields-before' => isset( $item['piotnetforms_calculated_fields_form_before'] ) ? $item['piotnetforms_calculated_fields_form_before'] : '',
+					'data-piotnetforms-calculated-fields-after' => isset( $item['piotnetforms_calculated_fields_form_after'] ) ? $item['piotnetforms_calculated_fields_form_after'] : '',
 					'data-piotnetforms-calculated-fields-rounding-decimals' => $item['piotnetforms_calculated_fields_form_calculation_rounding_decimals'],
 					'data-piotnetforms-calculated-fields-rounding-decimals-decimals-symbol' => $item['piotnetforms_calculated_fields_form_calculation_rounding_decimals_decimals_symbol'],
 					'data-piotnetforms-calculated-fields-rounding-decimals-seperators-symbol' => $item['piotnetforms_calculated_fields_form_calculation_rounding_decimals_seperators_symbol'],
-					'data-piotnetforms-calculated-fields-rounding-decimals-show' => $item['piotnetforms_calculated_fields_form_calculation_rounding_decimals_show'],
+					'data-piotnetforms-calculated-fields-rounding-decimals-show' => isset( $item['piotnetforms_calculated_fields_form_calculation_rounding_decimals_show'] ) ? $item['piotnetforms_calculated_fields_form_calculation_rounding_decimals_show'] : '',
 				],
 				'label' . $i             => [
 					'for'   => $this->get_attribute_id( $item ),
@@ -5603,7 +6263,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			]
 		);
 
-		if ( $item['field_type'] == 'address_autocomplete' || $item['field_type'] == 'iban') {
+		if ( $item['field_type'] == 'address_autocomplete' || $item['field_type'] == 'iban' ) {
 			$this->add_render_attribute(
 				[
 					'input' . $i => [
@@ -5617,7 +6277,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			$this->add_render_attribute(
 				[
 					'input' . $i => [
-						'type' => $item['field_type'],
+						'type' => $item['field_type'] != 'confirm' ? $item['field_type'] : $item['confirm_type'],
 						'name' => $this->get_attribute_name( $item ),
 						'id'   => $this->get_attribute_id( $item ),
 					],
@@ -5635,7 +6295,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			$this->add_render_attribute( 'field-group' . $i, 'class', 'piotnetforms-md-' . $item['width_tablet'] );
 		}
 
-		if ( $item['allow_multiple'] ) {
+		if ( !empty( $item['allow_multiple'] ) && $item['allow_multiple'] ) {
 			$this->add_render_attribute( 'field-group' . $i, 'class', 'piotnetforms-field-type-' . $item['field_type'] . '-multiple' );
 		}
 
@@ -5651,7 +6311,11 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			$this->add_render_attribute( 'input' . $i, 'maxlength', $item['max_length'] );
 		}
 
-		if ( ! empty( $item['field_pattern_not_tel'] && $item['field_type'] != 'tel' ) ) {
+		if ( ! empty( $item['min_length'] ) ) {
+			$this->add_render_attribute( 'input' . $i, 'minlength', $item['min_length'] );
+		}
+
+		if ( ! empty( $item['field_pattern_not_tel'] ) && $item['field_type'] != 'tel' ) {
 			$this->add_render_attribute( 'input' . $i, 'pattern', $item['field_pattern_not_tel'] );
 		}
 
@@ -5680,8 +6344,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$value = $this->get_value_edit_post( $name );
 
 		if ( empty( $value ) ) {
-			$value = $item['field_value'];
-			$this->add_render_attribute( 'input' . $i, 'data-piotnetforms-default-value', $item['field_value'] );
+			$value = isset( $item['field_value'] ) ? $item['field_value'] : '';
+			$this->add_render_attribute( 'input' . $i, 'data-piotnetforms-default-value', $value );
 		}
 
 		if ( ! empty( $value ) || $value == 0 ) {
@@ -5704,6 +6368,11 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			//$this->add_render_attribute( 'input' . $i, 'name', $this->get_attribute_name( $item ) . '[]', true );
 		}
 
+		if ( $item['field_type'] == 'image_upload' ) {
+			if ( ! empty( $item['attach_files'] ) ) {
+				$this->add_render_attribute( 'input' . $i, 'data-attach-files', 'true', true );
+			}
+		}
 		if ( $item['field_type'] == 'upload' ) {
 			wp_enqueue_script( $this->slug . '-jquery-validation-script' );
 			$this->add_render_attribute( 'input' . $i, 'name', 'upload_field', true );
@@ -5745,7 +6414,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 						'data-types-message' => $item['file_types_message'],
 					]
 				);
-
 			}
 		}
 
@@ -5754,7 +6422,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			$this->add_render_attribute( 'range_slider' . $i, 'data-piotnetforms-remove-this-field-from-repeater', '', true );
 			$this->add_render_attribute( 'calculated_fields' . $i, 'data-piotnetforms-remove-this-field-from-repeater', '', true );
 		}
-
 	}
 
 	public function get_field_name_shortcode( $content ) {
@@ -5783,21 +6450,20 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 						$form_id = sanitize_text_field( $_GET['sm'] );
 					}
 
-					$form = array();
+					$form = [];
 
-                    $data     = json_decode( get_post_meta( $sp_post_id, '_piotnetforms_data', true ), true );
-                    $form['settings'] = $data['widgets'][ $form_id ]['settings'];
+					$data     = json_decode( get_post_meta( $sp_post_id, '_piotnetforms_data', true ), true );
+					$form['settings'] = $data['widgets'][ $form_id ]['settings'];
 
-                    if ( ! empty( $form ) ) {
-
+					if ( ! empty( $form ) ) {
 						if ( ! empty( $form['settings'] ) ) {
-							$sp_post_taxonomy  = isset($form['settings']['submit_post_taxonomy']) ? $form['settings']['submit_post_taxonomy'] : 'category-post';
+							$sp_post_taxonomy  = isset( $form['settings']['submit_post_taxonomy'] ) ? $form['settings']['submit_post_taxonomy'] : 'category-post';
 							$sp_title          = $this->get_field_name_shortcode( $form['settings']['submit_post_title'] );
 							$sp_content        = $this->get_field_name_shortcode( $form['settings']['submit_post_content'] );
-							$sp_terms          = isset($form['settings']['submit_post_terms_list']) ? $form['settings']['submit_post_terms_list'] : [];
-							$sp_term           = isset($form['settings']['submit_post_term']) ? $this->get_field_name_shortcode( $form['settings']['submit_post_term'] ) : '';
+							$sp_terms          = isset( $form['settings']['submit_post_terms_list'] ) ? $form['settings']['submit_post_terms_list'] : [];
+							$sp_term           = isset( $form['settings']['submit_post_term'] ) ? $this->get_field_name_shortcode( $form['settings']['submit_post_term'] ) : '';
 							$sp_featured_image = $this->get_field_name_shortcode( $form['settings']['submit_post_featured_image'] );
-							$sp_custom_fields  = isset($form['settings']['submit_post_custom_fields_list']) ? $form['settings']['submit_post_custom_fields_list'] : [];
+							$sp_custom_fields  = isset( $form['settings']['submit_post_custom_fields_list'] ) ? $form['settings']['submit_post_custom_fields_list'] : [];
 							$sp_post_type = $form['settings']['submit_post_type'];
 
 							if ( $name == $sp_title ) {
@@ -5846,7 +6512,6 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							foreach ( $sp_custom_fields as $sp_custom_field ) {
 								if ( ! empty( $sp_custom_field['submit_post_custom_field'] ) ) {
 									if ( $name == $this->get_field_name_shortcode( $sp_custom_field['submit_post_custom_field_id'] ) ) {
-
 										$meta_type = $sp_custom_field['submit_post_custom_field_type'];
 
 										if ( function_exists( 'get_field' ) && $form['settings']['submit_post_custom_field_source'] == 'acf_field' ) {
@@ -5870,7 +6535,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 												}
 											}
 
-											if ( $meta_type == 'select' || $meta_type == 'checkbox' ) {
+											if ( $meta_type == 'select' || $meta_type == 'checkbox' || $meta_type == 'acf_relationship' ) {
 												if ( is_array( $value ) ) {
 													$value_string = '';
 													foreach ( $value as $item ) {
@@ -5885,8 +6550,13 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 												$time  = strtotime( $value );
 												$value = date( get_option( 'date_format' ), $time );
 											}
-										} elseif ( $form['settings']['submit_post_custom_field_source'] == 'toolset_field' ) {
 
+											if ( $meta_type == 'file' ) {
+												if ( !empty( $value ) ) {
+													$value = get_field( $sp_custom_field['submit_post_custom_field'], $post_id, false );
+												}
+											}
+										} elseif ( $form['settings']['submit_post_custom_field_source'] == 'toolset_field' ) {
 											$meta_key = 'wpcf-' . $sp_custom_field['submit_post_custom_field'];
 
 											$value = get_post_meta( $post_id, $meta_key, false );
@@ -5948,7 +6618,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 												if ( is_array( $value ) ) {
 													$value_string = '';
 													foreach ( $value as $key => $item ) {
-														if ( $item ) {
+														if ( $item == 'true' ) {
 															$value_string .= $key . ',';
 														}
 													}
@@ -5962,7 +6632,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 												$value = date( get_option( 'date_format' ), $time );
 											}
 										} elseif ( function_exists( 'pods_field' ) && $form['settings']['submit_post_custom_field_source'] == 'pods_field' ) {
-											$value = pods_field( $sp_post_type, $post_id, $sp_custom_field['submit_post_custom_field'],true );
+											$value = pods_field( $sp_post_type, $post_id, $sp_custom_field['submit_post_custom_field'], true );
 
 											if ( $meta_type == 'image' ) {
 												if ( is_array( $value ) ) {
@@ -5997,48 +6667,45 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 												$time  = strtotime( $value );
 												$value = date( get_option( 'date_format' ), $time );
 											}
+										} elseif ( function_exists( 'rwmb_get_value' ) && $form['settings']['submit_post_custom_field_source'] == 'metabox_field' ) {
+											$value = rwmb_get_value( $sp_custom_field['submit_post_custom_field'], [], $post_id );
 
-                                        } elseif ( function_exists( 'rwmb_get_value' ) && $form['settings']['submit_post_custom_field_source'] == 'metabox_field' ) {
-                                            $value = rwmb_get_value( $sp_custom_field['submit_post_custom_field'], array(), $post_id );
+											if ( $meta_type == 'image' ) {
+												$images = rwmb_get_value( $sp_custom_field['submit_post_custom_field'], [ 'limit' => 1, 'size' => 'large' ], $post_id );
+												if ( is_array( $value ) ) {
+													$value = $images['url'];
+												}
+											}
 
-                                            if ( $meta_type == 'image' ) {
+											if ( $meta_type == 'gallery' ) {
+												$value = rwmb_get_value( $sp_custom_field['submit_post_custom_field'], [ 'size' => 'large' ], $post_id );
+												if ( is_array( $value ) ) {
+													$images = '';
+													foreach ( $value as $item ) {
+														if ( is_array( $item ) ) {
+															$images .= $item['url'] . ',';
+														}
+													}
+													$value = rtrim( $images, ',' );
+												}
+											}
 
-                                                $images = rwmb_get_value( $sp_custom_field['submit_post_custom_field'], array( 'limit' => 1, 'size' => 'large' ), $post_id );
-                                                $image = reset( $images );
-                                                if ( is_array( $value ) ) {
-                                                    $value = $image['url'];
-                                                }
-                                            }
+											if ( $meta_type == 'select' || $meta_type == 'checkbox' ) {
+												if ( is_array( $value ) ) {
+													$value_string = '';
+													foreach ( $value as $item ) {
+														$value_string .= $item . ',';
+													}
+													$value = rtrim( $value_string, ',' );
+												};
+											}
 
-                                            if ( $meta_type == 'gallery' ) {
-                                                $value = rwmb_get_value( $sp_custom_field['submit_post_custom_field'], array( 'size' => 'large' ), $post_id );
-                                                if ( is_array( $value ) ) {
-                                                    $images = '';
-                                                    foreach ( $value as $item ) {
-                                                        if ( is_array( $item ) ) {
-                                                            $images .= $item['url'] . ',';
-                                                        }
-                                                    }
-                                                    $value = rtrim( $images, ',' );
-                                                }
-                                            }
-
-                                            if ( $meta_type == 'select' || $meta_type == 'checkbox' ) {
-                                                if ( is_array( $value ) ) {
-                                                    $value_string = '';
-                                                    foreach ( $value as $item ) {
-                                                        $value_string .= $item . ',';
-                                                    }
-                                                    $value = rtrim( $value_string, ',' );
-                                                };
-                                            }
-
-                                            if ( $meta_type == 'date' ) {
-                                                $value = get_post_meta( $post_id, $sp_custom_field['submit_post_custom_field'], true );
-                                                $time  = strtotime( $value );
-                                                $value = date( get_option( 'date_format' ), $time );
-                                            }
-                                        } else {
+											if ( $meta_type == 'date' ) {
+												$value = get_post_meta( $post_id, $sp_custom_field['submit_post_custom_field'], true );
+												$time  = strtotime( $value );
+												$value = date( get_option( 'date_format' ), $time );
+											}
+										} else {
 											$value = get_post_meta( $post_id, $sp_custom_field['submit_post_custom_field'], true );
 										}
 									}
@@ -6051,10 +6718,10 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		}
 
 		return $value;
-
 	}
 
-	public function render_plain_content() {}
+	public function render_plain_content() {
+	}
 
 	public function get_attribute_name( $item ) {
 		return 'form_fields[' . trim( $item['field_id'] ) . ']';
@@ -6092,32 +6759,34 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$item = $settings;
 		$field_type = $settings['field_type'];
 		$field_id = $settings['field_id'];
-		$form_id = $settings['form_id'];
-		$country = !(empty($settings['country'])) ? $settings['country']: '';
-		$latitude = !(empty($settings['google_maps_lat'])) ? $settings['google_maps_lat'] : '';
-        $longitude = !(empty($settings['google_maps_lng'])) ? $settings['google_maps_lng'] : '';
-		$zoom = !(empty($settings['google_maps_zoom'])) ? $settings['google_maps_zoom']['size'] : '';
-		$field_placeholder = $settings['field_placeholder'];
-		$field_value = $settings['field_value'];
-		$field_required = !(empty($settings['field_required'])) ? ' required="required" ' : '';
+		$form_post_id = $this->post_id;
+		$form_version = empty( get_post_meta( $form_post_id, '_piotnetforms_version', true ) ) ? 1 : get_post_meta( $form_post_id, '_piotnetforms_version', true );
+		$form_id = $form_version == 1 ? $settings['form_id'] : $form_post_id;
+		$country = !( empty( $settings['country'] ) ) ? $settings['country'] : '';
+		$latitude = !( empty( $settings['google_maps_lat'] ) ) ? $settings['google_maps_lat'] : '';
+		$longitude = !( empty( $settings['google_maps_lng'] ) ) ? $settings['google_maps_lng'] : '';
+		$zoom = !( empty( $settings['google_maps_zoom'] ) ) ? $settings['google_maps_zoom']['size'] : '';
+		$field_placeholder = !( empty( $settings['field_placeholder'] ) ) ? $settings['field_placeholder'] : '';
+		$field_value = isset( $settings['field_value'] ) ? $settings['field_value'] : '';
+		$field_required = !( empty( $settings['field_required'] ) ) ? ' required="required" ' : '';
 
-		if (!empty($item['field_value'])) {
+		if ( !empty( $item['field_value'] ) ) {
 			$item['field_value'] = piotnetforms_dynamic_tags( $item['field_value'] );
 		}
 
-		if (!empty($item['field_options'])) {
+		if ( !empty( $item['field_options'] ) ) {
 			$item['field_options'] = piotnetforms_dynamic_tags( $item['field_options'] );
 		}
 
 		$item['input_size'] = '';
 		$this->form_fields_render_attributes( $item_index, '', $item );
 
-		if (!empty($settings['piotnetforms_conditional_logic_form_list'])) {
-			$list_conditional = $settings['piotnetforms_conditional_logic_form_list'];	
-			if( !empty($settings['piotnetforms_conditional_logic_form_enable']) && !empty($list_conditional[0]['piotnetforms_conditional_logic_form_if']) && !empty($list_conditional[0]['piotnetforms_conditional_logic_form_comparison_operators']) ) {
+		if ( !empty( $settings['piotnetforms_conditional_logic_form_list'] ) ) {
+			$list_conditional = $settings['piotnetforms_conditional_logic_form_list'];
+			if ( !empty( $settings['piotnetforms_conditional_logic_form_enable'] ) && !empty( $list_conditional[0]['piotnetforms_conditional_logic_form_if'] ) && !empty( $list_conditional[0]['piotnetforms_conditional_logic_form_comparison_operators'] ) ) {
 				//$this->add_render_attribute( 'field-group' . $item_index, 'data-piotnetforms-conditional-logic', json_encode($list_conditional) );
 				$this->add_render_attribute( 'field-group' . $item_index, [
-					'data-piotnetforms-conditional-logic' => str_replace('\"]','', str_replace('[field id=\"','', json_encode($list_conditional))),
+					'data-piotnetforms-conditional-logic' => str_replace( '\"]', '', str_replace( '[field id=\"', '', json_encode( $list_conditional ) ) ),
 					'data-piotnetforms-conditional-logic-speed' => $settings['piotnetforms_conditional_logic_form_speed'],
 					'data-piotnetforms-conditional-logic-easing' => $settings['piotnetforms_conditional_logic_form_easing'],
 				] );
@@ -6126,7 +6795,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			}
 		}
 
-		if( !empty($item['number_spiner']) && $item['field_type'] == 'number' ) {
+		if ( !empty( $item['number_spiner'] ) && $item['field_type'] == 'number' ) {
 			$this->add_render_attribute( 'field-group' . $item_index, [
 				'data-piotnetforms-spiner' => '',
 			] );
@@ -6135,248 +6804,287 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-fields-wrapper piotnetforms-labels-above' );
 
-		if(!empty($settings['label_animation'])){
+		if ( !empty( $settings['label_animation'] ) ) {
 			$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-label-animation' );
+			wp_enqueue_script( $this->slug . '-advanced2-script' );
 		}
-		
-	?>
+
+		if ( !empty( $item['modern_upload_field_style'] ) ) {
+			$this->add_render_attribute( 'field-group' . $item_index, [
+				'class' => 'piotnetforms-field-type-upload-mordern',
+			] );
+		} ?>
 		
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
 			<div <?php echo $this->get_render_attribute_string( 'field-group' . $item_index ); ?>>
 				<?php
-				if ( $item['field_label'] && 'html' !== $item['field_type'] ) {
+				if ( !empty( $item['field_label'] ) && 'html' !== $item['field_type'] ) {
 					echo '<label ';
-					if (empty($item['field_label_show'])) {
+					if ( empty( $item['field_label_show'] ) ) {
 						echo 'style="display:none" ';
 					}
 					echo $this->get_render_attribute_string( 'label' . $item_index );
-					if ('honeypot' == $item['field_type']) {
+					if ( 'honeypot' == $item['field_type'] ) {
 						echo ' data-piotnetforms-honeypot';
 					}
-					echo '>' . $item['field_label'] . '</label>';
+					echo '>'. $item['field_label'] .'</label>';
 				}
-				if(empty($settings['field_label_inline'])){
-					echo '<div data-piotnetforms-required></div>';
-					$field_inline = '';
-				}else{
-					$field_inline = ' piotnetforms-field-inline';
+		if ( empty( $settings['field_label_inline'] ) ) {
+			echo '<div data-piotnetforms-required></div>';
+			$field_inline = '';
+		} else {
+			$field_inline = ' piotnetforms-field-inline';
+		}
+
+		echo '<div class="piotnetforms-field-container'.$field_inline.'">';
+
+		if ( ! empty( $item['field_icon_enable'] ) ) {
+			echo '<div class="piotnetforms-field-icon">';
+			if ( $item['field_icon_type'] == 'font_awesome' ) {
+				if ( ! empty( $item['field_icon_font_awesome'] ) ) {
+					wp_enqueue_style( $this->slug . '-fontawesome-style' );
+					echo '<i class="' . $item['field_icon_font_awesome'] . '"></i>';
+				}
+			} else {
+				if ( ! empty( $item['field_icon_image'] ) ) {
+					echo '<img class="piotnetforms-field-icon-image--normal" src="' . $item['field_icon_image']['url'] . '">';
+				}
+				if ( ! empty( $item['field_icon_image_focus'] ) ) {
+					echo '<img class="piotnetforms-field-icon-image--focus" src="' . $item['field_icon_image_focus']['url'] . '">';
+				}
+			}
+			echo '</div>';
+		}
+
+		switch ( $item['field_type'] ) :
+			case 'html':
+				echo '<div class="piotnetforms-field piotnetforms-size- " data-piotnetforms-html data-piotnetforms-id="' . $item['form_id'] . '" ' . 'id="form-field-' . $item['field_id'] . '" name="form_fields[' .  $item['field_id'] . ']">' . $item['field_html'] . '</div>';
+				break;
+			case 'textarea':
+				echo $this->make_textarea_field( $item, $item_index, $form_id );
+				break;
+
+			case 'tinymce':
+				wp_enqueue_script( $this->slug . '-tinymce-script' );
+				wp_enqueue_script( $this->slug . '-advanced2-script' );
+				echo $this->make_textarea_field( $item, $item_index, $form_id, true );
+				break;
+
+			case 'select':
+				echo $this->make_select_field( $item, $item_index, $form_id );
+				break;
+
+			case 'confirm':
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-confirm-field', $item['confirm_field_name'] );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-confirm-msg', $item['confirm_error_msg'] );
+				echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				break;
+
+			case 'select_autocomplete':
+				wp_enqueue_script( $this->slug . '-selectize-script' );
+				wp_enqueue_style( $this->slug . '-selectize-style' );
+				wp_enqueue_script( $this->slug . '-advanced2-script' );
+				echo $this->make_select_field( $item, $item_index, $form_id, false, false, true );
+				break;
+
+			case 'image_select':
+				wp_enqueue_script( $this->slug . '-image-picker-script' );
+				wp_enqueue_style( $this->slug . '-image-picker-style' );
+				echo '<div data-piotnetforms-image_select_min_select_check></div>';
+				echo $this->make_select_field( $item, $item_index, $form_id, true );
+				break;
+
+			case 'terms_select':
+				if ( $item['terms_select_type'] == 'select' ) {
+					echo $this->make_select_field( $item, $item_index, $form_id, false, true );
+				} elseif ( $item['terms_select_type'] == 'select2' ) {
+					wp_enqueue_script( $this->slug . '-select2-script' );
+					wp_enqueue_script( $this->slug . '-advanced2-script' );
+					wp_enqueue_style( $this->slug . '-select2-style' );
+					echo $this->make_select_field( $item, $item_index, $form_id, false, true, false, true );
+				} else {
+					echo $this->make_radio_checkbox_field( $item, $item_index, $item['terms_select_type'], $form_id, true );
 				}
 
-				echo '<div class="piotnetforms-field-container'.$field_inline.'">';
+				break;
 
-				if ( ! empty( $item['field_icon_enable'] ) ) {
-					echo '<div class="piotnetforms-field-icon">';
-					if ($item['field_icon_type'] == 'font_awesome') {
-						if ( ! empty( $item['field_icon_font_awesome'] ) ) {
-							wp_enqueue_style( $this->slug . '-fontawesome-style' );
-							echo '<i class="' . $item['field_icon_font_awesome'] . '"></i>';
-						}
-					} else {
-						if ( ! empty( $item['field_icon_image'] ) ) {
-							echo '<img class="piotnetforms-field-icon-image--normal" src="' . $item['field_icon_image']['url'] . '">';
-						}
-						if ( ! empty( $item['field_icon_image_focus'] ) ) {
-							echo '<img class="piotnetforms-field-icon-image--focus" src="' . $item['field_icon_image_focus']['url'] . '">';
-						}
+			case 'radio':
+			case 'checkbox':
+				echo $this->make_radio_checkbox_field( $item, $item_index, $field_type, $form_id );
+				break;
+			case 'text':
+			case 'email':
+			case 'url':
+			case 'password':
+			case 'hidden':
+			case 'color':
+			case 'iban':
+				if ( isset( $item['is_repassword_field'] ) && !empty( $item['field_password_id'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-is-repassword', $item['field_password_id'] );
+					$msg_pwd_err = !empty( $item['msg_repassword_err'] ) ? $item['msg_repassword_err'] : "Password don't math";
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-repassword-msg', $msg_pwd_err );
+				}
+				if ( $item['field_type'] == 'iban' ) {
+					$iban_mesg = !empty( $settings['iban_invalid_message'] ) ? $settings['iban_invalid_message'] : 'This IBAN is invalid.';
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-iban-field' );
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-iban-msg', $iban_mesg );
+					wp_enqueue_script( $this->slug . '-iban-script' );
+				}
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				if ( $item['field_type'] == 'password' && !empty( $item['show_icon_password_options'] ) ) {
+					echo '<label for="form-field-'.$item['field_id'].'" class="piotnetforms-show-password-icon" data-piotnetforms-show-password-icon="true" data-piotnetforms-field-name="'.$item['field_id'].'"><i id="eye-icon-'.$item['field_id'].'" class="fa fa-eye"></i></label>';
+					wp_enqueue_script( $this->slug . '-advanced2-script' );
+				}
+				break;
+			case 'coupon_code':
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->remove_render_attribute( 'input' . $item_index, 'type' );
+				$this->add_render_attribute( 'input' . $item_index, 'type', 'text' );
+				if ( !empty( $item['piotnetforms_coupon_code_list'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-coupon-code-list', json_encode( $item['piotnetforms_coupon_code_list'] ) );
+				}
+				echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				break;
+			case 'honeypot':
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . ' style="display:none !important;">';
+				break;
+			case 'address_autocomplete':
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-address-autocomplete', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-address-autocomplete-country', $country );
+
+				$name = $this->get_field_name_shortcode( $this->get_attribute_name( $item ) );
+				$value = $this->get_value_edit_post( $name );
+
+				if ( !empty( $value ) ) {
+					$this->remove_render_attribute( 'input' . $item_index, 'value' );
+					$this->remove_render_attribute( 'input' . $item_index, 'data-piotnetforms-value' );
+					$this->add_render_attribute( 'input' . $item_index, 'value', $value['address'] );
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-value', $value['address'] );
+					$latitude = $value['lat'];
+					$longitude = $value['lng'];
+					$zoom = $value['zoom'];
+				}
+
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-lat', $latitude );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-lng', $longitude );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-formatted-address', '' );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-zoom', $zoom );
+
+				echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				if ( ! empty( $item['google_maps'] ) ) {
+					echo '<div class="piotnetforms-address-autocomplete-map" style="width: 100%;" data-piotnetforms-address-autocomplete-map></div><div class="infowindow-content"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="16" height="16" id="place-icon"><span id="place-name"  class="title"></span><br><span id="place-address"></span></div>';
+				}
+				if ( empty( esc_attr( get_option( 'piotnetforms-google-maps-api-key' ) ) ) ) {
+					echo __( 'Please go to Dashboard > Piotnet Forms > Google Maps Integration > Enter Google Maps API Key > Save Settings', 'piotnetforms' );
+				} else {
+					wp_enqueue_script( $this->slug . '-google-maps-init-script' );
+					wp_enqueue_script( $this->slug . '-google-maps-script' );
+				}
+
+				break;
+			case 'image_upload':
+				$name = $this->get_field_name_shortcode( $this->get_attribute_name( $item ) );
+				$value = $this->get_value_edit_post( $name );
+
+				if ( !empty( $value ) ) {
+					$images = explode( ',', $value );
+					foreach ( $images as $image ) {
+						echo '<div class="piotnetforms-image-upload-placeholder piotnetforms-image-upload-uploaded" style="background-image:url('.$image.')" data-piotnetforms-image-upload-placeholder=""><input type="text" style="display:none;" data-piotnetforms-image-upload-item value="'.$image.'"><span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--remove" data-piotnetforms-image-upload-button-remove><i class="fa fa-times" aria-hidden="true"></i></span><span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--uploading" data-piotnetforms-image-upload-button-uploading><i class="fa fa-spinner fa-spin"></i></span></div>';
 					}
-					echo '</div>';
 				}
 
-				switch ( $item['field_type'] ) :
-					case 'html':
-						echo '<div class="piotnetforms-field piotnetforms-size- " data-piotnetforms-html data-piotnetforms-id="' . $item['form_id'] . '" ' . 'id="form-field-' . $item['field_id'] . '" name="form_fields[' .  $item['field_id'] . ']">' . $item['field_html'] . '</div>';
-						break;
-					case 'textarea':
-						echo $this->make_textarea_field( $item, $item_index, $form_id );
-						break;
-
-					case 'tinymce':
-						wp_enqueue_script( $this->slug . '-tinymce-script' );
-						echo $this->make_textarea_field( $item, $item_index, $form_id, true );
-						break;
-
-					case 'select':
-						echo $this->make_select_field( $item, $item_index, $form_id );
-						break;
-
-					case 'select_autocomplete':
-						wp_enqueue_script( $this->slug . '-selectize-script' );
-						wp_enqueue_style( $this->slug . '-selectize-style' );
-						echo $this->make_select_field( $item, $item_index, $form_id, false, false, true );
-						break;
-
-					case 'image_select':
-						wp_enqueue_script( $this->slug . '-image-picker-script' );
-						wp_enqueue_style( $this->slug . '-image-picker-style' );
-                        echo '<div data-piotnetforms-image_select_min_select_check></div>';
-						echo $this->make_select_field( $item, $item_index, $form_id, true );
-						break;
-
-					case 'terms_select':
-						if ($item['terms_select_type'] == 'select') {
-							echo $this->make_select_field( $item, $item_index, $form_id, false, true );
-						} else {
-							echo $this->make_radio_checkbox_field( $item, $item_index, $item['terms_select_type'], $form_id, true );
-						}
-						
-						break;
-
-					case 'radio':
-					case 'checkbox':
-						echo $this->make_radio_checkbox_field( $item, $item_index, $field_type, $form_id );
-						break;
-					case 'text':
-					case 'email':
-					case 'url':
-					case 'password':
-					case 'hidden':
-					case 'color':
-					case 'iban':
-						if($item['is_repassword_field'] && !empty($item['field_password_id'])){
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-is-repassword', $item['field_password_id'] );
-							$msg_pwd_err = !empty($item['msg_repassword_err']) ? $item['msg_repassword_err'] : "Password don't math";
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-repassword-msg', $msg_pwd_err );
-						}
-						if($item['field_type'] == 'iban'){
-							$iban_mesg = !empty($settings['iban_invalid_message']) ? $settings['iban_invalid_message'] : 'This IBAN is invalid.';
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-iban-field');
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-iban-msg', $iban_mesg);
-						}
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';	
-						if($item['field_type'] == 'password' && !empty($item['show_icon_password_options'])){
-							echo '<label for="form-field-'.$item['field_id'].'" class="piotnetforms-show-password-icon" data-piotnetforms-show-password-icon="true" data-piotnetforms-field-name="'.$item['field_id'].'"><i id="eye-icon-'.$item['field_id'].'" class="fa fa-eye"></i></label>';
-						}
-						break;
-					case 'coupon_code':
-					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-					$this->remove_render_attribute( 'input' . $item_index, 'type' );
-					$this->add_render_attribute( 'input' . $item_index, 'type', 'text' );
-					if (!empty($item['piotnetforms_coupon_code_list'])) {
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-coupon-code-list', json_encode($item['piotnetforms_coupon_code_list']) );
+				echo '<label style="width: 25%" data-piotnetforms-image-upload-label ';
+				if ( ! empty( $item['allow_multiple_upload'] ) ) {
+					echo 'multiple="multiple"';
+				} else {
+					if ( !empty( $value ) ) {
+						echo ' class="piotnetforms-image-upload-label-hidden" ';
 					}
-					echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';	
-					break;
-					case 'honeypot':
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . ' style="display:none !important;">';	
-						break;
-					case 'address_autocomplete':
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-address-autocomplete', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-address-autocomplete-country', $country );
+				}
 
-						$name = $this->get_field_name_shortcode($this->get_attribute_name( $item ));
-						$value = $this->get_value_edit_post($name);
+				if ( ! empty( $item['max_files'] ) ) {
+					echo 'data-piotnetforms-image-upload-max-files="' . $item['max_files'] . '" ';
+				}
 
-						if(!empty($value)) {
-							$this->remove_render_attribute( 'input' . $item_index, 'value' );
-							$this->remove_render_attribute( 'input' . $item_index, 'data-piotnetforms-value' );
-							$this->add_render_attribute( 'input' . $item_index, 'value', $value['address'] );
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-value', $value['address'] );
-							$latitude = $value['lat'];
-							$longitude = $value['lng'];
-							$zoom = $value['zoom'];
-						}
+				echo '>';
+				echo '<input type="file" accept="image/*" name="upload" style="display:none;"';
+				if ( ! empty( $item['allow_multiple_upload'] ) ) {
+					echo 'multiple="multiple"';
+				}
+				echo ' data-piotnetforms-image-upload>';
+				echo '<div class="piotnetforms-image-upload-placeholder">';
+				echo '<span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--add" data-piotnetforms-image-upload-button-add><i class="fa fa-plus" aria-hidden="true"></i></span>';
+				echo '<span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--remove" data-piotnetforms-image-upload-button-remove><i class="fa fa-times" aria-hidden="true"></i></span>';
+				echo '<span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--uploading" data-piotnetforms-image-upload-button-uploading><i class="fa fa-spinner fa-spin"></i></span>';
+				echo '</div>';
+				echo '</label>';
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'data-pafe-field-type', 'image_upload' );
+				echo '<div style="display: none">';
+				echo '<input type="text" ' . $item_index . ' ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				echo '</div>';
 
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-lat', $latitude );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-lng', $longitude );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-formatted-address', '' );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-google-maps-zoom', $zoom );
+				wp_enqueue_script( $this->slug . '-image-upload-script' );
 
-						echo '<input size="1" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
-						if ( ! empty( $item['google_maps'] ) ) {
-							echo '<div class="piotnetforms-address-autocomplete-map" style="width: 100%;" data-piotnetforms-address-autocomplete-map></div><div class="infowindow-content"><img src="" width="16" height="16" id="place-icon"><span id="place-name"  class="title"></span><br><span id="place-address"></span></div>';
-						}
-						if (empty(esc_attr( get_option('piotnetforms-google-maps-api-key') ))) {
-							echo __('Please go to Dashboard > Piotnet Forms > Google Maps Integration > Enter Google Maps API Key > Save Settings', 'piotnetforms');
-						}
+				break;
+			case 'upload':
+				//echo "<form action='#' class='piotnetforms-upload' data-piotnetforms-upload enctype='multipart/form-data'>";
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
 
-						echo '<script src="https://maps.googleapis.com/maps/api/js?key='. esc_attr( get_option('piotnetforms-google-maps-api-key') ) .'&libraries=places&callback=piotnetformsAddressAutocompleteInitMap" async defer></script>';
+				$name = $this->get_field_name_shortcode( $this->get_attribute_name( $item ) );
+				$value = $this->get_value_edit_post( $name );
 
-						break;
-					case 'image_upload':
-						$name = $this->get_field_name_shortcode($this->get_attribute_name( $item ));
-						$value = $this->get_value_edit_post($name);
+				if ( !empty( $value ) ) {
+					wp_enqueue_style( $this->slug . '-fontawesome-style' );
+					$attached_file = get_attached_file( $value );
+					echo '<div class="piotnetforms-file-uploaded">' . basename( $attached_file ) . ' <i class="fas fa-times" data-piotnetforms-file-uploaded-remove></i></div>';
+					$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-hidden' );
+				}
 
-						if(!empty($value)) {
-							$images = explode(',', $value);
-							foreach ($images as $image) {
-								echo '<div class="piotnetforms-image-upload-placeholder piotnetforms-image-upload-uploaded" style="background-image:url('.$image.')" data-piotnetforms-image-upload-placeholder=""><input type="text" style="display:none;" data-piotnetforms-image-upload-item value="'.$image.'"><span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--remove" data-piotnetforms-image-upload-button-remove><i class="fa fa-times" aria-hidden="true"></i></span><span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--uploading" data-piotnetforms-image-upload-button-uploading><i class="fa fa-spinner fa-spin"></i></span></div>';
-							}
-						}
+				if ( !empty( $item['modern_upload_field_style'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-upload-field-modern-style' );
+					echo '<div class="piotnetforms-upload-field-modern-text"><i class="fa fa-upload" aria-hidden="true"></i>'.'<span style="padding-left: 8px;">'. $item['modern_upload_field_text'].'</span>' .'</div>';
+				}
 
-						echo '<label style="width: 25%" data-piotnetforms-image-upload-label ';
-						if ( ! empty( $item['allow_multiple_upload'] ) ) {
-							echo 'multiple="multiple"';
-						} else {
-							if(!empty($value)) {
-								echo ' class="piotnetforms-image-upload-label-hidden" ';
-							}
-						}
-
-						if ( ! empty( $item['max_files'] ) ) {
-							echo 'data-piotnetforms-image-upload-max-files="' . $item['max_files'] . '" ';
-						}
-
-						echo '>';
-						echo '<input type="file" accept="image/*" name="upload" style="display:none;"';	
-						if ( ! empty( $item['allow_multiple_upload'] ) ) {
-							echo 'multiple="multiple"';
-						}
-						echo ' data-piotnetforms-image-upload>';
-						echo '<div class="piotnetforms-image-upload-placeholder">';
-						echo '<span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--add" data-piotnetforms-image-upload-button-add><i class="fa fa-plus" aria-hidden="true"></i></span>';
-						echo '<span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--remove" data-piotnetforms-image-upload-button-remove><i class="fa fa-times" aria-hidden="true"></i></span>';
-						echo '<span class="piotnetforms-image-upload-button piotnetforms-image-upload-button--uploading" data-piotnetforms-image-upload-button-uploading><i class="fa fa-spinner fa-spin"></i></span>';
-						echo '</div>';
-						echo "</label>";
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'data-pafe-field-type', 'image_upload' );
-						echo '<div style="display: none">';
-						echo '<input type="text" ' . $item_index . ' ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
-						echo '</div>';
-
-						wp_enqueue_script( $this->slug . '-image-upload-script' );
-
-						break;
-					case 'upload':
-						echo "<form action='#' class='piotnetforms-upload' data-piotnetforms-upload enctype='multipart/form-data'>";
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						echo '<input type="file" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
-						echo "</form>";
-						break;
-					case 'stripe_payment':
-						if(!empty($settings['stripe_custom_style_option']) && !empty($settings['stripe_custom_style'])){
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-stripe-custom-style', $foo = preg_replace('/\s+/', '', $settings['stripe_custom_style']));
-						}else{
-							$stripe_style = [
-								'backgroundColor' => !empty($settings['stripe_background_color']) ? $settings['stripe_background_color'] : '#fff',
-								'color' => !empty($settings['stripe_color']) ? $settings['stripe_color'] : '#303238',
-								'placeholderColor' => !empty($settings['stripe_placeholder_color']) ? $settings['stripe_placeholder_color'] : '#aab7c4',
-								'fontSize' => !empty($settings['stripe_font_size']) ? $settings['stripe_font_size']['size'].'px' : '16px',
-								'iconColor' => !empty($settings['stripe_icon_color']) ? $settings['stripe_icon_color'] : ''
-							];
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-stripe-style', json_encode($stripe_style) );
-						}
-						$stripe_font = !empty($settings['stripe_custom_font_family']) ? $settings['stripe_custom_font_family'] : '';
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-form-builder-stripe-font-family', $stripe_font );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-stripe');
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-stripe', '' );
-						echo '<div ' . $this->get_render_attribute_string( 'input' . $item_index ) . '></div><div class="card-errors"></div>';	
-						echo '<script src="https://js.stripe.com/v3/"></script>';
-						wp_enqueue_script( $this->slug . '-stripe-script' );
-						break;
-					case 'range_slider':
-						wp_enqueue_script( $this->slug . '-ion-rangeslider-script' );
-						wp_enqueue_style( $this->slug . '-rangeslider-style' );
-						$this->add_render_attribute( 'range_slider' . $item_index, 'data-piotnetforms-id', $form_id );
-						echo '<input size="1" ' . $this->get_render_attribute_string( 'range_slider' . $item_index ) . '>';	
-					?>
+				$this->remove_render_attribute( 'input' . $item_index, 'value' );
+				echo '<input type="file" ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				//echo "</form>";
+				wp_enqueue_script( $this->slug . '-advanced2-script' );
+				break;
+			case 'stripe_payment':
+				if ( !empty( $settings['stripe_custom_style_option'] ) && !empty( $settings['stripe_custom_style'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-stripe-custom-style', $foo = preg_replace( '/\s+/', '', $settings['stripe_custom_style'] ) );
+				} else {
+					$stripe_style = [
+						'backgroundColor' => !empty( $settings['stripe_background_color'] ) ? $settings['stripe_background_color'] : '#fff',
+						'color' => !empty( $settings['stripe_color'] ) ? $settings['stripe_color'] : '#303238',
+						'placeholderColor' => !empty( $settings['stripe_placeholder_color'] ) ? $settings['stripe_placeholder_color'] : '#aab7c4',
+						'fontSize' => !empty( $settings['stripe_font_size'] ) ? $settings['stripe_font_size']['size'].'px' : '16px',
+						'iconColor' => !empty( $settings['stripe_icon_color'] ) ? $settings['stripe_icon_color'] : ''
+					];
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-stripe-style', json_encode( $stripe_style ) );
+				}
+				$stripe_font = !empty( $settings['stripe_custom_font_family'] ) ? $settings['stripe_custom_font_family'] : '';
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-form-builder-stripe-font-family', $stripe_font );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-stripe' );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-stripe', '' );
+				echo '<div ' . $this->get_render_attribute_string( 'input' . $item_index ) . '></div><div class="card-errors"></div>';
+				echo '<script src="https://js.stripe.com/v3/"></script>';
+				wp_enqueue_script( $this->slug . '-stripe-script' );
+				break;
+			case 'range_slider':
+				wp_enqueue_script( $this->slug . '-ion-rangeslider-script' );
+				wp_enqueue_style( $this->slug . '-rangeslider-style' );
+				$this->add_render_attribute( 'range_slider' . $item_index, 'data-piotnetforms-id', $form_id );
+				echo '<input size="1" ' . $this->get_render_attribute_string( 'range_slider' . $item_index ) . '>'; ?>
 						<script>
 							(function ($) {
-								var WidgetpiotnetformsFormBuilderHandlerRangeSlider<?php echo str_replace('-', '_', $item['field_id']); ?> = function ($scope, $) {
+								var WidgetpiotnetformsFormBuilderHandlerRangeSlider<?php echo str_replace( '-', '_', $item['field_id'] ); ?> = function ($scope, $) {
 
 								    var $elements = $scope.find('[data-piotnetforms-range-slider]');
 
@@ -6384,11 +7092,16 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 										return;
 									}
 
-									$.each($elements, function (i, $element) {
+                                    $.each($elements, function (i, $element) {
+										let rangerOptions = $(this).attr('data-piotnetforms-range-slider');
 										if ($($element).siblings('.irs').length == 0) {
-											$('#form-field-<?php echo $item['field_id']; ?>').ionRangeSlider({
-												<?php echo $item['piotnetforms_range_slider_field_options']; ?>
-											});
+                                            <?php if($this->piotnetforms_is_json($item['piotnetforms_range_slider_field_options'])){ ?>
+											    $('#form-field-<?php echo $item['field_id']; ?>').ionRangeSlider(JSON.parse(rangerOptions));
+                                            <?php }else{ ?>
+                                                $('#form-field-<?php echo $item['field_id']; ?>').ionRangeSlider({
+                                                    <?php echo $item['piotnetforms_range_slider_field_options']; ?>
+                                                });
+                                            <?php } ?>
 										}
 
 										$($element).change();
@@ -6411,137 +7124,145 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							}(jQuery)); 
 						</script>
 					<?php
-						break;
-					case 'calculated_fields':
-						echo '<div class="piotnetforms-calculated-fields-form" style="width: 100%">' . $item['piotnetforms_calculated_fields_form_before'] . '<span class="piotnetforms-calculated-fields-form__value"></span>' . $item['piotnetforms_calculated_fields_form_after'] . '</div>';
-						$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-id', $form_id );
-						
-						if (!empty($item['piotnetforms_calculated_fields_form_coupon_code'])) {
-							$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-coupon-code', $item['piotnetforms_calculated_fields_form_coupon_code'] );
-						}
+										break;
+			case 'calculated_fields':
+				echo '<div class="piotnetforms-calculated-fields-form" style="width: 100%">' . $item['piotnetforms_calculated_fields_form_before'] . '<span class="piotnetforms-calculated-fields-form__value"></span>' . $item['piotnetforms_calculated_fields_form_after'] . '</div>';
+				$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-id', $form_id );
 
-						if (!empty($item['piotnetforms_calculated_fields_form_distance_calculation'])) {
-							$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation', '' );
-							$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-from-field-shortcode', $item['piotnetforms_calculated_fields_form_distance_calculation_from_field_shortcode'] );
-							$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-to-field-shortcode', $item['piotnetforms_calculated_fields_form_distance_calculation_to_field_shortcode'] );
-							$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-unit', $item['piotnetforms_calculated_fields_form_distance_calculation_unit'] );
+				if ( !empty( $item['piotnetforms_calculated_fields_form_coupon_code'] ) ) {
+					$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-coupon-code', $item['piotnetforms_calculated_fields_form_coupon_code'] );
+				}
 
-							if (!empty($item['piotnetforms_calculated_fields_form_distance_calculation_from_specific_location'])) {
-								$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-from', $item['piotnetforms_calculated_fields_form_distance_calculation_from_specific_location'] );
-							}
+				if ( !empty( $item['piotnetforms_calculated_fields_form_distance_calculation'] ) ) {
+					$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation', '' );
+					$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-from-field-shortcode', $item['piotnetforms_calculated_fields_form_distance_calculation_from_field_shortcode'] );
+					$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-to-field-shortcode', $item['piotnetforms_calculated_fields_form_distance_calculation_to_field_shortcode'] );
+					$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-unit', $item['piotnetforms_calculated_fields_form_distance_calculation_unit'] );
 
-							if (!empty($item['piotnetforms_calculated_fields_form_distance_calculation_to_specific_location'])) {
-								$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-to', $item['piotnetforms_calculated_fields_form_distance_calculation_to_specific_location'] );
-							}
-						}
+					if ( !empty( $item['piotnetforms_calculated_fields_form_distance_calculation_from_specific_location'] ) ) {
+						$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-from', $item['piotnetforms_calculated_fields_form_distance_calculation_from_specific_location'] );
+					}
 
-						echo '<input style="display:none!important;" size="1" ' . $this->get_render_attribute_string( 'calculated_fields' . $item_index ) . '>';
+					if ( !empty( $item['piotnetforms_calculated_fields_form_distance_calculation_to_specific_location'] ) ) {
+						$this->add_render_attribute( 'calculated_fields' . $item_index, 'data-piotnetforms-calculated-fields-distance-calculation-to', $item['piotnetforms_calculated_fields_form_distance_calculation_to_specific_location'] );
+					}
+				}
 
-						wp_enqueue_script( $this->slug . '-advanced-script' );
+				echo '<input style="display:none!important;" size="1" ' . $this->get_render_attribute_string( 'calculated_fields' . $item_index ) . '>';
 
-						break;
-					case 'tel':
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'pattern', esc_attr( $item['field_pattern'] ) );
-						$this->add_render_attribute( 'input' . $item_index, 'title', __( 'Only numbers and phone characters (#, -, *, etc) are accepted.', 'piotnetforms-pro' ) );
-						echo '<input size="1" '. $this->get_render_attribute_string( 'input' . $item_index ) . '>';	
-						break;
-					case 'number':
-						if(!empty($settings['field_value_remove']) || $settings['field_value_remove'] == '0'){
-							$remove_value = $settings['field_value_remove'];
-						}else{
-							$remove_value = 'false';
-						}
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual' );
-						$this->add_render_attribute( 'input' . $item_index, 'step', 'any' );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-remove-value', $remove_value);
+				wp_enqueue_script( $this->slug . '-advanced-script' );
 
-						if ( (!empty( $item['field_min'] ) || $item['field_min'] == 0) && ($item['field_min'] != "") ) {
-							$this->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['field_min'] ) );
-						}
+				break;
+			case 'tel':
 
-						if ( (!empty( $item['field_max'] ) || $item['field_max'] == 0) && ($item['field_max'] != "") ) {
-							$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['field_max'] ) );
-						}
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'pattern', esc_attr( $item['field_pattern'] ) );
+				$this->add_render_attribute( 'input' . $item_index, 'title', __( 'Only numbers and phone characters (#, -, *, etc) are accepted.', 'piotnetforms-pro' ) );
+				if ( !empty( $settings['field_dial_code'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-tel-field' );
+					wp_enqueue_script( $this->slug . '-intl-tel-script' );
+					wp_enqueue_script( $this->slug . '-advanced2-script' );
+					wp_enqueue_style( $this->slug . '-intl-tel-input-style' );
+				}
+				echo '<input size="1" '. $this->get_render_attribute_string( 'input' . $item_index ) . '>';
 
-						echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';	
-						break;
-					case 'acceptance':
-						$label = '';
-						$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-acceptance-field' );
-						$this->add_render_attribute( 'input' . $item_index, 'type', 'checkbox', true );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'value', 'on' );
+				break;
+			case 'number':
+				if ( !empty( $settings['field_value_remove'] ) || $settings['field_value_remove'] == '0' ) {
+					$remove_value = $settings['field_value_remove'];
+				} else {
+					$remove_value = 'false';
+				}
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual' );
+				$this->add_render_attribute( 'input' . $item_index, 'step', 'any' );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-remove-value', $remove_value );
 
-						if ( ! empty( $item['acceptance_text'] ) ) {
-							$label = '<label for="' . $this->get_attribute_id( $item ) . '">' . $item['acceptance_text'] . '</label>';
-						}
+				if ( ( !empty( $item['field_min'] ) || $item['field_min'] == 0 ) && ( $item['field_min'] != '' ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['field_min'] ) );
+				}
 
-						if ( ! empty( $item['checked_by_default'] ) ) {
-							$this->add_render_attribute( 'input' . $item_index, 'checked', 'checked' );
-						}
+				if ( ( !empty( $item['field_max'] ) || $item['field_max'] == 0 ) && ( $item['field_max'] != '' ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['field_max'] ) );
+				}
 
-						echo '<div class="piotnetforms-field-subgroup"><span class="piotnetforms-field-option"><input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '> ' . $label . '</span></div>';
-						break;
-					case 'date':
-						wp_enqueue_style( $this->slug . '-flatpickr-style' );
-						wp_enqueue_script( $this->slug . '-date-time-script' );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual piotnetforms-date-field' );
+				echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				wp_enqueue_script( $this->slug . '-advanced2-script' );
+				break;
+			case 'acceptance':
+				$label = '';
+				$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-acceptance-field' );
+				$this->add_render_attribute( 'input' . $item_index, 'type', 'checkbox', true );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'value', 'on' );
 
-						//$this->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9]{4}-[0-9]{2}-[0-9]{2}' );
+				if ( ! empty( $item['acceptance_text'] ) ) {
+					$label = '<label for="' . $this->get_attribute_id( $item ) . '">' . $item['acceptance_text'] . '</label>';
+				}
 
-						if ( isset( $item['use_native_date'] ) && 'yes' === $item['use_native_date'] ) {
-							$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-use-native' );
-						}
+				if ( ! empty( $item['checked_by_default'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'checked', 'checked' );
+				}
 
-						wp_enqueue_script( $this->slug . '-flatpickr-script' );
-						if ( $item['date_language'] != 'english' ) {
-							// echo "<script src='". plugin_dir_url( __DIR__ ) . 'languages/date/' . $item['date_language'] . ".js'></script>";
-							wp_enqueue_script( $this->slug . '-flatpickr-language-' . $item['date_language'], plugin_dir_url( __DIR__ ) . 'languages/date/' . $item['date_language'] . ".js", array($this->slug . '-flatpickr-script'), null );
-						}
+				echo '<div class="piotnetforms-field-subgroup"><span class="piotnetforms-field-option"><input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '> ' . $label . '</span></div>';
+				break;
+			case 'date':
+				wp_enqueue_style( $this->slug . '-flatpickr-style' );
+				wp_enqueue_script( $this->slug . '-date-time-script' );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual piotnetforms-date-field' );
 
-						if ( empty( $item['flatpickr_custom_options_enable'] ) ) {
+				//$this->add_render_attribute( 'input' . $item_index, 'pattern', '[0-9]{4}-[0-9]{2}-[0-9]{2}' );
 
-							if ( ! empty( $item['min_date'] ) && empty( $item['min_date_current'] ) ) {
-								$this->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['min_date'] ) );
-							}
+				if ( isset( $item['use_native_date'] ) && 'yes' === $item['use_native_date'] ) {
+					$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-use-native' );
+				}
 
-							if ( ! empty( $item['min_date_current'] ) ) {
-								$this->add_render_attribute( 'input' . $item_index, 'min', esc_attr( wp_date( 'Y-m-d' ) ) );
-							}
+				wp_enqueue_script( $this->slug . '-flatpickr-script' );
+				if ( $item['date_language'] != 'english' ) {
+					// echo "<script src='". plugin_dir_url( __DIR__ ) . 'languages/date/' . $item['date_language'] . ".js'></script>";
+					wp_enqueue_script( $this->slug . '-flatpickr-language-' . $item['date_language'], plugin_dir_url( __DIR__ ) . 'languages/date/' . $item['date_language'] . '.js', [ $this->slug . '-flatpickr-script' ], null );
+				}
 
-							if ( ! empty( $item['max_date'] )  && empty( $item['max_date_current'] ) ) {
-								$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['max_date'] ) );
-							}
+				if ( empty( $item['flatpickr_custom_options_enable'] ) ) {
+					if ( ! empty( $item['min_date'] ) && empty( $item['min_date_current'] ) ) {
+						$this->add_render_attribute( 'input' . $item_index, 'min', esc_attr( $item['min_date'] ) );
+					}
 
-							if ( ! empty( $item['max_date_current'] ) ) {
-								$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( wp_date( 'Y-m-d' ) ) );
-							}
+					if ( ! empty( $item['min_date_current'] ) ) {
+						$this->add_render_attribute( 'input' . $item_index, 'min', esc_attr( wp_date( 'Y-m-d' ) ) );
+					}
 
-							if ( ! empty( $item['date_range'] ) ) {
-								$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-range', '' );
-								$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-range-days', '' );
-							} else {
-								$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-calculate', '' );
-							}
+					if ( ! empty( $item['max_date'] )  && empty( $item['max_date_current'] ) ) {
+						$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['max_date'] ) );
+					}
 
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-language', esc_attr( $item['date_language'] ) );
+					if ( ! empty( $item['max_date_current'] ) ) {
+						$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( wp_date( 'Y-m-d' ) ) );
+					}
 
-							$this->add_render_attribute( 'input' . $item_index, 'data-date-format', esc_attr( $item['date_format'] ) );
+					if ( ! empty( $item['date_range'] ) ) {
+						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-range', '' );
+						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-range-days', '' );
+					} else {
+						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-calculate', '' );
+					}
 
-						} else {
-							$this->add_render_attribute( 'input' . $item_index, 'class' , 'flatpickr-custom-options' );
-						}
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-date-language', esc_attr( $item['date_language'] ) );
 
-						echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
-							if ( !empty( $item['flatpickr_custom_options_enable'] ) && !empty( $item['flatpickr_custom_options'] ) ) :
-						?>
+					$this->add_render_attribute( 'input' . $item_index, 'data-date-format', esc_attr( $item['date_format'] ) );
+				} else {
+					$this->add_render_attribute( 'input' . $item_index, 'class', 'flatpickr-custom-options' );
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-flatpickr-custom-options', esc_attr( $item['flatpickr_custom_options'] ) );
+				}
+
+				echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				if ( !empty( $item['flatpickr_custom_options_enable'] ) && !empty( $item['flatpickr_custom_options'] ) ) :
+					?>
 								<script>
 									(function ($) {
 										
-										function piotnetformsDate<?php echo str_replace('-', '_', $item['field_id']); ?>($scope, $) {
+										function piotnetformsDate<?php echo str_replace( '-', '_', $item['field_id'] ); ?>($scope, $) {
 
 										    var $elements = $scope.find('.piotnetforms-date-field');
 
@@ -6561,63 +7282,75 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 										};
 
-										function waitFlatpickrReady<?php echo str_replace('-', '_', $item['field_id']); ?>() {
+										function waitFlatpickrReady<?php echo str_replace( '-', '_', $item['field_id'] ); ?>() {
 										    if (typeof flatpickr === 'undefined') {
-										    	setTimeout(function() { waitFlatpickrReady<?php echo str_replace('-', '_', $item['field_id']); ?>() }, 50);
+										    	setTimeout(function() { waitFlatpickrReady<?php echo str_replace( '-', '_', $item['field_id'] ); ?>() }, 50);
 										    } else {
-										        piotnetformsDate<?php echo str_replace('-', '_', $item['field_id']); ?>($('#piotnetforms'),$);
+										        piotnetformsDate<?php echo str_replace( '-', '_', $item['field_id'] ); ?>($('.piotnetforms-field-type-date'),$);
 										    }
-										}	
-										waitFlatpickrReady<?php echo str_replace('-', '_', $item['field_id']); ?>();
+										}
+                                        //console.log(1);
+										waitFlatpickrReady<?php echo str_replace( '-', '_', $item['field_id'] ); ?>();
 									}(jQuery)); 
 								</script>
 						<?php
-							endif;
-						break;
-					case 'time':
-						wp_enqueue_script( $this->slug . '-flatpickr-script' );
-						wp_enqueue_style( $this->slug . '-flatpickr-style' );
-						wp_enqueue_script( $this->slug . '-date-time-script' );
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual piotnetforms-time-field' );
-						if ( isset( $item['use_native_time'] ) && 'yes' === $item['use_native_time'] ) {
-							$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-use-native' );
-						}
-						$this->add_render_attribute( 'input' . $item_index, 'data-time-format', esc_attr( $item['time_format'] ) );
-
-						$this->add_render_attribute( 'input' . $item_index, 'data-time-minute-increment', esc_attr( $item['time_minute_increment'] ) );
-						if ( ! empty( $item['time_24hr'] ) ) {
-							$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-time-24hr', '' );
-						}
-						echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
-						break;
-					case 'signature':
-						wp_enqueue_script( $this->slug . '-signature-pad-script' );
-						echo '<div class="piotnetforms-signature" data-piotnetforms-signature><canvas class="not-resize"';
-						if(!empty($item['signature_max_width_responsive_desktop'])) : echo ' width="' . $item['signature_max_width_responsive_desktop']['size'] . '"'; endif;
-						if(!empty($item['signature_height_responsive_desktop'])) : echo ' height="' . $item['signature_height_responsive_desktop']['size'] . '"'; endif; 
-						echo '></canvas>';
-						$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
-						echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
-						echo '<div>';
-						echo '<button type="button" class="piotnetforms-signature-clear" data-piotnetforms-signature-clear>' . $item['signature_clear_text'] . '</button>';
-						echo '<button type="button" class="piotnetforms-signature-export" data-piotnetforms-signature-export style="display:none"></button>';
-						echo '</div>';
-						echo '</div>';
-						break;
-					default:
-						$field_type = $item['field_type'];
-				endswitch;
-
-				echo '</div>';
-				if(!empty($settings['field_label_inline'])){
-					echo '<div data-piotnetforms-required></div>';
-					$label_inline_width = '';
+				endif;
+				break;
+			case 'time':
+				wp_enqueue_script( $this->slug . '-flatpickr-script' );
+				wp_enqueue_style( $this->slug . '-flatpickr-style' );
+				wp_enqueue_script( $this->slug . '-date-time-script' );
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual piotnetforms-time-field' );
+				if ( isset( $item['use_native_time'] ) && 'yes' === $item['use_native_time'] ) {
+					$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-use-native' );
 				}
-				?>
+				$this->add_render_attribute( 'input' . $item_index, 'data-time-format', esc_attr( $item['time_format'] ) );
+
+				$this->add_render_attribute( 'input' . $item_index, 'data-time-minute-increment', esc_attr( $item['time_minute_increment'] ) );
+				if ( ! empty( $item['time_24hr'] ) ) {
+					$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-time-24hr', '' );
+				}
+				echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				break;
+			case 'signature':
+				wp_enqueue_script( $this->slug . '-signature-pad-script' );
+				echo '<div class="piotnetforms-signature" data-piotnetforms-signature><canvas class="not-resize"';
+				if ( !empty( $item['signature_max_width_responsive_desktop'] ) ) : echo ' width="' . $item['signature_max_width_responsive_desktop']['size'] . '"';
+				endif;
+				if ( !empty( $item['signature_height_responsive_desktop'] ) ) : echo ' height="' . $item['signature_height_responsive_desktop']['size'] . '"';
+				endif;
+				echo '></canvas>';
+				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
+				echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';
+				echo '<div>';
+				echo '<button type="button" class="piotnetforms-signature-clear" data-piotnetforms-signature-clear>' . $item['signature_clear_text'] . '</button>';
+				echo '<button type="button" class="piotnetforms-signature-export" data-piotnetforms-signature-export style="display:none"></button>';
+				echo '</div>';
+				echo '</div>';
+				break;
+			default:
+				$field_type = $item['field_type'];
+		endswitch;
+
+		echo '</div>';
+
+		if ( !empty( $settings['field_description'] ) ) {
+			echo '<div class="piotnetforms-field-description">' . $settings['field_description'] . '</div>';
+		}
+
+		if ( !empty( $settings['field_label_inline'] ) ) {
+			echo '<div data-piotnetforms-required></div>';
+			$label_inline_width = '';
+		} ?>
 			</div>
 		</div>
 	<?php
+	}
+
+	public function piotnetforms_is_json($string){
+		json_decode($string);
+		return json_last_error() === JSON_ERROR_NONE;
 	}
 
 	public function live_preview() {
@@ -6658,8 +7391,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					]);
 
 					view.add_attribute('input', 'class', [
-						'piotnetforms-field',
-					]);
+						 'piotnetforms-field'
+                    ]);
 
 					view.add_multi_attribute({
 						range_slider: {
@@ -6715,7 +7448,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					} else {
 						view.add_multi_attribute({
 							input: {
-								type: s['field_type'],
+								type: s['field_type'] != 'confirm' ? s['field_type'] : s['confirm_type'],
 								name: get_attribute_name( s ),
 								id: get_attribute_id( s ),
 							}
@@ -6746,6 +7479,10 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 					if ( s['max_length'] ) {
 						view.add_attribute( 'input', 'maxlength', s['max_length'] );
+					}
+
+					if ( s['min_length'] ) {
+						view.add_attribute( 'input', 'minlength', s['min_length'] );
 					}
 
 					if ( s['field_pattern_not_tel'] && s['field_type'] !== 'tel' ) {
@@ -6878,6 +7615,10 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 					if ( s['max_length'] ) {
 						view.add_attribute( 'textarea', 'maxlength', s['max_length'] );
+					}
+					
+					if ( s['min_length'] ) {
+						view.add_attribute( 'textarea', 'minlength', s['min_length'] );
 					}
 
 					if ( s['field_pattern_not_tel'] ) {
@@ -7055,6 +7796,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 									view = tinymce.view;
 						%>			
 									<textarea <%= view.render_attributes('textarea') %>><%= tinymce.value %></textarea>
+						<%
+									break;
+								case 'confirm':
+									view.add_attribute( 'input', 'data-piotnetforms-id', s.form_id );
+						%>
+								<input size="1" <%= view.render_attributes('input') %>>
 						<%
 									break;
 								case 'select':
@@ -7273,40 +8020,40 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 											if ( s['piotnetforms_style_checkbox_replacement'] && s['piotnetforms_style_checkbox_type'] == 'native' ) {
 												if ( s['piotnetforms_style_checkbox_replacement_icon_type'] == 'font_awesome' ) {
 													if (s['piotnetforms_style_checkbox_replacement_icon_font_awesome'] || s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked']) {
-														var icon_html_wrapper_class = s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+														var icon_html_wrapper_class = s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
 														if (s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] && !s['piotnetforms_style_checkbox_replacement_icon_font_awesome']) {
-															icon_html_wrapper_class += ' piotnetforms-field-option-icon--only-checked';
+															icon_html_wrapper_class += ' pf-f-o-i--only-checked';
 														}
 
 														var icon_html = '<span class="' + icon_html_wrapper_class + '">';
 
 														if (s['piotnetforms_style_checkbox_replacement_icon_font_awesome']) {
-															icon_html += '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--normal ' + s['piotnetforms_style_checkbox_replacement_icon_font_awesome'] + '"></i>';
+															icon_html += '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--normal ' + s['piotnetforms_style_checkbox_replacement_icon_font_awesome'] + '"></i>';
 														}
 
 														if (s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked']) {
-															icon_html += '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--checked ' + s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] + '"></i>';
+															icon_html += '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--checked ' + s['piotnetforms_style_checkbox_replacement_icon_font_awesome_checked'] + '"></i>';
 														}
 
 														icon_html += '</span>';
 													}
 												} else {
 													if (s['piotnetforms_style_checkbox_replacement_icon_image'] || s['piotnetforms_style_checkbox_replacement_icon_image_checked']) {
-														var icon_html_wrapper_class = s['piotnetforms_style_checkbox_replacement_icon_image_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+														var icon_html_wrapper_class = s['piotnetforms_style_checkbox_replacement_icon_image_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
 														if (s['piotnetforms_style_checkbox_replacement_icon_image_checked'] && !s['piotnetforms_style_checkbox_replacement_icon_image']) {
-															icon_html_wrapper_class += ' piotnetforms-field-option-icon--only-checked';
+															icon_html_wrapper_class += ' pf-f-o-i--only-checked';
 														}
 
 														var icon_html = '<span class="' + icon_html_wrapper_class + '">';
 
 														if (s['piotnetforms_style_checkbox_replacement_icon_image']) {
-															icon_html += '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--normal" src="' + s['piotnetforms_style_checkbox_replacement_icon_image']['url'] + '">';
+															icon_html += '<img class="pf-f-o-i-image pf-f-o-i-image--normal" src="' + s['piotnetforms_style_checkbox_replacement_icon_image']['url'] + '">';
 														}
 
 														if (s['piotnetforms_style_checkbox_replacement_icon_image_checked']) {
-															icon_html += '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--checked" src="' + s['piotnetforms_style_checkbox_replacement_icon_image_checked']['url'] + '">';
+															icon_html += '<img class="pf-f-o-i-image pf-f-o-i-image--checked" src="' + s['piotnetforms_style_checkbox_replacement_icon_image_checked']['url'] + '">';
 														}
 
 														icon_html += '</span>';
@@ -7319,40 +8066,40 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 												if ( icon_list.length > 0 ) {
 													if ( icon_list[i]['icon_type'] == 'font_awesome' ) {
 														if (icon_list[i]['icon_font_awesome'] || icon_list[i]['icon_font_awesome_checked']) {
-															var icon_html_wrapper_class = icon_list[i]['icon_font_awesome_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+															var icon_html_wrapper_class = icon_list[i]['icon_font_awesome_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
 															if (icon_list[i]['icon_font_awesome_checked'] && !icon_list[i]['icon_font_awesome']) {
-																icon_html_wrapper_class += ' piotnetforms-field-option-icon--only-checked';
+																icon_html_wrapper_class += ' pf-f-o-i--only-checked';
 															}
 
 															var icon_html = '<span class="' + icon_html_wrapper_class + '">';
 
 															if (icon_list[i]['icon_font_awesome']) {
-																icon_html += '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--normal ' + icon_list[i]['icon_font_awesome'] + '"></i>';
+																icon_html += '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--normal ' + icon_list[i]['icon_font_awesome'] + '"></i>';
 															}
 
 															if (icon_list[i]['icon_font_awesome_checked']) {
-																icon_html += '<i class="piotnetforms-field-option-icon-font-awesome piotnetforms-field-option-icon-font-awesome--checked ' + icon_list[i]['icon_font_awesome_checked'] + '"></i>';
+																icon_html += '<i class="pf-f-o-i-font-awesome pf-f-o-i-font-awesome--checked ' + icon_list[i]['icon_font_awesome_checked'] + '"></i>';
 															}
 
 															icon_html += '</span>';
 														}
 													} else {
 														if (icon_list[i]['icon_image'] || icon_list[i]['icon_image_checked']) {
-															var icon_html_wrapper_class = icon_list[i]['icon_image_checked'] ? 'piotnetforms-field-option-icon piotnetforms-field-option-icon-has-checked' : 'piotnetforms-field-option-icon';
+															var icon_html_wrapper_class = icon_list[i]['icon_image_checked'] ? 'pf-f-o-i pf-f-o-i-has-checked' : 'pf-f-o-i';
 
 															if (icon_list[i]['icon_image_checked'] && !icon_list[i]['icon_image']) {
-																icon_html_wrapper_class += ' piotnetforms-field-option-icon--only-checked';
+																icon_html_wrapper_class += ' pf-f-o-i--only-checked';
 															}
 
 															var icon_html = '<span class="' + icon_html_wrapper_class + '">';
 
 															if (icon_list[i]['icon_image']) {
-																icon_html += '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--normal" src="' + icon_list[i]['icon_image']['url'] + '">';
+																icon_html += '<img class="pf-f-o-i-image pf-f-o-i-image--normal" src="' + icon_list[i]['icon_image']['url'] + '">';
 															}
 
 															if (icon_list[i]['icon_image_checked']) {
-																icon_html += '<img class="piotnetforms-field-option-icon-image piotnetforms-field-option-icon-image--checked" src="' + icon_list[i]['icon_image_checked']['url'] + '">';
+																icon_html += '<img class="pf-f-o-i-image pf-f-o-i-image--checked" src="' + icon_list[i]['icon_image_checked']['url'] + '">';
 															}
 
 															icon_html += '</span>';
@@ -7417,15 +8164,14 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 								<%
 									if ( s['google_maps'] ) {
 								%>
-									<div class="piotnetforms-address-autocomplete-map" style="width: 100%;" data-piotnetforms-address-autocomplete-map></div><div class="infowindow-content"><img src="" width="16" height="16" id="place-icon"><span id="place-name"  class="title"></span><br><span id="place-address"></span></div>
+									<div class="piotnetforms-address-autocomplete-map" style="width: 100%;" data-piotnetforms-address-autocomplete-map></div><div class="infowindow-content"><img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" width="16" height="16" id="place-icon"><span id="place-name"  class="title"></span><br><span id="place-address"></span></div>
 								<%
 									}
 								%>
 								<?php
-									if (empty(esc_attr( get_option('piotnetforms-google-maps-api-key') ))) {
-										echo __('Please go to Dashboard > Piotnet Forms > Google Maps Integration > Enter Google Maps API Key > Save Settings', 'piotnetforms');
-									}
-								?>
+									if ( empty( esc_attr( get_option( 'piotnetforms-google-maps-api-key' ) ) ) ) {
+										echo __( 'Please go to Dashboard > Piotnet Forms > Google Maps Integration > Enter Google Maps API Key > Save Settings', 'piotnetforms' );
+									} ?>
 								<%
 									break;
 								case 'image_upload':
@@ -7449,6 +8195,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 									<form action='#' class='piotnetforms-upload' data-piotnetforms-upload enctype='multipart/form-data'>
 								<%	
 									view.add_attribute( 'input', 'data-piotnetforms-id', s.form_id );
+                                    if ( s['modern_upload_field_style'] ) {
+                                        view.add_attribute( 'input', 'class', 'piotnetforms-upload-field-modern-style' );
+                                %>
+                                        <div class="piotnetforms-upload-field-modern-text"><i class="fa fa-upload" aria-hidden="true"><span style="padding-left: 8px;"><%= s['modern_upload_field_text'] %></span></i></div>
+                                <%
+                                    }
 								%>
 									<input type="file" <%= view.render_attributes('input') %>>
 									</form>
@@ -7620,6 +8372,9 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 							}
 						%>
 					</div>
+					<% if(s.field_description){ %>
+						<div class="piotnetforms-field-description"><%= s.field_description %></div>
+					<% } %>
 					<% if(s.field_label_inline){ %>
 						<div data-piotnetforms-required></div>
 					<% } %>

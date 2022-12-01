@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { createContext, useContext } from '@wordpress/element';
 
 /**
@@ -45,11 +44,13 @@ const defaultProductData = {
 	is_on_backorder: false,
 	low_stock_remaining: null,
 	sold_individually: false,
-	quantity_limit: 99,
 	add_to_cart: {
 		text: 'Add to cart',
 		description: 'Add to cart',
 		url: '',
+		minimum: 1,
+		maximum: 99,
+		multiple_of: 1,
 	},
 };
 
@@ -61,17 +62,27 @@ const defaultProductData = {
 const ProductDataContext = createContext( {
 	product: defaultProductData,
 	hasContext: false,
+	isLoading: false,
 } );
 
 export const useProductDataContext = () => useContext( ProductDataContext );
 
+/**
+ * This context is used to pass product data down to all children blocks in a given tree.
+ *
+ * @param {Object}   object           A react context object
+ * @param {any|null} object.product   The product data to be passed down
+ * @param {Object}   object.children  The product data to be passed down
+ * @param {boolean}  object.isLoading The product data to be passed down
+ */
 export const ProductDataContextProvider = ( {
 	product = null,
 	children,
-	isLoading = false,
+	isLoading,
 } ) => {
 	const contextValue = {
 		product: product || defaultProductData,
+		isLoading,
 		hasContext: true,
 	};
 
@@ -84,9 +95,4 @@ export const ProductDataContextProvider = ( {
 			) }
 		</ProductDataContext.Provider>
 	);
-};
-
-ProductDataContextProvider.propTypes = {
-	children: PropTypes.node,
-	product: PropTypes.object,
 };

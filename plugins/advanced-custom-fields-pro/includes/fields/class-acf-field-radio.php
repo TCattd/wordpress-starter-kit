@@ -180,65 +180,19 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 		*/
 
 		function render_field_settings( $field ) {
-
-			// encode choices (convert from array)
+			// Encode choices (convert from array).
 			$field['choices'] = acf_encode_choices( $field['choices'] );
 
-			// choices
 			acf_render_field_setting(
 				$field,
 				array(
 					'label'        => __( 'Choices', 'acf' ),
-					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br /><br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><br />' . __( 'red : Red', 'acf' ),
+					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
 					'type'         => 'textarea',
 					'name'         => 'choices',
 				)
 			);
 
-			// allow_null
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
-					'instructions' => '',
-					'name'         => 'allow_null',
-					'type'         => 'true_false',
-					'ui'           => 1,
-				)
-			);
-
-			// other_choice
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Other', 'acf' ),
-					'instructions' => '',
-					'name'         => 'other_choice',
-					'type'         => 'true_false',
-					'ui'           => 1,
-					'message'      => __( "Add 'other' choice to allow for custom values", 'acf' ),
-				)
-			);
-
-			// save_other_choice
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Save Other', 'acf' ),
-					'instructions' => '',
-					'name'         => 'save_other_choice',
-					'type'         => 'true_false',
-					'ui'           => 1,
-					'message'      => __( "Save 'other' values to the field's choices", 'acf' ),
-					'conditions'   => array(
-						'field'    => 'other_choice',
-						'operator' => '==',
-						'value'    => 1,
-					),
-				)
-			);
-
-			// default_value
 			acf_render_field_setting(
 				$field,
 				array(
@@ -249,23 +203,6 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 				)
 			);
 
-			// layout
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Layout', 'acf' ),
-					'instructions' => '',
-					'type'         => 'radio',
-					'name'         => 'layout',
-					'layout'       => 'horizontal',
-					'choices'      => array(
-						'vertical'   => __( 'Vertical', 'acf' ),
-						'horizontal' => __( 'Horizontal', 'acf' ),
-					),
-				)
-			);
-
-			// return_format
 			acf_render_field_setting(
 				$field,
 				array(
@@ -281,9 +218,80 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 					),
 				)
 			);
-
 		}
 
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Allow Null?', 'acf' ),
+					'instructions' => '',
+					'name'         => 'allow_null',
+					'type'         => 'true_false',
+					'ui'           => 1,
+				)
+			);
+
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Allow Other Choice', 'acf' ),
+					'name'         => 'other_choice',
+					'type'         => 'true_false',
+					'ui'           => 1,
+					'instructions' => __( "Add 'other' choice to allow for custom values", 'acf' ),
+				)
+			);
+
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Save Other Choice', 'acf' ),
+					'name'         => 'save_other_choice',
+					'type'         => 'true_false',
+					'ui'           => 1,
+					'instructions' => __( "Save 'other' values to the field's choices", 'acf' ),
+					'conditions'   => array(
+						'field'    => 'other_choice',
+						'operator' => '==',
+						'value'    => 1,
+					),
+				)
+			);
+		}
+
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Layout', 'acf' ),
+					'instructions' => '',
+					'type'         => 'radio',
+					'name'         => 'layout',
+					'layout'       => 'horizontal',
+					'choices'      => array(
+						'vertical'   => __( 'Vertical', 'acf' ),
+						'horizontal' => __( 'Horizontal', 'acf' ),
+					),
+				)
+			);
+		}
 
 		/*
 		*  update_field()
@@ -343,7 +351,7 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 					// get raw $field (may have been changed via repeater field)
 					// if field is local, it won't have an ID
 					$selector = $field['ID'] ? $field['ID'] : $field['key'];
-					$field    = acf_get_field( $selector, true );
+					$field    = acf_get_field( $selector );
 
 					// bail early if no ID (JSON only)
 					if ( ! $field['ID'] ) {
@@ -441,6 +449,42 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 
 			return acf_get_field_type( 'select' )->format_value( $value, $post_id, $field );
 
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		function get_rest_schema( array $field ) {
+			$schema = parent::get_rest_schema( $field );
+
+			if ( isset( $field['default_value'] ) && '' !== $field['default_value'] ) {
+				$schema['default'] = $field['default_value'];
+			}
+
+			// If other/custom choices are allowed, nothing else to do here.
+			if ( ! empty( $field['other_choice'] ) ) {
+				return $schema;
+			}
+
+			/**
+			 * If a user has defined keys for the radio options,
+			 * we should use the keys for the available options to POST to,
+			 * since they are what is displayed in GET requests.
+			 */
+			$radio_keys = array_diff(
+				array_keys( $field['choices'] ),
+				array_values( $field['choices'] )
+			);
+
+			$schema['enum'] = empty( $radio_keys ) ? $field['choices'] : $radio_keys;
+			if ( ! empty( $field['allow_null'] ) ) {
+				$schema['enum'][] = null;
+			}
+
+			return $schema;
 		}
 
 	}

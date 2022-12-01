@@ -812,6 +812,11 @@ class WC_Countries {
 							'hidden'   => true,
 						),
 					),
+					'AL' => array(
+						'state'    => array(
+							'label' => __( 'County', 'woocommerce' ),
+						),
+					),
 					'AO' => array(
 						'postcode' => array(
 							'required' => false,
@@ -897,11 +902,23 @@ class WC_Countries {
 							'required' => false,
 							'hidden'   => true,
 						),
+						'state'    => array(
+							'label' => __( 'Department', 'woocommerce' ),
+						),
 					),
 					'BS' => array(
 						'postcode' => array(
 							'required' => false,
 							'hidden'   => true,
+						),
+					),
+					'BZ' => array(
+						'postcode' => array(
+							'required' => false,
+							'hidden'   => true,
+						),
+						'state' 	=> array(
+							'required' => false,
 						),
 					),
 					'CA' => array(
@@ -941,6 +958,14 @@ class WC_Countries {
 						'postcode' => array(
 							'required' => false,
 						),
+						'state' => array(
+							'label' => __( 'Department', 'woocommerce' ),
+						),
+					),
+					'CR' => array(
+						'state' => array(
+							'label' => __( 'Province', 'woocommerce' ),
+						),
 					),
 					'CW' => array(
 						'postcode' => array(
@@ -975,6 +1000,16 @@ class WC_Countries {
 							'hidden'   => true,
 						),
 					),
+					'DO' => array(
+						'state'    => array(
+							'label' => __( 'Province', 'woocommerce' ),
+						),
+					),
+					'EC' => array(
+						'state'    => array(
+							'label' => __( 'Province', 'woocommerce' ),
+						),
+					),
 					'EE' => array(
 						'postcode' => array(
 							'priority' => 65,
@@ -1002,6 +1037,12 @@ class WC_Countries {
 							'hidden'   => true,
 						),
 					),
+					'GG' => array(
+ 						'state' => array(
+ 							'required' => false,
+ 							'label' => __( 'Parish', 'woocommerce' ),
+ 						),
+ 					),
 					'GH' => array(
 						'postcode' => array(
 							'required' => false,
@@ -1030,7 +1071,6 @@ class WC_Countries {
 					'GT' => array(
 						'postcode' => array(
 							'required' => false,
-							'hidden'   => true,
 						),
 						'state'    => array(
 							'label' => __( 'Department', 'woocommerce' ),
@@ -1045,6 +1085,11 @@ class WC_Countries {
 						),
 						'state'    => array(
 							'label' => __( 'Region', 'woocommerce' ),
+						),
+					),
+					'HN' => array(
+						'state'    => array(
+							'label' => __( 'Department', 'woocommerce' ),
 						),
 					),
 					'HU' => array(
@@ -1113,7 +1158,7 @@ class WC_Countries {
 					),
 					'IN' => array(
 						'postcode' => array(
-							'label' => __( 'PIN', 'woocommerce' ),
+							'label' => __( 'PIN Code', 'woocommerce' ),
 						),
 						'state'    => array(
 							'label' => __( 'State', 'woocommerce' ),
@@ -1193,6 +1238,12 @@ class WC_Countries {
 							'hidden'   => true,
 						),
 					),
+					'MF' => array(
+						'state' => array(
+							'required' => false,
+							'hidden'   => true,
+						),
+					),
 					'MQ' => array(
 						'state' => array(
 							'required' => false,
@@ -1212,6 +1263,11 @@ class WC_Countries {
 						),
 						'state'    => array(
 							'label' => __( 'Province', 'woocommerce' ),
+						),
+					),
+					'NI' => array(
+						'state'    => array(
+							'label' => __( 'Department', 'woocommerce' ),
 						),
 					),
 					'NL' => array(
@@ -1259,6 +1315,11 @@ class WC_Countries {
 							'required' => false,
 						),
 					),
+					'PA' => array(
+						'state'    => array(
+							'label' => __( 'Province', 'woocommerce' ),
+						),
+					),
 					'PL' => array(
 						'postcode' => array(
 							'priority' => 65,
@@ -1281,6 +1342,11 @@ class WC_Countries {
 						'state' => array(
 							'required' => false,
 							'hidden'   => true,
+						),
+					),
+					'PY' => array(
+						'state' => array(
+							'label'    => __( 'Department', 'woocommerce' ),
 						),
 					),
 					'RE' => array(
@@ -1338,6 +1404,11 @@ class WC_Countries {
 						'postcode' => array(
 							'required' => false,
 							'hidden'   => true,
+						),
+					),
+					'SV' => array(
+						'state'    => array(
+							'label' => __( 'Department', 'woocommerce' ),
 						),
 					),
 					'ES' => array(
@@ -1413,6 +1484,11 @@ class WC_Countries {
 							'label' => __( 'State', 'woocommerce' ),
 						),
 					),
+					'UY' => array(
+						'state'    => array(
+							'label' => __( 'Department', 'woocommerce' ),
+						),
+					),
 					'GB' => array(
 						'postcode' => array(
 							'label' => __( 'Postcode', 'woocommerce' ),
@@ -1443,7 +1519,7 @@ class WC_Countries {
 						),
 						'address_2' => array(
 							'required' => false,
-							'hidden'   => true,
+							'hidden'   => false,
 						),
 					),
 					'WS' => array(

@@ -90,7 +90,7 @@ class WPML_Package_Translation_Schema {
 				if ( ! self::current_table_has_column( 'title' ) ) {
 					self::add_title_to_icl_strings();
 				}
-				update_option( 'wpml-package-translation-string-table-updated', true );
+				update_option( 'wpml-package-translation-string-table-updated', true, 'no' );
 			}
 		}
 	}
@@ -111,7 +111,7 @@ class WPML_Package_Translation_Schema {
 				if ( ! self::current_table_has_column( 'view_link' ) ) {
 					self::add_view_link_to_icl_string_packages();
 				}
-				update_option( 'wpml-package-translation-string-packages-table-updated', '0.0.2' );
+				update_option( 'wpml-package-translation-string-packages-table-updated', '0.0.2', 'no' );
 			}
 		}
 	}

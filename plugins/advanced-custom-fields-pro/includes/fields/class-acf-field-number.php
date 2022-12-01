@@ -128,41 +128,17 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 					'name'         => 'default_value',
 				)
 			);
+		}
 
-			// placeholder
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Placeholder Text', 'acf' ),
-					'instructions' => __( 'Appears within the input', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'placeholder',
-				)
-			);
-
-			// prepend
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Prepend', 'acf' ),
-					'instructions' => __( 'Appears before the input', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'prepend',
-				)
-			);
-
-			// append
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Append', 'acf' ),
-					'instructions' => __( 'Appears after the input', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'append',
-				)
-			);
-
-			// min
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
 			acf_render_field_setting(
 				$field,
 				array(
@@ -173,7 +149,6 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 				)
 			);
 
-			// max
 			acf_render_field_setting(
 				$field,
 				array(
@@ -183,8 +158,27 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 					'name'         => 'max',
 				)
 			);
+		}
 
-			// max
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Placeholder Text', 'acf' ),
+					'instructions' => __( 'Appears within the input', 'acf' ),
+					'type'         => 'text',
+					'name'         => 'placeholder',
+				)
+			);
+
 			acf_render_field_setting(
 				$field,
 				array(
@@ -195,8 +189,26 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 				)
 			);
 
-		}
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Prepend', 'acf' ),
+					'instructions' => __( 'Appears before the input', 'acf' ),
+					'type'         => 'text',
+					'name'         => 'prepend',
+				)
+			);
 
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Append', 'acf' ),
+					'instructions' => __( 'Appears after the input', 'acf' ),
+					'type'         => 'text',
+					'name'         => 'append',
+				)
+			);
+		}
 
 		/*
 		*  validate_value
@@ -295,6 +307,44 @@ if ( ! class_exists( 'acf_field_number' ) ) :
 
 		}
 
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			$schema = array(
+				'type'     => array( 'number', 'null' ),
+				'required' => ! empty( $field['required'] ),
+			);
+
+			if ( ! empty( $field['min'] ) ) {
+				$schema['minimum'] = (float) $field['min'];
+			}
+
+			if ( ! empty( $field['max'] ) ) {
+				$schema['maximum'] = (float) $field['max'];
+			}
+
+			if ( isset( $field['default_value'] ) && is_numeric( $field['default_value'] ) ) {
+				$schema['default'] = (float) $field['default_value'];
+			}
+
+			return $schema;
+		}
+
+		/**
+		 * Apply basic formatting to prepare the value for default REST output.
+		 *
+		 * @param mixed      $value
+		 * @param string|int $post_id
+		 * @param array      $field
+		 * @return mixed
+		 */
+		public function format_value_for_rest( $value, $post_id, array $field ) {
+			return acf_format_numerics( $value );
+		}
 
 	}
 

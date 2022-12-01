@@ -397,7 +397,7 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 	}
 
 	function reset_language_data() {
-		global $sitepress;
+		global $sitepress, $wpdb;
 
 		$active = $this->wpdb->get_col( "SELECT code FROM {$this->wpdb->prefix}icl_languages WHERE active = 1" );
 		$this->wpdb->query( "TRUNCATE TABLE `{$this->wpdb->prefix}icl_languages`" );
@@ -442,6 +442,14 @@ class WPML_Installation extends WPML_WPDB_And_SP_User {
 					break;
 				}
 			}
+		}
+
+		$language_pair_records = new WPML_Language_Pair_Records( $wpdb, new WPML_Language_Records( $wpdb ) );
+
+		$users = get_users( [ 'fields' => [ 'ID' ] ] );
+
+		foreach ( $users as $user ) {
+			$language_pair_records->remove_invalid_language_pairs( $user->ID );
 		}
 
 		icl_cache_clear();

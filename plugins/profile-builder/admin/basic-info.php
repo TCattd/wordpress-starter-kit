@@ -88,6 +88,10 @@ function wppb_basic_info_content() {
                 <p><?php esc_html_e( 'Restrict users from accessing certain pages, posts or custom post types based on user role or logged-in status.', 'profile-builder' ); ?></p>
             </div>
 			<div>
+				<h3><?php esc_html_e( 'Email Customizer', 'profile-builder' ); ?></h3>
+				<p><?php esc_html_e( 'Personalize all emails sent to your users or admins. On registration, email confirmation, admin approval / un-approval.', 'profile-builder' ); ?></p>
+			</div>
+			<div>
 				<h3><?php esc_html_e( 'Minimum Password Length and Strength Meter', 'profile-builder' ); ?></h3>
 				<p><?php esc_html_e( 'Eliminate weak passwords altogether by setting a minimum password length and enforcing a certain password strength.', 'profile-builder' ); ?></p>
 			</div>
@@ -118,27 +122,24 @@ function wppb_basic_info_content() {
 					<p><a href="admin.php?page=manage-fields" class="button"><?php esc_html_e( 'Get started with extra fields', 'profile-builder' ); ?></a></p>
 				<?php } ?>
 				<ul style="float: left; margin-right: 50px;">
-					<li><?php esc_html_e( 'Avatar Upload', 'profile-builder' ); ?></li>
 					<li><?php esc_html_e( 'Generic Uploads', 'profile-builder' ); ?></li>
 					<li><?php esc_html_e( 'Agree To Terms Checkbox', 'profile-builder' ); ?></li>
 					<li><?php esc_html_e( 'Datepicker', 'profile-builder' ); ?> </li>
                     <li><?php esc_html_e( 'Timepicker', 'profile-builder' ); ?> </li>
                     <li><?php esc_html_e( 'Colorpicker', 'profile-builder' ); ?> </li>
-					<li><?php esc_html_e( 'reCAPTCHA', 'profile-builder' ); ?></li>
 					<li><?php esc_html_e( 'Country Select', 'profile-builder' ); ?></li>
                     <li><?php esc_html_e( 'Currency Select', 'profile-builder' ); ?></li>
 					<li><?php esc_html_e( 'Timezone Select', 'profile-builder' ); ?></li>
 				</ul>
 
                 <ul style="float: left;">
-                    <li><?php esc_html_e( 'Input / Hidden Input', 'profile-builder' ); ?></li>
+					<li><?php esc_html_e( 'Map', 'profile-builder' ); ?></li>
+                    <li><?php esc_html_e( 'Select 2 (Multiple)', 'profile-builder' ); ?></li>
+                    <li><?php esc_html_e( 'Phone', 'profile-builder' ); ?></li>
+                    <li><?php esc_html_e( 'Hidden Input', 'profile-builder' ); ?></li>
                     <li><?php esc_html_e( 'Number', 'profile-builder' ); ?></li>
-                    <li><?php esc_html_e( 'Checkbox', 'profile-builder' ); ?></li>
-                    <li><?php esc_html_e( 'Select', 'profile-builder' ); ?></li>
-                    <li><?php esc_html_e( 'Radio Buttons', 'profile-builder' ); ?></li>
-                    <li><?php esc_html_e( 'Textarea', 'profile-builder' ); ?></li>
                     <li><?php esc_html_e( 'Validation', 'profile-builder' ); ?></li>
-                    <li><?php esc_html_e( 'Map', 'profile-builder' ); ?></li>
+                    <li><?php esc_html_e( 'Select CPT', 'profile-builder' ); ?></li>
                     <li><?php esc_html_e( 'HTML', 'profile-builder' ); ?></li>
                 </ul>
 			</div>
@@ -165,10 +166,6 @@ function wppb_basic_info_content() {
 				<?php else : ?>
 				<p><?php printf( esc_html__( 'To create a page containing the users registered to this current site/blog, insert the following shortcode in a page of your chosing: %s.', 'profile-builder' ), '<strong class="nowrap">[wppb-list-users]</strong>' ); ?></p>
 				<?php endif;?>
-			</div>
-			<div>
-				<h3><?php esc_html_e( 'Email Customizer', 'profile-builder' ); ?></h3>
-				<p><?php esc_html_e( 'Personalize all emails sent to your users or admins. On registration, email confirmation, admin approval / un-approval.', 'profile-builder' ); ?></p>
 			</div>
 			<div>
 				<h3><?php esc_html_e( 'Custom Redirects', 'profile-builder' ); ?></h3>
@@ -222,7 +219,7 @@ function wppb_basic_info_content() {
 		<div>
 			<h3>Extra Notes</h3>
 			<ul>
-				<li><?php printf( esc_html__( ' * only available in the %1$Basic and Pro versions%2$s.', 'profile-builder' ) ,'<a href="https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=basicinfo-extranotes&utm_campaign=PB'.esc_attr( $version ).'" target="_blank">', '</a>' );?></li>
+				<li><?php printf( esc_html__( ' * only available in the %1$sBasic and Pro versions%2$s.', 'profile-builder' ) ,'<a href="https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=basicinfo-extranotes&utm_campaign=PB'.esc_attr( $version ).'" target="_blank">', '</a>' );?></li>
 				<li><?php printf( esc_html__( '** only available in the %1$sPro version%2$s.', 'profile-builder' ), '<a href="https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=basicinfo-extranotes&utm_campaign=PB'.esc_attr( $version ).'" target="_blank">', '</a>' );?></li>
 			</ul>
 		</div>

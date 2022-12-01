@@ -10,6 +10,7 @@ import { Panel } from '@woocommerce/blocks-checkout';
 import Label from '@woocommerce/base-components/label';
 import { useSelectShippingRate } from '@woocommerce/base-context/hooks';
 import type { CartShippingPackageShippingRate } from '@woocommerce/type-defs/cart';
+import { sanitizeHTML } from '@woocommerce/utils';
 
 /**
  * Internal dependencies
@@ -57,7 +58,7 @@ interface PackageProps {
 
 export const ShippingRatesControlPackage = ( {
 	packageId,
-	className,
+	className = '',
 	noResultsMessage,
 	renderOption,
 	packageData,
@@ -65,17 +66,17 @@ export const ShippingRatesControlPackage = ( {
 	collapse = false,
 	showItems = false,
 }: PackageProps ): ReactElement => {
-	const { selectShippingRate, selectedShippingRate } = useSelectShippingRate(
-		packageId,
-		packageData.shipping_rates
-	);
+	const { selectShippingRate } = useSelectShippingRate();
 
 	const header = (
 		<>
 			{ ( showItems || collapsible ) && (
-				<div className="wc-block-components-shipping-rates-control__package-title">
-					{ packageData.name }
-				</div>
+				<div
+					className="wc-block-components-shipping-rates-control__package-title"
+					dangerouslySetInnerHTML={ {
+						__html: sanitizeHTML( packageData.name ),
+					} }
+				/>
 			) }
 			{ showItems && (
 				<ul className="wc-block-components-shipping-rates-control__package-items">
@@ -117,8 +118,12 @@ export const ShippingRatesControlPackage = ( {
 			className={ className }
 			noResultsMessage={ noResultsMessage }
 			rates={ packageData.shipping_rates }
-			onSelectRate={ selectShippingRate }
-			selected={ selectedShippingRate }
+			onSelectRate={ ( newShippingRateId ) =>
+				selectShippingRate( newShippingRateId, packageId )
+			}
+			selectedRate={ packageData.shipping_rates.find(
+				( rate ) => rate.selected
+			) }
 			renderOption={ renderOption }
 		/>
 	);

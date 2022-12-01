@@ -2,29 +2,52 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { Disabled, PanelBody, ToggleControl } from '@wordpress/components';
-import { InspectorControls } from '@wordpress/block-editor';
-import { createInterpolateElement } from '@wordpress/element';
-import ToggleButtonControl from '@woocommerce/editor-components/toggle-button-control';
-import { getAdminLink } from '@woocommerce/settings';
+import { InspectorControls, useBlockProps } from '@wordpress/block-editor';
+import { createInterpolateElement, useEffect } from '@wordpress/element';
+import { getAdminLink, getSettingWithCoercion } from '@woocommerce/settings';
+import { isBoolean } from '@woocommerce/types';
+import {
+	Disabled,
+	PanelBody,
+	ToggleControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControl as ToggleGroupControl,
+	// eslint-disable-next-line @wordpress/no-unsafe-wp-apis
+	__experimentalToggleGroupControlOption as ToggleGroupControlOption,
+} from '@wordpress/components';
 
 /**
  * Internal dependencies
  */
 import Block from './block';
-import withProductSelector from '../shared/with-product-selector';
-import { BLOCK_TITLE, BLOCK_ICON } from './constants';
 
-const Edit = ( { attributes, setAttributes } ) => {
-	const {
-		showProductLink,
-		imageSizing,
-		showSaleBadge,
-		saleBadgeAlign,
-	} = attributes;
+const Edit = ( { attributes, setAttributes, context } ) => {
+	const { showProductLink, imageSizing, showSaleBadge, saleBadgeAlign } =
+		attributes;
+
+	const blockProps = useBlockProps();
+
+	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+
+	useEffect(
+		() => setAttributes( { isDescendentOfQueryLoop } ),
+		[ setAttributes, isDescendentOfQueryLoop ]
+	);
+
+	const isBlockThemeEnabled = getSettingWithCoercion(
+		'is_block_theme_enabled',
+		false,
+		isBoolean
+	);
+
+	useEffect( () => {
+		if ( isBlockThemeEnabled && attributes.imageSizing !== 'full-size' ) {
+			setAttributes( { imageSizing: 'full-size' } );
+		}
+	}, [ attributes.imageSizing, isBlockThemeEnabled, setAttributes ] );
 
 	return (
-		<>
+		<div { ...blockProps }>
 			<InspectorControls>
 				<PanelBody
 					title={ __( 'Content', 'woocommerce' ) }
@@ -51,7 +74,7 @@ const Edit = ( { attributes, setAttributes } ) => {
 							'woocommerce'
 						) }
 						help={ __(
-							'Overlay a "sale" badge if the product is on-sale.',
+							'Display a “sale” badge if the product is on-sale.',
 							'woocommerce'
 						) }
 						checked={ showSaleBadge }
@@ -62,98 +85,91 @@ const Edit = ( { attributes, setAttributes } ) => {
 						}
 					/>
 					{ showSaleBadge && (
-						<ToggleButtonControl
+						<ToggleGroupControl
 							label={ __(
 								'Sale Badge Alignment',
 								'woocommerce'
 							) }
 							value={ saleBadgeAlign }
-							options={ [
-								{
-									label: __(
-										'Left',
-										'woocommerce'
-									),
-									value: 'left',
-								},
-								{
-									label: __(
-										'Center',
-										'woocommerce'
-									),
-									value: 'center',
-								},
-								{
-									label: __(
-										'Right',
-										'woocommerce'
-									),
-									value: 'right',
-								},
-							] }
 							onChange={ ( value ) =>
 								setAttributes( { saleBadgeAlign: value } )
 							}
-						/>
+						>
+							<ToggleGroupControlOption
+								value="left"
+								label={ __(
+									'Left',
+									'woocommerce'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="center"
+								label={ __(
+									'Center',
+									'woocommerce'
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="right"
+								label={ __(
+									'Right',
+									'woocommerce'
+								) }
+							/>
+						</ToggleGroupControl>
 					) }
-					<ToggleButtonControl
-						label={ __(
-							'Image Sizing',
-							'woocommerce'
-						) }
-						help={ createInterpolateElement(
-							__(
-								'Product image cropping can be modified in the <a>Customizer</a>.',
+					{ ! isBlockThemeEnabled && (
+						<ToggleGroupControl
+							label={ __(
+								'Image Sizing',
 								'woocommerce'
-							),
-							{
-								a: (
-									// eslint-disable-next-line jsx-a11y/anchor-has-content
-									<a
-										href={ `${ getAdminLink(
-											'customize.php'
-										) }?autofocus[panel]=woocommerce&autofocus[section]=woocommerce_product_images` }
-										target="_blank"
-										rel="noopener noreferrer"
-									/>
+							) }
+							help={ createInterpolateElement(
+								__(
+									'Product image cropping can be modified in the <a>Customizer</a>.',
+									'woocommerce'
 								),
+								{
+									a: (
+										// eslint-disable-next-line jsx-a11y/anchor-has-content
+										<a
+											href={ `${ getAdminLink(
+												'customize.php'
+											) }?autofocus[panel]=woocommerce&autofocus[section]=woocommerce_product_images` }
+											target="_blank"
+											rel="noopener noreferrer"
+										/>
+									),
+								}
+							) }
+							value={ imageSizing }
+							onChange={ ( value ) =>
+								setAttributes( { imageSizing: value } )
 							}
-						) }
-						value={ imageSizing }
-						options={ [
-							{
-								label: __(
+						>
+							<ToggleGroupControlOption
+								value="full-size"
+								label={ __(
 									'Full Size',
 									'woocommerce'
-								),
-								value: 'full-size',
-							},
-							{
-								label: __(
+								) }
+							/>
+							<ToggleGroupControlOption
+								value="cropped"
+								label={ __(
 									'Cropped',
 									'woocommerce'
-								),
-								value: 'cropped',
-							},
-						] }
-						onChange={ ( value ) =>
-							setAttributes( { imageSizing: value } )
-						}
-					/>
+								) }
+							/>
+						</ToggleGroupControl>
+					) }
 				</PanelBody>
 			</InspectorControls>
 			<Disabled>
-				<Block { ...attributes } />
+				<Block { ...{ ...attributes, ...context } } />
 			</Disabled>
-		</>
+		</div>
 	);
 };
 
-export default withProductSelector( {
-	icon: BLOCK_ICON,
-	label: BLOCK_TITLE,
-	description: __(
-		'Choose a product to display its image.',
-		'woocommerce'
-	),
-} )( Edit );
+export default Edit;

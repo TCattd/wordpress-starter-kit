@@ -273,7 +273,6 @@
 				wpml_update_status('');
 				submitButton.attr('disabled', 'disabled');
 				jQuery(form).find('.content_default_progress').fadeIn();
-
 				jQuery.ajax(
 					{
 						url:      ajaxurl,
@@ -282,7 +281,9 @@
 							action:                 'wpml_media_set_content_defaults',
 							always_translate_media: jQuery('input[name=content_default_always_translate_media]', form).is(':checked'),
 							duplicate_media:        jQuery('input[name=content_default_duplicate_media]', form).is(':checked'),
-							duplicate_featured:     jQuery('input[name=content_default_duplicate_featured]', form).is(':checked')
+							duplicate_featured:     jQuery('input[name=content_default_duplicate_featured]', form).is(':checked'),
+							translate_media_library_texts:     jQuery('input[name=translate_media_library_texts]', form).is(':checked'),
+              nonce: wpml_media_settings_data.nonce
 						},
 						dataType: 'json',
 						success:  function (ret) {

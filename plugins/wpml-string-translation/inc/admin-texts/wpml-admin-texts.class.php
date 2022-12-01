@@ -33,6 +33,7 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 	function __construct( &$tm_instance, &$st_instance ) {
 		add_action( 'plugins_loaded', [ $this, 'icl_st_set_admin_options_filters' ], 10 );
 		add_filter( 'wpml_unfiltered_admin_string', flip( [ $this, 'get_option_without_filtering' ] ), 10, 2 );
+		add_action( 'wpml_st_force_translate_admin_options', [ $this, 'force_translate_admin_options' ] );
 		$this->tm_instance = &$tm_instance;
 		$this->st_instance = &$st_instance;
 	}
@@ -65,7 +66,8 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 					}
 					update_option(
 						'_icl_admin_option_names',
-						array_merge_recursive( (array) get_option( '_icl_admin_option_names' ), $vals )
+						array_merge_recursive( (array) get_option( '_icl_admin_option_names' ), $vals ),
+						'no'
 					);
 					$this->option_names = [];
 				}
@@ -205,18 +207,32 @@ class WPML_Admin_Texts extends WPML_Admin_Text_Functionality {
 		foreach ( $option_names as $option_key => $option ) {
 			if ( $this->is_blacklisted( $option_key ) ) {
 				unset( $option_names[ $option_key ] );
-				update_option( '_icl_admin_option_names', $option_names );
+				update_option( '_icl_admin_option_names', $option_names, 'no' );
 			} elseif ( $option_key != 'theme' && $option_key != 'plugin' ) { // theme and plugin are an obsolete format before 3.2
 				/**
 				 * We don't want to translate admin strings in admin panel because it causes a lot of confusion
 				 * when a value is displayed inside the form input.
 				 */
 				if ( ! $isAdmin ) {
-					add_filter( 'option_' . $option_key, array( $this, 'icl_st_translate_admin_string' ) );
+					$this->add_filter_for( $option_key );
 				}
 				add_action( 'update_option_' . $option_key, array( $this, 'on_update_original_value' ), 10, 3 );
 			}
 		}
+	}
+
+	/**
+	 * @param array $options
+	 */
+	public function force_translate_admin_options( $options ) {
+		wpml_collect( $options )->each( [ $this, 'add_filter_for' ] );
+	}
+
+	/**
+	 * @param string $option
+	 */
+	public function add_filter_for( $option ) {
+		add_filter( 'option_' . $option, [ $this, 'icl_st_translate_admin_string' ] );
 	}
 
 	function icl_st_translate_admin_string( $option_value, $key = '', $name = '', $root_level = true ) {

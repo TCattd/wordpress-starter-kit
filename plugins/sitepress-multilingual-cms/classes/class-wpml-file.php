@@ -75,6 +75,29 @@ class WPML_File {
 					'uri'  => $this->wp_api->constant( 'WP_CONTENT_URL' ),
 				);
 			}
+
+			if ( false === strpos( $path, $base_path ) ) {
+				$base = array(
+					'path' => $base_path,
+					'uri'  => $this->wp_api->constant( 'WP_CONTENT_URL' ),
+				);
+
+				$wpml_plugin_folder_parts = explode(
+					$this->wp_api->constant( 'DIRECTORY_SEPARATOR' ),
+					$this->wp_api->constant( 'WPML_PLUGIN_PATH' )
+				);
+				$wpml_plugin_folder_parts = $this->pop_folder_array( 1, $wpml_plugin_folder_parts );
+
+				$wpml_plugins_folder = implode(
+					$this->wp_api->constant( 'DIRECTORY_SEPARATOR' ),
+					$wpml_plugin_folder_parts
+				);
+				$path                = str_replace(
+					$wpml_plugins_folder,
+					$this->wp_api->constant( 'WP_PLUGIN_DIR' ),
+					$path
+				);
+			}
 		}
 
 		if ( ! $base ) {
@@ -90,6 +113,27 @@ class WPML_File {
 		$relative_path = ltrim( $relative_path, '/' );
 
 		return trailingslashit( $base['uri'] ) . $relative_path;
+	}
+
+	/**
+	 * Recursive function to pop a folder array.
+	 *
+	 * @param int      $times
+	 * @param string[] $folder_array
+	 * @return string[]
+	 */
+	private function pop_folder_array( $times, $folder_array ) {
+		$latest_folder = array_pop( $folder_array );
+		if ( '..' === $latest_folder ) {
+			return $this->pop_folder_array( $times + 1, $folder_array );
+		}
+		if ( '.' === $latest_folder ) {
+			return $this->pop_folder_array( $times, $folder_array );
+		}
+		if ( $times > 1 ) {
+			return $this->pop_folder_array( $times - 1, $folder_array );
+		}
+		return $folder_array;
 	}
 
 	/**

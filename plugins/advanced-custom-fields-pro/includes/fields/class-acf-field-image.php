@@ -150,6 +150,7 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 					array(
 						'name' => $field['name'],
 						'id'   => $field['id'],
+						'key'  => $field['key'],
 					)
 				);
 				?>
@@ -177,27 +178,6 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 		*/
 
 		function render_field_settings( $field ) {
-
-			// clear numeric settings
-			$clear = array(
-				'min_width',
-				'min_height',
-				'min_size',
-				'max_width',
-				'max_height',
-				'max_size',
-			);
-
-			foreach ( $clear as $k ) {
-
-				if ( empty( $field[ $k ] ) ) {
-
-					$field[ $k ] = '';
-
-				}
-			}
-
-			// return_format
 			acf_render_field_setting(
 				$field,
 				array(
@@ -214,19 +194,6 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 				)
 			);
 
-			// preview_size
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Preview Size', 'acf' ),
-					'instructions' => '',
-					'type'         => 'select',
-					'name'         => 'preview_size',
-					'choices'      => acf_get_image_sizes(),
-				)
-			);
-
-			// library
 			acf_render_field_setting(
 				$field,
 				array(
@@ -241,17 +208,42 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 					),
 				)
 			);
+		}
 
-			// min
+		/**
+		 * Renders the field settings used in the "Validation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_validation_settings( $field ) {
+			// Clear numeric settings.
+			$clear = array(
+				'min_width',
+				'min_height',
+				'min_size',
+				'max_width',
+				'max_height',
+				'max_size',
+			);
+
+			foreach ( $clear as $k ) {
+				if ( empty( $field[ $k ] ) ) {
+					$field[ $k ] = '';
+				}
+			}
+
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Minimum', 'acf' ),
-					'instructions' => __( 'Restrict which images can be uploaded', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'min_width',
-					'prepend'      => __( 'Width', 'acf' ),
-					'append'       => 'px',
+					'label'   => __( 'Minimum', 'acf' ),
+					'hint'    => __( 'Restrict which images can be uploaded', 'acf' ),
+					'type'    => 'text',
+					'name'    => 'min_width',
+					'prepend' => __( 'Width', 'acf' ),
+					'append'  => 'px',
 				)
 			);
 
@@ -279,16 +271,15 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 				)
 			);
 
-			// max
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Maximum', 'acf' ),
-					'instructions' => __( 'Restrict which images can be uploaded', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'max_width',
-					'prepend'      => __( 'Width', 'acf' ),
-					'append'       => 'px',
+					'label'   => __( 'Maximum', 'acf' ),
+					'hint'    => __( 'Restrict which images can be uploaded', 'acf' ),
+					'type'    => 'text',
+					'name'    => 'max_width',
+					'prepend' => __( 'Width', 'acf' ),
+					'append'  => 'px',
 				)
 			);
 
@@ -316,7 +307,6 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 				)
 			);
 
-			// allowed type
 			acf_render_field_setting(
 				$field,
 				array(
@@ -326,9 +316,28 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 					'name'         => 'mime_types',
 				)
 			);
-
 		}
 
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Preview Size', 'acf' ),
+					'instructions' => '',
+					'type'         => 'select',
+					'name'         => 'preview_size',
+					'choices'      => acf_get_image_sizes(),
+				)
+			);
+		}
 
 		/*
 		*  format_value()
@@ -422,23 +431,55 @@ if ( ! class_exists( 'acf_field_image' ) ) :
 		}
 
 
-		/*
-		*  validate_value
-		*
-		*  This function will validate a basic file input
-		*
-		*  @type    function
-		*  @date    11/02/2014
-		*  @since   5.0.0
-		*
-		*  @param   $post_id (int)
-		*  @return  $post_id (int)
-		*/
-
+		/**
+		 *  validate_value
+		 *
+		 *  This function will validate a basic file input
+		 *
+		 *  @type    function
+		 *  @date    11/02/2014
+		 *  @since   5.0.0
+		 *
+		 *  @param   $post_id (int)
+		 *  @return  $post_id (int)
+		 */
 		function validate_value( $valid, $value, $field, $input ) {
-
 			return acf_get_field_type( 'file' )->validate_value( $valid, $value, $field, $input );
+		}
 
+		/**
+		 * Additional validation for the image field when submitted via REST.
+		 *
+		 * @param bool  $valid
+		 * @param int   $value
+		 * @param array $field
+		 *
+		 * @return bool|WP_Error
+		 */
+		public function validate_rest_value( $valid, $value, $field ) {
+			return acf_get_field_type( 'file' )->validate_rest_value( $valid, $value, $field );
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			return acf_get_field_type( 'file' )->get_rest_schema( $field );
+		}
+
+		/**
+		 * Apply basic formatting to prepare the value for default REST output.
+		 *
+		 * @param mixed      $value
+		 * @param string|int $post_id
+		 * @param array      $field
+		 * @return mixed
+		 */
+		public function format_value_for_rest( $value, $post_id, array $field ) {
+			return acf_format_numerics( $value );
 		}
 
 	}

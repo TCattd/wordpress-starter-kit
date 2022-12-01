@@ -132,6 +132,13 @@
     width: 110px;
 }
 
+.wppb-user-forms .form-submit #register:disabled,
+.wppb-user-forms .form-submit #edit_profile:disabled {
+    background: #414141;
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 /*--------------------------------------------------------------
 3.0 Alignments
 --------------------------------------------------------------*/
@@ -843,6 +850,12 @@ li.wppb-facet-search{
 	.wppb-form-field .wppb-upload-file{
 		margin-left:0;
 	}
+
+    .wppb-form-field.wppb-default-password button.wppb-toggle-pw,
+    .wppb-form-field.wppb-default-repeat-password button.wppb-toggle-pw,
+    #wppb-login-wrap .login-password button.wppb-toggle-pw {
+        top: 6px!important;
+    }
 
 }
 

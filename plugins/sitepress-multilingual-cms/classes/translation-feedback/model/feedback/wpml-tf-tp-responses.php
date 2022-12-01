@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 /**
  * Class WPML_TF_TP_Responses
  *
@@ -69,7 +71,7 @@ class WPML_TF_TP_Responses {
 
 	/** @param string $method */
 	public function set_feedback_forward_method( $method ) {
-		$this->feedback_forward_method = filter_var( $method, FILTER_SANITIZE_STRING );
+		$this->feedback_forward_method = Sanitize::string( $method );
 	}
 
 	/** @return null|string */

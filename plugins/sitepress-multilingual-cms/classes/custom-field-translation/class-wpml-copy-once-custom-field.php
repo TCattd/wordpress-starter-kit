@@ -1,6 +1,6 @@
 <?php
 
-class WPML_Copy_Once_Custom_Field implements IWPML_Action {
+class WPML_Copy_Once_Custom_Field implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_Action {
 
 	/** @var SitePress $sitepress */
 	private $sitepress;

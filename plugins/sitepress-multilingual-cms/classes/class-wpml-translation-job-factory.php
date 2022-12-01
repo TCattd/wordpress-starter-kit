@@ -2,7 +2,7 @@
 
 use \WPML\FP\Obj;
 use WPML\TM\API\Jobs;
-use WPML\TM\Menu\TranslationQueue\JobsRepository;
+use WPML\TM\Menu\TranslationQueue\PostTypeFilters;
 
 /**
  * Class WPML_Translation_Job_Factory
@@ -37,15 +37,6 @@ class WPML_Translation_Job_Factory extends WPML_Abstract_Job_Collection {
 			array(
 				$this,
 				'get_translation_jobs_filter',
-			),
-			10,
-			2
-		);
-		add_filter(
-			'wpml_translation_job_types',
-			array(
-				$this,
-				'get_translation_job_types_filter',
 			),
 			10,
 			2
@@ -351,12 +342,6 @@ class WPML_Translation_Job_Factory extends WPML_Abstract_Job_Collection {
                   AND iclt.field_type = 'original_id'
                 ORDER BY {$order_by}
             ";
-	}
-
-	public function get_translation_job_types_filter( $value, $args ) {
-		$jobsRepository = new JobsRepository( wpml_tm_get_jobs_repository( true, false ) );
-
-		return $jobsRepository->getPostTypeFilters( $args );
 	}
 
 	/**

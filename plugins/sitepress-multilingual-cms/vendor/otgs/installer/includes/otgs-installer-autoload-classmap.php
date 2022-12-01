@@ -112,4 +112,18 @@ return [
 	'OTGS\Installer\CommercialTab\DownloadFilter'                  => $baseDir . '/includes/products/commercial-tab/DownloadFilter.php',
 	'OTGS\Installer\Upgrade\AutoUpgrade'                           => $baseDir . '/includes/upgrade/AutoUpgrade.php',
 	'OTGS\Installer\Upgrade\InstallerPlugins'                      => $baseDir . '/includes/upgrade/InstallerPlugins.php',
+	'OTGS\Installer\FP\Obj'                                        => $baseDir . '/includes/utilities/FP/Obj.php',
+	'OTGS\Installer\FP\Str'                                        => $baseDir . '/includes/utilities/FP/Str.php',
+	'OTGS\Installer\FP\Either'                                     => $baseDir . '/includes/utilities/FP/Either.php',
+	'OTGS\Installer\FP\Fns'                                        => $baseDir . '/includes/utilities/FP/Fns.php',
+	'OTGS\Installer\FP\Invoker'                                    => $baseDir . '/includes/utilities/FP/Invoker.php',
+	'OTGS\Installer\FP\Logic'                                      => $baseDir . '/includes/utilities/FP/Logic.php',
+	'OTGS\Installer\FP\Relation'                                   => $baseDir . '/includes/utilities/FP/Relation.php',
+	'OTGS\Installer\FP\Undefined'                                  => $baseDir . '/includes/utilities/FP/Undefined.php',
+	'OTGS\Installer\FP\Traits\Applicative'                         => $baseDir . '/includes/utilities/FP/Traits/Applicative.php',
+	'OTGS\Installer\FP\Traits\ConstApplicative'                    => $baseDir . '/includes/utilities/FP/Traits/ConstApplicative.php',
+	'OTGS\Installer\FP\Traits\Functor'                             => $baseDir . '/includes/utilities/FP/Traits/Functor.php',
+	'OTGS\Installer\FP\Traits\Pointed'                             => $baseDir . '/includes/utilities/FP/Traits/Pointed.php',
+	'OTGS\Installer\Subscription_Warning_Message'                  => $baseDir . '/includes/class-otgs-installer-subscription-warning-message.php',
+	'OTGS\Installer\Collect\Support\Macroable'                     => $baseDir . '/includes/utilities/Collect/Support/Macroable.php'
 ];

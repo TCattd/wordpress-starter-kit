@@ -69,6 +69,14 @@ class WPML_TM_ATE_AMS_Endpoints {
 	const FIX_JOB      = '/ate/jobs/(?P<ateJobId>\d+)/fix';
 
 	/**
+	 * ICL to ATE migration
+	 */
+	const ENDPOINTS_IMPORT_TRANSLATORS_FROM_ICL = '/api/wpml/icl/translators/import';
+	const ENDPOINTS_START_MIGRATION_IMPORT_FROM_ICL = '/api/wpml/icl/translations/import/start';
+	const ENDPOINTS_CHECK_STATUS_MIGRATION_IMPORT_FROM_ICL = '/api/wpml/icl/translations/import/status';
+
+
+	/**
 	 * @return string
 	 * @throws \InvalidArgumentException
 	 */
@@ -323,6 +331,18 @@ class WPML_TM_ATE_AMS_Endpoints {
 		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_LANGUAGES_SHOW );
 	}
 
+	public function startTranlsationMemoryIclMigration(){
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_START_MIGRATION_IMPORT_FROM_ICL );
+	}
+
+	public function checkStatusTranlsationMemoryIclMigration(){
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_CHECK_STATUS_MIGRATION_IMPORT_FROM_ICL );
+	}
+
+	public function importIclTranslators(){
+		return $this->get_endpoint_url( self::SERVICE_ATE, self::ENDPOINTS_IMPORT_TRANSLATORS_FROM_ICL);
+	}
+
 	/**
 	 * @return string
 	 * @throws \InvalidArgumentException
@@ -417,6 +437,4 @@ class WPML_TM_ATE_AMS_Endpoints {
 	public function get_send_sitekey() {
 		return $this->get_endpoint_url( self::SERVICE_AMS, self::ENDPOINTS_SEND_SITEKEY );
 	}
-
-
 }

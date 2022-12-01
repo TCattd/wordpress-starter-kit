@@ -4,6 +4,7 @@ if ( ! class_exists( 'acf_field_message' ) ) :
 
 	class acf_field_message extends acf_field {
 
+		public $show_in_rest = false;
 
 		/*
 		*  __construct
@@ -89,10 +90,7 @@ if ( ! class_exists( 'acf_field_message' ) ) :
 		*  @since   3.6
 		*  @date    23/01/13
 		*/
-
 		function render_field_settings( $field ) {
-
-			// default_value
 			acf_render_field_setting(
 				$field,
 				array(
@@ -103,7 +101,6 @@ if ( ! class_exists( 'acf_field_message' ) ) :
 				)
 			);
 
-			// formatting
 			acf_render_field_setting(
 				$field,
 				array(
@@ -119,7 +116,6 @@ if ( ! class_exists( 'acf_field_message' ) ) :
 				)
 			);
 
-			// HTML
 			acf_render_field_setting(
 				$field,
 				array(
@@ -130,9 +126,7 @@ if ( ! class_exists( 'acf_field_message' ) ) :
 					'ui'           => 1,
 				)
 			);
-
 		}
-
 
 		/*
 		*  translate_field

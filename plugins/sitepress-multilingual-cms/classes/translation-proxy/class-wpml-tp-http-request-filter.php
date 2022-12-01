@@ -94,7 +94,7 @@ class WPML_TP_HTTP_Request_Filter {
 			strtolower(
 				filter_var(
 					$params['title'],
-					FILTER_SANITIZE_STRING,
+					FILTER_SANITIZE_FULL_SPECIAL_CHARS,
 					FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
 				)
 			)

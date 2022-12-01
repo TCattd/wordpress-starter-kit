@@ -1,0 +1,200 @@
+/* VERGRID Theme Template Style - Single User */
+
+.entry-content, .entry-summary {
+    max-width: calc(100% - (2 * 1rem)) !important;
+    width: 100% !important;
+    margin: 0 1rem !important;
+    padding: 0 !important;
+}
+
+.container {
+    width: 100%;
+}
+
+.entry-content > *:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce):not(#bbpress-forums),
+.col-full,
+.grid-container {
+    max-width: 100%!important;
+}
+
+#wppb-ul-theme-vergrid {
+    width: 870px;
+    margin: auto;
+    max-width: 100%;
+}
+
+#wppb-ul-theme-vergrid a {
+    box-shadow: none !important;
+}
+
+#wppb-ul-theme-vergrid .wppb-ul-user {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.wppb-ul-user .wppb-ul-image {
+    flex-basis: 270px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wppb-ul-user .wppb-ul-info {
+    flex-basis: 570px;
+}
+
+.wppb-ul-image img {
+    border-radius: 8px;
+    max-width: 100%;
+    height: auto;
+}
+
+#wppb-ul-theme-vergrid .wppb-ul-info h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+    color: #111521;
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+.wppb-ul-info p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #5E7291;
+    margin-bottom: 24px;
+    margin-top: 0;
+    word-break: break-word;
+}
+
+.wppb-ul-info .wppb-ul-description p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #111521;
+    word-break: break-word;
+}
+
+.wppb-ul-info .wppb-ul-description {
+    margin-bottom: 25px;
+}
+
+.wppb-ul-info a.wppb-ul-posts-link {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    color: #0047FF;
+    text-decoration: none;
+}
+
+.wppb-ul-info a.wppb-ul-posts-link:after {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='20px' style='fill:%230047FF;stroke-width:2;transform:rotate(135deg);'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+    position: relative;
+    top: 5px;
+    left: 5px;
+}
+
+.wppb-ul-info a.wppb-ul-posts-link:focus {
+    outline: none;
+}
+
+#wppb-ul-theme-vergrid .wppb-ul-user-details h3 {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    color: #111521;
+    margin: 0;
+}
+
+.wppb-ul-user-details p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #111521;
+    margin-bottom: 15px;
+    margin-top: 0;
+    word-break: break-word;
+}
+
+.wppb-ul-user-details span.wppb-ul-label {
+    font-weight: 600;
+    margin-right: 6px;
+}
+
+.wppb-ul-user-details a {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #0047FF;
+    text-decoration: none !important;
+}
+
+.wppb-ul-user-details a:focus {
+    outline: none;
+}
+
+.wppb-ul-user-details .wppb-ul-info {
+    padding-bottom: 45px;
+}
+
+hr.wppb-ul-separator {
+    border-bottom: 1px solid #CACDD6;
+    margin: 16px 0 33px!important;
+}
+
+
+/* back button */
+a#wppb-back {
+    font-size: 14px;
+    text-decoration: none;
+    line-height: 17px;
+    color: #111521;
+    font-style: normal;
+    font-weight: 600;
+}
+
+a#wppb-back:focus {
+    outline: none;
+}
+
+a#wppb-back:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16px' style='fill:%23111521;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+    position: relative;
+    top: 3px;
+    right: 9px;
+}
+
+a#wppb-back:hover {
+    color: #0047FF;
+}
+
+a#wppb-back:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16px' style='fill:%230047FF;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+/* Mobile */
+@media screen and (max-width: 720px) {
+    .wppb-ul-user {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .wppb-ul-user .wppb-ul-image,
+    .wppb-ul-user .wppb-ul-info {
+        flex-basis: auto;
+    }
+
+    .col-full {
+        margin: auto;
+    }
+}

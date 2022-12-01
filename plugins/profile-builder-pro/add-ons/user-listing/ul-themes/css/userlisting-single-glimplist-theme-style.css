@@ -1,0 +1,285 @@
+/* GLIMPLIST Theme Template Style - Single Users */
+
+.entry-content, .entry-summary {
+    max-width: calc(100% - (2 * 1rem)) !important;
+    width: 100% !important;
+    margin: 0 1rem !important;
+    padding: 0 !important;
+}
+
+.container {
+    width: 100%;
+}
+
+.entry-content > *:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce):not(#bbpress-forums),
+.col-full,
+.grid-container {
+    max-width: 100%!important;
+}
+
+#wppb-ul-theme-glimplist {
+    width: 870px;
+    margin: auto;
+    max-width: 100%;
+}
+
+#wppb-ul-theme-glimplist a {
+    box-shadow: none !important;
+}
+
+#wppb-ul-theme-glimplist .wppb-ul-title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    color: #111521;
+    margin-bottom: 8px;
+    margin-top: 0;
+}
+
+#wppb-ul-theme-glimplist .wppb-ul-subtitle {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    color: #5E7291;
+    margin-bottom: 34px;
+    margin-top: 0;
+}
+
+#wppb-ul-theme-glimplist .wppb-ul-user {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.wppb-ul-user .wppb-ul-image {
+    width: 370px;
+    height: 498px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.wppb-ul-user .wppb-ul-user-details {
+    flex-basis: 470px;
+}
+
+.wppb-ul-user .wppb-ul-image img {
+    max-width: none;
+    max-height: 100%;
+    width: auto;
+    border-radius: 10px;
+}
+
+.wppb-ul-description {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+    color: #111521;
+    margin-bottom: 45px;
+    max-height: 160px;
+    overflow-y: scroll;
+    padding-right: 10px;
+}
+
+.wppb-ul-user .wppb-ul-description::-webkit-scrollbar {
+    width: 1px;
+}
+
+.wppb-ul-user .wppb-ul-description::-webkit-scrollbar-thumb {
+    background-color: #CACDD6;
+    outline: 1px solid #CACDD6;
+}
+
+
+.wppb-ul-tabs .wppb-ul-headers {
+    position: relative;
+    border-bottom: 1px solid #CACDD6;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    max-width: 470px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.wppb-ul-tabs {
+    position: relative;
+}
+
+#wppb-ul-themes-left-button {
+    position: absolute;
+    top: 0;
+    left: -20px;
+}
+
+#wppb-ul-themes-right-button {
+    position: absolute;
+    top: 0;
+    right: -20px;
+}
+
+#wppb-ul-themes-left-button a,
+#wppb-ul-themes-right-button a {
+    color: #0047FF;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+#wppb-ul-themes-left-button a:focus,
+#wppb-ul-themes-right-button a:focus  {
+    background-color: transparent !important;
+    color: #0047FF !important;
+    text-decoration: none !important;
+    outline: none!important;
+}
+
+.wppb-ul-tabs .wppb-ul-tab-title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    height: 33px;
+    color: #5E7291 !important;
+    padding: 0;
+    background-color: transparent !important;
+    border: none;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    text-decoration: none;
+    text-transform: none;
+    margin: 0 30px -1px 0;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.wppb-ul-tabs .wppb-ul-tab-title:last-child {
+    margin-right: 0;
+}
+
+.wppb-ul-tabs .wppb-ul-tab-title:hover,
+.wppb-ul-tabs .wppb-ul-tab-title.active {
+    color: #0047FF !important;
+    border-bottom: 2px solid #0047FF;
+}
+
+.wppb-ul-tabs .wppb-ul-tab-title:focus {
+    outline: none;
+}
+
+.wppb-ul-tabs .wppb-ul-content {
+    margin-top: 27px;
+}
+
+.wppb-ul-tabs .wppb-ul-tab-content {
+    display: none;
+}
+
+.wppb-ul-tab-content p {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #111521;
+    margin-top: 0;
+    margin-bottom: 15px;
+    word-break: break-word;
+}
+
+.wppb-ul-tab-content p span {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    color: #111521;
+    margin-right: 6px;
+}
+
+.wppb-ul-tab-content a {
+    color: #0047FF;
+    text-decoration: none !important;
+}
+
+.wppb-ul-tab-content a:focus {
+    background-color: transparent !important;
+    color: #0047FF !important;
+    text-decoration: none !important;
+    outline: none!important;
+}
+
+/* back button */
+a#wppb-back {
+    font-size: 14px;
+    text-decoration: none;
+    line-height: 17px;
+    color: #111521;
+    font-style: normal;
+    font-weight: 600;
+}
+
+a#wppb-back:focus {
+    outline: none;
+}
+
+a#wppb-back:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16px' style='fill:%23111521;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+    position: relative;
+    top: 3px;
+    right: 9px;
+}
+
+a#wppb-back:hover {
+    color: #0047FF;
+}
+
+a#wppb-back:hover:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16px' style='fill:%230047FF;stroke-width:2;'><path d='M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z' /></svg>");
+}
+
+#wppb-back-span {
+    border-top: 1px solid #111521;
+    width: 100%;
+    padding-top: 32px;
+    margin-top: 60px;
+}
+
+
+/* Mobile */
+@media screen and (max-width: 720px) {
+    #wppb-ul-theme-glimplist .wppb-ul-user {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .wppb-ul-user .wppb-ul-image,
+    .wppb-ul-user .wppb-ul-user-details {
+        flex-basis: auto;
+        max-width: 100%;
+        height: auto;
+    }
+
+    .wppb-ul-tabs .wppb-ul-headers {
+        max-width: calc(100% - 40px);
+        margin: 0 auto;
+    }
+
+    .wppb-ul-tabs .wppb-ul-tab-title {
+        margin: 0 20px -1px 0;
+    }
+
+    #wppb-ul-themes-right-button {
+        right: 0;
+    }
+
+    #wppb-ul-themes-left-button {
+        left: 0;
+    }
+
+    .col-full {
+        margin: auto;
+    }
+}

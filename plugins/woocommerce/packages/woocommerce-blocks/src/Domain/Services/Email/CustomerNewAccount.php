@@ -1,19 +1,17 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\Domain\Services\Email;
 
-use \WP_User;
-use \WC_Email;
 use Automattic\WooCommerce\Blocks\Domain\Package;
 
 /**
  * Customer New Account.
  *
  * An email sent to the customer when they create an account.
- * This is intended as a replacement to WC_Email_Customer_New_Account(),
+ * This is intended as a replacement to \WC_Email_Customer_New_Account(),
  * with a set password link instead of emailing the new password in email
  * content.
  *
- * @extends     WC_Email
+ * @extends     \WC_Email
  */
 class CustomerNewAccount extends \WC_Email {
 
@@ -57,7 +55,7 @@ class CustomerNewAccount extends \WC_Email {
 		$this->id                    = 'customer_new_account';
 		$this->customer_email        = true;
 		$this->title                 = __( 'New account', 'woocommerce' );
-		$this->description           = __( 'Customer "new account" emails are sent to the customer when a customer signs up via checkout or account blocks.', 'woocommerce' );
+		$this->description           = __( '“New Account” emails are sent when a customer signs up via the checkout flow.', 'woocommerce' );
 		$this->template_html         = 'emails/customer-new-account-blocks.php';
 		$this->template_plain        = 'emails/plain/customer-new-account-blocks.php';
 		$this->default_template_path = $package->get_path( '/templates/' );

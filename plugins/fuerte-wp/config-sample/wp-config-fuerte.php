@@ -39,6 +39,7 @@ $fuertewp = [
 	'general' => [
 		'access_denied_message'         => 'Access denied.', // Default access denied message.
 		'recovery_email'                => '', // Admin recovery email. If empty, dev@wpdomain.tld will be used. See https://make.wordpress.org/core/2019/04/16/fatal-error-recovery-mode-in-5-2/
+		'sender_email_enable'           => true, // Enable custom email sender.
 		'sender_email'                  => '', // Default site sender email. If empty, no-reply@wpdomain.tld will be used.
 		'autoupdate_core'               => true, // Auto update WP core.
 		'autoupdate_plugins'            => true, // Auto update plugins.
@@ -52,12 +53,18 @@ $fuertewp = [
 		'use_site_logo_login'           => true, // Use customizer logo as WP login logo.
 	],
 	/*
+	REST API
+	*/
+	'rest_api' => [
+		'loggedin_only'         => false, // Force REST API to logged in users only.
+		'disable_app_passwords' => true, // Disable WP application passwords for REST API.
+	],
+	/*
 	Restrictions
 	*/
 	'restrictions' => [
-		'disable_xmlrpc'                => true, // Disable the old XML-RPC API
+		'disable_xmlrpc'                => true, // Disable old XML-RPC API
 		'disable_admin_create_edit'     => true, // Disable creation of new admin accounts by non super admins.
-		'disable_app_passwords'         => true, // Disable WP application passwords.
 		'disable_weak_passwords'        => true, // Disable ability to use a weak passwords. User can't uncheck "Confirm use of weak password". Let users type their own password, but must be somewhat secure (following WP built in recommendation library).
 		'force_strong_passwords'        => false, // Force strong passwords usage, make password field read-only. Users must use WP provided strong password.
 		'disable_admin_bar_roles'       => [ 'subscriber', 'customer' ], // Disable admin bar for some user roles. Array of WP/WC roles. Empty array to not use this feature.
@@ -67,6 +74,7 @@ $fuertewp = [
 		'disable_plugin_editor'         => true, // Disable WP Plugin code editor.
 		'disable_theme_install'         => true, // Disable Themes installation.
 		'disable_plugin_install'        => true, // Disable Plugins installation.
+		'disable_customizer_css'        => true, // Disable Customizer Additional CSS.
 	],
 	/*
 	Controls several WordPress notification emails, mainly targeted to site/network admin email address.
@@ -102,6 +110,7 @@ $fuertewp = [
 	'restricted_pages' => [
 		'wprocket', // WP-Rocket
 		'updraftplus', // UpdraftPlus
+		'better-search-replace', // Better Search Replace
 		'backwpup', // BackWPup
 		'backwpupjobs', // BackWPup
 		'backwpupeditjob', // BackWPup
@@ -110,10 +119,10 @@ $fuertewp = [
 		'backwpupsettings', // BackWPup
 		'limit-login-attempts', // Limit Login Attempts Reloaded
 		'wp_stream_settings', // Stream
+		'transients-manager', // Transients Manager
 		'pw-transients-manager', // Transients Manager
 		'envato-market', // Envato Market
 		'elementor-license', //  Elementor Pro
-		'elementor-connect', // Elementor Pro
 	],
 	/*
 	Menus to be removed. Use menu's slug.
@@ -136,7 +145,9 @@ $fuertewp = [
 		'options-general.php|mainwp_child_tab', // MainWP Child
 		'options-general.php|wprocket', // WP-Rocket
 		'tools.php|export.php', // WP Export
+		'tools.php|transients-manager', // Transients Manager
 		'tools.php|pw-transients-manager', // Transients Manager
+		'tools.php|better-search-replace', // Better Search Replace
 	],
 	/*
 	Admin bar menus to be removed.

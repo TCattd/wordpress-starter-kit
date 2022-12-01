@@ -22,9 +22,21 @@ class WPML_Media_Caption {
 
 		$this->link = $this->find_link( $content_string );
 
-		$img_parser    = new WPML_Media_Img_Parse();
-		$this->img     = current( $img_parser->get_imgs( $content_string ) );
-		$this->caption = trim( strip_tags( $content_string ) );
+		$mediaParsers  = ( new \WPML\Media\Factories\WPML_Media_Element_Parser_Factory() )->create( $content_string );
+		$mediaElements = [];
+
+		foreach ( $mediaParsers as $parser ) {
+			if ( $parser instanceof \WPML\Media\Classes\WPML_Media_Image_Parser
+			     || $parser instanceof \WPML\Media\Classes\WPML_Media_Classic_Video_Parser
+			) {
+				$mediaElements = array_merge( $mediaElements, $parser->getMediaElements() );
+			}
+		}
+
+		if ( ! empty( $mediaElements ) ) {
+			$this->img     = current( $mediaElements );
+			$this->caption = trim( strip_tags( $content_string ) );
+		}
 	}
 
 

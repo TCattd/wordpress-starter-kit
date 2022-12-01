@@ -1,0 +1,67 @@
+### 1.7 | 2022-04-07
+- Added the [gform_partialentries_pre_update](https://docs.gravityforms.com/gform_partialentries_pre_update/) filter to allow modifying the partial entry data before it is updated.
+- Fixed an issue that causes an unsaved changes notice to display each time partial entries is enabled or disabled in the form settings.
+
+### 1.6 | 2020-09-24
+- Added support for Gravity Forms 2.5.
+
+### 1.5 | 2020-05-11
+- Added translations for Hebrew, Hindi, Japanese, and Turkish.
+- Fixed an issue where values for fields located in sections or pages which are hidden by conditional logic are being saved to the partial entry.
+
+
+### 1.4 | 2019-08-07
+- Added security enhancements.
+- Added support for anti-spam honeypot validation prior to creation of partial entry.
+- Fixed "?gf_token" being saved as the value of the resume_url entry meta when a draft submission has not been saved.
+
+
+### 1.3 | 2018-12-19
+- Updated minimum Gravity Forms version to 2.3.
+- Fixed issues with conditional logic evaluation when the entry is saved during form submission.
+- Fixed a PHP notice with Gravity Forms 2.3+ when save and continue is enabled for the form.
+- Fixed an issue where a completed entry could be overridden by a partial entry when an expired resume token is used.
+- Fixed a PHP notice which could occur during submission if the form contains one or more product fields.
+- Fixed issue where entry count did not match list of entries in certain scenarios.
+
+
+### 1.2 | 2018-03-27
+- Added security enhancements.
+- Fixed an issue preventing automatic upgrades.
+
+
+### 1.1 | 2018-01-29
+- Added Author URI to plugin header.
+- Added support for Gravity Forms 2.3.
+- Updated Plugin URI in plugin header to be https.
+- Updated the feed conditional logic progress choices to support the "is" operator.
+- Updated the "Complete" choice of the "Progress" entry meta item to support the "is not" operator.
+- Updated text "Enable Condition" to "Enable" in making Add-Ons consistent.
+- Updated partial-entries.js to include heartbeat.js as a dependency.
+- Fixed the handling of the "No Duplicates" field setting where validation fails on submission if a partial entry contains a duplicate value. The "No Duplicates" setting is now ignored when saving partial entries. Partial entries are now ignored when checking for duplicates on final submission - only complete entries are checked.
+- Fixed a PHP notice while viewing the entry list with WordPress 4.8.3.
+- Fixed a PHP notice during partial entry creation if the form includes a fileupload type field.
+
+
+### 1.0 | 2016-09-23
+- Added the [form_partialentries_post_{$event}](https://docs.gravityforms.com/gform_partialentries_post_event/) hook enabling custom actions to be performed once a partial entry has been saved or updated.
+- Updated to set entry meta (e.g. Quiz Score Total) when a partial entry is saved/updated.
+- Fixed issues with saving partial entries and with submitting the form when one of the fields has the "No Duplicates" setting enabled.
+- Fixed an issue with the form submission where previously saved values are not deleted when subsequently hidden by conditional logic.
+- Fixed an issue which caused the form to be validated twice during page changes.
+- Fixed an issue which caused GFFormDisplay::is_last_page() to return an incorrect result causing payment add-ons to perform credit card field validation on the wrong page.
+
+
+### 1.0-beta-2 | 2016-03-30
+- Added support for Gravity Forms 2.0-beta-2.
+- Added the Last Saved date and link to the entry detail page.
+- Added the gform_pre_render filter before creating the partial entry.
+- Added support for notification events (sending notifications when the partial entry is saved and updated).
+- Added logging statements.
+- Fixed PHP warning on notifications list and edit pages.
+- Fixed an issue with the warning message.
+- Fixed the text domains used for some of the translatable strings.
+
+
+### 1.0-beta-1 | 2016-03-17
+- All new!

@@ -150,7 +150,8 @@ class WPML_ACF_Blocks {
 	 * @return bool
 	 */
 	private function is_acf_block( WP_Block_Parser_Block $block ) {
-		return strpos( $block->blockName, 'acf/' ) === 0;
+		return strpos( $block->blockName, 'acf/' ) === 0 ||
+			function_exists( 'acf_has_block_type' ) && acf_has_block_type( $block->blockName );
 	}
 
 	/**

@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 abstract class Division_Base_Widget_Piotnetforms extends Base_Widget_Piotnetforms {
 	protected function add_repeater_trigger_controls() {
@@ -20,7 +22,7 @@ abstract class Division_Base_Widget_Piotnetforms extends Base_Widget_Piotnetform
 		$this->add_control(
 			'piotnetforms_repeater_form_id',
 			[
-				'type'        => 'text',
+				'type'        => 'hidden',
 				'label'       => __( 'Form ID* (Required)', 'piotnetforms' ),
 				'description' => __( 'Enter the same form id for all fields in a form, with latin character and no space. E.g order_form', 'piotnetforms' ),
 				'conditions'  => [

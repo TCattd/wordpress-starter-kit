@@ -3,10 +3,13 @@
  */
 import { __, _n, sprintf } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { SearchListControl, SearchListItem } from '@woocommerce/components';
+import {
+	SearchListControl,
+	SearchListItem,
+} from '@woocommerce/editor-components/search-list-control';
 import { SelectControl } from '@wordpress/components';
 import { withCategories } from '@woocommerce/block-hocs';
-import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message.js';
+import ErrorMessage from '@woocommerce/editor-components/error-placeholder/error-message';
 import classNames from 'classnames';
 
 /**
@@ -14,6 +17,19 @@ import classNames from 'classnames';
  */
 import './style.scss';
 
+/**
+ * @param {Object}    props
+ * @param {string=}   props.categories
+ * @param {boolean=}  props.isLoading
+ * @param {string=}   props.error
+ * @param {Function}  props.onChange
+ * @param {Function=} props.onOperatorChange
+ * @param {string=}   props.operator
+ * @param {number[]}  props.selected
+ * @param {boolean=}  props.isCompact
+ * @param {boolean=}  props.isSingle
+ * @param {boolean=}  props.showReviewCount
+ */
 const ProductCategoryControl = ( {
 	categories,
 	error,

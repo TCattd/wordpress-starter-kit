@@ -1,0 +1,196 @@
+.jconfirm {
+  .jconfirm-box {
+    padding: 0 !important;
+
+    .jconfirm-closeIcon {
+      top: 17px !important;
+    }
+
+    .jconfirm-title-c {
+      background-color: #fcb40c;
+      color: #fff;
+      padding: 15px;
+      font-size: 16px !important;
+      font-weight: bold;
+    }
+    .jconfirm-buttons {
+      padding-right: 15px;
+    }
+    .llar-onboarding-popup-content {
+      padding: 15px;
+      .title {
+        font-size: 16px;
+        line-height: 22px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .field-wrap {
+        margin-bottom: 20px;
+        input {
+          display: block;
+          width: 100%;
+          margin: 0 auto;
+          padding: 7px 15px;
+        }
+        .field-desc {
+          font-size: 13px;
+          color: #acacac;
+          padding-top: 0;
+          text-align: center;
+        }
+      }
+      .security-alerts-options {
+        display: flex;
+
+        .info {
+          font-size: 14px;
+          line-height: 22px;
+        }
+        .buttons {
+          display: flex;
+          padding-left: 15px;
+          align-items: center;
+
+          span {
+            text-transform: uppercase;
+            cursor: pointer;
+            width: 45px;
+            text-align: center;
+            vertical-align: middle;
+            display: block;
+            height: 34px;
+            line-height: 34px;
+
+            &.llar-act {
+              background-color: #0A75B5;
+              color: #fff;
+            }
+
+            &:first-child {
+              border: 1px solid #ccc;
+              border-radius: 4px 0 0 4px;
+            }
+
+            &:last-child {
+              border: 1px solid #ccc;
+              border-radius: 0 4px 4px 0;
+              border-left: 0;
+            }
+          }
+        }
+      }
+
+      &.llar-app-setup-popup {
+        .title {
+          font-size: 20px;
+          margin-bottom: 10px;
+        }
+        .desc {
+          text-align: center;
+          margin-bottom: 20px;
+          max-width: 400px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .field-wrap {
+          display: flex;
+          margin-bottom: 40px;
+
+          .field {
+            flex: 1;
+
+            .error {
+              display: none;
+              color: red;
+            }
+          }
+
+          .button-col {
+            button {
+              margin-left: 10px;
+              text-transform: uppercase;
+              position: relative;
+              height: 44px;
+
+              .preloader-wrapper {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(#fff, 0.5);
+                align-items: center;
+                justify-content: center;
+                display: none;
+              }
+
+              &.button-disabled {
+                .preloader-wrapper {
+                  display: flex;
+
+                  span {
+                    visibility: visible;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .divider-line {
+          border-top: 1px solid #ccc;
+          height: 1px;
+          text-align: center;
+          margin-bottom: 20px;
+          margin-top: 20px;
+          position: relative;
+
+          span {
+            background-color: #fff;
+            display: inline-block;
+            top: -10px;
+            position: relative;
+            padding: 0 10px;
+            text-transform: uppercase;
+          }
+        }
+        .bottom-buttons {
+          text-align: center;
+
+          .text {
+            text-align: center;
+            margin-bottom: 20px;
+          }
+          .buttons {
+            .button {
+              font-size: 14px;
+              text-transform: uppercase;
+              height: 40px;
+              margin: 0 5px;
+            }
+            .button-primary {
+              line-height: 1.5;
+              background-color: #fcb40c;
+              border-color: #b07c04;
+
+              span {
+                text-transform: none;
+                display: block;
+                font-size: 12px;
+                line-height: 13px;
+                margin-bottom: 2px;
+              }
+            }
+            .button-secondary {
+              line-height: 40px;
+            }
+            .button-link {
+              vertical-align: middle;
+              height: 40px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

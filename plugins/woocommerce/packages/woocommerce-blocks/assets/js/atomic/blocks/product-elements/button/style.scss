@@ -5,11 +5,14 @@
 	margin-bottom: $gap-small;
 
 	.wc-block-components-product-button__button {
-		word-break: break-word;
-		white-space: normal;
-		margin: 0 auto;
+		border-style: none;
 		display: inline-flex;
+		font-family: inherit;
+		font-weight: inherit;
 		justify-content: center;
+		margin: 0 auto;
+		white-space: normal;
+		word-break: break-word;
 	}
 
 	.wc-block-components-product-button__button--placeholder {
@@ -25,7 +28,6 @@
 	min-height: 3em;
 }
 
-
 .theme-twentytwentyone {
 	// Prevent buttons appearing disabled in the editor.
 	.editor-styles-wrapper .wc-block-components-product-button .wp-block-button__link {
@@ -33,4 +35,8 @@
 		color: var(--button--color-text);
 		border-color: var(--button--color-background);
 	}
+}
+
+.wp-block-button.wc-block-components-product-button[data-is-descendent-of-query-loop="true"] {
+	text-align: center;
 }

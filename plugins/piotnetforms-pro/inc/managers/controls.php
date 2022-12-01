@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // require all widgets
 foreach ( glob( __DIR__ . '/../controls/*.php' ) as $file ) {
@@ -8,14 +10,13 @@ foreach ( glob( __DIR__ . '/../controls/*.php' ) as $file ) {
 }
 
 class Controls_Manager_Piotnetforms {
-
 	/**
 	 * @var piotnetforms_Base_Control[]
 	 */
 	private $controls = [];
 
 	public function __construct() {
-		 $this->load_controls();
+		$this->load_controls();
 	}
 
 	public function render() {
@@ -28,6 +29,7 @@ class Controls_Manager_Piotnetforms {
 		return [
 			'text',
 			'select',
+			'radio',
 			'textarea',
 			'color',
 			'typography',

@@ -156,8 +156,8 @@
             </td>
         </tr>
 
+        <?php if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR.'/add-ons-advanced/social-connect/index.php' ) ) : ?>
 
-        <?php if ( is_plugin_active( 'pb-add-on-social-connect/index.php' ) ) : ?>
             <tr>
                 <th><?php esc_html_e( 'Disable Email Confirmation for Social Connect registrations', 'profile-builder' ); ?></th>
 

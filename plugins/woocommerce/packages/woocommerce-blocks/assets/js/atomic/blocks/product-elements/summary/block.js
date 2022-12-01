@@ -5,10 +5,12 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Summary from '@woocommerce/base-components/summary';
 import { blocksConfig } from '@woocommerce/block-settings';
+
 import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
+import { useColorProps, useTypographyProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 
 /**
@@ -23,9 +25,13 @@ import './style.scss';
  * @param {string} [props.className] CSS Class name for the component.
  * @return {*} The component.
  */
-const Block = ( { className } ) => {
+const Block = ( props ) => {
+	const { className } = props;
+
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product } = useProductDataContext();
+	const colorProps = useColorProps( props );
+	const typographyProps = useTypographyProps( props );
 
 	if ( ! product ) {
 		return (
@@ -34,7 +40,8 @@ const Block = ( { className } ) => {
 					className,
 					`wc-block-components-product-summary`,
 					{
-						[ `${ parentClassName }__product-summary` ]: parentClassName,
+						[ `${ parentClassName }__product-summary` ]:
+							parentClassName,
 					}
 				) }
 			/>
@@ -53,14 +60,20 @@ const Block = ( { className } ) => {
 		<Summary
 			className={ classnames(
 				className,
+				colorProps.className,
 				`wc-block-components-product-summary`,
 				{
-					[ `${ parentClassName }__product-summary` ]: parentClassName,
+					[ `${ parentClassName }__product-summary` ]:
+						parentClassName,
 				}
 			) }
 			source={ source }
 			maxLength={ 150 }
 			countType={ blocksConfig.wordCountType || 'words' }
+			style={ {
+				...colorProps.style,
+				...typographyProps.style,
+			} }
 		/>
 	);
 };

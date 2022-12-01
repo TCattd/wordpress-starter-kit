@@ -14,7 +14,7 @@ class WPPB_Pagination{
 		
 		//Current Page
 		$this->currentPage = (int)$currentPage;
-	
+
 		//Assign search variable
 		$this->searchFor = ( $searchFor != '' ? $searchFor : '' );
 
@@ -24,7 +24,7 @@ class WPPB_Pagination{
 
 		// Assign the page variable
 		$this->page = wppb_get_query_var ('wppb_page');
-		if($this->page == 0)
+		if( empty( $this->page ) )
 			$this->page = 1;
 
 		// Take the length of the array

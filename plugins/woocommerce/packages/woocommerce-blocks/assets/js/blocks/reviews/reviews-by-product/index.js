@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { Icon, comment } from '@woocommerce/icons';
+import { Icon, commentContent } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
@@ -20,13 +20,17 @@ registerBlockType( 'woocommerce/reviews-by-product', {
 	apiVersion: 2,
 	title: __( 'Reviews by Product', 'woocommerce' ),
 	icon: {
-		src: <Icon srcElement={ comment } />,
-		foreground: '#7f54b3',
+		src: (
+			<Icon
+				icon={ commentContent }
+				className="wc-block-editor-components-block-icon"
+			/>
+		),
 	},
 	category: 'woocommerce',
 	keywords: [ __( 'WooCommerce', 'woocommerce' ) ],
 	description: __(
-		'Show reviews of your products to build trust.',
+		'Display reviews for your products.',
 		'woocommerce'
 	),
 	supports: {

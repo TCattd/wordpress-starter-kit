@@ -64,7 +64,7 @@ class WPML_Basket_Tab_Ajax {
 	 * @uses \WPML_Basket_Tab_Ajax::create_remote_batch_message
 	 */
 	function begin_basket_commit() {
-		$basket_name = filter_input( INPUT_POST, 'basket_name', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
+		$basket_name = filter_input( INPUT_POST, 'basket_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
 
 		wp_send_json_success( $this->create_remote_batch_message( $basket_name ) );
 	}
@@ -180,7 +180,7 @@ class WPML_Basket_Tab_Ajax {
 
 	/** @return string */
 	private function get_basket_name() {
-		return filter_input( INPUT_POST, 'basket_name', FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES );
+		return filter_input( INPUT_POST, 'basket_name', FILTER_SANITIZE_FULL_SPECIAL_CHARS, FILTER_FLAG_NO_ENCODE_QUOTES );
 	}
 
 	private static function sanitize_errors( $source ) {

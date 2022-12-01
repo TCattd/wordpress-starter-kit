@@ -1,6 +1,8 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 class piotnetforms_Icon extends Base_Widget_Piotnetforms {
 	public function get_type() {
@@ -18,12 +20,12 @@ class piotnetforms_Icon extends Base_Widget_Piotnetforms {
 	public function get_icon() {
 		return [
 			'type' => 'image',
-			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/i-icon.svg',
+			'value' => plugin_dir_url( __FILE__ ) . '../../assets/icons/w-icon.svg',
 		];
 	}
 
 	public function get_categories() {
-		return [ 'pafe-form-builder' ];
+		return [ 'basic' ];
 	}
 
 	public function get_keywords() {
@@ -31,7 +33,7 @@ class piotnetforms_Icon extends Base_Widget_Piotnetforms {
 	}
 
 	public function get_style() {
-		return [ 
+		return [
 			'piotnetforms-fontawesome-style'
 		];
 	}
@@ -362,8 +364,7 @@ class piotnetforms_Icon extends Base_Widget_Piotnetforms {
 		$icon_shape       = ! empty( $settings['icon_shape'] ) ? $settings['icon_shape'] : '';
 		$icon_link        = $settings['icon_link'] ? $settings['icon_link'] : '';
 		$icon_link_target = ! empty( $settings['icon_link_target'] ) ? $settings['icon_link_target'] : '_self';
-		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-icon' );
-		?>
+		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-icon' ); ?>
 		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
 			<?php if ( empty( $icon_link ) ) { ?>
 			<div class="piotnetforms-icon__item <?php echo $icon_type . '-' . $icon_shape; ?>"><i class="<?php echo $icon; ?>"></i></div>
@@ -387,5 +388,4 @@ class piotnetforms_Icon extends Base_Widget_Piotnetforms {
 		</div>
 		<?php
 	}
-
 }

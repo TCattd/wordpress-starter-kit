@@ -1,0 +1,182 @@
+# Copyright (C) 2021 Gravity Forms
+# This file is distributed under the GPL-3.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms reCAPTCHA Add-On 1.1\n"
+"Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
+"Last-Translator: Gravity Forms <support@gravityforms.com>\n"
+"Language-Team: Gravity Forms <support@gravityforms.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-07-21T17:39:37+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: gravityformsrecaptcha\n"
+
+#. Plugin Name of the plugin
+msgid "Gravity Forms reCAPTCHA Add-On"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://gravityforms.com"
+msgstr ""
+
+#. Description of the plugin
+msgid "Enhance Gravity Forms with support for Google reCAPTCHA."
+msgstr ""
+
+#. Author of the plugin
+msgid "Gravity Forms"
+msgstr ""
+
+#: class-gf-recaptcha.php:479
+msgid "Disable reCAPTCHA v3 for this form."
+msgstr ""
+
+#: class-gf-recaptcha.php:628
+msgid "reCAPTCHA Score"
+msgstr ""
+
+#: class-gf-recaptcha.php:689
+msgid "reCAPTCHA"
+msgstr ""
+
+#: class-gf-recaptcha.php:710
+msgid "Score"
+msgstr ""
+
+#: class-gf-recaptcha.php:713
+msgid "Click here to learn more about reCAPTCHA."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:112
+msgid "reCAPTCHA Settings"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:131
+msgid "reCAPTCHA v3"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:135
+#: includes/settings/class-plugin-settings.php:198
+msgid "Site Key"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:141
+#: includes/settings/class-plugin-settings.php:205
+msgid "Secret Key"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:147
+msgid "Score Threshold"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:159
+msgid "Disable Google reCAPTCHA Badge"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:160
+msgid "By default reCAPTCHA v3 displays a badge on every page of your site with links to the Google terms of service and privacy policy. You are allowed to hide the badge as long as you include the reCAPTCHA branding and links visibly in the user flow."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:165
+msgid "I have added the reCAPTCHA branding, terms of service and privacy policy to my site. "
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:194
+msgid "reCAPTCHA v2"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:212
+msgid "Type"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:219
+msgid "Checkbox"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:223
+msgid "Invisible"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:230
+msgid "Validate Keys"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:266
+msgid "reCAPTCHA keys are invalid."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:309
+msgid "Google reCAPTCHA is a free anti-spam service that protects your website from fraud and abuse."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:310
+msgid "By adding reCAPTCHA to your forms, you can deter automated software from submitting form entries, while still ensuring a user-friendly experience for real people."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:314
+msgid "Gravity Forms integrates with three types of Google reCAPTCHA."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:316
+msgid "reCAPTCHA v3 - Adds a script to every page of your site and uploads form content for processing by Google."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:317
+msgid "All submissions are accepted and suspicious submissions are marked as spam."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:318
+msgid "When reCAPTCHA v3 is configured, it is enabled automatically on all forms by default. It can be disabled for specific forms in the form settings."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:320
+msgid "reCAPTCHA v2 (Invisible) - Displays a badge on your form and will present a challenge to the user if the activity is suspicious e.g. select the traffic lights."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:321
+msgid "Please note, only v2 keys are supported and checkbox keys are not compatible with invisible reCAPTCHA."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:322
+msgid "To activate reCAPTCHA v2 on your form, simply add the CAPTCHA field in the form editor."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:326
+msgid "Read more about reCAPTCHA."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:329
+msgid "reCAPTCHA v2 (Checkbox) - Requires a user to click a checkbox to indicate that they are not a robot and displays a challenge if the activity is suspicious"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:334
+msgid "For more information on reCAPTCHA, which version is right for you, and how to add it to your forms,"
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:338
+msgid "check out our documentation."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:354
+msgid "reCAPTCHA v3 returns a score (1.0 is very likely a good interaction, 0.0 is very likely a bot)."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:355
+msgid "If the score is less than or equal to this threshold, the form submission will be sent to spam."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:356
+msgid "The default threshold is 0.5."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:403
+msgid "Unexpected field type."
+msgstr ""
+
+#: includes/settings/class-plugin-settings.php:410
+msgid "Score threshold must be between 0.0 and 1.0"
+msgstr ""

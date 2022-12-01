@@ -1,0 +1,24 @@
+/* DEFAULT Theme Template Style - Single User */
+
+/*.entry-content, .entry-summary {*/
+/*    max-width: calc(100% - (2 * 1rem)) !important;*/
+/*    width: 100% !important;*/
+/*    margin: 0 1rem !important;*/
+/*    padding: 0 !important;*/
+/*}*/
+
+/*.container {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.entry-content > *:not(.alignwide):not(.alignfull):not(.alignleft):not(.alignright):not(.wp-block-separator):not(.woocommerce),*/
+/*.wppb-userlisting-container,*/
+/*.col-full,*/
+/*.grid-container {*/
+/*    max-width: 100%!important;*/
+/*}*/
+
+/*.wppb-profile,*/
+/*.wppb-back-span {*/
+/*    max-width: 100% !important;*/
+/*}*/

@@ -21,7 +21,7 @@ import {
 import { Component } from '@wordpress/element';
 import { compose } from '@wordpress/compose';
 import PropTypes from 'prop-types';
-import { Icon, grid } from '@woocommerce/icons';
+import { Icon, grid } from '@wordpress/icons';
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import {
 	InnerBlockLayoutContextProvider,
@@ -84,7 +84,7 @@ class Editor extends Component {
 	};
 
 	getIcon = () => {
-		return <Icon srcElement={ grid } />;
+		return <Icon icon={ grid } />;
 	};
 
 	togglePreview = () => {
@@ -149,7 +149,7 @@ class Editor extends Component {
 						{
 							icon: 'edit',
 							title: __(
-								'Edit inner product layout',
+								'Edit the layout of each product',
 								'woocommerce'
 							),
 							onClick: () => this.togglePreview(),
@@ -208,7 +208,7 @@ class Editor extends Component {
 				<div className="wc-block-all-products-grid-item-template">
 					<Tip>
 						{ __(
-							'Edit the blocks inside the preview below to change the content displayed for each product within the product grid.',
+							'Edit the blocks inside the example below to change the content displayed for all products within the product grid.',
 							'woocommerce'
 						) }
 					</Tip>
@@ -245,7 +245,7 @@ class Editor extends Component {
 						</Button>
 						<Button
 							className="wc-block-all-products__reset-button"
-							icon={ <Icon srcElement={ grid } /> }
+							icon={ <Icon icon={ grid } /> }
 							label={ __(
 								'Reset layout to default',
 								'woocommerce'

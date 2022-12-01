@@ -770,7 +770,7 @@ class WPML_String_Translation {
 	}
 
 	function check_db_for_gettext_context() {
-		$string_settings = apply_filters( 'wpml_get_setting', false, 'st' );
+		$string_settings = apply_filters( 'wpml_get_setting', [], 'st' );
 		if ( ! isset( $string_settings['db_ok_for_gettext_context'] ) ) {
 
 			if ( function_exists( 'icl_table_column_exists' ) && icl_table_column_exists( 'icl_strings', 'domain_name_context_md5' ) ) {

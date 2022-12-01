@@ -35,8 +35,8 @@ if( $active_app === 'local' ) {
 		$retries_chart_color = '#FFCC66';
     } else {
 
-		$retries_chart_title = __( 'Warning: More than 100 failed login attempts today', 'limit-login-attempts-reloaded' );
-		$retries_chart_desc = __( 'Your site is likely under a brute-force attack', 'limit-login-attempts-reloaded' );
+		$retries_chart_title = __( 'Warning: Your site is experiencing over 100 failed login attempts today', 'limit-login-attempts-reloaded' );
+		$retries_chart_desc = __( 'Your site may be under a brute-force attack', 'limit-login-attempts-reloaded' );
 		$retries_chart_color = '#FF6633';
 		$retries_chart_show_actions = true;
     }
@@ -63,7 +63,7 @@ if( $active_app === 'local' ) {
 	</div>
 	<div class="dashboard-section-1 <?php echo esc_attr( $active_app ); ?>">
 		<div class="info-box-1">
-            <div class="section-title"><?php _e( 'Failed Login Attempts', 'limit-login-attempts-reloaded' ); ?></div>
+            <div class="section-title"><?php _e( 'Failed Login Attempts', 'limit-login-attempts-reloaded' ); ?><?php echo $active_app === 'custom' ? '<span class="llar-premium-label"><span class="dashicons dashicons-yes-alt"></span>' . __( 'Premium protection enabled', 'limit-login-attempts-reloaded' ) . '</span>' : ''; ?></div>
             <div class="section-content">
                 <div class="chart">
                     <canvas id="llar-attack-velocity-chart"></canvas>
@@ -126,9 +126,9 @@ if( $active_app === 'local' ) {
 				<?php if( $retries_chart_show_actions ) : ?>
                     <div class="actions">
                         <ol>
-                            <li><?php _e( 'Change your password to something more secure.', 'limit-login-attempts-reloaded' ); ?></li>
+                            <li><?php _e( 'Ensure your passwords are secure.', 'limit-login-attempts-reloaded' ); ?></li>
                             <li><?php _e( 'Make sure WordPress and all your plugins are updated.', 'limit-login-attempts-reloaded' ); ?></li>
-                            <li><?php echo sprintf( __( '<a href="%s" target="_blank">Update to Premium</a> Limit Login Attempts Reloaded.', 'limit-login-attempts-reloaded' ), 'https://www.limitloginattempts.com/info.php?from=plugin-dashboard-status' ); ?></li>
+                            <li><?php echo sprintf( __( 'Consider <a href="%s" target="_blank">upgrading to premium</a> for advanced protection.', 'limit-login-attempts-reloaded' ), 'https://www.limitloginattempts.com/info.php?from=plugin-dashboard-status' ); ?></li>
                         </ol>
                     </div>
 				<?php endif; ?>
@@ -369,6 +369,7 @@ if( $active_app === 'local' ) {
                     <?php endforeach; ?>
                 </table>
                 <p class="countries-table-info"><?php _e( 'today', 'limit-login-attempts-reloaded' ); ?></p>
+                <p class="countries-table-info-right"><?php _e( 'Block by country feature available with <a href="https://www.limitloginattempts.com/info.php?from=plugin-dashboard-country" target="_blank">premium plus plan</a>.', 'limit-login-attempts-reloaded' ) ?></p>
             </div>
         </div>
 
@@ -440,3 +441,5 @@ if( $active_app === 'local' ) {
     </div>
     <?php endif; ?>
 </div>
+
+<?php require_once( LLA_PLUGIN_DIR . '/views/onboarding-popup.php')?>

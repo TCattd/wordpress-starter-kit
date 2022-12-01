@@ -18,7 +18,8 @@ import GridContentControl from '@woocommerce/editor-components/grid-content-cont
 import GridLayoutControl from '@woocommerce/editor-components/grid-layout-control';
 import ProductTagControl from '@woocommerce/editor-components/product-tag-control';
 import ProductOrderbyControl from '@woocommerce/editor-components/product-orderby-control';
-import { Icon, more } from '@woocommerce/icons';
+import ProductStockControl from '@woocommerce/editor-components/product-stock-control';
+import { Icon, tag } from '@wordpress/icons';
 import { gridBlockPreview } from '@woocommerce/resource-previews';
 import { getSetting } from '@woocommerce/settings';
 
@@ -91,6 +92,7 @@ class ProductsByTagBlock extends Component {
 			orderby,
 			rows,
 			alignButtons,
+			stockStatus,
 		} = attributes;
 
 		return (
@@ -150,6 +152,18 @@ class ProductsByTagBlock extends Component {
 						value={ orderby }
 					/>
 				</PanelBody>
+				<PanelBody
+					title={ __(
+						'Filter by stock status',
+						'woocommerce'
+					) }
+					initialOpen={ false }
+				>
+					<ProductStockControl
+						setAttributes={ setAttributes }
+						value={ stockStatus }
+					/>
+				</PanelBody>
 			</InspectorControls>
 		);
 	}
@@ -180,10 +194,7 @@ class ProductsByTagBlock extends Component {
 		return (
 			<Placeholder
 				icon={
-					<Icon
-						srcElement={ more }
-						className="block-editor-block-icon"
-					/>
+					<Icon icon={ tag } className="block-editor-block-icon" />
 				}
 				label={ __(
 					'Products by Tag',
@@ -237,7 +248,7 @@ class ProductsByTagBlock extends Component {
 					<Placeholder
 						icon={
 							<Icon
-								icon={ more }
+								icon={ tag }
 								className="block-editor-block-icon"
 							/>
 						}
@@ -291,7 +302,7 @@ class ProductsByTagBlock extends Component {
 		) : (
 			<Placeholder
 				icon={
-					<Icon icon={ more } className="block-editor-block-icon" />
+					<Icon icon={ tag } className="block-editor-block-icon" />
 				}
 				label={ __(
 					'Products by Tag',
@@ -300,7 +311,7 @@ class ProductsByTagBlock extends Component {
 				className="wc-block-products-grid wc-block-product-tag"
 			>
 				{ __(
-					"This block displays products from selected tags. In order to preview this you'll first need to create a product and assign it some tags.",
+					'This block displays products from selected tags. To use it you first need to create products and assign tags to them.',
 					'woocommerce'
 				) }
 			</Placeholder>

@@ -3,18 +3,31 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "lang": "en"
          },
          "Accepted": [
             "Accettata"
          ],
-         "Reviewing the next translation...": [
-            "Revisione della prossima traduzione..."
+         "Approved!": [
+            "Approvata!"
+         ],
+         "Loading the next translation for review...": [
+            "Caricamento della prossima traduzione per la revisione..."
          ],
          "Back": [
             "Indietro"
          ],
-         "Edit Translation": [
+         "Turn off to not automatically load the next translation after finishing this review.": [
+            "Disattiva per non caricare automaticamente la traduzione successiva al termine di questa revisione."
+         ],
+         "Turn on to automatically load the next translation after finishing this review.": [
+            "Attiva per caricare automaticamente la traduzione successiva al termine di questa revisione."
+         ],
+         "Edit": [
+            "Modifica"
+         ],
+         "Edit translation": [
             "Modifica la traduzione"
          ],
          "There was an error in applying translation.": [
@@ -23,17 +36,20 @@
          "Please wait, applying translation..": [
             "Attendi, applicazione della traduzione in corso..."
          ],
+         "Next review": [
+            "Prossima revisione"
+         ],
          "Publish this translation": [
             "Pubblica questa traduzione"
          ],
          "Accept this translation": [
             "Accetta questa traduzione"
          ],
-         "Approved!": [
-            "Approvata!"
+         "Published!": [
+            "Pubblicata!"
          ],
-         "Loading the next translation for review...": [
-            "Caricamento della prossima traduzione per la revisione..."
+         "Reviewing the next translation...": [
+            "Revisione della prossima traduzione..."
          ]
       }
    }

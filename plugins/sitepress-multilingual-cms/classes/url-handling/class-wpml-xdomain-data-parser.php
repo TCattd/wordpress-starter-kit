@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 class WPML_XDomain_Data_Parser {
 
 	const SCRIPT_HANDLER = 'wpml-xdomain-data';
@@ -89,9 +91,9 @@ class WPML_XDomain_Data_Parser {
 			$xdomain_data_request = false;
 
 			if ( WPML_XDOMAIN_DATA_GET == $this->settings['xdomain_data'] ) {
-				$xdomain_data_request = isset( $_GET['xdomain_data'] ) ? filter_var( $_GET['xdomain_data'], FILTER_SANITIZE_STRING ) : false;
+				$xdomain_data_request = Sanitize::stringProp( 'xdomain_data', $_GET );
 			} elseif ( WPML_XDOMAIN_DATA_POST == $this->settings['xdomain_data'] ) {
-				$xdomain_data_request = isset( $_POST['xdomain_data'] ) ? urldecode( filter_var( $_POST['xdomain_data'], FILTER_SANITIZE_STRING ) ) : false;
+				$xdomain_data_request = urldecode( Sanitize::stringProp( 'xdomain_data', $_POST ) );
 			}
 
 			if ( $xdomain_data_request ) {

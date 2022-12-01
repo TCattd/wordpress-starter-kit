@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 /**
  * Class WPML_Troubleshoot_Sync_Posts_Taxonomies
  */
@@ -24,7 +26,7 @@ class WPML_Troubleshoot_Sync_Posts_Taxonomies {
 			return;
 		}
 
-		$post_type    = filter_var( $_POST['post_type'], FILTER_SANITIZE_STRING );
+		$post_type    = Sanitize::stringProp( 'post_type', $_POST );
 		$batch_number = (int) filter_var( $_POST['batch_number'], FILTER_SANITIZE_NUMBER_INT );
 
 		$posts = $this->get_posts_batch( $post_type, $batch_number );

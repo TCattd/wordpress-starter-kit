@@ -1,9 +1,9 @@
 === Theme Check ===
 Contributors: Otto42, pross, poena, dingo-d, acosmin, joyously
 Requires at Least: 3.7
-Tested Up To: 5.4
-Tags: template, theme, check, checker, tool, wordpress.org, upload, uploader, test, guideline, review
-Stable tag: 20200922.1
+Tested Up To: 5.8
+Tags: themes, guidelines, wordpress.org
+Stable tag: 20220929
 
 A simple and easy way to test your theme for all the latest WordPress standards and practices. A great theme development tool!
 
@@ -34,9 +34,9 @@ This plugin does not decide the guidelines used. Any issues with particular them
 = How to enable trac formatting =
 
 The Theme Review team use this plugin while reviewing themes and copy/paste the output into trac tickets, the trac system has its own markup language.
-To enable trac formatting in Theme-Check you need to define a couple of variables in wp-config.php:
-*TC_PRE* and *TC_POST* are used as a ticket header and footer.
-Examples:
+To enable trac formatting in Theme-Check you need to define a couple of variables in wp-config.php: *TC_PRE* and *TC_POST* are used as a ticket header and footer.
+For example:
+
 `define( 'TC_PRE', 'Theme Review:[[br]]
 - Themes should be reviewed using "define(\'WP_DEBUG\', true);" in wp-config.php[[br]]
 - Themes should be reviewed using the test data from the Theme Checklists (TC)
@@ -49,9 +49,9 @@ comments, or feedback:[[br]]
 * Leave a comment on this ticket[[br]]
 * Send an email to the Theme Review email list[[br]]
 * Use the #wordpress-themes IRC channel on Freenode.' );`
+
 If **either** of these two vars are defined a new trac tickbox will appear next to the *Check it!* button.
 
 == Changelog ==
 
-= 20200504.1 =
-* Changes can be found in the changelog.txt file.
+Changes can be found in [the changelog.txt file](https://github.com/WordPress/theme-check/blob/master/changelog.txt).

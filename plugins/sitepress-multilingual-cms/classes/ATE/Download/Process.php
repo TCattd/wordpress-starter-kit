@@ -5,6 +5,7 @@ namespace WPML\TM\ATE\Download;
 use Exception;
 use WPML\Collect\Support\Collection;
 use WPML\FP\Fns;
+use WPML\FP\Lst;
 use WPML\FP\Obj;
 use WPML\TM\ATE\Log\Entry;
 use WPML\TM\ATE\Log\EventsTypes;
@@ -35,9 +36,19 @@ class Process {
 				$processedJob = $this->consumer->process( $job );
 
 				if ( ! $processedJob ) {
-					throw new Exception( 'The translation job could not be applied.' );
+					global $iclTranslationManagement;
+					$message = 'The translation job could not be applied.';
+
+					if ( $iclTranslationManagement->messages_by_type( 'error' ) ) {
+
+						$iclTranslationManagementError = implode( ' ', Lst::pluck( 'text', $iclTranslationManagement->messages_by_type( 'error' ) ) );
+						$message                      .= ' ' . $iclTranslationManagementError;
+					}
+
+					throw new Exception( $message );
 				}
 			} catch ( Exception $e ) {
+
 				$this->logException( $e, $processedJob ?: $job );
 			}
 

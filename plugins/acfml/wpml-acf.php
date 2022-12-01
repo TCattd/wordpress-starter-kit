@@ -5,7 +5,7 @@
  * Author: OnTheGoSystems
  * Plugin URI: https://wpml.org/
  * Author URI: http://www.onthegosystems.com/
- * Version: 1.10.3
+ * Version: 1.10.4
  *
  * @package WPML\ACF
  */
@@ -51,3 +51,7 @@ function loadACFMLrequirements() {
 add_action( 'wpml_loaded', 'acfmlInit' );
 
 add_action( 'plugins_loaded', 'loadACFMLrequirements' );
+
+require_once __DIR__ . '/classes/Notice/Links.php';
+require_once __DIR__ . '/classes/Notice/Activation.php';
+register_activation_hook( __FILE__, [ \ACFML\Notice\Activation::class, 'activate' ] );

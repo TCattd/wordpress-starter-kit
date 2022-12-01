@@ -4,43 +4,30 @@
 import { __ } from '@wordpress/i18n';
 import { useCallback, useRef, useEffect, useState } from 'react';
 import classnames from 'classnames';
-import {
-	ValidationInputError,
-	useValidationContext,
-	useCheckoutContext,
-} from '@woocommerce/base-context';
 import { withInstanceId } from '@wordpress/compose';
 import { isString } from '@woocommerce/types';
+import { dispatch, useSelect } from '@wordpress/data';
+import { VALIDATION_STORE_KEY } from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
  */
 import TextInput from './text-input';
 import './style.scss';
+import { ValidationInputError } from '../validation-input-error';
 
-interface ValidatedTextInputPropsWithId {
-	instanceId?: string;
-	id: string;
-}
-
-interface ValidatedTextInputPropsWithInstanceId {
-	instanceId: string;
+interface ValidatedTextInputProps {
 	id?: string;
-}
-
-type ValidatedTextInputProps = (
-	| ValidatedTextInputPropsWithId
-	| ValidatedTextInputPropsWithInstanceId
- ) & {
+	instanceId: string;
 	className?: string;
 	ariaDescribedBy?: string;
 	errorId?: string;
-	validateOnMount?: boolean;
 	focusOnMount?: boolean;
 	showError?: boolean;
 	errorMessage?: string;
 	onChange: ( newValue: string ) => void;
-};
+	value: string;
+}
 
 const ValidatedTextInput = ( {
 	className,
@@ -48,28 +35,29 @@ const ValidatedTextInput = ( {
 	id,
 	ariaDescribedBy,
 	errorId,
-	validateOnMount = true,
 	focusOnMount = false,
 	onChange,
 	showError = true,
 	errorMessage: passedErrorMessage = '',
+	value = '',
 	...rest
-}: ValidatedTextInputProps ) => {
+}: ValidatedTextInputProps ): JSX.Element => {
 	const [ isPristine, setIsPristine ] = useState( true );
 	const inputRef = useRef< HTMLInputElement >( null );
-	const {
-		getValidationError,
-		hideValidationError,
-		setValidationErrors,
-		clearValidationError,
-		getValidationErrorId,
-	} = useValidationContext();
 
-	const { isBeforeProcessing } = useCheckoutContext();
-
+	const { setValidationErrors, hideValidationError, clearValidationError } =
+		dispatch( VALIDATION_STORE_KEY );
 	const textInputId =
 		typeof id !== 'undefined' ? id : 'textinput-' + instanceId;
 	const errorIdString = errorId !== undefined ? errorId : textInputId;
+
+	const { validationError, validationErrorId } = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return {
+			validationError: store.getValidationError( errorIdString ),
+			validationErrorId: store.getValidationErrorId( errorIdString ),
+		};
+	} );
 
 	const validateInput = useCallback(
 		( errorsHidden = true ) => {
@@ -83,7 +71,7 @@ const ValidatedTextInput = ( {
 			if ( inputIsValid ) {
 				clearValidationError( errorIdString );
 			} else {
-				setValidationErrors( {
+				const validationErrors = {
 					[ errorIdString ]: {
 						message:
 							inputObject.validationMessage ||
@@ -93,38 +81,40 @@ const ValidatedTextInput = ( {
 							),
 						hidden: errorsHidden,
 					},
-				} );
+				};
+				setValidationErrors( validationErrors );
 			}
 		},
 		[ clearValidationError, errorIdString, setValidationErrors ]
 	);
 
-	useEffect( () => {
-		if ( isPristine ) {
-			if ( focusOnMount ) {
-				inputRef.current?.focus();
-			}
-			setIsPristine( false );
-		}
-	}, [ focusOnMount, isPristine, setIsPristine ] );
-
-	useEffect( () => {
-		if ( isPristine ) {
-			if ( validateOnMount ) {
-				validateInput();
-			}
-			setIsPristine( false );
-		}
-	}, [ isPristine, setIsPristine, validateOnMount, validateInput ] );
-
 	/**
-	 * @todo Remove extra validation call after refactoring the validation system.
+	 * Focus on mount
+	 *
+	 * If the input is in pristine state, focus the element.
 	 */
 	useEffect( () => {
-		if ( isBeforeProcessing ) {
-			validateInput();
+		if ( isPristine && focusOnMount ) {
+			inputRef.current?.focus();
 		}
-	}, [ isBeforeProcessing, validateInput ] );
+		setIsPristine( false );
+	}, [ focusOnMount, isPristine, setIsPristine ] );
+
+	/**
+	 * Value Validation
+	 *
+	 * Runs validation on state change if the current element is not in focus. This is because autofilled elements do not
+	 * trigger the blur() event, and so values can be validated in the background if the state changes elsewhere.
+	 */
+	useEffect( () => {
+		if (
+			inputRef.current?.ownerDocument?.activeElement !== inputRef.current
+		) {
+			validateInput( true );
+		}
+		// We need to track value even if it is not directly used so we know when it changes.
+	}, [ value, validateInput ] );
+
 	// Remove validation errors when unmounted.
 	useEffect( () => {
 		return () => {
@@ -132,18 +122,14 @@ const ValidatedTextInput = ( {
 		};
 	}, [ clearValidationError, errorIdString ] );
 
-	// @todo - When useValidationContext is converted to TypeScript, remove this cast and use the correct type.
-	const errorMessage = ( getValidationError( errorIdString ) || {} ) as {
-		message?: string;
-		hidden?: boolean;
-	};
 	if ( isString( passedErrorMessage ) && passedErrorMessage !== '' ) {
-		errorMessage.message = passedErrorMessage;
+		validationError.message = passedErrorMessage;
 	}
-	const hasError = errorMessage.message && ! errorMessage.hidden;
+
+	const hasError = validationError?.message && ! validationError?.hidden;
 	const describedBy =
-		showError && hasError && getValidationErrorId( errorIdString )
-			? getValidationErrorId( errorIdString )
+		showError && hasError && validationErrorId
+			? validationErrorId
 			: ariaDescribedBy;
 
 	return (
@@ -170,6 +156,7 @@ const ValidatedTextInput = ( {
 				onChange( val );
 			} }
 			ariaDescribedBy={ describedBy }
+			value={ value }
 			{ ...rest }
 		/>
 	);

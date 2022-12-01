@@ -1,5 +1,7 @@
 <?php
 
+use WPML\API\Sanitize;
+
 class WPML_TM_Translation_Batch_Factory {
 
 	/** @var  WPML_Translation_Basket $basket */
@@ -20,10 +22,8 @@ class WPML_TM_Translation_Batch_Factory {
 	 */
 	public function create( array $batch_data ) {
 		$translators = isset( $batch_data['translators'] ) ? $batch_data['translators'] : array();
-		$basket_name = isset( $batch_data['basket_name'] ) ? filter_var(
-			$batch_data['basket_name'],
-			FILTER_SANITIZE_STRING
-		) : '';
+		$basket_name = Sanitize::stringProp( 'basket_name', $batch_data );
+		
 		$elements    = apply_filters(
 			'wpml_tm_batch_factory_elements',
 			$this->get_elements( $batch_data, array_keys( $translators ) ),

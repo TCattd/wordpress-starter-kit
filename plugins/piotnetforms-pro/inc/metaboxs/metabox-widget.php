@@ -1,11 +1,13 @@
 <?php
 
-if ( ! defined( 'ABSPATH' ) ) { exit; }
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 function piotnetforms_editor_meta_box() {
 	add_meta_box( 'piotnetforms-editor-meta-box', 'Piotnet Forms', 'piotnetforms_editor_meta_box_output', 'piotnetforms' );
 }
-	add_action( 'add_meta_boxes', 'piotnetforms_editor_meta_box', 10 );
+add_action( 'add_meta_boxes', 'piotnetforms_editor_meta_box', 10 );
 
 function piotnetforms_editor_meta_box_output( $post ) {
 	require_once __DIR__ . '/../class/piotnetforms-editor.php';
@@ -49,7 +51,7 @@ function piotnetforms_editor_meta_box_output( $post ) {
 	echo '<div class="piotnetforms-editor">';
 
 	echo '<div class="piotnetforms-settings">';
-		$editor->editor_panel();
+	$editor->editor_panel();
 	echo '</div>';
 
 	echo '<div class="piotnet-widget-preview piotnetforms" id="piotnetforms" data-piotnet-widget-preview data-piotnet-sortable>';
@@ -76,9 +78,7 @@ function piotnetforms_editor_meta_box_output( $post ) {
 	echo '<div data-piotnetforms-ajax-url="' . admin_url( 'admin-ajax.php' ) . '"></div>';
 	echo '<div data-piotnetforms-tinymce-upload="' . plugins_url() . '/piotnetforms-pro/inc/tinymce/tinymce-upload.php"></div>';
 	echo '<div data-piotnetforms-stripe-key="' . esc_attr( get_option( 'piotnetforms-stripe-publishable-key' ) ) . '"></div>';
-	echo '<script src="https://maps.googleapis.com/maps/api/js?key=' . esc_attr( get_option( 'piotnetforms-google-maps-api-key' ) ) . '&libraries=places&callback=piotnetformsAddressAutocompleteInitMap" async defer></script>';
-
-	?>
+	echo '<script src="https://maps.googleapis.com/maps/api/js?key=' . esc_attr( get_option( 'piotnetforms-google-maps-api-key' ) ) . '&libraries=places&callback=piotnetformsAddressAutocompleteInitMap" async defer></script>'; ?>
 		<style>
 			#post-body {
 				display: flex;
@@ -123,14 +123,13 @@ function piotnetforms_editor_meta_box_save( $post_id ) {
 		fwrite( $file, stripslashes( $widgets_css ) );
 		fclose( $file );
 	}
-
 }
-	add_action( 'save_post', 'piotnetforms_editor_meta_box_save' );
+add_action( 'save_post', 'piotnetforms_editor_meta_box_save' );
 
-	add_action( 'admin_head', 'piotnetforms_css' );
+add_action( 'admin_head', 'piotnetforms_css' );
 
 function piotnetforms_css() {
-    // TODO load css from file
+	// TODO load css from file
 	echo '<style data-piotnet-widget-css-head>' . get_post_meta( get_the_ID(), '_piotnet-widgets-css', true ) . '</style>';
 
 	$post_id = get_the_ID();

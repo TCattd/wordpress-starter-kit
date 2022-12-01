@@ -3,18 +3,31 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "lang": "en"
          },
          "Accepted": [
             "Akzeptiert"
          ],
-         "Reviewing the next translation...": [
-            "Überprüfung der nächsten Übersetzung ..."
+         "Approved!": [
+            "Genehmigt!"
+         ],
+         "Loading the next translation for review...": [
+            "Die nächste zu überprüfende Übersetzung wird geladen ..."
          ],
          "Back": [
             "Zurück"
          ],
-         "Edit Translation": [
+         "Turn off to not automatically load the next translation after finishing this review.": [
+            "Deaktivieren, um nach Abschluss der Überprüfung nicht automatisch die nächste Übersetzung zu laden."
+         ],
+         "Turn on to automatically load the next translation after finishing this review.": [
+            "Aktivieren, um nach Abschluss der Überprüfung automatisch die nächste Übersetzung zu laden."
+         ],
+         "Edit": [
+            "Bearbeiten"
+         ],
+         "Edit translation": [
             "Übersetzung bearbeiten"
          ],
          "There was an error in applying translation.": [
@@ -23,17 +36,20 @@
          "Please wait, applying translation..": [
             "Bitte warten Sie, die Übersetzung wird übernommen ..."
          ],
+         "Next review": [
+            "Nächste Überprüfung"
+         ],
          "Publish this translation": [
             "Diese Übersetzung veröffentlichen"
          ],
          "Accept this translation": [
             "Diese Übersetzung akzeptieren"
          ],
-         "Approved!": [
-            "Genehmigt!"
+         "Published!": [
+            "Veröffentlicht!"
          ],
-         "Loading the next translation for review...": [
-            "Die nächste zu überprüfende Übersetzung wird geladen ..."
+         "Reviewing the next translation...": [
+            "Überprüfung der nächsten Übersetzung ..."
          ]
       }
    }

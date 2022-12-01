@@ -1,7 +1,6 @@
 /**
  * External dependencies
  */
-import PropTypes from 'prop-types';
 import { ValidatedTextInput } from '@woocommerce/base-components/text-input';
 import {
 	BillingCountryInput,
@@ -11,7 +10,6 @@ import {
 	BillingStateInput,
 	ShippingStateInput,
 } from '@woocommerce/base-components/state-input';
-import { useValidationContext } from '@woocommerce/base-context';
 import { useEffect, useMemo } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import { withInstanceId } from '@wordpress/compose';
@@ -21,8 +19,13 @@ import {
 	AddressFields,
 	AddressType,
 	defaultAddressFields,
-	EnteredAddress,
+	ShippingAddress,
 } from '@woocommerce/settings';
+import { useSelect, useDispatch } from '@wordpress/data';
+import {
+	VALIDATION_STORE_KEY,
+	FieldValidationStatus,
+} from '@woocommerce/block-data';
 
 /**
  * Internal dependencies
@@ -32,18 +35,21 @@ import prepareAddressFields from './prepare-address-fields';
 // If it's the shipping address form and the user starts entering address
 // values without having set the country first, show an error.
 const validateShippingCountry = (
-	values: EnteredAddress,
-	setValidationErrors: ( errors: Record< string, unknown > ) => void,
+	values: ShippingAddress,
+	setValidationErrors: (
+		errors: Record< string, FieldValidationStatus >
+	) => void,
 	clearValidationError: ( error: string ) => void,
 	hasValidationError: boolean
 ): void => {
+	const validationErrorId = 'shipping-missing-country';
 	if (
 		! hasValidationError &&
 		! values.country &&
 		( values.city || values.state || values.postcode )
 	) {
 		setValidationErrors( {
-			'shipping-missing-country': {
+			[ validationErrorId ]: {
 				message: __(
 					'Please select a country to calculate rates.',
 					'woo-gutenberg-products-block'
@@ -53,56 +59,51 @@ const validateShippingCountry = (
 		} );
 	}
 	if ( hasValidationError && values.country ) {
-		clearValidationError( 'shipping-missing-country' );
+		clearValidationError( validationErrorId );
 	}
 };
 
 interface AddressFormProps {
-	id: string;
+	// Id for component.
+	id?: string;
+	// Unique id for form.
 	instanceId: string;
+	// Array of fields in form.
 	fields: ( keyof AddressFields )[];
-	fieldConfig: Record< keyof AddressFields, Partial< AddressField > >;
-	onChange: ( newValue: EnteredAddress ) => void;
-	type: AddressType;
-	values: EnteredAddress;
+	// Field configuration for fields in form.
+	fieldConfig?: Record< keyof AddressFields, Partial< AddressField > >;
+	// Function to all for an form onChange event.
+	onChange: ( newValue: ShippingAddress ) => void;
+	// Type of form.
+	type?: AddressType;
+	// Values for fields.
+	values: ShippingAddress;
 }
+
 /**
  * Checkout address form.
- *
- * @param {Object} props Incoming props for component.
- * @param {string} props.id Id for component.
- * @param {Array}  props.fields Array of fields in form.
- * @param {Object} props.fieldConfig Field configuration for fields in form.
- * @param {string} props.instanceId Unique id for form.
- * @param {function(any):any} props.onChange Function to all for an form onChange event.
- * @param {string} props.type Type of form.
- * @param {Object} props.values Values for fields.
  */
 const AddressForm = ( {
-	id,
-	fields = ( Object.keys(
+	id = '',
+	fields = Object.keys(
 		defaultAddressFields
-	) as unknown ) as ( keyof AddressFields )[],
+	) as unknown as ( keyof AddressFields )[],
 	fieldConfig = {} as Record< keyof AddressFields, Partial< AddressField > >,
 	instanceId,
 	onChange,
 	type = 'shipping',
 	values,
 }: AddressFormProps ): JSX.Element => {
-	const {
-		getValidationError,
-		setValidationErrors,
-		clearValidationError,
-	} = useValidationContext();
+	const validationErrorId = 'shipping-missing-country';
+	const { setValidationErrors, clearValidationError } =
+		useDispatch( VALIDATION_STORE_KEY );
+
+	const countryValidationError = useSelect( ( select ) => {
+		const store = select( VALIDATION_STORE_KEY );
+		return store.getValidationError( validationErrorId );
+	} );
 
 	const currentFields = useShallowEqual( fields );
-
-	const countryValidationError = ( getValidationError(
-		'shipping-missing-country'
-	) || {} ) as {
-		message: string;
-		hidden: boolean;
-	};
 
 	const addressFormFields = useMemo( () => {
 		return prepareAddressFields(
@@ -130,14 +131,14 @@ const AddressForm = ( {
 				values,
 				setValidationErrors,
 				clearValidationError,
-				!! countryValidationError.message &&
-					! countryValidationError.hidden
+				!! countryValidationError?.message &&
+					! countryValidationError?.hidden
 			);
 		}
 	}, [
 		values,
-		countryValidationError.message,
-		countryValidationError.hidden,
+		countryValidationError?.message,
+		countryValidationError?.hidden,
 		setValidationErrors,
 		clearValidationError,
 		type,
@@ -239,16 +240,6 @@ const AddressForm = ( {
 			} ) }
 		</div>
 	);
-};
-
-AddressForm.propTypes = {
-	onChange: PropTypes.func.isRequired,
-	values: PropTypes.object.isRequired,
-	fields: PropTypes.arrayOf(
-		PropTypes.oneOf( Object.keys( defaultAddressFields ) )
-	),
-	fieldConfig: PropTypes.object,
-	type: PropTypes.oneOf( [ 'billing', 'shipping' ] ),
 };
 
 export default withInstanceId( AddressForm );

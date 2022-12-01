@@ -63,6 +63,11 @@ jQuery(document).ready(function($){
 				if(res[i].type == 'show'){
 					if($('#wppb-form-element-'+i).html() == '') $('#wppb-form-element-'+i).html(res[i].html);
 					$('#wppb-form-element-'+i).show();
+					if(res[i].html.includes('input type=\"file\"')) {
+						if (typeof validate_simple_upload !== 'undefined') {
+							validate_simple_upload();
+						}
+					}
 				}
 				if(res[i].type == 'hide'){
 					$('#wppb-form-element-'+i).html('');

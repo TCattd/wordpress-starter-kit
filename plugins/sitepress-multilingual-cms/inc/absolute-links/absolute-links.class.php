@@ -435,15 +435,11 @@ class AbsoluteLinks {
 			$rewrite = $wp_rewrite->wp_rewrite_rules();
 		} else {
 			remove_filter( 'option_rewrite_rules', [ $sitepress, 'rewrite_rules_filter' ] );
-			if ( class_exists( 'WPML_Slug_Translation' ) ) {
-				remove_filter( 'option_rewrite_rules', [ 'WPML_Slug_Translation', 'rewrite_rules_filter' ], 1 );
-			}
+			add_filter( 'wpml_st_disable_rewrite_rules', '__return_true' );
 
 			$rewrite = $wp_rewrite->wp_rewrite_rules();
 
-			if ( class_exists( 'WPML_Slug_Translation' ) ) {
-				add_filter( 'option_rewrite_rules', [ 'WPML_Slug_Translation', 'rewrite_rules_filter' ], 1, 1 );
-			}
+			remove_filter( 'wpml_st_disable_rewrite_rules', '__return_true' );
 		}
 
 		$rewrite = $this->all_rewrite_rules( $rewrite );

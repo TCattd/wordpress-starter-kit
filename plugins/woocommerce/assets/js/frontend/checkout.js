@@ -560,7 +560,11 @@ jQuery( function( $ ) {
 						// Detach the unload handler that prevents a reload / redirect
 						wc_checkout_form.detachUnloadEventsOnSubmit();
 
-						wc_checkout_form.submit_error( '<div class="woocommerce-error">' + errorThrown + '</div>' );
+						wc_checkout_form.submit_error(
+							'<div class="woocommerce-error">' +
+							( errorThrown || wc_checkout_params.i18n_checkout_error ) +
+							'</div>'
+						);
 					}
 				});
 			}
@@ -579,7 +583,7 @@ jQuery( function( $ ) {
 			var scrollElement           = $( '.woocommerce-NoticeGroup-updateOrderReview, .woocommerce-NoticeGroup-checkout' );
 
 			if ( ! scrollElement.length ) {
-				scrollElement = $( '.form.checkout' );
+				scrollElement = $( 'form.checkout' );
 			}
 			$.scroll_to_notices( scrollElement );
 		}
@@ -668,7 +672,7 @@ jQuery( function( $ ) {
 					if ( code ) {
 						$( 'form.woocommerce-checkout' ).before( code );
 
-						$( document.body ).trigger( 'removed_coupon_in_checkout', [ data.coupon_code ] );
+						$( document.body ).trigger( 'removed_coupon_in_checkout', [ data.coupon ] );
 						$( document.body ).trigger( 'update_checkout', { update_shipping_method: false } );
 
 						// Remove coupon code from coupon field

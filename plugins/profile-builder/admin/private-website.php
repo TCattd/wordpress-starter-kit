@@ -50,7 +50,10 @@ function wppb_private_website_content() {
     $all_pages = get_posts( $args );
     ?>
     <div class="wrap wppb-wrap wppb-private-website">
-        <h2><?php esc_html_e( 'Private Website Settings', 'profile-builder' );?></h2>
+        <h2>
+            <?php esc_html_e( 'Private Website Settings', 'profile-builder' );?>
+            <a href="https://www.cozmoslabs.com/docs/profile-builder-2/general-settings/private-website/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help"></a>
+        </h2>
 
         <?php settings_errors(); ?>
 

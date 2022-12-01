@@ -127,10 +127,7 @@ if ( ! class_exists( 'acf_field_true_false' ) ) :
 		*
 		*  @param   $field  - an array holding all the field's data
 		*/
-
 		function render_field_settings( $field ) {
-
-			// message
 			acf_render_field_setting(
 				$field,
 				array(
@@ -141,7 +138,6 @@ if ( ! class_exists( 'acf_field_true_false' ) ) :
 				)
 			);
 
-			// default_value
 			acf_render_field_setting(
 				$field,
 				array(
@@ -151,21 +147,17 @@ if ( ! class_exists( 'acf_field_true_false' ) ) :
 					'name'         => 'default_value',
 				)
 			);
+		}
 
-			// ui
-			acf_render_field_setting(
-				$field,
-				array(
-					'label'        => __( 'Stylised UI', 'acf' ),
-					'instructions' => '',
-					'type'         => 'true_false',
-					'name'         => 'ui',
-					'ui'           => 1,
-					'class'        => 'acf-field-object-true-false-ui',
-				)
-			);
-
-			// on_text
+		/**
+		 * Renders the field settings used in the "Presentation" tab.
+		 *
+		 * @since 6.0
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		function render_field_presentation_settings( $field ) {
 			acf_render_field_setting(
 				$field,
 				array(
@@ -182,7 +174,6 @@ if ( ! class_exists( 'acf_field_true_false' ) ) :
 				)
 			);
 
-			// on_text
 			acf_render_field_setting(
 				$field,
 				array(
@@ -199,8 +190,18 @@ if ( ! class_exists( 'acf_field_true_false' ) ) :
 				)
 			);
 
+			acf_render_field_setting(
+				$field,
+				array(
+					'label'        => __( 'Stylized UI', 'acf' ),
+					'instructions' => __( 'Use a stylized checkbox using select2', 'acf' ),
+					'type'         => 'true_false',
+					'name'         => 'ui',
+					'ui'           => 1,
+					'class'        => 'acf-field-object-true-false-ui',
+				)
+			);
 		}
-
 
 		/*
 		*  format_value()
@@ -283,6 +284,37 @@ if ( ! class_exists( 'acf_field_true_false' ) ) :
 			// return
 			return $field;
 
+		}
+
+		/**
+		 * Return the schema array for the REST API.
+		 *
+		 * @param array $field
+		 * @return array
+		 */
+		public function get_rest_schema( array $field ) {
+			$schema = array(
+				'type'     => array( 'boolean', 'null' ),
+				'required' => ! empty( $field['required'] ),
+			);
+
+			if ( isset( $field['default_value'] ) && '' !== $field['default_value'] ) {
+				$schema['default'] = (bool) $field['default_value'];
+			}
+
+			return $schema;
+		}
+
+		/**
+		 * Apply basic formatting to prepare the value for default REST output.
+		 *
+		 * @param mixed      $value
+		 * @param string|int $post_id
+		 * @param array      $field
+		 * @return mixed
+		 */
+		public function format_value_for_rest( $value, $post_id, array $field ) {
+			return (bool) $value;
 		}
 
 	}

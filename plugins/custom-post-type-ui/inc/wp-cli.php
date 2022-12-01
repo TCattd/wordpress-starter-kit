@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Custom Post Type UI WP-CLI.
  *
@@ -57,11 +56,11 @@ class CPTUI_Import_JSON extends WP_CLI_Command {
 		}
 
 		if ( 'post_type' === $this->type ) {
-			$this->data['cptui_post_import'] = $json;
+			$this->data['cptui_post_import'] = json_decode( stripslashes_deep( trim( $json ) ), true );
 		}
 
 		if ( 'taxonomy' === $this->type ) {
-			$this->data['cptui_tax_import'] = $json;
+			$this->data['cptui_tax_import'] = json_decode( stripslashes_deep( trim( $json ) ), true );
 		}
 
 		$result = cptui_import_types_taxes_settings( $this->data );
@@ -69,7 +68,13 @@ class CPTUI_Import_JSON extends WP_CLI_Command {
 		if ( false === $result || 'import_fail' === $result ) {
 			WP_CLI::error( sprintf( __( 'An error on import occurred', 'custom-post-type-ui' ) ) );
 		} else {
-			WP_CLI::success( sprintf( __( 'Imported %s successfully', 'custom-post-type-ui' ), $this->type ) );
+			WP_CLI::success(
+				sprintf(
+					/* translators: Placeholders are just for HTML markup that doesn't need translated */
+					__( 'Imported %s successfully', 'custom-post-type-ui' ),
+					$this->type
+				)
+			);
 		}
 	}
 
@@ -106,7 +111,7 @@ class CPTUI_Import_JSON extends WP_CLI_Command {
 			$content = cptui_get_taxonomy_data();
 		}
 
-		$content = json_encode( $content );
+		$content = wp_json_encode( $content );
 		$result  = file_put_contents( $this->assoc_args['dest-path'], $content );
 
 		if ( false === $result ) {

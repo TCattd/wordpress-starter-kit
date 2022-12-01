@@ -17,8 +17,8 @@ function wppb_select2_multiple_display_handler($output, $form_location, $field, 
         wp_enqueue_script('wppb_sl2_lib_js', WPPB_PLUGIN_URL . 'assets/js/select2/select2.min.js', array('jquery'));
         wp_enqueue_style('wppb_sl2_lib_css', WPPB_PLUGIN_URL . 'assets/css/select2/select2.min.css');
 
-        wp_enqueue_script( 'wppb_sl2_js', WPPB_PAID_PLUGIN_URL.'front-end/extra-fields/select2/select2.js', array('jquery'), PROFILE_BUILDER_VERSION, true );
-        wp_enqueue_style( 'wppb_sl2_css', WPPB_PAID_PLUGIN_URL.'front-end/extra-fields/select2/select2.css', false, PROFILE_BUILDER_VERSION );
+        wp_enqueue_script( 'wppb_sl2_js', WPPB_PLUGIN_URL.'front-end/default-fields/select2/select2.js', array('jquery'), PROFILE_BUILDER_VERSION, true );
+        wp_enqueue_style( 'wppb_sl2_css', WPPB_PLUGIN_URL.'front-end/default-fields/select2/select2.css', false, PROFILE_BUILDER_VERSION );
 
         $arguments = array();
         $arguments['maximumSelectionLength'] = 0;

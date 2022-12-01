@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf62332a5c9928dc58d39eafd037c6828
+class ComposerStaticInit7da2b10f3726366a1aa4039f5a2e7723
 {
     public static $classMap = array (
         'IWPML_ST_Rewrite_Rule_Filter' => __DIR__ . '/../..' . '/classes/slug-translation/iwpml-st-rewrite-rule-filter.php',
@@ -326,7 +326,7 @@ class ComposerStaticInitf62332a5c9928dc58d39eafd037c6828
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitf62332a5c9928dc58d39eafd037c6828::$classMap;
+            $loader->classMap = ComposerStaticInit7da2b10f3726366a1aa4039f5a2e7723::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -2,7 +2,14 @@
 if( !defined( 'ABSPATH' ) ) exit();
 ?>
 
-<h3><?php _e( 'Active Lockouts', 'limit-login-attempts-reloaded' ); ?></h3>
+<div class="llar-table-header">
+    <h3><?php _e( 'Active Lockouts', 'limit-login-attempts-reloaded' ); ?></h3>
+    <span class="right-link">
+        <button class="button button-secondary llar-global-reload-btn">
+            <span class="dashicons dashicons-image-rotate" style="font-size: 16px; vertical-align: middle"></span>
+            <?php _e( "Reload", 'limit-login-attempts-reloaded' ); ?></button>
+    </span>
+</div>
 
 <div class="llar-table-scroll-wrap llar-app-lockouts-infinity-scroll">
     <table class="form-table llar-table-app-lockouts">
@@ -40,6 +47,12 @@ if( !defined( 'ABSPATH' ) ) exit();
             });
 
 			load_lockouts_data();
+
+            $('.llar-global-reload-btn').on('click', function() {
+                page_offset = '';
+                $log_table.html($log_table_empty);
+                load_lockouts_data();
+            });
 
 			function load_lockouts_data() {
 

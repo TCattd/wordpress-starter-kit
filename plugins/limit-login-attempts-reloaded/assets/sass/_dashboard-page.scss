@@ -32,6 +32,7 @@
   }
   .section-content {
     padding: 15px;
+    overflow: hidden;
   }
 
   .dashboard-section-1 {
@@ -60,6 +61,19 @@
       }
     }
     .info-box-1 {
+      .section-title {
+        .llar-premium-label {
+          float: right;
+          color: #797777;
+          font-weight: 400;
+
+          .dashicons {
+            color: #66cc66;
+            margin-right: 2px;
+          }
+
+        }
+      }
       .chart {
         //margin-bottom: 10px;
         max-width: 300px;
@@ -331,6 +345,14 @@
         font-weight: 400;
         margin-top: 5px;
         margin-bottom: 0;
+        float: left;
+      }
+      .countries-table-info-right {
+        color: #2271b1;
+        font-weight: 400;
+        margin-top: 5px;
+        margin-bottom: 0;
+        float: right;
       }
     }
     .info-box-2 {

@@ -72,6 +72,16 @@ class PB_Elementor_User_Listing_Widget extends PB_Elementor_Widget {
      */
     protected function register_controls() {
 
+        $wppb_manage_fields = get_option( 'wppb_manage_fields', 'not_found' );
+        $meta_names = array(
+            '' => ''
+        );
+        foreach( $wppb_manage_fields as $value ){
+            if( $value['meta-name'] ) {
+                $meta_names[$value['meta-name']] = $value['meta-name'];
+            }
+        }
+
         $this->start_controls_section(
             'pb_user_listing_settings',
             array(
@@ -117,8 +127,8 @@ class PB_Elementor_User_Listing_Widget extends PB_Elementor_Widget {
             'pb_meta_key',
             array(
                 'label'       => __( 'Meta Key', 'profile-builder' ),
-                'type'        => \Elementor\Controls_Manager::TEXT,
-                'placeholder' => __( 'Enter Meta Key', 'profile-builder' ),
+                'type'        => \Elementor\Controls_Manager::SELECT,
+                'options'     => $meta_names,
                 'default'     => '',
                 'condition'   => [
                     'pb_single' => '',

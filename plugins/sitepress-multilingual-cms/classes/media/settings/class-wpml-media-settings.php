@@ -1,5 +1,7 @@
 <?php
 
+use WPML\LIB\WP\Nonce;
+
 class WPML_Media_Settings {
 	const ID = 'ml-content-setup-sec-media';
 
@@ -16,7 +18,19 @@ class WPML_Media_Settings {
 	}
 
 	public function enqueue_script() {
-		wp_enqueue_script( 'wpml-media-settings', ICL_PLUGIN_URL . '/res/js/media/settings.js', array(), ICL_SITEPRESS_VERSION, true );
+		$handle = 'wpml-media-settings';
+
+		wp_register_script(
+			$handle,
+			ICL_PLUGIN_URL . '/res/js/media/settings.js',
+			[],
+			ICL_SITEPRESS_VERSION,
+			true
+		);
+		wp_localize_script( $handle, 'wpml_media_settings_data', [
+			'nonce' => wp_create_nonce( 'wpml_media_set_content_defaults' ),
+		] );
+		wp_enqueue_script( $handle );
 	}
 
 	public function render() {
@@ -127,8 +141,35 @@ class WPML_Media_Settings {
 							</td>
 						</tr>
 
+
+
+						<tr>
+							<td colspan="2">
+								<h4><?php esc_html_e( 'How to handle media library texts:', 'sitepress' ); ?></h4>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<ul class="wpml_media_options_media_library_texts">
+									<?php
+									$settings         = get_option( '_wpml_media' );
+									$translateMediaLibraryTexts = \WPML\FP\Obj::propOr(false, 'translate_media_library_texts', $settings) ? 'checked="checked"' : '';
+									?>
+									<li>
+										<label><input type="checkbox" name="translate_media_library_texts"
+													  value="1" <?php echo $translateMediaLibraryTexts; ?> />&nbsp;<?php esc_html_e( 'Translate media library texts with posts', 'sitepress' ); ?></label>
+									</li>
+								</ul>
+							</td>
+						</tr>
+
+
+
+
+
 						<tr>
 							<td colspan="2" align="right">
+								<?php wp_nonce_field( 'wpml_media_settings_actions', 'wpml_media_settings_nonce' ); ?>
 								<input class="button-secondary" name="set_defaults" type="submit" value="<?php esc_attr_e( 'Apply', 'sitepress' ); ?>"/>
 							</td>
 						</tr>
@@ -139,6 +180,9 @@ class WPML_Media_Settings {
 								&nbsp;<span class="content_default_status"> </span>
 							</td>
 						</tr>
+
+
+
 
 					</table>
 

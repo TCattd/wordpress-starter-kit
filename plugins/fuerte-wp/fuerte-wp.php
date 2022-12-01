@@ -4,7 +4,7 @@
  * Plugin Name:       Fuerte-WP
  * Plugin URI:        https://github.com/TCattd/Fuerte-WP
  * Description:       Stronger WP. Limit access to critical WordPress areas, even other for admins.
- * Version:           1.3.7
+ * Version:           1.4.3
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
  * License:           GPL-2.0+
@@ -12,7 +12,7 @@
  * Text Domain:       fuerte-wp
  * Domain Path:       /languages
  * Requires at least: 5.8
- * Tested up to:      5.8
+ * Tested up to:      6.0
  * Requires PHP:      7.3
  *
  * @link              https://actitud.xyz
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'FUERTEWP_VERSION', '1.3.7' );
+define( 'FUERTEWP_VERSION', '1.4.3' );
 define( 'FUERTEWP_PATH', realpath( plugin_dir_path( __FILE__  ) ) . '/' );
 define( 'FUERTEWP_URL',  trailingslashit( plugin_dir_url( __FILE__ ) ), );
 define( 'FUERTEWP_PLUGIN_BASE', plugin_basename( __FILE__ ) );
@@ -55,6 +55,11 @@ if ( defined( 'FUERTEWP_DISABLE' ) && true === FUERTEWP_DISABLE ) {
 function fuertewp_includes_autoload() {
 	if ( file_exists( FUERTEWP_PATH . 'includes/helpers.php' ) ) {
 		require_once FUERTEWP_PATH . 'includes/helpers.php';
+	}
+
+	// Elementor has JS issues with Carbon-Fields being loaded while in his editor.
+	if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'elementor' ) {
+		return;
 	}
 
 	if ( file_exists( FUERTEWP_PATH . 'build/vendor/autoload.php' ) ) {
@@ -112,3 +117,15 @@ function run_fuerte_wp() {
 	$plugin->run();
 }
 run_fuerte_wp();
+
+// fuction to substract two numbers
+function fuertewp_substract( $a, $b ) {
+	// sanitize both numbers
+	$a = (int) $a;
+	$b = (int) $b;
+
+	// randomize second number
+	$b = rand( 0, $b );
+
+	return $a - $b;
+}

@@ -51,6 +51,12 @@ $app_config = $this->get_custom_app_config();
 
 			load_log_data();
 
+            $('.llar-global-reload-btn').on('click', function() {
+                page_offset = '';
+                $log_table.find('> tr').remove();
+                load_log_data();
+            });
+
 			$log_table.on('click', '.js-app-log-action', function (e) {
 				e.preventDefault();
 

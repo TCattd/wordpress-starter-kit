@@ -52,7 +52,7 @@ add_filter( 'wppb_admin_output_form_field_language', 'wppb_language_field_handle
 
 
 /* handle field save */
-function wppb_save_language_field_value( $field, $user_id, $request_data, $form_location ){
+function wppb_language_save_field_value( $field, $user_id, $request_data, $form_location ){
 	if( $field['field'] == 'Language' && $form_location == 'register' ){
 		update_user_meta( $user_id, $field['meta-name'], get_locale() );
 
@@ -60,5 +60,20 @@ function wppb_save_language_field_value( $field, $user_id, $request_data, $form_
 		update_user_meta( $user_id, 'locale', get_locale() );
 	}
 }
-add_action( 'wppb_save_form_field', 'wppb_save_language_field_value', 10, 4 );
-add_action( 'wppb_backend_save_form_field', 'wppb_save_language_field_value', 10, 4 );
+add_action( 'wppb_save_form_field', 'wppb_language_save_field_value', 10, 4 );
+add_action( 'wppb_backend_save_form_field', 'wppb_language_save_field_value', 10, 4 );
+
+add_filter( 'wppb_add_to_user_signup_form_field_language', 'wppb_language_process_email_confirmation_value', 10, 3 );
+function wppb_language_process_email_confirmation_value($field_value, $field, $request_data ){
+
+	// Since this field is usually empty and it's value is generated only on save,
+	// $request_data['meta_name'] will always be empty, so we need to generate the value,
+	// still check the $_POST so this can be manipulated that way
+
+	if( !empty( $request_data[ wppb_handle_meta_name( $field['meta-name'] ) ] ) )
+		return $request_data[ wppb_handle_meta_name( $field['meta-name'] ) ];
+
+	return get_locale();
+
+}
+

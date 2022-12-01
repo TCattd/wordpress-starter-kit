@@ -6,8 +6,8 @@ Tags: registration, profile, user registration, custom field registration, custo
 custom registration, custom registration form, custom registration page, extra user fields, registration page, user custom fields, user listing, user login, user registration form, front-end login,
 front-end register, front-end registration, frontend edit profile, edit profileregistration, customize profile, user fields, builder, profile builder, custom fields, avatar
 Requires at least: 3.1
-Tested up to: 6.0
-Stable tag: 3.7.6
+Tested up to: 6.1
+Stable tag: 3.8.4
 
 
 Login, registration and edit profile shortcodes for the front-end. Also you can choose what fields should be displayed or add custom ones.
@@ -101,6 +101,44 @@ This plugin only adds/removes fields in the front-end. The default information-f
 
 
 == Changelog ==
+= 3.8.4 =
+* Fix: Issue with Select2 Multiple not loading correctly
+* Fix: Role Faceted Menus will now only display the roles selected in Userlisting Settings
+
+= 3.8.3 =
+* Fix: issue with 2FA functionality and newer block themes
+* Fix: simple upload fields issue on mobile and improve UI when waiting for the upload to process
+* Fix: case where 2FA fields were duplicated in a scenario with Elementor
+
+= 3.8.2 =
+* Fix: issue with large icons and text Social Connect display option
+* Fix: issue with {{approval_url}} tag for EPAA email notification that wasn't working in some cases
+
+= 3.8.1 = 
+* Feature: Added option to set the password recovery link on the login form that can be added on the WooCommerce account page
+* Misc: compatibility changes
+
+= 3.8.0 = 
+* Fix: Small issues with Userlisting Themes loading
+* Fix: Userlisting javascript error
+
+= 3.7.9 = 
+* Feature: added a Template Selector for Userlisting allowing you to choose different styles for your userlistings
+* Fix: issue with Language field not saving the language correctly when Email Confirmation was enabled
+* Fix: case where back-end fields were validated for the currently logged in user
+* Misc: compatibility fixes for Datepicker field with a WooCommerce add-on
+
+= 3.7.8 =
+* Feature: Add support to restrict the BuddyPress Activity and Member pages with a redirect, through the Content Restriction feature
+* Fix: Add compatibility between Custom Profile Menus iFrames and Max Mega Menu plugin
+* Fix: Issue between Simple Upload Fields and Conditional Logic
+* Misc: Add .ico image type in the default image types for Avatar fields
+
+= 3.7.7 =
+* Fix: cases where forms were submitted before the file in an simple upload field was uploaded
+* Fix: don't show unnapproved users in the userlisting
+* Fix: add back social connect option to bypass email confirmation
+
 = 3.7.6 =
 * Fix: make sure GDPR consent is properly stored when registering through Social Connect and Email Confirmation is active
 * Misc: remove the Filter Media menu from the Upload field Media Gallery popup
