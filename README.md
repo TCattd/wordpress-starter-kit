@@ -14,7 +14,7 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 * Picostrap already included auto-compilation for it's SCSS files and a live-reload feature built in. You don't need to install anything extra.
 * Use the /includes/ folder (inside the child-theme) for any custom PHP code your theme requieres. Don't forget to add your include in the array inside functions.php file. And please, don't just throw every code snippet inside the functions.php. Keep order.
 * Use the /sass/ folder (inside the child-theme) to host your SCSS. Don't use simple and plain CSS. Don't touch the style.css (main or child theme). Always use SCSS (Sassy CSS, not SASS) inside the existing folder structure. You can add and import as many SCSS files as you need, for order.
-* Remember to use [Bootstrap](https://getbootstrap.com/) classes and utilities. Don't reinvent the wheel.
+* Remember to use [Bootstrap](https://getbootstrap.com/) classes and utilities that they already provides. Don't reinvent the wheel.
 * Use the /js/ folder (inside the child-theme) to host your Javascript. [Enqueue your JS files](https://developer.wordpress.org/themes/basics/including-css-javascript/) properly from within your theme. You can add and enqueue as many JS files as you need, for order and logic separation.
 * Use the /images/ folder (inside the child-theme) to host your images.
 * Use the /fonts/ folder (inside the child-theme) to host your custom fonts.
