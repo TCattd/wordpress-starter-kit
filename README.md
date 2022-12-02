@@ -50,5 +50,5 @@ Beside the [official WordPress developer resources](https://developer.wordpress.
 * Create a different administrator user for the final client. Don't give the client the same user as the Agency is using.
 * Done.
 
-## Questions?
-Please, ask at #devs in Slack.
+## Questions? Something to say?
+esteban at attitude.cl
