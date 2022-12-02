@@ -14,7 +14,7 @@
  * @wordpress-plugin
  * Plugin Name:       WES Custom Functionality
  * Plugin URI:        https://actitud.xyz
- * Description:       Custom Functionality for WordPress
+ * Description:       Custom Functionality Plugin for WordPress
  * Version:           1.0.0
  * Author:            Esteban Cuevas
  * Author URI:        https://actitud.xyz
