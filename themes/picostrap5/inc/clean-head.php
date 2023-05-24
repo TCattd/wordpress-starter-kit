@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Removes all the not-so-necessary tags that WP adds to the header
+ *
+ * @package picostrap5
+ */
+
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
@@ -139,4 +146,5 @@ function picostrap_wp_remove_global_css() {
    remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
    remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
 }
-add_action( 'init', 'picostrap_wp_remove_global_css' );
+
+if (get_theme_mod("disable_gutenberg") )add_action( 'init', 'picostrap_wp_remove_global_css' );

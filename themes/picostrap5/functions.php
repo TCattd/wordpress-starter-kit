@@ -24,6 +24,7 @@ $picostrap_includes = array(
 	'/customizer-assets/scss-compiler.php', //To interface the Customizer with the SCSS php compiler	 
 	'/customizer-assets/livereload.php', //To automatically trigger SCSS compiling when source sass changes	 
 	'/options-page.php',                  // Load theme options page. 
+	'/content-filtering.php',				//for LC compatibility when shutting down plugin
 
 );
 
@@ -41,6 +42,9 @@ if (get_theme_mod("enable_back_to_top") ) require_once locate_template('/inc/opt
 
 //OPTIONAL: LIGHTBOX  
 if (get_theme_mod("enable_lightbox") ) require_once locate_template('/inc/opt-in/lightbox.php');
+	
+//OPTIONAL: TOOLTIPS  
+if (get_theme_mod("enable_tooltips") ) require_once locate_template('/inc/opt-in/initialize-tooltips.php');
 	
 //OPTIONAL: DETECT PAGE SCROLL
 if (get_theme_mod("enable_detect_page_scroll") ) require_once locate_template('/inc/opt-in/detect-page-scroll.php');

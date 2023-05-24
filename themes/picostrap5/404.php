@@ -17,7 +17,7 @@ get_header();
 
 
 	<div class="py-6 bg-transparent text-center w-100">
-		<svg xmlns="http://www.w3.org/2000/svg" id="fd59ce54-f850-4dfc-bc34-dd7d379d600e" data-name="Layer 1" width="150" height="auto" viewBox="0 0 1074.392 584.231" class="injected-svg modal__media modal__lg_media" data-src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/page_not_found_su7k.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<svg xmlns="http://www.w3.org/2000/svg" id="fd59ce54-f850-4dfc-bc34-dd7d379d600e" data-name="Layer 1" width="156" height="100" viewBox="0 0 1074.392 584.231" class="injected-svg modal__media modal__lg_media" data-src="https://42f2671d685f51e10fc6-b9fcecea3e50b3b59bdc28dead054ebc.ssl.cf5.rackcdn.com/illustrations/page_not_found_su7k.svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 			
 			<ellipse cx="540.64346" cy="549.3094" rx="527.5" ry="34.9216" fill="#f2f2f2"></ellipse>
 			<path d="M583.47969,324.89424c-85.94407,0-147.651,55.13938-147.651,183.79791,0,145.813,61.70691,184.41057,147.651,184.41057s151.327-42.27352,151.327-184.41057C734.80664,356.75255,669.42376,324.89424,583.47969,324.89424Zm.56495,319.80837c-59.52686,0-90.62592-34.92288-90.62592-135.9163,0-89.11185,32.37209-136.10461,91.899-136.10461s91.899,30.86774,91.899,136.10461C677.21663,607.23367,643.5715,644.70261,584.04464,644.70261Z" transform="translate(-63.054 -157.8845)" fill="#2f2e41"></path>
@@ -75,9 +75,9 @@ get_header();
 			<circle cx="582.946" cy="355.1155" r="5" fill="#2d2f40" opacity="0.3"></circle>
 			<circle cx="460.946" cy="355.1155" r="5" fill="#2d2f40" opacity="0.3"></circle>
 		</svg>
-		<h1  class="display-1"><?php esc_html_e( 'Page not found', 'picostrap' ); ?></h1>
+		<h1  class="display-1"><?php esc_html_e( 'Page not found', 'picostrap5' ); ?></h1>
 			
-		<p class="lead"><?php esc_html_e( 'Perhaps you would like to go to our home page?', 'picostrap' ); ?>&nbsp;</p>
+		<p class="lead"><?php esc_html_e( 'Perhaps you would like to go to our home page?', 'picostrap5' ); ?>&nbsp;</p>
 		<a class="btn btn-primary" href="<?php bloginfo('url') ?>" role="button">Go to home <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor">
 				<path d="M19.31 18.9C19.75 18.21 20 17.38 20 16.5C20 14 18 12 15.5 12S11 14 11 16.5 13 21 15.5 21C16.37 21 17.19 20.75 17.88 20.32L21 23.39L22.39 22L19.31 18.9M15.5 19C14.12 19 13 17.88 13 16.5S14.12 14 15.5 14 18 15.12 18 16.5 16.88 19 15.5 19M5 20V12H2L12 3L22 12H20.18C19 10.77 17.34 10 15.5 10C11.92 10 9 12.92 9 16.5C9 17.79 9.38 19 10.03 20H5Z"></path>
 			</svg></a>
