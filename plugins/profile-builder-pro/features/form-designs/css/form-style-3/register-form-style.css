@@ -1,0 +1,73 @@
+#wppb-form-style-3-wrapper .wppb-gdpr-delete-button .wppb_bdp_visibility_settings,
+#wppb-form-style-3-wrapper .wppb-language .wppb_bdp_visibility_settings {
+    display: none;
+}
+
+#wppb-form-style-3-wrapper .pms-warning-message-wrapper {
+    border-radius: 45px;
+    padding: 20px 20px 20px 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #6E7A86 !important;
+    background-color: #F9F9F9;
+    border: 1px solid #F9A825;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#wppb-form-style-3-wrapper .wppb-alert-title .wppb-alert-icon-container {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    border-radius: 50%;
+
+    height: 60px;
+    width: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#wppb-form-style-3-wrapper .pms-warning-message-wrapper .wppb-alert-title {
+    color: #F9A825;
+}
+
+#wppb-form-style-3-wrapper .pms-warning-message-wrapper .wppb-alert-title .wppb-alert-icon-container {
+    background: #FFF9C4;
+    border: 1px solid #F9A825;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-title {
+    order: 1;
+}
+
+#wppb-form-style-3-wrapper p.wppb-error,
+#wppb-form-style-3-wrapper p.wppb-success {
+    order: 2;
+}
+
+#wppb-form-style-3-wrapper .wppb-register-user {
+    order: 3;
+    overflow: visible !important;
+    max-width: 100%;
+}
+
+#wppb-form-style-3-wrapper div.wppb-sc-buttons-container {
+    order: 4;
+}
+
+#wppb-form-style-3-wrapper .form-submit input#register {
+    min-width: 150px;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-title {
+    margin-bottom: 50px !important;
+}

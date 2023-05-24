@@ -5,9 +5,9 @@ namespace GFML\Compatibility\FeedAddon;
 use GFML_TM_API;
 use Gravity_Flow;
 
-class GravityFlow extends FeedAddon {
+class GravityFlow extends FeedAddon implements \IWPML_Action {
 
-	/** @var Gravity_Flow */
+	/** @var \Gravity_Flow */
 	private $gravityFlow;
 
 	public function __construct( GFML_TM_API $gfml_tm_api, Gravity_Flow $gravityFlow ) {

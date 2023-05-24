@@ -1,3 +1,14 @@
+### 5.1.1
+- Fixed an issue that prevents password from being updated when background processing is enabled.
+
+### 5.1 | 2023-03-07
+- Added support for async (background) feed processing to improve form submission performance. Requires Gravity Forms 2.7.1+.
+- Fixed an issue where pending activations for other sub-sites are shown in a multi-site installation.
+- Fixed an issue where a form receives errors on submission when updating a user with their existing email address in multisite.
+- Fixed a typo in the text domain in the pending activations list.
+- Updated the user meta settings fields to use the generic field map instead of the deprecated dynamic field map field type.
+
+
 ### 5.0 | 2022-02-17
 - Fixed an issue where an additional checkbox field type appears in the standard fields list.
 

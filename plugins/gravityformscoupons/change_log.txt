@@ -1,3 +1,9 @@
+### 3.1 | 2023-01-25
+- Added formId parameter to the JavaScript version of the gform_coupons_discount_amount filter.
+- Updated CSS so that it integrates with Gravity Forms 2.7 Theme Framework.
+- Updated form submit spinner to use Theme Framework styles.
+- Fixed typos in string translation variables.
+
 ### 3.0 | 2020-09-29
 - Added a custom icon to the Coupon field for Gravity Forms 2.5.
 - Updated empty coupons list verbiage.

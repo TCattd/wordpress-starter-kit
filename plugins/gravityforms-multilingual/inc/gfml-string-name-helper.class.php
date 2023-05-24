@@ -26,7 +26,7 @@ class GFML_String_Name_Helper {
 	/** @var array */
 	public $notification;
 
-	/** @var int */
+	/** @var int|string */
 	public $page_index;
 
 	private function get_field_placeholder_parts() {

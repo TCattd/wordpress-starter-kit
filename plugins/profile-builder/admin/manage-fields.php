@@ -1429,7 +1429,7 @@ function wppb_add_content_before_manage_fields(){
         </ul>
     <p>
     <?php
-    $versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+    $versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 	if( in_array( PROFILE_BUILDER, $versions ) )
         esc_html_e("If you're interested in displaying different fields in the registration and edit profile forms, please use the Multiple Registration & Edit Profile Forms Add-ons.", 'profile-builder');

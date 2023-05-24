@@ -17,6 +17,9 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 	/** @var \wpdb $wpdb */
 	private $wpdb;
 
+	/** @var string $requestedCurrencyForReport */
+	private $requestedCurrencyForReport;
+
 	public function __construct( \woocommerce_wpml $woocommerce_wpml, \wpdb $wpdb ) {
 		$this->woocommerce_wpml = $woocommerce_wpml;
 		$this->wpdb             = $wpdb;
@@ -59,17 +62,13 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 			]
 		)->each(
 			function( $item ) {
-				add_filter( "woocommerce_analytics_clauses_join_{$item}_subquery", [ $this, 'addJoin' ] );
-				add_filter( "woocommerce_analytics_clauses_join_{$item}_stats_total", [ $this, 'addJoin' ] );
-				add_filter( "woocommerce_analytics_clauses_join_{$item}_stats_interval", [ $this, 'addJoin' ] );
 				add_filter( "woocommerce_analytics_clauses_where_{$item}_subquery", [ $this, 'addWhere' ] );
 				add_filter( "woocommerce_analytics_clauses_where_{$item}_stats_total", [ $this, 'addWhere' ] );
 				add_filter( "woocommerce_analytics_clauses_where_{$item}_stats_interval", [ $this, 'addWhere' ] );
-				add_filter( "woocommerce_analytics_clauses_select_{$item}_subquery", [ $this, 'addSelect' ] );
-				add_filter( "woocommerce_analytics_clauses_select_{$item}_stats_total", [ $this, 'addSelect' ] );
-				add_filter( "woocommerce_analytics_clauses_select_{$item}_stats_interval", [ $this, 'addSelect' ] );
 			}
 		);
+
+		add_action( 'woocommerce_admin_report_export', [ $this, 'saveRequestedCurrencyForReport' ], -PHP_INT_MAX, 4 );
 	}
 
 	public function enqueueAssets() {
@@ -154,35 +153,37 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 	 *
 	 * @return array
 	 */
-	public function addJoin( $clauses ) {
-		$clauses[] = "JOIN {$this->wpdb->postmeta} wcml_currency_postmeta ON {$this->wpdb->prefix}wc_order_stats.order_id = wcml_currency_postmeta.post_id";
-
-		return $clauses;
-	}
-
-	/**
-	 * @param array $clauses
-	 *
-	 * @return array
-	 */
 	public function addWhere( $clauses ) {
-		$clauses[] = $this->wpdb->prepare( "AND wcml_currency_postmeta.meta_key = '_order_currency' AND wcml_currency_postmeta.meta_value = %s", $this->getCurrency() );
+		$clauses[] = $this->wpdb->prepare(
+			"AND EXISTS (
+				SELECT 1 FROM {$this->wpdb->postmeta}
+				  WHERE post_id = {$this->wpdb->prefix}wc_order_stats.order_id
+				  AND meta_key = '_order_currency'
+				  AND meta_value = %s
+			)",
+			$this->getCurrency()
+		);
 
 		return $clauses;
 	}
 
 	/**
-	 * @param array $clauses
-	 *
-	 * @return array
+	 * @param int    $page
+	 * @param string $id
+	 * @param string $type
+	 * @param array  $args
 	 */
-	public function addSelect( $clauses ) {
-		$clauses[] = ', wcml_currency_postmeta.meta_value AS currency';
-
-		return $clauses;
+	public function saveRequestedCurrencyForReport( $page, $id, $type, $args ) {
+		if ( 'orders' === $type && isset( $args['currency'] ) ) {
+			$this->requestedCurrencyForReport = $args['currency'];
+		}
 	}
 
 	private function getCurrency() {
+		if ( ! empty( $this->requestedCurrencyForReport ) ) {
+			return $this->requestedCurrencyForReport;
+		}
+
 		$rawCurrency = WpAdminPages::isDashboard()
 			? Obj::prop( '_wcml_dashboard_currency', $_COOKIE )
 			: Obj::prop( 'currency', $_GET );

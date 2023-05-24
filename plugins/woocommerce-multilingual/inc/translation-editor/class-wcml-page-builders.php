@@ -30,7 +30,8 @@ class WCML_Page_Builders {
 			foreach ( $string_packages as $package_id => $string_package ) {
 
 				$translation_package[ $package_id ] = [
-					'title' => $string_package->title,
+					'title'   => $string_package->title,
+					'strings' => [],
 				];
 
 				$strings = $string_package->get_package_strings();
@@ -78,6 +79,7 @@ class WCML_Page_Builders {
 		foreach ( $string_packages as $string_package ) {
 
 			if ( isset( $string_package['strings'] ) ) {
+				/** @var stdClass $string */
 				foreach ( $string_package['strings'] as $string ) {
 					$element_data[ $string->name ] = [ 'original' => $string->value ];
 					if ( isset( $string->translated_value ) ) {

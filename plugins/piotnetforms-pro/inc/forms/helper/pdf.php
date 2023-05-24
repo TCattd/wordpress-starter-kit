@@ -43,19 +43,22 @@ class Piotnetforms_PDF_Template extends Fpdi\Tfpdf\Fpdi {
 		}
 	}
 
-	public function WriteHTML2( $html, $w, $x, $y ) {
+	public function WriteHTML2( $html, $w, $x, $y, $p ) {
 		// HTML parser
 		$html = str_replace( "\n", ' ', $html );
 		$a = preg_split( '/<(.*)>/U', $html, -1, PREG_SPLIT_DELIM_CAPTURE );
-		$this->SetXY( $x, $y );
+        if($p == 'J'){
+            $this->SetXY( $x, $y );
+        }else{
+            $this->SetXY('',  $y );
+        }
 		foreach ( $a as $i=>$e ) {
 			if ( $i%2==0 ) {
 				// Text
 				if ( $this->HREF ) {
 					$this->PutLink( $this->HREF, $e );
 				} else {
-					$this->SetX( $x );
-					$this->MultiCell( $w, 5, $e );
+					$this->MultiCell( $w, 5, $e, 0, $p );
 				}
 			} else {
 				// Tag

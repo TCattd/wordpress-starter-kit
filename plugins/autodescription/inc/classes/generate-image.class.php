@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -45,7 +45,7 @@ class Generate_Image extends Generate_Url {
 	 * TODO yield from and memoize deeper? Iterators calling this method currently do not affect the generators.
 	 *
 	 * @param bool $single Whether to return at most a single array item.
-	 * @return array The image details array, sequential: int => {
+	 * @return array[] The image details array, sequential: int => {
 	 *    string url:    The image URL,
 	 *    int    id:     The image ID,
 	 *    int    width:  The image width in pixels,
@@ -70,7 +70,7 @@ class Generate_Image extends Generate_Url {
 	 * @param string     $context The filter context. Default 'social'.
 	 * @param bool       $clean   Whether to clean the image, like stripping duplicates and erroneous items.
 	 *                            It's best to leave this enabled, unless you're merging the calls, and clean up yourself.
-	 * @return array The image details array, sequential: int => {
+	 * @return array[] The image details array, sequential: int => {
 	 *    string url:    The image URL,
 	 *    int    id:     The image ID,
 	 *    int    width:  The image width in pixels,
@@ -480,7 +480,6 @@ class Generate_Image extends Generate_Url {
 		$i     = 0;
 
 		foreach ( $cbs as $cb ) {
-			// This is one of the slowest calls in this plugin on PHP 5.6. However, PHP 7.0 optimized cuf(a). Neglegible.
 			foreach ( \call_user_func_array( $cb, [ $args, $size ] ) as $details ) {
 				if ( $details['url'] && $this->s_url_query( $details['url'] ) ) {
 					$items[ $i ] = $this->merge_extra_image_details( $details, $size );

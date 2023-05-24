@@ -133,6 +133,7 @@ class WCML_YIKES_Custom_Product_Tabs implements \IWPML_Action {
 
 		$orig_prod_tabs = $this->get_product_tabs( $original_product_id );
 
+		/* phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected */
 		if ( ( isset( $_POST['icl_ajx_action'] ) && ( 'make_duplicates' === $_POST['icl_ajx_action'] ) ) || ( get_post_meta( $trnsl_product_id, '_icl_lang_duplicate_of', true ) ) ) {
 			update_post_meta( $trnsl_product_id, self::CUSTOM_TABS_FIELD, $orig_prod_tabs );
 		} elseif ( $orig_prod_tabs ) {
@@ -184,7 +185,7 @@ class WCML_YIKES_Custom_Product_Tabs implements \IWPML_Action {
 					if ( isset( $prod_tab['title'] ) ) {
 						$package['contents'][ self::CUSTOM_TABS_FIELD . ':product_tab:' . $key . ':title' ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $prod_tab['title'], 'base64' ),
+							'data'      => $this->tp->encode_field_data( $prod_tab['title'] ),
 							'format'    => 'base64',
 						];
 					}
@@ -192,7 +193,7 @@ class WCML_YIKES_Custom_Product_Tabs implements \IWPML_Action {
 					if ( isset( $prod_tab['content'] ) ) {
 						$package['contents'][ self::CUSTOM_TABS_FIELD . ':product_tab:' . $key . ':content' ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $prod_tab['content'], 'base64' ),
+							'data'      => $this->tp->encode_field_data( $prod_tab['content'] ),
 							'format'    => 'base64',
 						];
 					}
@@ -216,7 +217,7 @@ class WCML_YIKES_Custom_Product_Tabs implements \IWPML_Action {
 
 			$translated_product_tabs = $this->get_product_tabs( $post_id );
 
-			if ( ! $translated_product_tabs ) {
+			if ( ! array_filter( $translated_product_tabs ) ) {
 				$translated_product_tabs = $original_product_tabs;
 			}
 

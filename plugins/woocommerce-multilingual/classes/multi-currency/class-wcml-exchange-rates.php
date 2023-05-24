@@ -212,7 +212,7 @@ class WCML_Exchange_Rates {
 	}
 
 	/**
-	 * @param $currency
+	 * @param string $currency
 	 *
 	 * @return mixed
 	 */

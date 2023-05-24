@@ -6,7 +6,7 @@ interface ShippingMode {
 	/**
 	 * Returns shipping method id (shipping option key).
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getMethodId();
 
@@ -17,7 +17,7 @@ interface ShippingMode {
 	 *
 	 * @param string $currencyCode
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getFieldTitle( $currencyCode );
 
@@ -29,7 +29,7 @@ interface ShippingMode {
 	 *
 	 * @param string $currencyCode
 	 *
-	 * @return string
+	 * @return string|null
 	 */
 	public function getFieldDescription( $currencyCode );
 
@@ -56,7 +56,7 @@ interface ShippingMode {
 	/**
 	 * If shipping mode has custom cost, recalculate and return its value.
 	 *
-	 * @param array|object $rate Shipping rate metadata.
+	 * @param object $rate Shipping rate metadata.
 	 * @param string $currency Currency code.
 	 *
 	 * @return integer|float|string
@@ -66,7 +66,7 @@ interface ShippingMode {
 	/**
 	 * Checks if the instance of the shipping method has enabled manual pricing.
 	 *
-	 * @param array|object $instance Currently processed instance of the shipping method.
+	 * @param array|object|false $instance Currently processed instance of the shipping method.
 	 *
 	 * @return bool
 	 */

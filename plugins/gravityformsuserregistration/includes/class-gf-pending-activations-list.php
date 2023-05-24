@@ -17,7 +17,7 @@ class GF_Pending_Activations_List extends WP_List_Table {
 				'cb'         => '<input type="checkbox" />',
 				'user_login' => __( 'Username', 'gravityformsuserregistration' ),
 				'email'      => __( 'Email', 'gravityformsuserregistration' ),
-				'date'       => __( 'Sign Up Date', 'gravityformsuserregistation' ),
+				'date'       => __( 'Sign Up Date', 'gravityformsuserregistration' ),
 			),
 			array(),
 			array(),
@@ -48,6 +48,11 @@ class GF_Pending_Activations_List extends WP_List_Table {
 			$signup_meta = unserialize( $pending_activation->meta );
 
 			$lead = RGFormsModel::get_lead( rgar( $signup_meta, 'lead_id' ) );
+
+			// An empty lead here means the lead_id is not valid for this site.
+			if ( empty( $lead ) ) {
+				continue;
+			}
 
 			$form_id           = $lead['form_id'];
 			$form              = rgar( $forms, $form_id ) ? rgar( $forms, $form_id ) : RGFormsModel::get_form_meta( $form_id );

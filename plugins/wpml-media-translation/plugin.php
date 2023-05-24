@@ -2,10 +2,10 @@
 /**
  * Plugin Name: WPML Media
  * Plugin URI: https://wpml.org/
- * Description: Add multilingual support for Media files | <a href="https://wpml.org/documentation/getting-started-guide/media-translation/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlmedia">Documentation</a> | <a href="https://wpml.org/version/media-translation-2-7-1/">WPML Media Translation 2.7.1 release notes</a>
+ * Description: Add multilingual support for Media files | <a href="https://wpml.org/documentation/getting-started-guide/media-translation/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlmedia">Documentation</a> | <a href="https://wpml.org/version/media-translation-2-7-2/">WPML Media Translation 2.7.2 release notes</a>
  * Author: OnTheGoSystems
  * Author URI: http://www.onthegosystems.com/
- * Version: 2.7.1
+ * Version: 2.7.2
  * Plugin Slug: wpml-media-translation
  *
  * @package wpml/media
@@ -15,7 +15,7 @@ if ( defined( 'WPML_MEDIA_VERSION' ) ) {
 	return;
 }
 
-define( 'WPML_MEDIA_VERSION', '2.7.1' );
+define( 'WPML_MEDIA_VERSION', '2.7.2' );
 define( 'WPML_MEDIA_PATH', dirname( __FILE__ ) );
 
 require_once WPML_MEDIA_PATH . '/vendor/autoload.php';
@@ -101,7 +101,6 @@ if ( $media_dependencies->check() ) {
 		$loaders = [
 			WPML_Media_Add_To_Basket_Factory::class,
 			WPML_Media_Submitted_Basket_Notice_Factory::class,
-			WPML_Media_Translation_Status_Factory::class,
 			WPML_Media_Populate_Media_Strings_Translations_Factory::class,
 		];
 

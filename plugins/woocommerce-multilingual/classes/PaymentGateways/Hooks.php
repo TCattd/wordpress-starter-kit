@@ -8,6 +8,7 @@ use IWPML_DIC_Action;
 use WCML\MultiCurrency\Geolocation;
 use WCML\StandAlone\IStandAloneAction;
 use WCML\Utilities\Resources;
+use WPML\API\Sanitize;
 use WPML\FP\Maybe;
 use WPML\FP\Obj;
 use WPML\FP\Relation;
@@ -27,7 +28,7 @@ class Hooks implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_Ac
 				add_action( 'woocommerce_settings_checkout', [ $this, 'output' ], self::PRIORITY );
 				add_action( 'admin_enqueue_scripts', [ $this, 'loadAssets' ] );
 			}
-			add_action( 'admin_notices', [ $this, 'maybeAddNotice'] );
+			add_action( 'admin_notices', [ $this, 'maybeAddNotice' ] );
 		} else {
 			add_filter( 'woocommerce_available_payment_gateways', [ $this, 'filterByCountry' ], self::PRIORITY );
 		}
@@ -35,13 +36,14 @@ class Hooks implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_Ac
 
 	public function updateSettingsOnSave() {
 
+		/* phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected */
 		if ( isset( $_POST[ self::OPTION_KEY ] ) ) {
 
 			$gatewaySettings = $_POST[ self::OPTION_KEY ];
 
 			$settings = $this->getSettings();
 
-			$gatewayId = filter_var( $gatewaySettings['ID'], FILTER_SANITIZE_STRING );
+			$gatewayId = Sanitize::stringProp( 'ID', $gatewaySettings );
 
 			$settings[ $gatewayId ]['mode'] = in_array( $gatewaySettings['mode'], [
 				'all',
@@ -49,7 +51,7 @@ class Hooks implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_Ac
 				'include'
 			], true ) ? $gatewaySettings['mode'] : 'all';
 
-			$settings[ $gatewayId ]['countries'] = isset( $gatewaySettings['countries'] ) ? array_map( 'esc_attr', array_filter( explode( ',', filter_var( $gatewaySettings['countries'], FILTER_SANITIZE_STRING ) ) ) ) : [];
+			$settings[ $gatewayId ]['countries'] = isset( $gatewaySettings['countries'] ) ? array_map( 'esc_attr', array_filter( explode( ',', Sanitize::stringProp( 'countries', $gatewaySettings ) ) ) ) : [];
 
 			$this->updateSettings( $settings );
 		}
@@ -168,13 +170,11 @@ class Hooks implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_Ac
 	 */
 	private function getGatewaySettings( $gatewayId ) {
 		return Maybe::fromNullable( get_option( self::OPTION_KEY, false ) )
-		            ->map( Obj::prop( $gatewayId ) )
-		            ->getOrElse( [ 'mode' => 'all', 'countries' => [] ] );
+			->map( Obj::prop( $gatewayId ) )
+			->getOrElse( [ 'mode' => 'all', 'countries' => [] ] );
 	}
 
 	/**
-	 * @param string $gatewayId
-	 *
 	 * @return array
 	 */
 	private function getSettings() {

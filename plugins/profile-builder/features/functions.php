@@ -99,7 +99,13 @@ if(!function_exists('wppb_curpageurl')){
         $req_uri = isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( $_SERVER['REQUEST_URI'] ) : '';
 
         if( function_exists('wppb_get_abs_home') ) {
-            $home_path = trim(parse_url(wppb_get_abs_home(), PHP_URL_PATH), '/');
+			$url = parse_url( wppb_get_abs_home(), PHP_URL_PATH );
+
+            $home_path = !empty( $url ) ? trim( $url, '/' ) : $url;
+
+			if( $home_path === null || $home_path === false )
+				$home_path = '';
+
             $home_path_regex = sprintf('|^%s|i', preg_quote($home_path, '|'));
 
             // Trim path info from the end and the leading home path from the front.
@@ -855,7 +861,8 @@ function wppb_password_strength_check(){
                     }
             <?php
             global $wp_version;
-            if ( version_compare( $wp_version, "4.8", ">" ) ) {
+
+            if ( version_compare( $wp_version, "4.9.0", ">=" ) ) {
                 ?>
                     strength = wp.passwordStrength.meter( pass1, wp.passwordStrength.userInputDisallowedList(), pass2 );
                 <?php
@@ -1171,9 +1178,11 @@ function wppb_add_gmt_offset( $timestamp ) {
  * @return string $extra_attributes
  */
 function wppb_add_html_tag_required_to_fields( $extra_attributes, $field, $form_location = '' ) {
-	if ( $field['field'] != "Checkbox" && isset( $field['required'] ) && $field['required'] == 'Yes' ){
-		if( !( ( $field['field'] == "Default - Password" || $field['field'] == "Default - Repeat Password" ) && $form_location == 'edit_profile' ) )
+	if ( isset( $field['required'] ) && $field['required'] == 'Yes' ){
+
+		if( !in_array( $field['field'], array( 'Checkbox', 'Default - Password', 'Default - Repeat Password', 'GDPR Communication Preferences' ) ) && $form_location == 'edit_profile' )
 			$extra_attributes .= ' required ';
+
 	}
 	return $extra_attributes;
 }
@@ -1338,7 +1347,7 @@ function wppb_get_redirect_url( $redirect_priority, $redirect_type, $redirect_ur
         $redirect_priority = 'normal';
     }
 
-	$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+	$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 	if( in_array( PROFILE_BUILDER, $versions ) ) {
 		$wppb_module_settings = get_option( 'wppb_module_settings' );

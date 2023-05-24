@@ -30,6 +30,27 @@
   }
 
   .limit-login-app-dashboard {
+    .llar-preloader-wrap {
+      position: relative;
+
+      &.loading {
+        &:before {
+          content: "";
+          display: block;
+          width: 100%;
+          height: 100%;
+          background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJtYXJnaW46YXV0bztiYWNrZ3JvdW5kOjAgMCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQiIGRpc3BsYXk9ImJsb2NrIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlM2UzZTMiIHN0cm9rZS13aWR0aD0iNSIgcj0iMzIiIHN0cm9rZS1kYXNoYXJyYXk9IjE1MC43OTY0NDczNzIzMTAwNyA1Mi4yNjU0ODI0NTc0MzY2OSIgdHJhbnNmb3JtPSJyb3RhdGUoMTQ0LjAxIDUwIDUwKSI+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBkdXI9IjFzIiB2YWx1ZXM9IjAgNTAgNTA7MzYwIDUwIDUwIiBrZXlUaW1lcz0iMDsxIi8+PC9jaXJjbGU+PC9zdmc+');
+          background-color: rgba(255,255,255,0.7);
+          background-repeat: no-repeat;
+          background-position: center center;
+          z-index: 999;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+    }
+
     .llar-table-scroll-wrap {
       max-height: 400px;
       overflow-y: auto;
@@ -47,7 +68,10 @@
           display: block;
           width: 100%;
           height: 100%;
+          background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJtYXJnaW46YXV0bztiYWNrZ3JvdW5kOjAgMCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQiIGRpc3BsYXk9ImJsb2NrIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlM2UzZTMiIHN0cm9rZS13aWR0aD0iNSIgcj0iMzIiIHN0cm9rZS1kYXNoYXJyYXk9IjE1MC43OTY0NDczNzIzMTAwNyA1Mi4yNjU0ODI0NTc0MzY2OSIgdHJhbnNmb3JtPSJyb3RhdGUoMTQ0LjAxIDUwIDUwKSI+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBkdXI9IjFzIiB2YWx1ZXM9IjAgNTAgNTA7MzYwIDUwIDUwIiBrZXlUaW1lcz0iMDsxIi8+PC9jaXJjbGU+PC9zdmc+');
           background-color: rgba(255,255,255,0.7);
+          background-repeat: no-repeat;
+          background-position: center center;
           z-index: 999;
           position: absolute;
           top: 0;
@@ -70,8 +94,14 @@
 
         .llar-log-country-flag {
           display: flex;
-          align-items: center;
+          //align-items: center;
           white-space: nowrap;
+
+          .llar-tooltip {
+            &:before {
+              width: auto !important;
+            }
+          }
 
           img {
             width: 20px;
@@ -115,6 +145,57 @@
       }
       tr:nth-child(even) {
         background-color: #f9f9f9;
+      }
+
+      .table-inline-preloader {
+        text-align: center;
+
+        &.hidden {
+          display: none;
+        }
+
+        tr {
+          td {
+            padding: 5px;
+
+            .load-more-button {
+              a {
+                text-decoration-style: dashed;
+              }
+            }
+            .preloader-row {
+              display: none;
+              align-items: center;
+
+              .preloader-icon {
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJtYXJnaW46YXV0bztiYWNrZ3JvdW5kOjAgMCIgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQiIGRpc3BsYXk9ImJsb2NrIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlM2UzZTMiIHN0cm9rZS13aWR0aD0iNSIgcj0iMzIiIHN0cm9rZS1kYXNoYXJyYXk9IjE1MC43OTY0NDczNzIzMTAwNyA1Mi4yNjU0ODI0NTc0MzY2OSIgdHJhbnNmb3JtPSJyb3RhdGUoMTQ0LjAxIDUwIDUwKSI+PGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBkdXI9IjFzIiB2YWx1ZXM9IjAgNTAgNTA7MzYwIDUwIDUwIiBrZXlUaW1lcz0iMDsxIi8+PC9jaXJjbGU+PC9zdmc+');
+                background-size: 100%;
+                background-repeat: no-repeat;
+                width: 30px;
+                height: 30px;
+                display: inline-block;
+              }
+              .preloader-text {
+                color: #999;
+              }
+            }
+          }
+        }
+
+        &.loading {
+          //display: table-footer-group;
+
+          tr {
+            td {
+              .load-more-button {
+                display: none;
+              }
+              .preloader-row {
+                display: inline-flex;
+              }
+            }
+          }
+        }
       }
     }
     .llar-table-header {
@@ -672,7 +753,7 @@
 .dashboard_page_llar-welcome,
 .toplevel_page_limit-login-attempts {
   .update-nag,
-  .notice {
+  .notice:not(.llar-notice-review) {
     display: none;
   }
   .video-container {
@@ -785,6 +866,12 @@
   }
 }
 
+.llar-auto-update-notice {
+  display: block !important;
+}
+
 @import "dashboard-page";
 @import "admin-dashboard-widgets";
 @import "onboarding-popup";
+@import "premium-tab";
+@import "help-page";

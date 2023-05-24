@@ -271,6 +271,12 @@ function WPPB_RepeaterGroup( setNumber, setOrder, template, repeaterField ){
     var _setNumber = setNumber;
     var _setOrder = setOrder;
 
+    // hide the field if the repeater group is empty
+    if ( _templateFields.length == 0  ){
+        template.parent().css( "display", "none" );
+        return;
+    }
+
     var configureNewGroup = function(){
         var precedentRepeaterGroup = _repeaterField.getRepeaterGroup(_setOrder - 1);
         var clone = _template.clone();

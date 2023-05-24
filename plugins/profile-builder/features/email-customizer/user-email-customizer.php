@@ -369,41 +369,4 @@ function wppb_user_email_customizer_add_mustache_in_backend(){
 
 	new PB_Mustache_Generate_Admin_Box( 'uec_change_email', __( 'Changed Email Address Notification', 'profile-builder' ), 'profile-builder_page_user-email-customizer', 'core', $mustache_vars, '', $fields );
 
-    /*
-    * User Notification for Edit Profile Approved by Admin
-    */
-
-    // check if the Edit Profile Approved by Admin add-on is active to see if the email should be displayed
-    if( function_exists( 'wppb_in_init_edit_profile_approval' ) ) {
-
-		// we format the var like this for proper line breaks.
-		$uec_epaa_notification = __("<p>Your profile has been reviewed by an administrator:</p>\n<br>\n<p>Approved Fields: {{approved_fields}}</p>\n<p>Unapproved Fields: {{unapproved_fields}}</p>\n", 'profile-builder');
-		$mustache_vars = wppb_email_customizer_generate_merge_tags('epaa_notification');
-		$fields = array(
-			array(
-				'label' => __('Email Subject', 'profile-builder'), // <label>
-				'desc' => '', // description
-				'id' => 'wppb_user_emailc_epaa_notification_subject', // field id and name
-				'type' => 'text', // type of field
-				'default' => __('[{{site_name}}] Your profile has been reviewed by an administrator', 'profile-builder'), // type of field
-			),
-			array(
-				'label' => __('Enable email', 'profile-builder'), // <label>
-				'desc' => '', // description
-				'id' => 'wppb_user_emailc_epaa_notification_enabled', // field id and name
-				'type' => 'checkbox', // type of field
-				'default' => 'on',
-			),
-			array( // Textarea
-				'label' => '', // <label>
-				'desc' => '', // description
-				'id' => 'wppb_user_emailc_epaa_notification_content', // field id and name
-				'type' => 'textarea', // type of field
-				'default' => $uec_epaa_notification, // type of field
-			)
-		);
-
-		new PB_Mustache_Generate_Admin_Box('uec_epaa_notification', __('User Notification for Edit Profile Approved by Admin', 'profile-builder'), 'profile-builder_page_user-email-customizer', 'core', $mustache_vars, '', $fields);
-
-    }
 }

@@ -40,7 +40,7 @@ class Export implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DI
 				return Obj::assoc(
 					$columnName,
 					$this->wpdb->prepare(
-						"(SELECT meta_value FROM {$this->wpdb->postmeta} WHERE post_id = {$this->wpdb->prefix}wc_order_stats.order_id AND meta_key = %s) AS %s",
+						"(SELECT DISTINCT meta_value FROM {$this->wpdb->postmeta} WHERE post_id = {$this->wpdb->prefix}wc_order_stats.order_id AND meta_key = %s) AS %s",
 						$metaKey,
 						$columnName
 					),

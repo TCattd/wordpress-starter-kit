@@ -226,7 +226,7 @@ class WCML_Composite_Products extends WCML_Compatibility_Helper implements \IWPM
 	 * @deprecated This method is used by CTE only.
 	 *
 	 * @param array      $data
-	 * @param string|int $bundle_id
+	 * @param string|int $product_id
 	 * @param object     $translation
 	 * @param string     $lang
 	 *

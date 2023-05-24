@@ -254,12 +254,32 @@ abstract class Base_Widget_Piotnetforms extends piotnetforms_Base {
 			[
 				'type'           => 'select',
 				'label'          => __( 'Family', 'piotnetforms' ),
-				'options_source' => 'google-fonts',
+				'options_source' => 'google-fonts-new',
 				'selectors'      => [
 					$wrapper => 'font-family:{{VALUE}}',
 				],
 			]
 		);
+
+		$this->add_control(
+			$name . '_font_custom',
+			[
+				'type'           => 'text',
+				'label'          => __( 'Custom Font', 'piotnetgrid' ),
+				'label_block'    => true,
+				'selectors'      => [
+					$wrapper => 'font-family:{{VALUE}}',
+				],
+				'conditions'     => [
+					[
+						'name'     => $name . '_font_family',
+						'operator' => '==',
+						'value'    => 'custom',
+					],
+				],
+			]
+		);
+
 
 		$this->add_responsive_control(
 			$name . '_font_size',

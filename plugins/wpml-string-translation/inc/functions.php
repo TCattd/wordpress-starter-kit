@@ -216,6 +216,11 @@ function icl_register_string( $context, $name, $value, $allow_empty_value = fals
 		$string_id = null;
 	}
 
+	/**
+	 * Action runs after string is registered
+	 */
+	do_action( 'wpml_st_string_registered' );
+
 	return $string_id;
 }
 
@@ -396,6 +401,11 @@ function icl_unregister_string( $context, $name ) {
 	}
 
 	/**
+	 * Action that fires after string is unregistered
+	 */
+	do_action( 'wpml_st_string_unregistered' );
+
+	/**
 	 * This action is is fired when a string is deleted.
 	 *
 	 * @param array $string_id
@@ -429,11 +439,16 @@ function wpml_unregister_string_multi( array $string_ids ) {
 	$wpdb->query( "DELETE FROM {$wpdb->prefix}icl_string_positions WHERE string_id IN ({$str})" );
 
 	/**
-	 * This action is is fired when several strings are deleted at once.
+	 * This action is fired when several strings are deleted at once.
 	 *
 	 * @param array $string_ids
 	 */
 	do_action( 'icl_st_unregister_string_multi', $string_ids );
+
+	/**
+	 * Action that fires after strings are unregistered
+	 */
+	do_action( 'wpml_st_string_unregistered' );
 }
 
 /**
@@ -828,7 +843,14 @@ function icl_sw_filters_nxgettext( $translation, $single, $plural, $number, $_ge
 function icl_st_register_user_strings_all() {
 	global $sitepress, $authordata;
 	$wpml_translated_users = new WPML_ST_User_Fields( $sitepress, $authordata );
-	return $wpml_translated_users->init_register_strings();
+	$processedIds = $wpml_translated_users->init_register_strings();
+
+	/**
+	 * Actions runs after user strings are registered
+	 */
+	do_action( 'wpml_st_string_registered' );
+
+	return $processedIds;
 }
 
 function icl_st_update_string_actions( $context, $name, $old_value, $new_value, $force_complete = false ) {
@@ -838,6 +860,11 @@ function icl_st_update_string_actions( $context, $name, $old_value, $new_value, 
 
 		$string_update = new WPML_ST_String_Update( $wpdb );
 		$string_update->update_string( $context, $name, $old_value, $new_value, $force_complete );
+
+		/**
+		 * Action that runs after registered strings are updated
+		 */
+		do_action( 'wpml_st_string_updated' );
 	}
 }
 

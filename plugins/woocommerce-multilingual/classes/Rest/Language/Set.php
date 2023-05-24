@@ -2,11 +2,13 @@
 
 namespace WCML\Rest\Language;
 
+use WPML\API\Sanitize;
 use WPML\FP\Obj;
 
 class Set {
 
 	public static function fromUrlQueryVar() {
+		/* phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected */
 		$lang = self::sanitize( Obj::prop( 'lang', $_GET ) );
 
 		if ( $lang ) {
@@ -70,6 +72,6 @@ class Set {
 	 * @return string
 	 */
 	private static function sanitize( $lang ) {
-		return filter_var( $lang, FILTER_SANITIZE_STRING );
+		return Sanitize::string( $lang );
 	}
 }

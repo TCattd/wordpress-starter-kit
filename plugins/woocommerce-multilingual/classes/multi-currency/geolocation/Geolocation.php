@@ -72,7 +72,7 @@ class Geolocation {
 	}
 
 	/**
-	 * @param string
+	 * @param string $country
 	 *
 	 * @return string|null
 	 */

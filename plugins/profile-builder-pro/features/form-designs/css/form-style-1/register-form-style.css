@@ -1,0 +1,47 @@
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button .wppb_bdp_visibility_settings,
+#wppb-form-style-1-wrapper .wppb-language .wppb_bdp_visibility_settings {
+    display: none;
+}
+
+#wppb-form-style-1-wrapper .pms-warning-message-wrapper {
+    background: #FFF9C4;
+    border: 1px solid #F9A825;
+    border-radius: 4px;
+    padding: 20px 15px 20px 57px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #090A0B !important;
+}
+
+#wppb-form-style-1-wrapper .pms-warning-message-wrapper .wppb-alert-title {
+    color: #F9A825;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-title {
+    order: 1;
+}
+
+#wppb-form-style-1-wrapper p.wppb-error,
+#wppb-form-style-1-wrapper p.wppb-success {
+    order: 2;
+}
+
+#wppb-form-style-1-wrapper .wppb-register-user {
+    order: 3;
+    overflow: visible !important;
+    max-width: 100%;
+}
+
+#wppb-form-style-1-wrapper div.wppb-sc-buttons-container {
+    order: 4;
+}
+
+#wppb-form-style-1-wrapper .form-submit input#register {
+    min-width: 150px;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-title {
+    margin-bottom: 50px !important;
+}

@@ -6,7 +6,7 @@ class WCML_Settings_UI extends WCML_Templates_Factory {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 
 	/**

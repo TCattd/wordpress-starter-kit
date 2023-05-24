@@ -21,7 +21,7 @@ class WCML_Endpoints {
 	 */
 	const STRING_CONTEXT = 'WP Endpoints';
 
-	public function __construct( woocommerce_wpml $woocommerce_wpml, \WPML\Core\ISitePress $sitepress, wpdb $wpdb ) {
+	public function __construct( woocommerce_wpml $woocommerce_wpml, SitePress $sitepress, wpdb $wpdb ) {
 		$this->woocommerce_wpml = $woocommerce_wpml;
 		$this->sitepress        = $sitepress;
 		$this->wpdb             = $wpdb;
@@ -171,7 +171,8 @@ class WCML_Endpoints {
 			return false;
 		}
 
-		$wc_vars = WC()->query->query_vars;
+		$wc_vars    = WC()->query->query_vars;
+		$query_vars = [];
 
 		if ( ! empty( $wc_vars ) ) {
 

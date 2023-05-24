@@ -8,7 +8,7 @@ namespace The_SEO_Framework\Internal;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -420,7 +420,7 @@ final class Debug {
 
 		// Escape it, replace EOL with breaks, and style everything between quotes (which are ending with space).
 		$output = str_replace( [ "\r\n", "\r", "\n" ], "<br>\n", \esc_html( str_replace( str_repeat( ' ', 4 ), str_repeat( '&nbsp;', 4 ), $output ) ) );
-		$output = preg_replace( '/(&quot;.*?&quot;)(\s|&nbps;)/', '<font color="arnoldschwarzenegger">$1</font> ', $output );
+		$output = preg_replace( '/(&quot;.*?&quot;)(\s|&nbps;)/', '<font color=arnoldschwarzenegger>$1</font> ', $output );
 
 		$output = '<div style="display:inline-block;width:100%;padding:20px;font-family:Consolas,Monaco,monospace;font-size:14px;">' . $output . '</div>';
 		$output = '<div style="font-family:unset;display:block;width:100%;background:#23282D;color:#ddd;border-bottom:1px solid #ccc">' . $title . $timer . $output . '</div>';
@@ -492,54 +492,60 @@ final class Debug {
 
 		// phpcs:disable, WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase -- Not this file's issue.
 		// phpcs:disable, VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- get_defined_vars() is used later.
-		$page_id                = $tsf->get_the_real_ID();
-		$is_query_exploited     = $tsf->is_query_exploited();
-		$query_supports_seo     = $tsf->query_supports_seo() ? 'yes' : 'no';
-		$is_404                 = $tsf->is_404();
-		$is_admin               = $tsf->is_admin();
-		$is_attachment          = $tsf->is_attachment();
-		$is_archive             = $tsf->is_archive();
-		$is_term_edit           = $tsf->is_term_edit();
-		$is_post_edit           = $tsf->is_post_edit();
-		$is_wp_lists_edit       = $tsf->is_wp_lists_edit();
-		$is_author              = $tsf->is_author();
-		$is_category            = $tsf->is_category();
-		$is_date                = $tsf->is_date();
-		$is_year                = $tsf->is_year();
-		$is_month               = $tsf->is_month();
-		$is_day                 = $tsf->is_day();
-		$is_feed                = $tsf->is_feed();
-		$is_real_front_page     = $tsf->is_real_front_page();
-		$is_home                = $tsf->is_home();
-		$is_home_as_page        = $tsf->is_home_as_page();
-		$is_page                = $tsf->is_page();
-		$page                   = $tsf->page();
-		$paged                  = $tsf->paged();
-		$is_preview             = $tsf->is_preview();
-		$is_customize_preview   = $tsf->is_customize_preview();
-		$is_search              = $tsf->is_search();
-		$is_single              = $tsf->is_single();
-		$is_singular            = $tsf->is_singular();
-		$is_static_frontpage    = $tsf->is_static_frontpage();
-		$is_tag                 = $tsf->is_tag();
-		$is_tax                 = $tsf->is_tax();
-		$is_shop                = $tsf->is_shop();
-		$is_product             = $tsf->is_product();
-		$is_seo_settings_page   = $tsf->is_seo_settings_page( true );
-		$numpages               = $tsf->numpages();
-		$is_multipage           = $tsf->is_multipage();
-		$is_singular_archive    = $tsf->is_singular_archive();
-		$is_term_meta_capable   = $tsf->is_term_meta_capable();
-		$is_post_type_supported = $tsf->is_post_type_supported();
-		$is_taxonomy_supported  = $tsf->is_taxonomy_supported();
-		$get_post_type          = \get_post_type();
-		$get_post_type_real_ID  = $tsf->get_post_type_real_ID();
-		$admin_post_type        = $tsf->get_admin_post_type();
-		$current_taxonomy       = $tsf->get_current_taxonomy();
-		$current_post_type      = $tsf->get_current_post_type();
-		$is_taxonomy_disabled   = $tsf->is_taxonomy_disabled();
-		$is_post_type_archive   = \is_post_type_archive();
-		$is_protected           = $tsf->is_protected( $page_id );
+		$page_id                        = $tsf->get_the_real_ID();
+		$is_query_exploited             = $tsf->is_query_exploited();
+		$query_supports_seo             = $tsf->query_supports_seo() ? 'yes' : 'no';
+		$is_404                         = $tsf->is_404();
+		$is_admin                       = $tsf->is_admin();
+		$is_attachment                  = $tsf->is_attachment();
+		$is_archive                     = $tsf->is_archive();
+		$is_term_edit                   = $tsf->is_term_edit();
+		$is_post_edit                   = $tsf->is_post_edit();
+		$is_wp_lists_edit               = $tsf->is_wp_lists_edit();
+		$is_author                      = $tsf->is_author();
+		$is_category                    = $tsf->is_category();
+		$is_date                        = $tsf->is_date();
+		$is_year                        = $tsf->is_year();
+		$is_month                       = $tsf->is_month();
+		$is_day                         = $tsf->is_day();
+		$is_feed                        = $tsf->is_feed();
+		$is_real_front_page             = $tsf->is_real_front_page();
+		$is_home                        = $tsf->is_home();
+		$is_home_as_page                = $tsf->is_home_as_page();
+		$is_page                        = $tsf->is_page();
+		$page                           = $tsf->page();
+		$paged                          = $tsf->paged();
+		$is_preview                     = $tsf->is_preview();
+		$is_customize_preview           = $tsf->is_customize_preview();
+		$is_search                      = $tsf->is_search();
+		$is_single                      = $tsf->is_single();
+		$is_singular                    = $tsf->is_singular();
+		$is_static_frontpage            = $tsf->is_static_frontpage();
+		$is_tag                         = $tsf->is_tag();
+		$is_tax                         = $tsf->is_tax();
+		$is_shop                        = $tsf->is_shop();
+		$is_product                     = $tsf->is_product();
+		$is_seo_settings_page           = $tsf->is_seo_settings_page( true );
+		$numpages                       = $tsf->numpages();
+		$is_multipage                   = $tsf->is_multipage();
+		$is_singular_archive            = $tsf->is_singular_archive();
+		$is_term_meta_capable           = $tsf->is_term_meta_capable();
+		$is_post_type_supported         = $tsf->is_post_type_supported();
+		$is_post_type_archive_supported = $tsf->is_post_type_archive_supported();
+		$has_page_on_front              = $tsf->has_page_on_front();
+		$is_taxonomy_supported          = $tsf->is_taxonomy_supported();
+		$get_post_type                  = \get_post_type();
+		$get_post_type_real_ID          = $tsf->get_post_type_real_ID();
+		$admin_post_type                = $tsf->get_admin_post_type();
+		$current_taxonomy               = $tsf->get_current_taxonomy();
+		$current_post_type              = $tsf->get_current_post_type();
+		$is_taxonomy_disabled           = $tsf->is_taxonomy_disabled();
+		$is_post_type_archive           = \is_post_type_archive();
+		$is_protected                   = $tsf->is_protected( $page_id );
+		$wp_doing_ajax                  = \wp_doing_ajax();
+		$wp_doing_cron                  = \wp_doing_cron();
+		$wp_is_json_request             = \wp_is_json_request();
+		$wp_is_rest                     = \defined( 'REST_REQUEST' ) && REST_REQUEST;
 		// phpcs:enable, WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase
 		// phpcs:enable, VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
 
@@ -567,7 +573,7 @@ final class Debug {
 				$value = \esc_html( var_export( $value, true ) );
 			}
 
-			$value   = '<font color="harrisonford">' . "$type $value" . '</font>';
+			$value   = '<font color=harrisonford>' . "$type $value" . '</font>';
 			$out     = \esc_html( $name ) . ' => ' . $value;
 			$output .= "<span style=background:#dadada>$out</span>\n";
 		}
@@ -581,7 +587,7 @@ final class Debug {
 				$value = \esc_html( var_export( $value, true ) );
 			}
 
-			$value = '<font color="harrisonford">' . "$type $value" . '</font>';
+			$value = '<font color=harrisonford>' . "$type $value" . '</font>';
 			$out   = \esc_html( $name ) . ' => ' . $value;
 
 			$output .= "$out\n";

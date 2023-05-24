@@ -31,11 +31,11 @@ class WCML_Woobe implements \IWPML_Action {
 	/**
 	 * Replaces product price for translation of given product.
 	 *
-	 * @param int|null        $product_id Product ID
-	 * @param WC_Product|null $product    Product object
-	 * @param string|null     $field_key  Key of processed custom field
-	 * @param mixed|null      $value      Value of processed custom field
-	 * @param string|null     $field_type Type of processed custom field
+	 * @param int|null        $product_id Product ID.
+	 * @param WC_Product|null $product    Product object.
+	 * @param string|null     $field_key  Key of processed custom field.
+	 * @param mixed|null      $value      Value of processed custom field.
+	 * @param string|null     $field_type Type of processed custom field.
 	 */
 	public function replace_price_in_translations( $product_id = null, $product = null, $field_key = null, $value = null, $field_type = null ) {
 		if ( $this->is_price_updated( $product_id, $field_key, $value )
@@ -54,9 +54,9 @@ class WCML_Woobe implements \IWPML_Action {
 	/**
 	 * Check if filter runs during the  bulk price update
 	 *
-	 * @param $product_id Product ID
-	 * @param $field_key  Key of processed custom field
-	 * @param $value      Value of processed custom field
+	 * @param int    $product_id Product ID
+	 * @param string $field_key  Key of processed custom field
+	 * @param mixed  $value      Value of processed custom field
 	 *
 	 * @return bool
 	 */

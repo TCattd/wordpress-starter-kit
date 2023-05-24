@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
+class ComposerStaticInitb7f32083228a1a54510835a7a36c65d1
 {
     public static $files = array (
         'b45b351e6b6f7487d819961fef2fda77' => __DIR__ . '/..' . '/jakeasmith/http_build_url/src/http_build_url.php',
@@ -26,12 +26,15 @@ class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'WCML\\API\\VendorAddon\\Hooks' => __DIR__ . '/../..' . '/classes/API/VendorAddon/Hooks.php',
         'WCML\\AdminDashboard\\Hooks' => __DIR__ . '/../..' . '/classes/AdminDashboard/Hooks.php',
         'WCML\\AdminNotices\\CachePlugins' => __DIR__ . '/../..' . '/classes/AdminNotices/CachePlugins.php',
         'WCML\\AdminNotices\\MultiCurrencyMissing' => __DIR__ . '/../..' . '/classes/AdminNotices/MultiCurrencyMissing.php',
         'WCML\\AdminNotices\\RestrictedScreens' => __DIR__ . '/../..' . '/classes/AdminNotices/RestrictedScreens.php',
         'WCML\\AdminNotices\\Review' => __DIR__ . '/../..' . '/classes/AdminNotices/Review.php',
+        'WCML\\AdminNotices\\WizardNotice' => __DIR__ . '/../..' . '/classes/AdminNotices/WizardNotice.php',
+        'WCML\\AdminTexts\\Hooks' => __DIR__ . '/../..' . '/classes/AdminTexts/Hooks.php',
         'WCML\\Attributes\\LookupFilters' => __DIR__ . '/../..' . '/classes/Attributes/LookupFilters.php',
         'WCML\\Attributes\\LookupFiltersFactory' => __DIR__ . '/../..' . '/classes/Attributes/LookupFiltersFactory.php',
         'WCML\\Attributes\\LookupTable' => __DIR__ . '/../..' . '/classes/Attributes/LookupTable.php',
@@ -103,6 +106,8 @@ class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
         'WCML\\Compatibility\\WpFastestCache\\Factory' => __DIR__ . '/../..' . '/compatibility/WpFastestCache/Factory.php',
         'WCML\\Compatibility\\WpFastestCache\\MulticurrencyHooks' => __DIR__ . '/../..' . '/compatibility/WpFastestCache/MulticurrencyHooks.php',
         'WCML\\Compatibility\\WpSeo\\Factory' => __DIR__ . '/../..' . '/compatibility/WpSeo/Factory.php',
+        'WCML\\Compatibility\\WpSuperCache\\Factory' => __DIR__ . '/../..' . '/compatibility/WpSuperCache/Factory.php',
+        'WCML\\Compatibility\\WpSuperCache\\MulticurrencyHooks' => __DIR__ . '/../..' . '/compatibility/WpSuperCache/MulticurrencyHooks.php',
         'WCML\\Compatibility\\YikesCustomProductTabs\\Factory' => __DIR__ . '/../..' . '/compatibility/YikesCustomProductTabs/Factory.php',
         'WCML\\Compatibility\\YithWcQuickView\\Factory' => __DIR__ . '/../..' . '/compatibility/YithWcQuickView/Factory.php',
         'WCML\\Compatibility\\YithWcQuickView\\MulticurrencyHooks' => __DIR__ . '/../..' . '/compatibility/YithWcQuickView/MulticurrencyHooks.php',
@@ -110,6 +115,7 @@ class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
         'WCML\\Email\\Settings\\Hooks' => __DIR__ . '/../..' . '/classes/Email/Settings/Hooks.php',
         'WCML\\HomeScreen\\Factory' => __DIR__ . '/../..' . '/classes/HomeScreen/Factory.php',
         'WCML\\HomeScreen\\Hooks' => __DIR__ . '/../..' . '/classes/HomeScreen/Hooks.php',
+        'WCML\\Importer\\Products' => __DIR__ . '/../..' . '/classes/Importer/Products.php',
         'WCML\\MO\\Hooks' => __DIR__ . '/../..' . '/classes/MO/Hooks.php',
         'WCML\\Media\\Wrapper\\Factory' => __DIR__ . '/../..' . '/classes/media/Wrapper/Factory.php',
         'WCML\\Media\\Wrapper\\IMedia' => __DIR__ . '/../..' . '/classes/media/Wrapper/IMedia.php',
@@ -173,6 +179,9 @@ class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
         'WCML\\Rest\\Hooks' => __DIR__ . '/../..' . '/classes/Rest/Hooks.php',
         'WCML\\Rest\\Language\\Set' => __DIR__ . '/../..' . '/classes/Rest/Language/Set.php',
         'WCML\\Rest\\ProductSaveActions' => __DIR__ . '/../..' . '/classes/Rest/ProductSaveActions.php',
+        'WCML\\Rest\\Store\\Hooks' => __DIR__ . '/../..' . '/classes/Rest/Store/Hooks.php',
+        'WCML\\Rest\\Store\\HooksFactory' => __DIR__ . '/../..' . '/classes/Rest/Store/HooksFactory.php',
+        'WCML\\Rest\\Store\\PriceRangeHooks' => __DIR__ . '/../..' . '/classes/Rest/Store/PriceRangeHooks.php',
         'WCML\\Rest\\Wrapper\\Composite' => __DIR__ . '/../..' . '/classes/Rest/Wrapper/Composite.php',
         'WCML\\Rest\\Wrapper\\Factory' => __DIR__ . '/../..' . '/classes/Rest/Wrapper/Factory.php',
         'WCML\\Rest\\Wrapper\\Handler' => __DIR__ . '/../..' . '/classes/Rest/Wrapper/Handler.php',
@@ -183,6 +192,7 @@ class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
         'WCML\\Rest\\Wrapper\\Reports\\ProductsCount' => __DIR__ . '/../..' . '/classes/Rest/Wrapper/Reports/ProductsCount.php',
         'WCML\\Rest\\Wrapper\\Reports\\ProductsSales' => __DIR__ . '/../..' . '/classes/Rest/Wrapper/Reports/ProductsSales.php',
         'WCML\\Rest\\Wrapper\\Reports\\TopSeller' => __DIR__ . '/../..' . '/classes/Rest/Wrapper/Reports/TopSeller.php',
+        'WCML\\Reviews\\Backend\\Hooks' => __DIR__ . '/../..' . '/classes/Reviews/Backend/Hooks.php',
         'WCML\\Reviews\\Translations\\Factory' => __DIR__ . '/../..' . '/classes/Reviews/Translations/Factory.php',
         'WCML\\Reviews\\Translations\\FrontEndHooks' => __DIR__ . '/../..' . '/classes/Reviews/Translations/FrontEndHooks.php',
         'WCML\\Reviews\\Translations\\Mapper' => __DIR__ . '/../..' . '/classes/Reviews/Translations/Mapper.php',
@@ -395,9 +405,9 @@ class ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit6310bae2541bee1bbc1f0e0a2f0f70a5::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb7f32083228a1a54510835a7a36c65d1::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb7f32083228a1a54510835a7a36c65d1::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitb7f32083228a1a54510835a7a36c65d1::$classMap;
 
         }, null, ClassLoader::class);
     }

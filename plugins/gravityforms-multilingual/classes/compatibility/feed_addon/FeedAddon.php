@@ -8,7 +8,7 @@ use GFML_TM_API;
 /**
  * Base class for translating feed addons.
  */
-abstract class FeedAddon {
+abstract class FeedAddon implements \IWPML_Action {
 
 	const PRIORITY_AFTER_ADDON_COMPLETES = 11;
 
@@ -23,10 +23,10 @@ abstract class FeedAddon {
 		$this->prefix    = $prefix;
 	}
 
-	public function addHooks() {
+	public function add_hooks() {
 		add_action( 'gform_post_save_feed_settings', [ $this, 'registerOnSave' ], 10, 3 );
 		add_action( 'gform_forms_post_import', [ $this, 'registerOnImport' ], static::PRIORITY_AFTER_ADDON_COMPLETES );
-		add_action( 'gform_post_form_duplicated', [ $this, 'registerOnDuplicate' ], static::PRIORITY_AFTER_ADDON_COMPLETES );
+		add_action( 'gform_post_form_duplicated', [ $this, 'registerOnDuplicate' ], static::PRIORITY_AFTER_ADDON_COMPLETES, 2 );
 	}
 
 	/**

@@ -72,7 +72,7 @@ switch ( $this->get_view_instance( 'general', $instance ) ) :
 				] ),
 				Input::make_checkbox( [
 					'id'     => 'display_seo_bar_metabox',
-					'label'  => esc_html__( 'Display the SEO Bar in the SEO Settings metabox?', 'autodescription' ),
+					'label'  => esc_html__( 'Display the SEO Bar in the SEO Settings meta box?', 'autodescription' ),
 					'escape' => false,
 				] ),
 				Input::make_checkbox( [
@@ -317,9 +317,9 @@ switch ( $this->get_view_instance( 'general', $instance ) ) :
 			<legend><?php HTML::header_title( __( 'Timestamp Format Settings', 'autodescription' ) ); ?></legend>
 			<?php HTML::description( __( 'This setting determines how specific the timestamp is.', 'autodescription' ) ); ?>
 
-			<p id="sitemaps-timestamp-format" class="tsf-fields">
-				<span class="tsf-toblock">
-					<input type="radio" name="<?php Input::field_name( 'timestamps_format' ); ?>" id="<?php Input::field_id( 'timestamps_format_0' ); ?>" value="0" <?php checked( $this->get_option( 'timestamps_format' ), '0' ); ?> />
+			<p id=sitemaps-timestamp-format class=tsf-fields>
+				<span class=tsf-toblock>
+					<input type=radio name="<?php Input::field_name( 'timestamps_format' ); ?>" id="<?php Input::field_id( 'timestamps_format_0' ); ?>" value=0 <?php checked( $this->get_option( 'timestamps_format' ), '0' ); ?> />
 					<label for="<?php Input::field_id( 'timestamps_format_0' ); ?>">
 						<?php
 						// phpcs:ignore, WordPress.Security.EscapeOutput -- code_wrap escapes.
@@ -329,8 +329,8 @@ switch ( $this->get_view_instance( 'general', $instance ) ) :
 						?>
 					</label>
 				</span>
-				<span class="tsf-toblock">
-					<input type="radio" name="<?php Input::field_name( 'timestamps_format' ); ?>" id="<?php Input::field_id( 'timestamps_format_1' ); ?>" value="1" <?php checked( $this->get_option( 'timestamps_format' ), '1' ); ?> />
+				<span class=tsf-toblock>
+					<input type=radio name="<?php Input::field_name( 'timestamps_format' ); ?>" id="<?php Input::field_id( 'timestamps_format_1' ); ?>" value=1 <?php checked( $this->get_option( 'timestamps_format' ), '1' ); ?> />
 					<label for="<?php Input::field_id( 'timestamps_format_1' ); ?>">
 						<?php
 						// phpcs:ignore, WordPress.Security.EscapeOutput -- code_wrap escapes.
@@ -398,8 +398,6 @@ switch ( $this->get_view_instance( 'general', $instance ) ) :
 		$forced_tax = $this->get_forced_supported_taxonomies();
 		$boxes      = [];
 
-		$tax_option_id = 'disabled_taxonomies';
-
 		foreach ( $this->get_public_taxonomies() as $taxonomy ) {
 			$_label = $this->get_tax_type_label( $taxonomy, false );
 			if ( ! strlen( $_label ) ) continue;
@@ -411,7 +409,7 @@ switch ( $this->get_view_instance( 'general', $instance ) ) :
 			);
 
 			$boxes[] = Input::make_checkbox( [
-				'id'       => [ 'disabled_taxonomies', $taxonomy ],
+				'id'       => [ 'disabled_taxonomies', $taxonomy ], // disabled_taxonomies is the option name.
 				'class'    => 'tsf-excluded-taxonomies',
 				'label'    => $_label,
 				'escape'   => false,

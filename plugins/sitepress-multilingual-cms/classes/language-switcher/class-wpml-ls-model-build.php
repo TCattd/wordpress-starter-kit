@@ -241,25 +241,9 @@ class WPML_LS_Model_Build extends WPML_SP_User {
 				$i++;
 			}
 
-			$ret = $this->order_menu_items( $ret, $this->sitepress->get_current_language() );
 		}
 
 		return $ret;
-	}
-
-	/**
-	 * @param array $menu_items
-	 *
-	 * @return array
-	 */
-	private function order_menu_items( $menu_items, $current_language ) {
-		if ( isset( $menu_items[$current_language] ) ) {
-			$current_language_value = $menu_items[$current_language];
-			unset($menu_items[$current_language]);
-			return array_merge([$current_language => $current_language_value], $menu_items);
-		} else {
-			return $menu_items;
-		}
 	}
 
 	/**

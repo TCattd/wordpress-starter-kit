@@ -2,7 +2,7 @@
 Contributors: nacin, jorbin
 Tags: deprecated, logging, admin, WP_DEBUG, E_NOTICE, developer
 Requires at least: 3.0
-Tested up to: 5.0-alpha
+Tested up to: 5.8
 Stable tag: 0.4.1
 
 Logs the usage of deprecated files, functions, and function arguments, and identifies where the deprecated functionality is being used.

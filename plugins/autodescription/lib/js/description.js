@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -60,7 +60,7 @@ window.tsfDescription = function() {
 	 * @param {Element} element
 	 * @return {Element}
 	 */
-	const setInputElement = ( element ) => {
+	const setInputElement = element => {
 		descriptionInputInstances.set( element.id, element );
 		states[ element.id ] = {
 			allowReferenceChange: true,
@@ -262,8 +262,8 @@ window.tsfDescription = function() {
 	 * @param {Event} event
 	 */
 	const _updatePixels = event => {
-		const pixels  = document.getElementById( `${event.target.id}_pixels` ),
-			reference = _getDescriptionReferences( event.target.id )[0];
+		const pixels    = document.getElementById( `${event.target.id}_pixels` ),
+			  reference = _getDescriptionReferences( event.target.id )[0];
 
 		if ( ! pixels ) return;
 

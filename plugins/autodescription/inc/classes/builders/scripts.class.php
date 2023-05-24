@@ -8,7 +8,7 @@ namespace The_SEO_Framework\Builders;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2018 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2018 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -487,8 +487,9 @@ final class Scripts {
 
 			$tsf = \tsf();
 
-			if ( ! \is_array( $_colors[ $_scheme ]->colors ?? null )
-			  || \count( $_colors[ $_scheme ]->colors ) < 4 // unexpected scheme, ignore and override.
+			if (
+				   ! \is_array( $_colors[ $_scheme ]->colors ?? null )
+				|| \count( $_colors[ $_scheme ]->colors ) < 4 // unexpected scheme, ignore and override.
 			) {
 				$_colors = [
 					'#222',

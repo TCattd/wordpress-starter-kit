@@ -64,8 +64,8 @@
 
             if( self.hideInactive ) {
 
-                var $currentSelect = $( '[name="input_' + inputId + '" ]' ),
-                    $spinner       = new gfAjaxSpinner( $currentSelect, gformChainedSelectData.spinner, 'display:inline-block;vertical-align:middle;margin:-1px 0 0 6px;' );
+                var $currentSelect = self.$selects.filter( '[name="input_' + inputId + '" ]' ),
+                    $spinner       = new gfAjaxSpinner( $currentSelect, gformChainedSelectData.spinner, 'display:inline-block;vertical-align:middle;margin:-1px 0 0 6px;', inputId );
 
             } else {
 
@@ -277,23 +277,40 @@
 
     };
 
-    function gfAjaxSpinner( elem, imageSrc, inlineStyles ) {
+    function gfAjaxSpinner( elem, imageSrc, inlineStyles, inputId = 0 ) {
 
-        var imageSrc     = typeof imageSrc == 'undefined' ? '/images/ajax-loader.gif': imageSrc,
-            inlineStyles = typeof inlineStyles != 'undefined' ? inlineStyles : '';
+		var imageSrc     = typeof imageSrc == 'undefined' ? '/images/ajax-loader.gif': imageSrc,
+			inlineStyles = typeof inlineStyles != 'undefined' ? inlineStyles : '';
 
-        this.elem = elem;
-        this.image = '<img class="gfspinner" src="' + imageSrc + '" style="' + inlineStyles + '" />';
+		this.elem   = elem;
+		this.formId = elem.parents( 'form' ).data( 'formid' );
+		this.image  = '<img class="gfspinner" src="' + imageSrc + '" style="' + inlineStyles + '" />';
 
-        this.init = function() {
-            this.spinner = jQuery(this.image);
-            jQuery( this.elem ).after(this.spinner);
-            return this;
-        };
+		this.init = function() {
+
+			if ( 'function' !== typeof gformInitializeSpinner || !this.formUsesFramework( this.formId ) ) {
+				this.spinner = jQuery( this.image );
+				jQuery( this.elem ).after( this.spinner );
+				return this;
+			}
+
+			var $spinnerTarget = this.elem.closest( 'span' );
+			gformInitializeSpinner( this.formId, $spinnerTarget, 'gform-chainedselect-spinner-' + inputId );
+		};
 
         this.destroy = function() {
-            jQuery( this.spinner ).remove();
+
+            if ( 'function' !== typeof gformRemoveSpinner || ! this.formUsesFramework( this.formId ) ) {
+                jQuery( this.spinner ).remove();
+                return;
+            }
+
+            gformRemoveSpinner( 'gform-chainedselect-spinner-' + inputId );
         };
+
+        this.formUsesFramework = function( formId ) {
+            return jQuery( '#gform_wrapper_' + formId ).hasClass( 'gform-theme--framework' );
+        }
 
         return this.init();
     }

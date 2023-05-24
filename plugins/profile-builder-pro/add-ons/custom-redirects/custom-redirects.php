@@ -203,7 +203,7 @@ function wppb_custom_redirect_url( $type, $redirect_url = NULL, $user = NULL, $u
 
 /* the function needed to block access to the admin-panel (if requested) */
 function wppb_restrict_dashboard_access() {
-	$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+	$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 	if( in_array( PROFILE_BUILDER, $versions ) ) {
 		if( is_admin() || in_array( $GLOBALS['pagenow'], array( 'wp-login.php', 'wp-register.php' ) ) ) {
@@ -232,7 +232,7 @@ add_action( 'admin_init', 'wppb_restrict_dashboard_access' );
 
 /* the function needed to redirect from default WordPress forms and pages (if requested) */
 function wppb_redirect_default_wp_pages() {
-	$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+	$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 	if( in_array( PROFILE_BUILDER, $versions ) ) {
 		if( ! is_admin() ) {
@@ -322,7 +322,7 @@ add_action( 'init', 'wppb_redirect_default_wp_pages' );
 
 /* the function needed to redirect from default WordPress Author Archive (if requested) */
 function wppb_redirect_default_wp_author_archive() {
-	$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+	$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 	if( in_array( PROFILE_BUILDER, $versions ) ) {
 		if( ! is_admin() ) {

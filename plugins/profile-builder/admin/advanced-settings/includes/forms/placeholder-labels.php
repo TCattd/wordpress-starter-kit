@@ -237,3 +237,52 @@ function wppb_pbpl_recover_password( $extra_attr, $input_title, $input_type ) {
     return $extra_attr;
 }
 add_filter( 'wppb_recover_password_extra_attr', 'wppb_pbpl_recover_password', 10, 3 );
+
+
+/**
+ * Add necessary class to PMS Billing Fields and replace empty Option for Select Fields (placeholder)
+ *
+*/
+function wppb_pms_add_classes ( $fields ) {
+    $forms_settings = get_option( 'wppb_toolbox_forms_settings' );
+
+    if ( $forms_settings['placeholder-labels'] == 'yes' ) {
+        foreach ( $fields as $field ) {
+            if ( isset( $field['name'] ) && isset( $field['wrapper_class'] ) )
+                $fields[$field['name']]['wrapper_class'] .= ' pbpl-class';
+
+            if ( isset($field['options']) ) {
+                $fields[$field['name']]['options'][''] = __( 'Select an option', 'profile-builder' );
+            }
+        }
+    }
+
+    return $fields;
+}
+add_filter('pms_inv_get_invoice_fields', 'wppb_pms_add_classes' );
+add_filter('pms_get_tax_extra_fields', 'wppb_pms_add_classes' );
+
+
+/**
+ * Add Placeholders to PMS Billing Fields
+ *
+ */
+function wppb_pbpl_add_pms_fields_placeholder( $form_fields ) {
+    $forms_settings = get_option( 'wppb_toolbox_forms_settings' );
+
+    if ( $forms_settings['placeholder-labels'] != 'yes' || !function_exists( 'pms_in_inv_get_invoice_fields' ) )
+        return $form_fields;
+
+    $pms_billing_fields = pms_in_inv_get_invoice_fields();
+
+    foreach ($pms_billing_fields as $key => $data) {
+        $required = ( isset( $data['required'] ) && $data['required'] == 1 ) ? ' *' : '';
+
+        if ( ($data['type'] == 'text' || $data['type'] == 'select_state' ) && strpos( $form_fields,'name="'. $key .'"' ) )
+            $form_fields = str_replace('name="'. $key .'"', 'name="'. $key .'"" placeholder="'. $data['label'] . $required .'"', $form_fields);
+    }
+
+    return $form_fields;
+}
+add_filter('wppb_output_fields_filter', 'wppb_pbpl_add_pms_fields_placeholder' );
+

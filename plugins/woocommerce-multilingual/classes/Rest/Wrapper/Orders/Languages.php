@@ -10,8 +10,8 @@ use function WCML\functions\getId;
 class Languages extends Handler {
 
 	/**
-	 * @param array           $args
-	 * @param WP_REST_Request $request Request object.
+	 * @param array            $args
+	 * @param \WP_REST_Request $request Request object.
 	 *
 	 * @return array
 	 */
@@ -32,11 +32,11 @@ class Languages extends Handler {
 	/**
 	 * Appends the language and translation information to the get_product response
 	 *
-	 * @param WP_REST_Response         $response
+	 * @param \WP_REST_Response        $response
 	 * @param \WP_Post|\WC_Order|mixed $object
-	 * @param WP_REST_Request          $request
+	 * @param \WP_REST_Request         $request
 	 *
-	 * @return WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
 	public function prepare( $response, $object, $request ) {
 		$language      = get_query_var( 'lang' );
@@ -64,7 +64,9 @@ class Languages extends Handler {
 
 	/**
 	 * @param \WP_Post|\WC_Order|mixed $object
+	 *
 	 * @return int
+	 *
 	 * @throws \Exception If order has no id.
 	 */
 	private function get_id( $object ) {
@@ -79,9 +81,9 @@ class Languages extends Handler {
 	/**
 	 * Sets the product information according to the provided language
 	 *
-	 * @param object          $object
-	 * @param WP_REST_Request $request
-	 * @param bool            $creating
+	 * @param object           $object
+	 * @param \WP_REST_Request $request
+	 * @param bool             $creating
 	 *
 	 * @throws InvalidLanguage
 	 */

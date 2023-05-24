@@ -304,8 +304,8 @@ abstract class PB_Elementor_Widget extends \Elementor\Widget_Base {
                 $atts = [
                     'role' => $settings['pb_role'],
                     'form_name' => $form_name,
-                    'redirect_url' => get_page_link( $settings['pb_redirect_url'] ),
-                    'logout_redirect_url' => get_page_link( $settings['pb_logout_redirect_url'] ),
+                    'redirect_url' => !empty( $settings['pb_redirect_url'] ) ? get_page_link( $settings['pb_redirect_url'] ) : "",
+                    'logout_redirect_url' => !empty( $settings['pb_logout_redirect_url'] ) ? get_page_link( $settings['pb_logout_redirect_url'] ) : "",
                     'automatic_login' => $settings['pb_automatic_login'],
                 ];
                 return wppb_front_end_register( $atts );
@@ -321,16 +321,16 @@ abstract class PB_Elementor_Widget extends \Elementor\Widget_Base {
                 }
                 $atts = [
                     'form_name' => $form_name,
-                    'redirect_url' => get_page_link( $settings['pb_redirect_url'] ),
+                    'redirect_url' => !empty( $settings['pb_redirect_url'] ) ? get_page_link( $settings['pb_redirect_url'] ) : "",
                 ];
                 return wppb_front_end_profile_info( $atts );
             case 'l':
                 include_once( WPPB_PLUGIN_DIR.'/front-end/login.php' );
                 $atts = [
-                    'redirect_url'        => get_page_link( $settings['pb_after_login_redirect_url'] ),
-                    'logout_redirect_url' => get_page_link( $settings['pb_after_logout_redirect_url'] ),
-                    'register_url'        => get_page_link( $settings['pb_register_url'] ),
-                    'lostpassword_url'    => get_page_link( $settings['pb_lostpassword_url'] ),
+                    'redirect_url'        => !empty( $settings['pb_after_login_redirect_url'] ) ? get_page_link( $settings['pb_after_login_redirect_url'] ) : "",
+                    'logout_redirect_url' => !empty( $settings['pb_after_logout_redirect_url'] ) ? get_page_link( $settings['pb_after_logout_redirect_url'] ) : "",
+                    'register_url'        => !empty( $settings['pb_register_url'] ) ? get_page_link( $settings['pb_register_url'] ) : "",
+                    'lostpassword_url'    => !empty( $settings['pb_lostpassword_url'] ) ? get_page_link( $settings['pb_lostpassword_url'] ) : "",
                     'show_2fa_field'      => isset( $settings['pb_auth_field'] ) ? $settings['pb_auth_field'] : false,
                 ];
                 return wppb_front_end_login( $atts );

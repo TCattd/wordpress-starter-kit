@@ -15,7 +15,7 @@ class Hooks implements \IWPML_Backend_Action, \IWPML_REST_Action {
 	 */
 	public function add_hooks() {
 		WpHooks::onFilter( 'woocommerce_product_recount_terms', PHP_INT_MAX )
-			->then( [ self::class, 'disableTermFilters' ] );
+			->then( spreadArgs( [ self::class, 'disableTermFilters' ] ) );
 
 		WpHooks::onAction( 'icl_save_term_translation', 10, 2 )
 			->then( spreadArgs( [ self::class, 'recountOnSaveTermTranslation' ] ) );

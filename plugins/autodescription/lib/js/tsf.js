@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -315,8 +315,8 @@ window.tsf = function( $ ) {
 	 */
 	const unsetAjaxLoader = ( target, success ) => {
 
-		let newclass = 'tsf-success',
-			fadeTime = 2500;
+		const newclass = 'tsf-success',
+			  fadeTime = 2500;
 
 		if ( ! success ) {
 			newclass = 'tsf-error';
@@ -440,9 +440,9 @@ window.tsf = function( $ ) {
 		 */
 		const dismissNotice = event => {
 
-			let $notice = $( event.target ).parents( '.tsf-notice' ).first(),
-				key     = event.target.dataset && event.target.dataset.key || void 0,
-				nonce   = event.target.dataset && event.target.dataset.nonce || void 0;
+			const $notice = $( event.target ).closest( '.tsf-notice' ).first(),
+				  key     = event.target.dataset && event.target.dataset.key || void 0,
+				  nonce   = event.target.dataset && event.target.dataset.nonce || void 0;
 
 			$notice.fadeTo( 100, 0, () => {
 				$notice.slideUp( 100, () => {
@@ -466,7 +466,11 @@ window.tsf = function( $ ) {
 
 		const reset = () => {
 			// Enable dismissal of PHP-inserted notices.
-			document.querySelectorAll( '.tsf-dismiss' ).forEach( el => el.addEventListener( 'click', dismissNotice ) );
+			document.querySelectorAll( '.tsf-dismiss' ).forEach(
+				el => {
+					el.addEventListener( 'click', dismissNotice )
+				}
+			);
 		}
 		/**
 		 * @access private Use triggerNoticeReset() instead.
@@ -531,7 +535,7 @@ window.tsf = function( $ ) {
 	let _debounceResize,
 		_debounceResizeTrigger,
 	    _throttleResize = false;
-	const _throttleResizeDebounceDelay = 100;
+	const _throttleResizeDebounceDelay = 50;
 	/**
 	 * Dispatches tsf-resize event on window.
 	 *

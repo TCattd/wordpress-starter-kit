@@ -68,6 +68,7 @@ function relevanssi_uninstall_free() {
 	delete_option( 'relevanssi_content_boost' );
 	delete_option( 'relevanssi_css' );
 	delete_option( 'relevanssi_db_version' );
+	delete_option( 'relevanssi_debugging_mode' );
 	delete_option( 'relevanssi_default_orderby' );
 	delete_option( 'relevanssi_disable_or_fallback' );
 	delete_option( 'relevanssi_disable_shortcodes' );
@@ -77,6 +78,7 @@ function relevanssi_uninstall_free() {
 	delete_option( 'relevanssi_excerpt_allowable_tags' );
 	delete_option( 'relevanssi_excerpt_custom_fields' );
 	delete_option( 'relevanssi_excerpt_length' );
+	delete_option( 'relevanssi_excerpt_specific_fields' );
 	delete_option( 'relevanssi_excerpt_type' );
 	delete_option( 'relevanssi_excerpts' );
 	delete_option( 'relevanssi_exclude_posts' );

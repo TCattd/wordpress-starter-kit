@@ -8,7 +8,7 @@ class WCML_Admin_Cookie {
 	/**
 	 * WCML_Admin_Cookie constructor.
 	 *
-	 * @param $name
+	 * @param string $name
 	 */
 	public function __construct( $name ) {
 		$this->name = $name;

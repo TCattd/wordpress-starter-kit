@@ -1,6 +1,8 @@
 <?php
 
-class LLAR_cidr_check {
+namespace LLAR\Lib;
+
+class CidrCheck {
 
 	public function match($ip, $cidr) {
 

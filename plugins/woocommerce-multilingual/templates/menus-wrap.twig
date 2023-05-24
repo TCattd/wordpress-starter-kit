@@ -3,8 +3,10 @@
 
     {% if is_standalone %}
         {% include 'nav-menus-standalone.twig' %}
-    {% else %}
+    {% elseif set_up_wizard_run %}
         {% include 'nav-menus-full.twig' %}
+    {% else %}
+        <nav class="wcml-tabs wpml-tabs"></nav>
     {% endif %}
 
     <div class="wcml-wrap">

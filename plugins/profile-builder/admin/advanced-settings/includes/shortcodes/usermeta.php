@@ -20,8 +20,10 @@ function wppb_toolbox_usermeta_handler( $atts, $content=null){
 		$atts['wpautop'] = '';
 	}
 
+	if( in_array( $atts['key'], array( 'user_pass', 'user_activation_key' ) ) )
+		return;
 
-	$user = new WP_User($atts['user_id']);
+	$user = new WP_User( $atts['user_id'] );
 
 	if ( !$user->exists() ) return;
 
@@ -36,11 +38,13 @@ function wppb_toolbox_usermeta_handler( $atts, $content=null){
     }
 
 	if ( $user->has_prop( $atts['key'] ) ){
+
 		if ($atts['wpautop'] == 'on'){
 			$value = wpautop( $user->get( $atts['key'] ) );
 		} else {
 			$value = $user->get( $atts['key'] );
 		}
+
 	}
 
 	if (!empty( $value )){

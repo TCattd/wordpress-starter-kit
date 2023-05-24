@@ -38,7 +38,7 @@ function wppb_add_ons_content() {
 
     //Add Pro Section
     $pb_addons_listing->section_header = array( 'title' => __('Pro Add-ons', 'profile-builder' ), 'description' => __('These Add-ons are available with the Pro and Unlimited license', 'profile-builder')  );
-    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited' );
     $pb_addons_listing->items = array(
         array(  'slug' => 'wppb_multipleRegistrationForms',
             'type' => 'add-on',
@@ -95,7 +95,7 @@ function wppb_add_ons_content() {
 
     //Add Hobbyist section
     $pb_addons_listing->section_header = array( 'title' => __('Advanced Add-ons', 'profile-builder' ), 'description' => __('These Add-ons are available with the Basic, Pro and Unlimited license', 'profile-builder')  );
-    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Basic', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Basic', 'Profile Builder Agency', 'Profile Builder Unlimited' );
     $pb_addons_listing->items = array(
         array(  'slug' => 'social-connect',
                 'type' => 'add-on',
@@ -182,7 +182,7 @@ function wppb_add_ons_content() {
 
     //Add Free section
     $pb_addons_listing->section_header = array( 'title' => __('Free Add-ons', 'profile-builder' ), 'description' => __('These Add-ons are available in all versions of Profile Builder', 'profile-builder')  );
-    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Free', 'Profile Builder Basic', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Free', 'Profile Builder Basic', 'Profile Builder Agency', 'Profile Builder Unlimited' );
     $pb_addons_listing->items = array(
         array(  'slug' => 'import-export',
                 'type' => 'add-on',
@@ -263,7 +263,7 @@ function wppb_add_ons_content() {
 
     //Add Recommended Plugins
     $pb_addons_listing->section_header = array( 'title' => __('Recommended Plugins', 'profile-builder' ), 'description' => __('These plugins are compatible with all versions of Profile Builder', 'profile-builder')  );
-    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Free', 'Profile Builder Basic', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+    $pb_addons_listing->section_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Free', 'Profile Builder Basic', 'Profile Builder Agency', 'Profile Builder Unlimited' );
     $pb_addons_listing->items = array(
         array(  'slug' => 'translatepress-multilingual/index.php',
             'type' => 'plugin',

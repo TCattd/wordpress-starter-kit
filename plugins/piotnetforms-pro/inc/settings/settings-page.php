@@ -605,6 +605,10 @@ if ( isset( $_GET['post'] ) ) {
 							'text' => 'Shortcode',
 							'tag' => '{{shortcode | shortcode:[your_shortcode]}}',
 						],
+						'remote_ip' => [
+							'text' => 'Remote IP',
+							'tag' => '{{remote_ip}}',
+						],
 						'archive' => [
 							'text' => 'Archive',
 							'submenu' => [

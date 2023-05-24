@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "wppb/recover-password",
+    "title": "Recover Password",
+    "category": "wppb-block",
+    "description": "Displays the Front End Recover Password form.",
+    "keywords": [ "Recover", "Password", "Form" ],
+    "textdomain": "profile-builder",
+    "attributes": {
+        "is_preview": {
+            "type": "boolean",
+            "default": false
+        },
+        "is_editor": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "example": {
+        "attributes": {
+            "is_preview": true,
+            "is_editor": true
+        }
+    },
+    "editorScript": "wppb-block-recover-password"
+}

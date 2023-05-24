@@ -1,3 +1,11 @@
+### 1.6 | 2023-01-25
+- Updated the editor icon.
+- Updated the CSS to work with Orbital theme and Gravity Forms 2.7.
+- Updated the form submit spinner to use Theme Framework styles.
+- Fixed an issue with the ajax spinner with Gravity Forms 2.5 and greater.
+- Fixed an issue where the first item in a chained select dropdown doesn't work for conditional logic unless it is first saved to another option.
+
+
 ### 1.5 | 2020-09-24
 - Added support for Gravity Forms 2.5
 - Fixed an issue with cache expiration when using the [gform_chainedselects_import_file](https://docs.gravityforms.com/gform_chainedselects_import_file/) filter.

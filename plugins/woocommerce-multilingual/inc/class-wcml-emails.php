@@ -1,5 +1,6 @@
 <?php
 
+use WPML\Core\ISitePress;
 use WPML\FP\Fns;
 use WPML\FP\Obj;
 
@@ -15,14 +16,14 @@ class WCML_Emails {
 	private $rest_language;
 	/** @var WCML_WC_Strings */
 	private $wcmlStrings;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
-	/** @var woocommerce $woocommerce */
+	/** @var WooCommerce $woocommerce */
 	private $woocommerce;
 	/** @var wpdb */
 	private $wpdb;
 
-	public function __construct( WCML_WC_Strings $wcmlStrings, \WPML\Core\ISitePress $sitepress, woocommerce $woocommerce, wpdb $wpdb ) {
+	public function __construct( WCML_WC_Strings $wcmlStrings, SitePress $sitepress, WooCommerce $woocommerce, wpdb $wpdb ) {
 		$this->wcmlStrings = $wcmlStrings;
 		$this->sitepress   = $sitepress;
 		$this->woocommerce = $woocommerce;
@@ -30,7 +31,7 @@ class WCML_Emails {
 	}
 
 	public function add_hooks() {
-		// wrappers for email's header
+		// Wrappers for email's header.
 		if ( is_admin() && ! defined( 'DOING_AJAX' ) ) {
 			add_action(
 				'woocommerce_order_status_completed_notification',
@@ -80,14 +81,14 @@ class WCML_Emails {
 			);
 		}
 
-		// wrappers for email's body
+		// Wrappers for email's body.
 		add_action( 'woocommerce_before_resend_order_emails', [ $this, 'email_header' ] );
 		add_action( 'woocommerce_after_resend_order_email', [ $this, 'email_footer' ] );
 
-		// filter string language before for emails
+		// Filter string language before for emails.
 		add_filter( 'icl_current_string_language', [ $this, 'icl_current_string_language' ], 10, 2 );
 
-		// change order status
+		// Change order status.
 		add_action( 'woocommerce_order_status_completed', [ $this, 'refresh_email_lang_complete' ], self::PRIORITY_BEFORE_EMAIL_SET_LANGUAGE );
 
 		add_action(
@@ -174,7 +175,7 @@ class WCML_Emails {
 		add_filter( 'woocommerce_rest_pre_insert_shop_order_object', [ $this, 'set_rest_language' ], 10, 2 );
 	}
 
-	private function add_hooks_to_restore_language_for_admin_notes(){
+	private function add_hooks_to_restore_language_for_admin_notes() {
 		wpml_collect( [
 			'pending',
 			'processing',
@@ -189,6 +190,7 @@ class WCML_Emails {
 	}
 
 	public function email_refresh_in_ajax() {
+		/* phpcs:disable WordPress.VIP.SuperGlobalInputUsage.AccessDetected */
 		if ( isset( $_GET['order_id'] ) ) {
 			$this->refresh_email_lang( $_GET['order_id'] );
 
@@ -198,6 +200,7 @@ class WCML_Emails {
 
 			return true;
 		}
+		/* phpcs:enable WordPress.VIP.SuperGlobalInputUsage.AccessDetected */
 	}
 
 	public function refresh_email_lang_complete( $order_id ) {
@@ -293,6 +296,7 @@ class WCML_Emails {
 
 
 	public function email_heading_completed( $order_id, $no_checking = false ) {
+		/** @var WC_Email_Customer_Completed_Order */
 		$email = $this->getEmailObject( 'WC_Email_Customer_Completed_Order', $no_checking );
 
 		if ( $email ) {
@@ -308,7 +312,7 @@ class WCML_Emails {
 			$email->heading_downloadable = $translate( 'heading_downloadable' );
 			$email->subject_downloadable = $translate( 'subject_downloadable' );
 			$original_enabled_state      = $email->enabled;
-			$email->enabled              = false;
+			$email->enabled              = 'no';
 			$email->trigger( $order_id );
 			$email->enabled = $original_enabled_state;
 		}
@@ -350,7 +354,8 @@ class WCML_Emails {
 			$email->heading         = $translate( 'heading' );
 			$email->subject         = $translate( 'subject' );
 			$original_enabled_state = $email->enabled;
-			$email->enabled         = false;
+			$email->enabled         = 'no';
+			/* @phpstan-ignore-next-line */
 			$email->trigger( $order_id );
 			$email->enabled = $original_enabled_state;
 		}
@@ -365,6 +370,7 @@ class WCML_Emails {
 	}
 
 	public function email_heading_note( $args ) {
+		/** @var WC_Email_Customer_Note */
 		$email = $this->getEmailObject( 'WC_Email_Customer_Note' );
 
 		if ( $email ) {
@@ -378,12 +384,20 @@ class WCML_Emails {
 			$email->heading         = $translate( 'heading' );
 			$email->subject         = $translate( 'subject' );
 			$original_enabled_state = $email->enabled;
-			$email->enabled         = false;
+			$email->enabled         = 'no';
 			$email->trigger( $args );
 			$email->enabled = $original_enabled_state;
 		}
 	}
 
+	/**
+	 * @param string   $value
+	 * @param WC_Email $object
+	 * @param string   $old_value
+	 * @param string   $key
+	 *
+	 * @return mixed
+	 */
 	public function filter_emails_strings( $value, $object, $old_value, $key ) {
 
 		$translated_value = false;
@@ -465,7 +479,7 @@ class WCML_Emails {
 	 */
 	private function get_order_id_from_email_object( $object ) {
 
-		if ( method_exists( $object->object, 'get_id' ) ) {
+		if ( is_callable( [ $object->object, 'get_id' ] ) ) {
 			return $object->object->get_id();
 		}
 
@@ -477,11 +491,25 @@ class WCML_Emails {
 	}
 
 	public function new_order_admin_email( $order_id ) {
+		/** @var WC_Email_New_Order */
 		$email = $this->getEmailObject( 'WC_Email_New_Order', true );
 
 		if ( $email ) {
 			$recipients = explode( ',', $email->get_recipient() );
-			add_filter( 'woocommerce_new_order_email_allows_resend', Fns::always( true ) );
+
+			$allowResendForAllRecipients = function() use ( $recipients ) {
+				static $numberOfAllowedResend;
+
+				if ( null === $numberOfAllowedResend ) {
+					$numberOfAllowedResend = count( $recipients );
+				} else {
+					$numberOfAllowedResend --;
+				}
+
+				return (bool) $numberOfAllowedResend;
+			};
+
+			add_filter( 'woocommerce_new_order_email_allows_resend', $allowResendForAllRecipients, 20 );
 
 			foreach ( $recipients as $recipient ) {
 				$admin_language = $this->get_admin_language_by_email( $recipient, $order_id );
@@ -813,4 +841,5 @@ class WCML_Emails {
 
 		return $order;
 	}
+
 }

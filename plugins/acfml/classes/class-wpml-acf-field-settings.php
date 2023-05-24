@@ -1,8 +1,10 @@
 <?php
 
+use ACFML\FieldGroup\Mode;
+use ACFML\Helper\FieldGroup;
 use WPML\FP\Obj;
 
-class WPML_ACF_Field_Settings {
+class WPML_ACF_Field_Settings implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
 	/**
 	 * @var array Translation Managament settings indexes which should be updated.
@@ -13,7 +15,7 @@ class WPML_ACF_Field_Settings {
 	 * @var TranslationManagement TranslationManagement object.
 	 */
 	private $translation_management;
-	
+
 	/**
 	 * @var bool
 	 */
@@ -47,9 +49,6 @@ class WPML_ACF_Field_Settings {
 
 		// mark field as not migrated yet.
 		add_filter( 'acf/get_field_label', [ $this, 'mark_not_migrated_field' ], 10, 2 );
-
-		// repeater and flexible fields should be set to Copy.
-		add_filter( 'acf/get_field_label', [ $this, 'adviceToSetCopyOnceForField' ], 10, 2 );
 	}
 
 	/**
@@ -65,12 +64,11 @@ class WPML_ACF_Field_Settings {
 			$field,
 			[
 				'label'         => __( 'Translation preferences', 'acfml' ),
-				'instructions'  => __( 'What to do with field\'s value when post/page is going to be translated', 'acf' ),
+				'instructions'  => __( 'What to do with field\'s value when post/page is going to be translated', 'acfml' ),
 				'type'          => 'radio',
 				'name'          => 'wpml_cf_preferences',
 				'layout'        => 'horizontal',
 				'choices'       => $this->getFieldOptions(),
-				'default_value' => WPML_COPY_CUSTOM_FIELD,
 			],
 			true
 		);
@@ -152,7 +150,7 @@ class WPML_ACF_Field_Settings {
 				$this->maybe_set_new_preference( $setting_index, $field['name'], $field['wpml_cf_preferences'] );
 			}
 			if ( WPML_IGNORE_CUSTOM_FIELD !== (int) $field['wpml_cf_preferences'] ) {
-				$this->update_corresponding_system_field_settings( $field['name'] );
+				$this->update_corresponding_system_field_settings( $field, $field['name'] );
 			}
 			if ( $this->new_preference_set ) {
 				$this->translation_management->save_settings();
@@ -244,7 +242,7 @@ class WPML_ACF_Field_Settings {
 	private function update_existing_subfields( $field ) {
 		if ( isset( $field['parent'] ) ) {
 			$parent_post_type = get_post_type( $field['parent'] );
-			if ( 'acf-field' == $parent_post_type ) { // yes, it is subfield.
+			if ( 'acf-field' === $parent_post_type ) { // yes, it is subfield.
 				global $wpdb;
 				$query          = "SELECT * FROM {$wpdb->postmeta} WHERE meta_key LIKE %s";
 				$prepared       = $wpdb->prepare( $query, '%' . $wpdb->esc_like( $field['name'] ) );
@@ -261,7 +259,7 @@ class WPML_ACF_Field_Settings {
 										$this->maybe_set_new_preference( $setting_index, $custom_field->meta_key, $field['wpml_cf_preferences'] );
 									}
 									if ( WPML_IGNORE_CUSTOM_FIELD !== (int) $field['wpml_cf_preferences'] ) {
-										$this->update_corresponding_system_field_settings( $custom_field->meta_key );
+										$this->update_corresponding_system_field_settings( $acf_field_object, $custom_field->meta_key );
 									}
 								}
 							}
@@ -273,18 +271,26 @@ class WPML_ACF_Field_Settings {
 	}
 
 	/**
-	 * Find corresponding system fields and update their translation preferences to "Copy".
+	 * Update corresponding system field's translation preferences to "Copy" or "Copy once".
 	 *
-	 * Correspoidng system fields' names starts with underscore. They always should be set to copy.
+	 * Corresponding system fields' names starts with underscore.
+	 * They should be set to "Copy once" when the field group is on Localization mode.
 	 *
-	 * @param string $field_name Current field name.
+	 * @param array  $field      The ACF field array.
+	 * @param string $field_name Current field meta_key.
+	 *
+	 * @return void
 	 */
-	private function update_corresponding_system_field_settings( $field_name ) {
-		$corresponding_field_name = '_' . $field_name;
-		foreach ( $this->tm_setting_index as $setting_index ) {
-			$this->maybe_set_new_preference( $setting_index, $corresponding_field_name, WPML_COPY_CUSTOM_FIELD );
-		}
+	private function update_corresponding_system_field_settings( $field, $field_name ) {
+		$fieldGroupId = FieldGroup::getId( Obj::prop( 'parent', $field ) );
+		if ( $fieldGroupId ) {
+			$preference = Mode::LOCALIZATION === Mode::getMode( acf_get_field_group( $fieldGroupId ) ) ? WPML_COPY_ONCE_CUSTOM_FIELD : WPML_COPY_CUSTOM_FIELD;
 
+			$corresponding_field_name = '_' . $field_name;
+			foreach ( $this->tm_setting_index as $setting_index ) {
+				$this->maybe_set_new_preference( $setting_index, $corresponding_field_name, $preference );
+			}
+		}
 	}
 
 	/**
@@ -299,31 +305,13 @@ class WPML_ACF_Field_Settings {
 		if ( ! isset( $field['wpml_cf_preferences'] ) && $field['ID'] > 0 && $this->isFieldGroupEditScreen() ) {
 			$post_exist = $this->get_post_with_custom_field( $field['name'] );
 			if ( $post_exist ) {
-				$label .= ' <span class="dashicons dashicons-warning acfml-not-migrated"
- 							title="' . esc_attr__( 'This field is currently set as not translatable. You can change the translation preferences by going to WPML → Settings.', 'acfml' ) . '"></span>';
+				$label .= sprintf(
+					' <i class="otgs-ico-warning-o js-otgs-popover-tooltip"  data-tippy-zIndex="999999" title="%s"></i>',
+					esc_attr__( 'Edit the field to set the translation preference.', 'acfml' )
+				);
 			}
 		}
 
-		return $label;
-	}
-
-	/**
-	 * Repeater and flexible fields' translation preferences should be set to Copy once.
-	 *
-	 * Advice to set translation preferences to Copy once for repeater and flexible fields
-	 * if not already set.
-	 *
-	 * @param string $label
-	 * @param array  $field
-	 *
-	 * @return string
-	 */
-	public function adviceToSetCopyOnceForField( $label, $field ) {
-		$fieldNotSetToCopy = ! isset( $field['wpml_cf_preferences'] ) || WPML_COPY_ONCE_CUSTOM_FIELD !== (int) $field['wpml_cf_preferences'];
-		if ( $this->field_should_be_set_to_copy_once( $field ) && $fieldNotSetToCopy && $this->isFieldGroupEditScreen() ) {
-			$label .= ' <span class="dashicons dashicons-lightbulb acfml-advice-copy-setting"
- 							title="' . esc_attr__( 'You can sync the structure of your repeater and flexible content fields across languages by choosing "Copy". Otherwise, choose "Copy once" to use different custom field structures across languages.', 'acfml' ) . '"></span>';
-		}
 		return $label;
 	}
 
@@ -363,7 +351,7 @@ class WPML_ACF_Field_Settings {
 		return isset( $field['wpml_cf_preferences'] )
 				&& WPML_IGNORE_CUSTOM_FIELD === $field['wpml_cf_preferences'];
 	}
-	
+
 	private function maybe_set_new_preference( $setting_index, $field, $preference ) {
 		if ( ! isset( $this->translation_management->settings[ $setting_index ][ $field ] )
 		     || $this->translation_management->settings[ $setting_index ][ $field ] !== $preference

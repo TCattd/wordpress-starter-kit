@@ -48,9 +48,10 @@ class Hooks implements \IWPML_Backend_Action {
 	/**
 	 * @param callable $isVendor
 	 *
-	 * @return \Closure :: (bool, int, array) -> bool
+	 * @return \Closure
 	 */
 	private static function allowVendorToTranslateHisProduct( callable $isVendor ) {
+		// (bool, int, array) -> bool
 		return function( $isTranslator, $userId, $args ) use ( $isVendor ) {
 			$user = self::getUser( $userId );
 
@@ -101,9 +102,10 @@ class Hooks implements \IWPML_Backend_Action {
 	/**
 	 * @param callable $isVendor
 	 *
-	 * @return \Closure :: (mixed, int, string) -> mixed
+	 * @return \Closure
 	 */
 	public static function forceLanguagesColumnInProductsList( callable $isVendor ) {
+		// (mixed, int, string) -> mixed
 		return function ( $value, $userId, $metaKey ) use ( $isVendor ) {
 			if (
 				self::COLUMN_USER_OPTION === $metaKey

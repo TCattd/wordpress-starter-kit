@@ -179,6 +179,15 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 	private $_post_author = null;
 
 	/**
+	 * Enabling background feed processing to prevent performance issues delaying form submission completion.
+	 *
+	 * @since 1.4
+	 *
+	 * @var bool
+	 */
+	protected $_async_feed_processing = true;
+
+	/**
 	 * Get instance of this class.
 	 *
 	 * @since  1.0
@@ -2002,7 +2011,7 @@ class GF_Advanced_Post_Creation extends GFFeedAddOn {
 				$field_object = GFAPI::get_field( $form, $input_id );
 
 				// If field is not a file upload field, skip.
-				if ( ! $field_object || 'fileupload' !== $field_object->type ) {
+				if ( ! $field_object || 'fileupload' !== $field_object->get_input_type() ) {
 					continue;
 				}
 

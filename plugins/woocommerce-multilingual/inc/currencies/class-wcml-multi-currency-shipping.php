@@ -1,19 +1,20 @@
 <?php
 
 use \WCML\Multicurrency\Shipping\ShippingModeProvider as ManualCost;
+use WPML\Core\ISitePress;
 
 class WCML_Multi_Currency_Shipping {
-	
-	const CACHE_PERSISTENT_GROUP = 'converted_shipping_cost' ;
+
+	const CACHE_PERSISTENT_GROUP = 'converted_shipping_cost';
 
 	/** @var WCML_Multi_Currency */
 	private $multi_currency;
-	/** @var Sitepress */
+	/** @var ISitePress */
 	private $sitepress;
 	/** @var wpdb */
 	private $wpdb;
 
-	public function __construct( WCML_Multi_Currency $multi_currency, \WPML\Core\ISitePress $sitepress, wpdb $wpdb ) {
+	public function __construct( WCML_Multi_Currency $multi_currency, ISitePress $sitepress, wpdb $wpdb ) {
 
 		$this->multi_currency = $multi_currency;
 		$this->sitepress      = $sitepress;
@@ -24,7 +25,7 @@ class WCML_Multi_Currency_Shipping {
 	public function add_hooks() {
 
 		// shipping method cost settings.
-		$rates = $this->wpdb->get_results( "SELECT * FROM {$this->wpdb->prefix}woocommerce_shipping_zone_methods WHERE method_id IN('flat_rate', 'local_pickup', 'free_shipping')" );
+		$rates = $this->wpdb->get_results( "SELECT * FROM {$this->wpdb->prefix}woocommerce_shipping_zone_methods WHERE method_id IN ('flat_rate', 'local_pickup', 'free_shipping')" );
 		foreach ( $rates as $method ) {
 			$option_name = self::getShippingOptionName( $method->method_id, $method->instance_id );
 			add_filter( 'option_' . $option_name, [ $this, 'convert_shipping_method_cost_settings' ] );
@@ -41,9 +42,16 @@ class WCML_Multi_Currency_Shipping {
 		add_filter( 'woocommerce_package_rates', [ $this, 'convert_shipping_costs_in_package_rates' ] );
 	}
 
+	/**
+	 * @param array $rates
+	 *
+	 * @return array
+	 */
 	public function convert_shipping_costs_in_package_rates( $rates ) {
 
 		$client_currency = $this->multi_currency->get_client_currency();
+
+		/** @var WC_Shipping_Rate $rate */
 		foreach ( $rates as $rate_id => $rate ) {
 
 			$cache_key                      = $rate_id;
@@ -52,7 +60,7 @@ class WCML_Multi_Currency_Shipping {
 			if ( $cached_converted_shipping_cost ) {
 				$rate->cost = $cached_converted_shipping_cost;
 			} elseif ( isset( $rate->cost ) && $rate->cost ) {
-				if (  ! ManualCost::get( $rate->method_id )->isManualPricingEnabled( $rate ) ) {
+				if ( ! ManualCost::get( $rate->method_id )->isManualPricingEnabled( $rate ) ) {
 					$rate->cost = $this->multi_currency->prices->raw_price_filter( $rate->cost, $client_currency );
 				}
 				wp_cache_set( $cache_key, $rate->cost, self::CACHE_PERSISTENT_GROUP );

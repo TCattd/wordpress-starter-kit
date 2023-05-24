@@ -38,7 +38,7 @@ class GFML_Conditional_Logic extends GFML_Form {
 		if ( isset( $form[ $section_key ] ) && is_array( $form[ $section_key ] ) ) {
 			foreach ( $form[ $section_key ] as &$form_item ) {
 				$rules            = $this->get_item_rules( $form_item );
-				$translated_rules = $this->translate_rules( $form, $st_context, $rules );
+				$translated_rules = $this->translate_rules( $form, $st_context, $rules, $form_item );
 				$form_item        = $this->set_item_rules( $form_item, $translated_rules );
 			}
 		}
@@ -73,13 +73,14 @@ class GFML_Conditional_Logic extends GFML_Form {
 	}
 
 	/**
-	 * @param array        $form
-	 * @param string       $st_context
-	 * @param object|array $rules
+	 * @param array          $form
+	 * @param string         $st_context
+	 * @param object|array   $rules
+	 * @param GF_Field|array $current_field The field who's rules are being translated.
 	 *
 	 * @return object|array
 	 */
-	private function translate_rules( $form, $st_context, $rules ) {
+	private function translate_rules( $form, $st_context, $rules, $current_field ) {
 		if ( is_array( $rules ) ) {
 			foreach ( $rules as $key => &$rule ) {
 				$rule_field = $this->get_field_from_rule( $form, $rule );
@@ -88,14 +89,16 @@ class GFML_Conditional_Logic extends GFML_Form {
 					continue;
 				}
 
-				if ( isset( $rule_field->choices ) ) {
+				if ( ! empty( $rule_field->choices ) ) {
 					$translations = $this->get_multi_input_translations( $rule_field, $st_context );
 					if ( isset( $rule['value'] ) && isset( $translations[ $rule['value'] ] ) ) {
 						$rule['value'] = $translations[ $rule['value'] ];
-					} elseif ( $this->is_rule_translatable( $rule ) ) {
+					} elseif ( isset( $rule['value'] ) && $this->is_rule_translatable( $rule ) ) {
 						$rule['value'] = $this->translate_rule_value( $rule_field, $st_context, $key, $rule );
 					}
-				} elseif ( $this->is_rule_translatable( $rule ) ) {
+				} elseif ( isset( $rule['value'] ) && $this->is_rule_translatable( $rule ) ) {
+					$rule_field = $current_field instanceof GF_Field ? $current_field : $rule_field;
+
 					$rule['value'] = $this->translate_rule_value( $rule_field, $st_context, $key, $rule );
 				}
 			}
@@ -164,6 +167,7 @@ class GFML_Conditional_Logic extends GFML_Form {
 			case 'contains':
 			case 'starts_with':
 			case 'ends_with':
+			case 'is':
 				return true;
 			default:
 				return false;
@@ -177,11 +181,16 @@ class GFML_Conditional_Logic extends GFML_Form {
 	 * @param array    $st_context
 	 * @param int      $key
 	 * @param array    $rule
+	 *
 	 * @return string
 	 */
 	private function translate_rule_value( GF_Field $field, $st_context, $key, $rule ) {
-		$string_name_helper        = new GFML_String_Name_Helper();
-		$string_name_helper->field = $field;
-		return icl_t( $st_context, $string_name_helper->get_conditional_rule( $key, $rule ), $rule['value'] );
+		if ( ! empty( $rule['value'] ) ) {
+			$string_name_helper        = new GFML_String_Name_Helper();
+			$string_name_helper->field = $field;
+			$rule['value']             = icl_t( $st_context, $string_name_helper->get_conditional_rule( $key, $rule ), $rule['value'] );
+		}
+
+		return $rule['value'];
 	}
 }

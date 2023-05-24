@@ -55,7 +55,9 @@ class MulticurrencyHooks implements \IWPML_Action {
 	 */
 	public function filterProductBasePrice( $rowBasePrice, $product, $quantity ) {
 		if ( $product && wcml_get_woocommerce_currency_option() !== $this->multicurrency->get_client_currency() ) {
-			$rowBasePrice = $this->woocommerce_wpml->products->get_product_price_from_db( $product->get_id() ) * $quantity;
+			/** @var mixed */
+			$rowBasePrice = $this->woocommerce_wpml->products->get_product_price_from_db( $product->get_id() );
+			$rowBasePrice *= $quantity;
 		}
 
 		return $rowBasePrice;

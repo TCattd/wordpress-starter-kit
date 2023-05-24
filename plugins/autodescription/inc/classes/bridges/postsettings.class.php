@@ -8,7 +8,7 @@ namespace The_SEO_Framework\Bridges;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -42,6 +42,7 @@ final class PostSettings {
 	 *
 	 * @since 4.0.0
 	 * @since 4.0.5 Now registers custom postbox classes.
+	 * @since 4.2.8 No longer uses the post type label for the meta box title.
 	 * @access private
 	 *
 	 * @param string $post_type The current Post Type.
@@ -49,8 +50,6 @@ final class PostSettings {
 	public static function _prepare_meta_box( $post_type ) {
 
 		$tsf = \tsf();
-
-		$label = $tsf->get_post_type_label( $post_type );
 
 		/**
 		 * @since 2.9.0
@@ -81,18 +80,15 @@ final class PostSettings {
 				$title = \esc_html__( 'Homepage SEO Settings', 'autodescription' );
 			}
 		} else {
-			/* translators: %s = Post Type label */
-			$title = sprintf( \esc_html__( '%s SEO Settings', 'autodescription' ), $label );
+			$title = \esc_html__( 'SEO Settings', 'autodescription' );
 		}
 
 		$box_id = 'tsf-inpost-box';
 		// Implies `\get_current_screen()->id`. Is always 'post'.
 		$screen_id = 'post';
 
-		$class = static::class;
-
-		\add_meta_box( $box_id, $title, "$class::_meta_box", $post_type, $context, $priority, [] );
-		\add_filter( "postbox_classes_{$screen_id}_{$box_id}", "$class::_add_postbox_class" );
+		\add_meta_box( $box_id, $title, [ static::class, '_meta_box' ], $post_type, $context, $priority, [] );
+		\add_filter( "postbox_classes_{$screen_id}_{$box_id}", [ static::class, '_add_postbox_class' ] );
 	}
 
 	/**
@@ -125,9 +121,9 @@ final class PostSettings {
 	 */
 	public static function _meta_box() {
 
-		static::output_nonce_field();
-
 		$tsf = \tsf();
+
+		\wp_nonce_field( $tsf->inpost_nonce_field, $tsf->inpost_nonce_name );
 
 		/**
 		 * @since 2.9.0
@@ -159,17 +155,6 @@ final class PostSettings {
 			$classes[] = 'tsf-is-block-editor';
 
 		return $classes;
-	}
-
-	/**
-	 * Outputs nonce fields for the post settings.
-	 * Redundant, but added for sanity.
-	 *
-	 * @since 4.0.0
-	 */
-	private static function output_nonce_field() {
-		$tsf = \tsf();
-		\wp_nonce_field( $tsf->inpost_nonce_field, $tsf->inpost_nonce_name );
 	}
 
 	/**

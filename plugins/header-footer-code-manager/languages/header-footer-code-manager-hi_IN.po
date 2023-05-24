@@ -1,0 +1,651 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Header Footer Code Manager\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-10 02:42+0530\n"
+"PO-Revision-Date: 2022-12-10 02:42+0530\n"
+"Last-Translator: fran <franmejia0@gmail.com>\n"
+"Language-Team: \n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: _:1;gettext:1;dgettext:2;ngettext:1,2;dngettext:2,3;__:1;_e:1;_c:1;"
+"_n:1,2;_n_noop:1,2;_nc:1,2;__ngettext:1,2;__ngettext_noop:1,2;_x:1,2c;_ex:1,2c;_nx:1,2,4c;"
+"_nx_noop:1,2,3c;_n_js:1,2;_nx_js:1,2,3c;esc_attr__:1;esc_html__:1;esc_attr_e:1;"
+"esc_html_e:1;esc_attr_x:1,2c;esc_html_x:1,2c;comments_number_link:2,3;t:1;st:1;trans:1;"
+"transChoice:1,2\n"
+"X-Loco-Target-Locale: hi_IN\n"
+"X-Generator: Poedit 3.2.2\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../99robots-header-footer-code-manager.php:227
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:227
+msgid "Header Footer Code Manager"
+msgstr "हैडर फूटर कोड मैनेजर"
+
+#: ../99robots-header-footer-code-manager.php:228
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:228
+msgid "HFCM"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:238
+#: ../99robots-header-footer-code-manager.php:239
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:238
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:239
+msgid "All Snippets"
+msgstr "सभी स्निपेट"
+
+#: ../99robots-header-footer-code-manager.php:248
+#: ../99robots-header-footer-code-manager.php:1135
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:248
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1129
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:28
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:31
+#: ../includes/hfcm-add-edit.php:28 ../includes/hfcm-add-edit.php:31
+msgid "Add New Snippet"
+msgstr "नया स्निपेट जोड़ें"
+
+#: ../99robots-header-footer-code-manager.php:249
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:249
+msgid "Add New"
+msgstr "नया जोड़ें"
+
+#: ../99robots-header-footer-code-manager.php:258
+#: ../99robots-header-footer-code-manager.php:259
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:258
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:259
+#: ../header-footer-code-manager/includes/hfcm-tools.php:23 ../includes/hfcm-tools.php:23
+msgid "Tools"
+msgstr "टूल्स"
+
+#: ../99robots-header-footer-code-manager.php:268
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:268
+msgid "Update Script"
+msgstr "स्क्रिप्ट अपडेट करें"
+
+#: ../99robots-header-footer-code-manager.php:269
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:269
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:413
+#: ../includes/hfcm-add-edit.php:417
+msgid "Update"
+msgstr "अपडेट करें"
+
+#: ../99robots-header-footer-code-manager.php:278
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:278
+msgid "Request Handler Script"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:279
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:279
+msgid "Request Handler"
+msgstr ""
+
+#: ../99robots-header-footer-code-manager.php:292
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:292
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+#: ../99robots-header-footer-code-manager.php:332
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:332
+msgid ""
+"Hey there! You’ve been using the <strong>Header Footer Code Manager</strong> plugin for a "
+"while now. If you like the plugin, please support our awesome development and support "
+"team by leaving a <a class=\"hfcm-review-stars\" href=\"https://wordpress.org/support/"
+"plugin/header-footer-code-manager/reviews/\"><span class=\"dashicons dashicons-star-"
+"filled\"></span><span class=\"dashicons dashicons-star-filled\"></span><span "
+"class=\"dashicons dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-"
+"filled\"></span><span class=\"dashicons dashicons-star-filled\"></span></a> rating. <a "
+"href=\"https://wordpress.org/support/plugin/header-footer-code-manager/reviews/\">Rate it!"
+"</a> It’ll mean the world to us and keep this plugin free and constantly updated. <a "
+"href=\"https://wordpress.org/support/plugin/header-footer-code-manager/reviews/\">Leave A "
+"Review</a>"
+msgstr ""
+"नमस्ते! आप पिछले कुछ समय से <strong>हैडर फूटर कोड मैनेजर</strong> प्लगइन का उपयोग कर रहे हैं। यदि आप "
+"प्लगइन पसंद करते हैं, तो कृपया <a class=\"hfcm-review-stars\" href=\"https://wordpress.org/"
+"support/plugin/header-footer-code-manager/reviews/\"><span class=\"dashicons dashicons-"
+"star-filled\"></span><span class=\"dashicons dashicons-star-filled\"></span><span "
+"class=\"dashicons dashicons-star-filled\"></span><span class=\"dashicons dashicons-star-"
+"filled\"></span><span class=\"dashicons dashicons-star-filled\"></span></a>रेटिंग देकर हमारी "
+"शानदार विकास और सहायता टीम का समर्थन करें। <a href=\"https://wordpress.org/support/plugin/"
+"header-footer-code-manager/reviews/\">इसे रेट करें!</a> यह हमारे लिए दुनिया का मतलब होगा और इस "
+"प्लगइन को मुक्त और लगातार अपडेट रखेगा। <a href=\"https://wordpress.org/support/plugin/header-"
+"footer-code-manager/reviews/\">समीक्षा लिखें</a>"
+
+#: ../99robots-header-footer-code-manager.php:1098
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1092
+msgid ""
+"Please deactivate the free version of this plugin in order to avoid duplication of the "
+"snippets.\n"
+"                    You can use our tools to import all the snippets from the free "
+"version of this plugin."
+msgstr ""
+"स्निपेट्स के दोहराव से बचने के लिए कृपया इस प्लगइन के मुफ़्त संस्करण को निष्क्रिय करें।\n"
+"                     आप इस प्लगइन के मुफ्त संस्करण से सभी स्निपेट आयात करने के लिए हमारे टूल का उपयोग "
+"कर सकते हैं।"
+
+#: ../99robots-header-footer-code-manager.php:1133
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1127
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:18
+#: ../includes/class-hfcm-snippets-list.php:18
+msgid "Snippets"
+msgstr "स्निपेट्स"
+
+#: ../99robots-header-footer-code-manager.php:1142
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1136
+msgid "Search Snippets"
+msgstr "स्निपेट खोजें"
+
+#: ../99robots-header-footer-code-manager.php:1230
+#: ../99robots-header-footer-code-manager.php:1245
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1224
+#: ../header-footer-code-manager/99robots-header-footer-code-manager.php:1239
+msgid "Please upload a valid import file"
+msgstr "कृपया एक मान्य आयात फ़ाइल अपलोड करें"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:17
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:401
+#: ../includes/class-hfcm-snippets-list.php:17 ../includes/hfcm-add-edit.php:405
+msgid "Snippet"
+msgstr "स्निपेट"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:188
+#: ../includes/class-hfcm-snippets-list.php:188
+msgid "No Snippets available."
+msgstr "कोई स्निपेट्स उपलब्ध नहीं."
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:208
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:99
+#: ../includes/class-hfcm-snippets-list.php:208 ../includes/hfcm-add-edit.php:100
+msgid "Site Wide"
+msgstr "साइट व्यापक"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:209
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:100
+#: ../includes/class-hfcm-snippets-list.php:209 ../includes/hfcm-add-edit.php:101
+msgid "Specific Posts"
+msgstr "विशिष्ट पोस्ट्स"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:210
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:101
+#: ../includes/class-hfcm-snippets-list.php:210 ../includes/hfcm-add-edit.php:102
+msgid "Specific Pages"
+msgstr "विशिष्ट पृष्ठ"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:211
+#: ../includes/class-hfcm-snippets-list.php:211
+msgid "Specific Categories"
+msgstr "विशिष्ट श्रेणियों"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:212
+#: ../includes/class-hfcm-snippets-list.php:212
+msgid "Specific Custom Post Types"
+msgstr "विशिष्ट कस्टम पोस्ट प्रकार"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:213
+#: ../includes/class-hfcm-snippets-list.php:213
+msgid "Specific Tags"
+msgstr "विशिष्ट टैग"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:214
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:105
+#: ../includes/class-hfcm-snippets-list.php:214 ../includes/hfcm-add-edit.php:106
+msgid "Home Page"
+msgstr "होम पेज"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:215
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:106
+#: ../includes/class-hfcm-snippets-list.php:215 ../includes/hfcm-add-edit.php:107
+msgid "Search Page"
+msgstr "खोज पृष्ठ"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:216
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:107
+#: ../includes/class-hfcm-snippets-list.php:216 ../includes/hfcm-add-edit.php:108
+msgid "Archive Page"
+msgstr "संग्रह पृष्ठ"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:217
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:108
+#: ../includes/class-hfcm-snippets-list.php:217 ../includes/hfcm-add-edit.php:109
+msgid "Latest Posts"
+msgstr "नवीनतम पोस्ट"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:218
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:109
+#: ../includes/class-hfcm-snippets-list.php:218 ../includes/hfcm-add-edit.php:110
+msgid "Shortcode Only"
+msgstr "केवल छोटे संकेत"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:234
+#: ../includes/class-hfcm-snippets-list.php:234
+msgid "No post selected"
+msgstr "कोई पोस्ट चयनित नहीं"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:243
+#: ../includes/class-hfcm-snippets-list.php:243
+msgid "N/A"
+msgstr ""
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:247
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:13
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:292
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:299
+#: ../header-footer-code-manager/includes/hfcm-tools.php:9
+#: ../includes/class-hfcm-snippets-list.php:247 ../includes/hfcm-add-edit.php:13
+#: ../includes/hfcm-add-edit.php:294 ../includes/hfcm-add-edit.php:301
+#: ../includes/hfcm-tools.php:9
+msgid "Header"
+msgstr "हैडर"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:248
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:14
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:293
+#: ../header-footer-code-manager/includes/hfcm-tools.php:10
+#: ../includes/class-hfcm-snippets-list.php:248 ../includes/hfcm-add-edit.php:14
+#: ../includes/hfcm-add-edit.php:295 ../includes/hfcm-tools.php:10
+msgid "Before Content"
+msgstr "प्रकरण से पहले"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:249
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:15
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:294
+#: ../header-footer-code-manager/includes/hfcm-tools.php:11
+#: ../includes/class-hfcm-snippets-list.php:249 ../includes/hfcm-add-edit.php:15
+#: ../includes/hfcm-add-edit.php:296 ../includes/hfcm-tools.php:11
+msgid "After Content"
+msgstr "प्रकरण के बाद"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:250
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:16
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:295
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:300
+#: ../header-footer-code-manager/includes/hfcm-tools.php:12
+#: ../includes/class-hfcm-snippets-list.php:250 ../includes/hfcm-add-edit.php:16
+#: ../includes/hfcm-add-edit.php:297 ../includes/hfcm-add-edit.php:302
+#: ../includes/hfcm-tools.php:12
+msgid "Footer"
+msgstr "फूटर"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:257
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:326
+#: ../includes/class-hfcm-snippets-list.php:257 ../includes/hfcm-add-edit.php:328
+msgid "Show on All Devices"
+msgstr "सभी उपकरणों पर दिखाना"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:259
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:328
+#: ../includes/class-hfcm-snippets-list.php:259 ../includes/hfcm-add-edit.php:330
+msgid "Only Mobile Devices"
+msgstr "केवल मोबाइल उपकरणों"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:261
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:327
+#: ../includes/class-hfcm-snippets-list.php:261 ../includes/hfcm-add-edit.php:329
+msgid "Only Desktop"
+msgstr "केवल डेस्कटॉप"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:267
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:413
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:75
+#: ../includes/class-hfcm-snippets-list.php:267 ../includes/class-hfcm-snippets-list.php:413
+#: ../includes/hfcm-add-edit.php:76
+msgid "HTML"
+msgstr ""
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:268
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:414
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:76
+#: ../includes/class-hfcm-snippets-list.php:268 ../includes/class-hfcm-snippets-list.php:414
+#: ../includes/hfcm-add-edit.php:77
+msgid "CSS"
+msgstr ""
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:269
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:415
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:77
+#: ../includes/class-hfcm-snippets-list.php:269 ../includes/class-hfcm-snippets-list.php:415
+#: ../includes/hfcm-add-edit.php:78
+msgid "Javascript"
+msgstr ""
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:343
+#: ../includes/class-hfcm-snippets-list.php:343
+msgid "Edit"
+msgstr "संपादित करें"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:344
+#: ../includes/class-hfcm-snippets-list.php:344
+msgid "Copy Shortcode"
+msgstr "शोर्टकोड कॉपी करें"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:345
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:419
+#: ../includes/class-hfcm-snippets-list.php:345 ../includes/hfcm-add-edit.php:424
+msgid "Delete"
+msgstr "मिटाएं"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:360
+#: ../includes/class-hfcm-snippets-list.php:360
+msgid "ID"
+msgstr "आईडी"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:361
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:351
+#: ../includes/class-hfcm-snippets-list.php:361 ../includes/hfcm-add-edit.php:353
+msgid "Status"
+msgstr "स्थिति"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:362
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:68
+#: ../includes/class-hfcm-snippets-list.php:362 ../includes/hfcm-add-edit.php:68
+msgid "Snippet Name"
+msgstr "स्निपेट नाम"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:363
+#: ../includes/class-hfcm-snippets-list.php:363
+msgid "Display On"
+msgstr "पर प्रदर्शन"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:364
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:306
+#: ../includes/class-hfcm-snippets-list.php:364 ../includes/hfcm-add-edit.php:308
+msgid "Location"
+msgstr "स्थान"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:365
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:81
+#: ../includes/class-hfcm-snippets-list.php:365 ../includes/hfcm-add-edit.php:82
+msgid "Snippet Type"
+msgstr "स्निपेट प्रकार"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:366
+#: ../includes/class-hfcm-snippets-list.php:366
+msgid "Devices"
+msgstr "उपकरण"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:367
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:368
+#: ../includes/class-hfcm-snippets-list.php:367 ../includes/hfcm-add-edit.php:370
+msgid "Shortcode"
+msgstr "छोटे संकेत"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:397
+#: ../includes/class-hfcm-snippets-list.php:397
+msgid "Activate"
+msgstr "सक्रिय करें"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:398
+#: ../includes/class-hfcm-snippets-list.php:398
+msgid "Deactivate"
+msgstr "निष्क्रिय करें"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:399
+#: ../includes/class-hfcm-snippets-list.php:399
+msgid "Remove"
+msgstr "हटा दें"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:420
+#: ../includes/class-hfcm-snippets-list.php:420
+msgid "All Snippet Types"
+msgstr "सभी प्रकार के स्निपेट"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:431
+#: ../includes/class-hfcm-snippets-list.php:431
+msgid "Filter"
+msgstr "फिल्टर"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:491
+#: ../includes/class-hfcm-snippets-list.php:491
+msgid "All"
+msgstr "सभी टुकड़े"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:496
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:331
+#: ../includes/class-hfcm-snippets-list.php:496 ../includes/hfcm-add-edit.php:333
+msgid "Active"
+msgstr "सक्रिय"
+
+#: ../header-footer-code-manager/includes/class-hfcm-snippets-list.php:501
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:332
+#: ../includes/class-hfcm-snippets-list.php:501 ../includes/hfcm-add-edit.php:334
+msgid "Inactive"
+msgstr "निष्क्रिय"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:28
+#: ../includes/hfcm-add-edit.php:28
+msgid "Edit Snippet"
+msgstr "स्निपेट सम्पादन"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:40
+#: ../includes/hfcm-add-edit.php:40
+msgid "Script updated"
+msgstr "स्क्रिप्ट अद्यतन"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:42
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:47
+#: ../includes/hfcm-add-edit.php:42 ../includes/hfcm-add-edit.php:47
+msgid "Back to list"
+msgstr "दोबारा सूची पर जाएं"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:45
+#: ../includes/hfcm-add-edit.php:45
+msgid "Script Added Successfully"
+msgstr "स्क्रिप्ट जोड़ा सफलतापूर्वक"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:102
+#: ../includes/hfcm-add-edit.php:103
+msgid "Specific Categories (Archive & Posts)"
+msgstr "विशिष्ट श्रेणियाँ (संग्रह और पोस्ट)"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:103
+#: ../includes/hfcm-add-edit.php:104
+msgid "Specific Post Types (Archive & Posts)"
+msgstr "विशिष्ट पोस्ट प्रकार (संग्रह और पोस्ट)"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:104
+#: ../includes/hfcm-add-edit.php:105
+msgid "Specific Tags (Archive & Posts)"
+msgstr "विशिष्ट टैग (संग्रह और पोस्ट)"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:112
+#: ../includes/hfcm-add-edit.php:113
+msgid "Site Display"
+msgstr "साइट प्रदर्शन"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:139
+#: ../includes/hfcm-add-edit.php:140
+msgid "Exclude Pages"
+msgstr "पृष्ठों को बाहर करें"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:156
+#: ../includes/hfcm-add-edit.php:157
+msgid "Exclude Posts"
+msgstr "पोस्ट को बाहर करें"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:170
+#: ../includes/hfcm-add-edit.php:171
+msgid "Page List"
+msgstr "पेज सूची"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:189
+#: ../includes/hfcm-add-edit.php:190
+msgid "Post List"
+msgstr "पोस्ट सूची"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:222
+#: ../includes/hfcm-add-edit.php:223
+msgid "Category List"
+msgstr "श्रेणी सूची"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:240
+#: ../includes/hfcm-add-edit.php:241
+msgid "Tags List"
+msgstr "टैग सूची"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:258
+#: ../includes/hfcm-add-edit.php:259
+msgid "Post Types"
+msgstr "पोस्ट प्रकार"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:274
+#: ../includes/hfcm-add-edit.php:275
+msgid "Post Count"
+msgstr "पोस्ट गिनती"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:321
+#: ../includes/hfcm-add-edit.php:323
+msgid "Note"
+msgstr "ध्यान दें"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:321
+#: ../includes/hfcm-add-edit.php:323
+msgid ""
+"Not all locations (such as before content) exist on all page/post types. The location "
+"will only appear as an option if the appropriate hook exists on the page."
+msgstr "सभी पेज/पोस्ट प्रकारों पर सभी स्थान (जैसे कि प्रकरण से पहले) मौजूद नहीं हैं।"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:335
+#: ../includes/hfcm-add-edit.php:337
+msgid "Device Display"
+msgstr "डिवाइस प्रदर्शन"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:375
+#: ../includes/hfcm-add-edit.php:379
+msgid "Copy"
+msgstr "कॉपी"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:384
+#: ../includes/hfcm-add-edit.php:388
+msgid "Changelog"
+msgstr "चैंज लॉग"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:388
+#: ../includes/hfcm-add-edit.php:392
+msgid "Snippet created by"
+msgstr "के द्वारा बनाई गई स्निपेट"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:389
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:393
+#: ../includes/hfcm-add-edit.php:393 ../includes/hfcm-add-edit.php:397
+msgid "on"
+msgstr "पर"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:389
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:393
+#: ../includes/hfcm-add-edit.php:393 ../includes/hfcm-add-edit.php:397
+msgid "at"
+msgstr "पर"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:392
+#: ../includes/hfcm-add-edit.php:396
+msgid "Last edited by"
+msgstr "अंतिम बार संपादित द्वारा"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:402
+#: ../includes/hfcm-add-edit.php:406
+msgid "Code"
+msgstr "कोड"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:408
+#: ../includes/hfcm-add-edit.php:412
+msgid ""
+"Warning: Using improper code or untrusted sources code can break your site or create "
+"security risks. <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
+"code-editing-or-insertion\" target=\"_blank\">Learn more</a>."
+msgstr ""
+"चेतावनी: अनुचित कोड या अविश्वसनीय स्रोत कोड का उपयोग करने से आपकी साइट टूट सकती है या सुरक्षा जोखिम "
+"पैदा हो सकते हैं। <a href=\"https://draftpress.com/security-risks-of-wp-plugins-that-allow-"
+"code-editing-or-insertion\" target=\"_blank\">और जानें</a> ।"
+
+#: ../header-footer-code-manager/includes/hfcm-add-edit.php:413
+#: ../includes/hfcm-add-edit.php:417
+msgid "Save"
+msgstr "जमा करें"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:30 ../includes/hfcm-tools.php:30
+msgid "Export Snippets"
+msgstr "निर्यात स्निपेट"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:37 ../includes/hfcm-tools.php:37
+msgid ""
+"Select the snippets you would like to export and then select your export method. Use the\n"
+"                                download button to export to a .json file which you can "
+"then import to another HFCM\n"
+"                                installation"
+msgstr ""
+"उन स्निपेट का चयन करें जिन्हें आप निर्यात करना चाहते हैं और फिर अपनी निर्यात विधि चुनें। एक .json फ़ाइल में "
+"निर्यात करने के लिए डाउनलोड बटन का उपयोग करें जिसे आप फिर किसी अन्य HFCM स्थापना में आयात कर सकते हैं"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:43 ../includes/hfcm-tools.php:43
+msgid ""
+"NOTE: Import/Export Functionality is only intended to operate within the same website.  "
+"Using the export/import to move snippets from one website to a different site, may result "
+"in inconsistent behavior, particularly if you have specific elements as criteria such as "
+"pages, posts, categories, or tags."
+msgstr ""
+"नोट: आयात/निर्यात कार्यक्षमता केवल उसी वेबसाइट के भीतर संचालित करने के लिए अभिप्रेत है। स्निपेट को एक "
+"वेबसाइट से दूसरी साइट पर ले जाने के लिए निर्यात/आयात का उपयोग करने के परिणामस्वरूप असंगत व्यवहार हो "
+"सकता है, खासकर यदि आपके पास विशिष्ट तत्व जैसे पृष्ठ, पोस्ट, श्रेणियां या टैग हैं।"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:49 ../includes/hfcm-tools.php:49
+msgid "Select Snippets"
+msgstr "स्निपेट्स का चयन करें"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:75 ../includes/hfcm-tools.php:75
+msgid "Export File"
+msgstr "निर्यात फ़ाइल"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:85 ../includes/hfcm-tools.php:85
+msgid "Import Snippets"
+msgstr "स्निपेट आयात करें"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:92 ../includes/hfcm-tools.php:92
+msgid ""
+"Select the HFCM JSON file you would like to import. When you click the import button "
+"below,\n"
+"                                HFCM will import the field groups."
+msgstr ""
+"वह HFCM JSON फ़ाइल चुनें जिसे आप आयात करना चाहते हैं। जब आप नीचे दिए गए आयात बटन पर क्लिक करते हैं, तो "
+"HFCM फ़ील्ड समूहों को आयात करेगा।"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:100 ../includes/hfcm-tools.php:100
+msgid "Select File"
+msgstr "फ़ाइल का चयन करें"
+
+#: ../header-footer-code-manager/includes/hfcm-tools.php:117 ../includes/hfcm-tools.php:117
+msgid "Import"
+msgstr "आयात"
+
+#: ../includes/hfcm-add-edit.php:442
+msgid ""
+"Your site has <a href=\"https://draftpress.com/disallow-file-edit-setting-wordpress\" "
+"target=\"_blank\">WP_DISALLOW_FILE_EDITS</a> setting enabled inside the wp-config file fo "
+"prevent file edits. By using this plugin, you acknowledge that you know what you’re doing "
+"and intend on adding code snippets only from trusted sources."
+msgstr ""
+"फ़ाइल संपादन को रोकने के लिए आपकी साइट में <a href=\"https://draftpress.com/disallow-file-edit-"
+"setting-wordpress\" target=\"_blank\">WP_DISALLOW_FILE_EDITS</a> सेटिंग wp-config फ़ाइल के "
+"अंदर सक्षम है। इस प्लगइन का उपयोग करके, आप स्वीकार करते हैं कि आप जानते हैं कि आप क्या कर रहे हैं और केवल "
+"विश्वसनीय स्रोतों से कोड स्निपेट जोड़ने का इरादा रखते हैं।"
+
+#~ msgid "Snippet will only execute if the placement hook exists on the page"
+#~ msgstr "पृष्ठ पर प्लेसमेंट हुक मौजूद होने पर ही स्निपेट निष्पादित होगा"
+
+#~ msgid ""
+#~ "Header Footer Code Manager by 99 Robots is a quick and simple way for you to add "
+#~ "tracking code snippets, conversion pixels, or other scripts required by third party "
+#~ "services for analytics, tracking, marketing, or chat functions. For detailed "
+#~ "documentation, please visit the plugin's <a href=\"https://99robots.com/\"> official "
+#~ "page</a>."
+#~ msgstr ""
+#~ "\"हैडर और पाद संहिता प्रबंधक, 99 रोबोट्स द्वारा, आप ट्रैकिंग कोड के टुकड़े , रूपांतरण पिक्सल , या अन्य "
+#~ "एनालिटिक्स विपणन के लिए तीसरे पक्ष के सेवाओं  के लिए आवश्यक लिपियों, या चैट फन्क्शन्स शीघ्र और आसान "
+#~ "तरीका से जोड़ सकते  है। विस्तृत दस्तावेज के लिए, कृपया प्लगइन के <a href=\"https://99robots.com/"
+#~ "\"> आधिकारिक पृष्ठ<a/> पर जाएँ"
+
+#~ msgid "Script deleted"
+#~ msgstr "आलेख नष्ट कर दिया"

@@ -21,7 +21,6 @@ class WCML_Product_Addons implements \IWPML_Action {
 	 * WCML_Product_Addons constructor.
 	 *
 	 * @param SitePress        $sitepress
-	 * @param woocommerce_wpml $woocommerce_wpml
 	 */
 	public function __construct( SitePress $sitepress ) {
 		$this->sitepress = $sitepress;
@@ -69,10 +68,10 @@ class WCML_Product_Addons implements \IWPML_Action {
 	}
 
 	/**
-	 * @param $meta_id
-	 * @param $id
-	 * @param $meta_key
-	 * @param $addons
+	 * @param int      $meta_id
+	 * @param int      $id
+	 * @param string   $meta_key
+	 * @param string[] $addons
 	 */
 	public function register_addons_strings( $meta_id, $id, $meta_key, $addons ) {
 		if ( self::ADDONS_OPTION_KEY === $meta_key && 'global_product_addon' === get_post_type( $id ) ) {
@@ -95,12 +94,12 @@ class WCML_Product_Addons implements \IWPML_Action {
 	}
 
 	/**
-	 * @param $null
-	 * @param $object_id
-	 * @param $meta_key
-	 * @param $single
+	 * @param null   $null
+	 * @param int    $object_id
+	 * @param string $meta_key
+	 * @param bool   $single
 	 *
-	 * @return array
+	 * @return array|null
 	 */
 	public function translate_addons_strings( $null, $object_id, $meta_key, $single ) {
 
@@ -136,7 +135,7 @@ class WCML_Product_Addons implements \IWPML_Action {
 	}
 
 	/**
-	 * @param $product_terms
+	 * @param array $product_terms
 	 *
 	 * @return array
 	 */
@@ -239,9 +238,9 @@ class WCML_Product_Addons implements \IWPML_Action {
 	/**
 	 * @deprecated This method is used by CTE only.
 	 *
-	 * @param $obj
-	 * @param $product_id
-	 * @param $data
+	 * @param object $obj
+	 * @param int    $product_id
+	 * @param array  $data
 	 */
 	public function custom_box_html( $obj, $product_id, $data ) {
 
@@ -280,11 +279,11 @@ class WCML_Product_Addons implements \IWPML_Action {
 	/**
 	 * @deprecated This method is used by CTE only.
 	 *
-	 * @param $data
-	 * @param $product_id
-	 * @param $translation
+	 * @param array  $data
+	 * @param int    $product_id
+	 * @param object $translation
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function custom_box_html_data( $data, $product_id, $translation ) {
 
@@ -325,9 +324,9 @@ class WCML_Product_Addons implements \IWPML_Action {
 	/**
 	 * @deprecated This method is used by CTE only.
 	 *
-	 * @param $original_product_id
-	 * @param $product_id
-	 * @param $data
+	 * @param int   $original_product_id
+	 * @param int   $product_id
+	 * @param array $data
 	 */
 	public function addons_update( $original_product_id, $product_id, $data ) {
 

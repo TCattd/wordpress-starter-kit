@@ -1,0 +1,350 @@
+/**************************************************/
+/*  GENERAL STYLES
+/**************************************************/
+
+#wppb-form-style-1-wrapper .wppb-form-title {
+    text-align: left !important;
+    margin-bottom: 50px !important;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-select-field.label-inside .select2-container .select2-selection[title="This field requires approval by an administrator"],
+#wppb-form-style-1-wrapper #wppb-edit-user *[data-wppb-epaa-requires-approval="true"] {
+    background: #FFF9C4 !important;
+}
+
+#wppb-form-style-1-wrapper .form-submit input#edit_profile {
+    min-width: 150px;
+}
+
+#wppb-form-style-1-wrapper div.wppb-sc-buttons-container {
+    justify-content: flex-start !important;
+}
+
+/**************************************************/
+/*  SELECT, SELECT2
+/**************************************************/
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0;
+    width: 100%;
+    margin: 0 auto 30px auto;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: auto;
+    padding: 0 15px;
+    margin: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 30px;
+    color: #6E7A86;
+    transition: all ease-in-out 50ms;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field label.focused {
+    color: #1079F3!important;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container .select2-selection {
+    width: 100%;
+    background: #FFFFFF;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #CFD4DE;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #090A0B;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container .select2-selection {
+    padding: 15px 15px 0 15px;
+    height: 56px;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container:not(.select2-container--focus, .select2-container--open):hover .select2-selection {
+    border: 1px solid #6E7A86;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container--focus .select2-selection, #wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container--open .select2-selection {
+    border: 1px solid #1079F3;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-selection {
+    display: flex;
+    align-items: center;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container {
+    width: 100% !important;
+    margin-left: 0;
+    z-index: 90;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field label {
+    z-index: 100;
+}
+
+#wppb-form-style-1-wrapper #select_user_to_edit_form .wppb-form-field .select2-container .select2-selection__arrow {
+    height: 56px;
+}
+
+.select2-container--default.select2-container--open .select2-dropdown {
+    margin-top: 30px;
+}
+
+/**************************************************/
+/*  DELETE ACCOUNT
+/**************************************************/
+
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button label {
+    order: 1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: #090A0B;
+    width: 100%;
+    text-indent: 0 !important;
+    position: inherit !important;
+}
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button .wppb-delete-account {
+    order: 3;
+    background: #e76054 !important;
+    min-width: 100px;
+}
+
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button .wppb-delete-account:hover {
+    background: #ec6d61 !important;
+    border: 1px solid #ec6d61!important;
+}
+
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button .wppb-delete-account:focus {
+    box-shadow: 0 0 4px #ec6d61;
+    background: #ec6d61 !important;
+    border: 1px solid #FFFFFF !important;
+}
+
+
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button .wppb-description-delimiter {
+    order: 2;
+    flex-basis: 100%;
+    margin-bottom: 10px;
+}
+
+#wppb-form-style-1-wrapper .wppb-gdpr-delete-button .wppb_bdp_visibility_settings {
+    order: 4;
+}
+
+
+/**************************************************/
+/*  ADMIN APPROVAL TOGGLE
+/**************************************************/
+
+#wppb-form-style-1-wrapper .wppb-form-field:has(.wppb-epaa-actions) {
+    margin-bottom: 60px;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field .wppb-epaa-actions {
+    text-align: right;
+    padding: 0 !important;
+    order: 5;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field .wppb-epaa-actions > span {
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field label.wppb-epaa-switch {
+    left: 0;
+    width: 50px !important;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field label.wppb-epaa-switch input {
+    visibility: hidden;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field label.wppb-epaa-switch .wppb-epaa-slider {
+    background-color: #ec6d61;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field label.wppb-epaa-switch input:checked + .wppb-epaa-slider {
+    background-color: #008e00;
+}
+
+#wppb-form-style-1-wrapper .wppb-form-field label.wppb-epaa-switch .wppb-epaa-slider,
+#wppb-form-style-1-wrapper .wppb-form-field label.wppb-epaa-switch .wppb-epaa-slider:before {
+    border-radius: 4px;
+}
+
+
+/**************************************************/
+/*  ADMIN APPROVAL ACTIONS
+/**************************************************/
+
+#wppb-form-style-1-wrapper .wppb-select-user-role p:not(.wppb-field-visibility-settings-toggle) {
+    padding-top: 40px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    color: #6E7A86;
+    word-break: break-word;
+    display: block;
+}
+
+#wppb-form-style-1-wrapper #wppb-epaa-admin-review-links {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 0;
+    margin-bottom: 30px;
+}
+
+/* secondary */
+#wppb-form-style-1-wrapper .wppb-default-e-mail .wppb-description-delimiter a.wppb-cancel-request,
+#wppb-form-style-1-wrapper #wppb-epaa-admin-review-links a,
+#wppb-form-style-1-wrapper .wppb-epaa-admin-actions button {
+    height: 34px;
+    font-size: 14px;
+    border-radius: 4px;
+    color: #1079F3;
+    text-decoration: none;
+    text-transform: none;
+    border: 1px solid #1079F3!important;
+    padding: 0 15px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#wppb-form-style-1-wrapper #wppb-epaa-admin-review-links a {
+    margin-bottom: 5px;
+}
+
+#wppb-form-style-1-wrapper .wppb-default-e-mail .wppb-description-delimiter a.wppb-cancel-request {
+    padding: 3px 6px;
+    height: auto;
+}
+
+#wppb-form-style-1-wrapper .wppb-epaa-admin-actions button#wppb-epaa-approve-all {
+    margin-top: 50px;
+}
+
+#wppb-form-style-1-wrapper .wppb-default-e-mail .wppb-description-delimiter a.wppb-cancel-request:hover,
+#wppb-form-style-1-wrapper #wppb-epaa-admin-review-links a:hover,
+#wppb-form-style-1-wrapper .wppb-epaa-admin-actions button:hover {
+    background: #2D8BF9;
+    text-decoration: none!important;
+    border: 1px solid #2D8BF9!important;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+#wppb-form-style-1-wrapper .wppb-default-e-mail .wppb-description-delimiter a.wppb-cancel-request:focus,
+#wppb-form-style-1-wrapper #wppb-epaa-admin-review-links a:focus,
+#wppb-form-style-1-wrapper .wppb-epaa-admin-actions button:focus {
+    outline: none;
+    border: 1px solid #FFFFFF !important;
+    box-shadow: 0 0 4px #2D8BF9;
+    background: #2D8BF9;
+    color: #FFFFFF;
+}
+
+#wppb-form-style-1-wrapper .wppb-default-e-mail .wppb-description-delimiter a.wppb-cancel-request:disabled,
+#wppb-form-style-1-wrapper #wppb-epaa-admin-review-links a:disabled,
+#wppb-form-style-1-wrapper .wppb-epaa-admin-actions button:disabled {
+    color: #6E7A86;
+    background: transparent;
+    border: 1px solid #6E7A86 !important;
+    pointer-events: none;
+}
+
+
+/**************************************************/
+/*  TWO-FACTOR AUTHENTICATION
+/**************************************************/
+
+#wppb-form-style-1-wrapper .wppb-2fa-fields label {
+    text-indent: 0 !important;
+    position: inherit;
+}
+
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_enabled label,
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_relaxedmode label {
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    font-size: 16px;
+    color: #6E7A86;
+    margin-bottom: -4px;
+    order: 2;
+    cursor: pointer;
+}
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_enabled input,
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_relaxedmode input {
+    order: 1;
+}
+
+
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_enabled,
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_relaxedmode {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication .wppb_auth_relaxedmode .wppb-description-delimiter {
+    flex-basis: 100%;
+    order: 3;
+}
+
+#wppb-form-style-1-wrapper .wppb-two-factor-authentication input[type=button] {
+    margin-right: 5px;
+    flex-grow: unset;
+    min-width: 120px;
+}
+
+#wppb-form-style-1-wrapper #wppb_auth_verify_buttons,
+#wppb-form-style-1-wrapper #wppb_auth_secret_buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0;
+}
+
+
+/**************************************************/
+/*  MOBILE
+/**************************************************/
+
+@media screen and (max-width: 480px) {
+    #wppb-form-style-1-wrapper div.wppb-sc-buttons-container {
+        font-weight: 300;
+    }
+}

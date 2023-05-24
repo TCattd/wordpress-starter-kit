@@ -10,7 +10,7 @@ use \The_SEO_Framework\Interpreters\HTML;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -160,8 +160,10 @@ final class ListEdit extends ListTable {
 	 */
 	public function _output_column_contents_for_post( $column_name, $post_id ) {
 
-		if ( $this->column_name !== $column_name )          return;
-		if ( ! \current_user_can( 'edit_post', $post_id ) ) return;
+		if (
+			   $this->column_name !== $column_name
+			|| ! \current_user_can( 'edit_post', $post_id )
+		) return;
 
 		$tsf = \tsf();
 

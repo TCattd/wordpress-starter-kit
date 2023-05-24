@@ -12,7 +12,7 @@ use WPML\FP\Obj;
 
 class Products extends Handler {
 
-	/** @var \Sitepress */
+	/** @var \SitePress */
 	private $sitepress;
 	/** @var \WPML_Post_Translation */
 	private $wpmlPostTranslations;
@@ -22,7 +22,7 @@ class Products extends Handler {
 	private $productSaveActions;
 
 	public function __construct(
-		\WPML\Core\ISitePress $sitepress,
+		\SitePress $sitepress,
 		\WPML_Post_Translation $wpmlPostTranslations,
 		\WPML_Query_Filter $wpmlQueryFilter,
 		ProductSaveActions $productSaveActions

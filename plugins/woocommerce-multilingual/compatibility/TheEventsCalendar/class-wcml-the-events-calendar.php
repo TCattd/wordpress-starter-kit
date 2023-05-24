@@ -138,14 +138,14 @@ class WCML_The_Events_Calendar implements \IWPML_Action {
 					if ( ! empty( $ticket_post->post_title ) ) {
 						$package['contents'][ 'rsvp_tickets_' . $original_ticket_id . '_title' ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $ticket_post->post_title, 'base64' ),
+							'data'      => $this->tp->encode_field_data( $ticket_post->post_title ),
 							'format'    => 'base64',
 						];
 					}
 					if ( ! empty( $ticket_post->post_excerpt ) ) {
 						$package['contents'][ 'rsvp_tickets_' . $original_ticket_id . '_excerpt' ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $ticket_post->post_excerpt, 'base64' ),
+							'data'      => $this->tp->encode_field_data( $ticket_post->post_excerpt ),
 							'format'    => 'base64',
 						];
 					}
@@ -234,14 +234,14 @@ class WCML_The_Events_Calendar implements \IWPML_Action {
 					if ( ! empty( $ticket_post->post_title ) ) {
 						$package['contents'][ 'woo_tickets_' . $original_ticket_id . '_title' ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $ticket_post->post_title, 'base64' ),
+							'data'      => $this->tp->encode_field_data( $ticket_post->post_title ),
 							'format'    => 'base64',
 						];
 					}
 					if ( ! empty( $ticket_post->post_excerpt ) ) {
 						$package['contents'][ 'woo_tickets_' . $original_ticket_id . '_excerpt' ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $ticket_post->post_excerpt, 'base64' ),
+							'data'      => $this->tp->encode_field_data( $ticket_post->post_excerpt ),
 							'format'    => 'base64',
 						];
 					}
@@ -316,12 +316,12 @@ class WCML_The_Events_Calendar implements \IWPML_Action {
 			foreach ( $ticket_meta as $k => $meta ) {
 				$package['contents'][ 'rsvp_tickets_' . $original_ticket_id . '_meta_' . $k . '_label' ] = [
 					'translate' => 1,
-					'data'      => $this->tp->encode_field_data( $meta['label'], 'base64' ),
+					'data'      => $this->tp->encode_field_data( $meta['label'] ),
 					'format'    => 'base64',
 				];
 				$package['contents'][ 'rsvp_tickets_' . $original_ticket_id . '_meta_' . $k . '_slug' ]  = [
 					'translate' => 1,
-					'data'      => $this->tp->encode_field_data( $meta['slug'], 'base64' ),
+					'data'      => $this->tp->encode_field_data( $meta['slug'] ),
 					'format'    => 'base64',
 				];
 				if ( isset( $meta['extra']['options'] ) ) {
@@ -329,7 +329,7 @@ class WCML_The_Events_Calendar implements \IWPML_Action {
 
 						$package['contents'][ 'rsvp_tickets_' . $original_ticket_id . '_meta_' . $k . '_option_' . $option_id ] = [
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $option_name, 'base64' ),
+							'data'      => $this->tp->encode_field_data( $option_name ),
 							'format'    => 'base64',
 						];
 

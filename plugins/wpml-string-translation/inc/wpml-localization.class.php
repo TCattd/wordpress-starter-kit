@@ -35,8 +35,9 @@ class WPML_Localization {
 			if ( ! empty( $domains ) ) {
 				$sql     = "SELECT context, status, COUNT(id) AS c 
 						FROM {$this->wpdb->prefix}icl_strings 
-						WHERE context IN ('" . join( "','", $domains ) . "') 
+						WHERE context IN (" . wpml_prepare_in( $domains ) . ")
 						GROUP BY context, status";
+
 				$results = $this->wpdb->get_results( $sql );
 			}
 		}

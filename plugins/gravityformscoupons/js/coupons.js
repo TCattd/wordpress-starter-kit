@@ -4,7 +4,7 @@ function ApplyCouponCode(formId) {
         return;
     }
 
-    jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_spinner').show();
+    showCouponSpinner( formId );
     jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_button').prop('disabled', true);
 
     jQuery.post(gform_coupon_script_strings['ajaxurl'], {
@@ -22,7 +22,7 @@ function ApplyCouponCode(formId) {
             jQuery('#gf_coupon_code_' + formId).val('');
 
             if (!couponInfo['is_valid']) {
-                jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_info').prepend("<div class='gf_coupon_invalid'><span>" + couponInfo['invalid_reason'] + '</span></div>');
+                jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_info').prepend("<div class='gf_coupon_invalid gfield_description gfield_validation_message'><span>" + couponInfo['invalid_reason'] + '</span></div>');
             } else {
 
                 window['gf_coupons' + formId] = couponInfo['coupons'];
@@ -48,13 +48,25 @@ function ApplyCouponCode(formId) {
 
             }
 
-            jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_spinner').hide();
+            hideCouponSpinner( formId );
 
         }
     );
 }
 
-function GetDiscount(couponType, couponAmount, price, totalDiscount) {
+/**
+ * Get the payment amount after discount.
+ *
+ * @since unknown
+ * @since 3.0.1    Added formId parameter
+ *
+ * @param string couponType    The coupon type.
+ * @param int    couponAmount  The coupon amount.
+ * @param int    price         The price before discount.
+ * @param int    totalDiscount The total discount amount.
+ * @param int    formId        The ID of the current form.
+ */
+function GetDiscount(couponType, couponAmount, price, totalDiscount, formId ) {
     var discount;
 
     price = price - totalDiscount;
@@ -64,7 +76,7 @@ function GetDiscount(couponType, couponAmount, price, totalDiscount) {
         discount = price * Number((couponAmount / 100));
     }
 
-    return gform.applyFilters('gform_coupons_discount_amount', discount, couponType, couponAmount, price, totalDiscount);
+    return gform.applyFilters( 'gform_coupons_discount_amount', discount, couponType, couponAmount, price, totalDiscount, formId );
 }
 
 function PopulateDiscountInfo(price, formId) {
@@ -82,15 +94,15 @@ function PopulateDiscountInfo(price, formId) {
 
     for (code in window['gf_coupons' + formId]) {
         coupon = window['gf_coupons' + formId][code];
-        couponDiscount = GetDiscount(coupon['type'], coupon['amount'], price, totalDiscount);
+        couponDiscount = GetDiscount(coupon['type'], coupon['amount'], price, totalDiscount, formId );
         totalDiscount += couponDiscount;
         safeCode = coupon.code.replace(/[^A-Za-z0-9]/g, '');
 
-        couponDetails += '<tr class="gf_coupon_item" id="gf_coupon_' + safeCode + '"><td class="gf_coupon_name_container">' +
-        '   <a href="javascript:void(0);" onclick="DeleteCoupon(\'' + coupon['code'] + '\' , \'' + formId + '\');">(x)</a>' +
-        '   <span class="gf_coupon_name">' + coupon['name'] + '</span>' +
+        couponDetails += '<tr class="gf_coupon_item gfield_description" id="gf_coupon_' + safeCode + '"><td class="gf_coupon_name_container">' +
+        '   <a href="javascript:void(0);" class="remove-coupon gform-theme__no-reset--el" aria-label="Remove coupon" onclick="DeleteCoupon(\'' + coupon['code'] + '\' , \'' + formId + '\');">[Remove]</a>' +
+        '   <span class="gf_coupon_name gform-field-label gform-field-label--type-sub-large">' + coupon['name'] + '</span>' +
         '</td><td class="gf_coupon_discount_container">' +
-        '   <span class="gf_coupon_discount">-' + currency.toMoney(couponDiscount,true) + '</span>' +
+        '   <span class="gf_coupon_discount gform-field-label gform-field-label--type-sub-large">-' + currency.toMoney(couponDiscount,true) + '</span>' +
         '</td></tr>';
     }
 
@@ -129,7 +141,7 @@ function DisableApplyButton(formId) {
 			}
 		}
 
-		jQuery( '#gf_coupons_container_' + formId + ' #gf_coupon_spinner' ).hide();
+		hideCouponSpinner( formId );
 		window['new_total_' + formId] = new_total;
 		DisableApplyButton( formId );
 
@@ -146,7 +158,7 @@ function DeleteCoupon(code, formId) {
 
     // removing coupon from UI
     jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_' + safeCode).remove();
-    jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_spinner').show();
+    showCouponSpinner( formId );
     jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_button').prop('disabled', true);
 
     // removing coupon from coupon codes hidden input
@@ -213,3 +225,46 @@ gform.addFilter( 'gform_field_meta_raw_input_change', function( fieldMeta, $inpu
 
 	return fieldMeta;
 } );
+
+/**
+ * @description Show the coupon spinner.
+ *
+ * @param {string} formId The current form ID.
+ *
+ * @return void
+ */
+function showCouponSpinner( formId ) {
+	if ( 'function' !== typeof gformInitializeSpinner || ! formUsesFramework( formId ) ) {
+		jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_spinner').show();
+		return;
+	}
+
+	var $spinnerTarget = jQuery( '#gf_coupons_container_' + formId + ' #gf_coupon_button' );
+	gformInitializeSpinner( formId, $spinnerTarget, 'gform-coupons-spinner-' + formId );
+}
+
+/**
+ * @description Hide the coupon spinner.
+ *
+ * @param {string} formId The current form ID.
+ *
+ * @return void
+ */
+function hideCouponSpinner( formId ) {
+	if ( 'function' !== typeof gformRemoveSpinner || ! formUsesFramework( formId ) ) {
+		jQuery('#gf_coupons_container_' + formId + ' #gf_coupon_spinner').hide();
+		return;
+	}
+	gformRemoveSpinner( 'gform-coupons-spinner-' + formId );
+}
+
+/**
+ * @description Determine if the current form is using the Theme Framework.
+ *
+ * @param {string} formId The current form ID.
+ *
+ * @return {boolean}
+ */
+function formUsesFramework( formId ) {
+	return jQuery( '#gform_wrapper_' + formId ).hasClass( 'gform-theme--framework' );
+}

@@ -42,5 +42,5 @@
 
         $text = apply_filters( 'wppb_front_end_logout_text', str_replace( $meta_tags, $meta_tags_values, $text ), $current_user );
 
-        return '<p class="wppb-front-end-logout"><span>' . $text . '</span>' . $logout_link . '</p>';
+        return apply_filters( 'wppb_logout_message', '<p class="wppb-front-end-logout"><span>' . $text . '</span>' . $logout_link . '</p>');
     }

@@ -6,49 +6,55 @@ if( !defined( 'ABSPATH' ) ) exit();
 	<div class="app-rules-col">
 		<h3><?php _e( 'Login Access Rules', 'limit-login-attempts-reloaded' ); ?><span class="help-link"><a
                         href="https://www.limitloginattempts.com/access-rules-explained/" target="_blank"><?php _e( 'Documentation', 'limit-login-attempts-reloaded' ); ?></a></span></h3>
-        <div class="llar-table-scroll-wrap llar-app-login-access-rules-infinity-scroll">
-            <table class="form-table llar-app-login-access-rules-table">
-                <tr>
-                    <th scope="col"><?php _e( 'Pattern', 'limit-login-attempts-reloaded' ); ?></th>
-                    <th scope="col"><?php _e( 'Rule', 'limit-login-attempts-reloaded' ); ?></th>
-                    <th class="llar-app-acl-action-col" scope="col"><?php _e( 'Action', 'limit-login-attempts-reloaded' ); ?></th>
-                </tr>
-                <tr>
-                    <td><input class="regular-text llar-app-acl-pattern" type="text" placeholder="<?php esc_attr_e( 'Pattern', 'limit-login-attempts-reloaded' ); ?>"></td>
-                    <td>
-                        <select class="llar-app-acl-rule">
-                            <option value="deny" selected><?php esc_html_e( 'Deny',  'limit-login-attempts-reloaded' ); ?></option>
-                            <option value="allow"><?php esc_html_e( 'Allow',  'limit-login-attempts-reloaded' ); ?></option>
-                            <option value="pass"><?php esc_html_e( 'Pass',  'limit-login-attempts-reloaded' ); ?></option>
-                        </select>
-                    </td>
-                    <td class="llar-app-acl-action-col"><button class="button llar-app-acl-add-rule" data-type="login"><?php _e( 'Add', 'limit-login-attempts-reloaded' ); ?></button></td>
-                </tr>
-            </table>
+
+        <div class="llar-preloader-wrap login-rules">
+            <div class="llar-table-scroll-wrap llar-app-login-access-rules-infinity-scroll">
+                <table class="form-table llar-app-login-access-rules-table">
+                    <tr>
+                        <th scope="col"><?php _e( 'Pattern', 'limit-login-attempts-reloaded' ); ?></th>
+                        <th scope="col"><?php _e( 'Rule', 'limit-login-attempts-reloaded' ); ?></th>
+                        <th class="llar-app-acl-action-col" scope="col"><?php _e( 'Action', 'limit-login-attempts-reloaded' ); ?></th>
+                    </tr>
+                    <tr>
+                        <td><input class="regular-text llar-app-acl-pattern" type="text" placeholder="<?php esc_attr_e( 'Pattern', 'limit-login-attempts-reloaded' ); ?>"></td>
+                        <td>
+                            <select class="llar-app-acl-rule">
+                                <option value="deny" selected><?php esc_html_e( 'Deny',  'limit-login-attempts-reloaded' ); ?></option>
+                                <option value="allow"><?php esc_html_e( 'Allow',  'limit-login-attempts-reloaded' ); ?></option>
+                                <option value="pass"><?php esc_html_e( 'Pass',  'limit-login-attempts-reloaded' ); ?></option>
+                            </select>
+                        </td>
+                        <td class="llar-app-acl-action-col"><button class="button llar-app-acl-add-rule" data-type="login"><?php _e( 'Add', 'limit-login-attempts-reloaded' ); ?></button></td>
+                    </tr>
+                </table>
+            </div>
         </div>
 	</div>
 	<div class="app-rules-col">
 		<h3><?php _e( 'IP Access Rules', 'limit-login-attempts-reloaded' ); ?><span class="help-link"><a
                         href="https://www.limitloginattempts.com/access-rules-explained/" target="_blank"><?php _e( 'Documentation', 'limit-login-attempts-reloaded' ); ?></a></span></h3>
-        <div class="llar-table-scroll-wrap llar-app-ip-access-rules-infinity-scroll">
-            <table class="form-table llar-app-ip-access-rules-table">
-                <tr>
-                    <th scope="col"><?php _e( 'Pattern', 'limit-login-attempts-reloaded' ); ?></th>
-                    <th scope="col"><?php _e( 'Rule', 'limit-login-attempts-reloaded' ); ?></th>
-                    <th class="llar-app-acl-action-col" scope="col"><?php _e( 'Action', 'limit-login-attempts-reloaded' ); ?></th>
-                </tr>
-                <tr>
-                    <td><input class="regular-text llar-app-acl-pattern" type="text" placeholder="<?php esc_attr_e( 'Pattern', 'limit-login-attempts-reloaded' ); ?>"></td>
-                    <td>
-                        <select class="llar-app-acl-rule">
-                            <option value="deny" selected><?php esc_html_e( 'Deny',  'limit-login-attempts-reloaded' ); ?></option>
-                            <option value="allow"><?php esc_html_e( 'Allow',  'limit-login-attempts-reloaded' ); ?></option>
-                            <option value="pass"><?php esc_html_e( 'Pass',  'limit-login-attempts-reloaded' ); ?></option>
-                        </select>
-                    </td>
-                    <td class="llar-app-acl-action-col"><button class="button llar-app-acl-add-rule" data-type="ip"><?php _e( 'Add', 'limit-login-attempts-reloaded' ); ?></button></td>
-                </tr>
-            </table>
+
+        <div class="llar-preloader-wrap ip-rules">
+            <div class="llar-table-scroll-wrap llar-app-ip-access-rules-infinity-scroll">
+                <table class="form-table llar-app-ip-access-rules-table">
+                    <tr>
+                        <th scope="col"><?php _e( 'Pattern', 'limit-login-attempts-reloaded' ); ?></th>
+                        <th scope="col"><?php _e( 'Rule', 'limit-login-attempts-reloaded' ); ?></th>
+                        <th class="llar-app-acl-action-col" scope="col"><?php _e( 'Action', 'limit-login-attempts-reloaded' ); ?></th>
+                    </tr>
+                    <tr>
+                        <td><input class="regular-text llar-app-acl-pattern" type="text" placeholder="<?php esc_attr_e( 'Pattern', 'limit-login-attempts-reloaded' ); ?>"></td>
+                        <td>
+                            <select class="llar-app-acl-rule">
+                                <option value="deny" selected><?php esc_html_e( 'Deny',  'limit-login-attempts-reloaded' ); ?></option>
+                                <option value="allow"><?php esc_html_e( 'Allow',  'limit-login-attempts-reloaded' ); ?></option>
+                                <option value="pass"><?php esc_html_e( 'Pass',  'limit-login-attempts-reloaded' ); ?></option>
+                            </select>
+                        </td>
+                        <td class="llar-app-acl-action-col"><button class="button llar-app-acl-add-rule" data-type="ip"><?php _e( 'Add', 'limit-login-attempts-reloaded' ); ?></button></td>
+                    </tr>
+                </table>
+            </div>
         </div>
 	</div>
 
@@ -60,6 +66,8 @@ if( !defined( 'ABSPATH' ) ) exit();
 				var $app_acl_rules = $('.llar-app-acl-rules'),
                     $infinity_box1 = $('.llar-app-login-access-rules-infinity-scroll'),
                     $infinity_box2 = $('.llar-app-ip-access-rules-infinity-scroll'),
+                    $login_preloader_wrap = $('.llar-preloader-wrap.login-rules'),
+                    $ip_preloader_wrap = $('.llar-preloader-wrap.ip-rules'),
                     loading_data1 = false,
                     loading_data2 = false,
                     page_offset1 = '',
@@ -105,7 +113,11 @@ if( !defined( 'ABSPATH' ) ) exit();
 							return false;
 						}
 
-						llar.progressbar.start();
+						if($this.data('type') === 'ip') {
+						    $ip_preloader_wrap.addClass('loading');
+                        } else {
+                            $login_preloader_wrap.addClass('loading');
+                        }
 
 						$.post(ajaxurl, {
 							action: 'app_acl_remove_rule',
@@ -114,7 +126,11 @@ if( !defined( 'ABSPATH' ) ) exit();
 							sec: '<?php echo esc_js( wp_create_nonce( "llar-action" ) ); ?>'
 						}, function(response){
 
-							llar.progressbar.stop();
+                            if($this.data('type') === 'ip') {
+                                $ip_preloader_wrap.removeClass('loading');
+                            } else {
+                                $login_preloader_wrap.removeClass('loading');
+                            }
 
 							if(response.success) {
 
@@ -157,7 +173,11 @@ if( !defined( 'ABSPATH' ) ) exit();
 							row_exist.remove();
 						}
 
-						llar.progressbar.start();
+                        if(type === 'ip') {
+                            $ip_preloader_wrap.addClass('loading');
+                        } else {
+                            $login_preloader_wrap.addClass('loading');
+                        }
 
 						$.post(ajaxurl, {
 							action: 'app_acl_add_rule',
@@ -167,7 +187,11 @@ if( !defined( 'ABSPATH' ) ) exit();
 							sec: '<?php echo esc_js( wp_create_nonce( "llar-action" ) ); ?>'
 						}, function(response){
 
-							llar.progressbar.stop();
+                            if(type === 'ip') {
+                                $ip_preloader_wrap.removeClass('loading');
+                            } else {
+                                $login_preloader_wrap.removeClass('loading');
+                            }
 
 							if(response.success) {
 
@@ -193,6 +217,8 @@ if( !defined( 'ABSPATH' ) ) exit();
                             return;
                         }
 
+                        $login_preloader_wrap.addClass('loading');
+
                         loading_data1 = true;
                     } else if(type === 'ip') {
 
@@ -200,10 +226,10 @@ if( !defined( 'ABSPATH' ) ) exit();
                             return;
                         }
 
+                        $ip_preloader_wrap.addClass('loading');
                         loading_data2 = true;
                     }
 
-                    llar.progressbar.start();
 
                     $.post(ajaxurl, {
                         action: 'app_load_acl_rules',
@@ -213,7 +239,11 @@ if( !defined( 'ABSPATH' ) ) exit();
                         sec: '<?php echo wp_create_nonce( "llar-action" ); ?>'
                     }, function(response){
 
-                        llar.progressbar.stop();
+                        if(type === 'ip') {
+                            $ip_preloader_wrap.removeClass('loading');
+                        } else {
+                            $login_preloader_wrap.removeClass('loading');
+                        }
 
                         if(response.success) {
 

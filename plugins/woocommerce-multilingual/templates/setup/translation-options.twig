@@ -11,7 +11,7 @@
                title="{{ strings.tooltip_translate_everything }}"
                {% endif %}
         >
-            <input type="radio" value="translate_everything" name="translation-option"
+            <input type="radio" value="translate_everything" name="translation-option" required
                 {% if is_translate_some_mode %} disabled="disabled"{% endif %}
             />
             {{ strings.label_translate_everything }}
@@ -19,13 +19,13 @@
     </li>
     <li>
         <label class="wcml-translate-some">
-            <input type="radio" value="translate_some" name="translation-option" />
+            <input type="radio" value="translate_some" name="translation-option" required />
             {{ strings.label_translate_some }}
         </label>
     </li>
     <li>
         <label class="wcml-display-as-translated">
-            <input type="radio" value="display_as_translated" name="translation-option" {% if is_display_as_translated_checked %}checked="checked"{% endif %} />
+            <input type="radio" value="display_as_translated" name="translation-option" required {% if is_display_as_translated_checked %}checked="checked"{% endif %} />
             {{ strings.label_display_as_translated|raw }}
         </label>
     </li>

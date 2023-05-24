@@ -1,5 +1,7 @@
 <?php
 
+use WCML\Utilities\DB;
+
 class WCML_Translation_Editor {
 
 	/** @var woocommerce_wpml */
@@ -9,7 +11,7 @@ class WCML_Translation_Editor {
 	/** @var  wpdb */
 	private $wpdb;
 
-	public function __construct( woocommerce_wpml $woocommerce_wpml, \WPML\Core\ISitePress $sitepress, wpdb $wpdb ) {
+	public function __construct( woocommerce_wpml $woocommerce_wpml, $sitepress, wpdb $wpdb ) {
 		$this->woocommerce_wpml = $woocommerce_wpml;
 		$this->sitepress        = $sitepress;
 		$this->wpdb             = $wpdb;
@@ -175,14 +177,11 @@ class WCML_Translation_Editor {
 		}
 		$res = $this->wpdb->get_results(
 			$this->wpdb->prepare(
-				"
-			SELECT f.lang_code, f.flag, f.from_template, l.name
-			FROM {$this->wpdb->prefix}icl_flags f
-				JOIN {$this->wpdb->prefix}icl_languages_translations l ON f.lang_code = l.language_code
-			WHERE l.display_language_code = %s AND f.lang_code IN (%s)
-		",
-				$this->sitepress->get_admin_language(),
-				implode( "','", $languages )
+				"SELECT f.lang_code, f.flag, f.from_template, l.name
+					FROM {$this->wpdb->prefix}icl_flags f
+					JOIN {$this->wpdb->prefix}icl_languages_translations l ON f.lang_code = l.language_code
+					WHERE l.display_language_code = %s AND f.lang_code IN (" . DB::prepareIn( $languages ) . ')',
+				$this->sitepress->get_admin_language()
 			)
 		);
 
@@ -277,9 +276,10 @@ class WCML_Translation_Editor {
 	}
 
 	/**
-	 * Forces the translation editor to be used for products when enabled in WCML
+	 * Forces the translation editor to be used for products when enabled in WCML.
 	 *
-	 * @param $use_tm_editor
+	 * @param int $use_tm_editor
+	 *
 	 * @return int
 	 */
 	public function force_woocommerce_native_editor( $use_tm_editor ) {
@@ -301,7 +301,8 @@ class WCML_Translation_Editor {
 	}
 
 	/**
-	 * @param $use_tm_editor
+	 * @param int $use_tm_editor
+	 *
 	 * @return int
 	 */
 	public function force_woocommerce_native_editor_for_wcml_products_screen( $use_tm_editor ) {

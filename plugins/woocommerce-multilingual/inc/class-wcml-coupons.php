@@ -1,13 +1,15 @@
 <?php
 
+use WPML\Core\ISitePress;
+
 class WCML_Coupons {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 
-	public function __construct( woocommerce_wpml $woocommerce_wpml, \WPML\Core\ISitePress $sitepress ) {
+	public function __construct( woocommerce_wpml $woocommerce_wpml, SitePress $sitepress ) {
 		$this->woocommerce_wpml = $woocommerce_wpml;
 		$this->sitepress        = $sitepress;
 	}

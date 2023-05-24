@@ -104,8 +104,7 @@ function _do_upgrade() {
 
 	$tsf = \tsf();
 
-	if ( ! $tsf->loaded ) return;
-	if ( \wp_doing_ajax() ) return;
+	if ( ! $tsf->loaded || \wp_doing_ajax() ) return;
 
 	if ( $tsf->is_seo_settings_page( false ) ) {
 		// phpcs:ignore, WordPress.Security.SafeRedirect -- self_admin_url() is safe.
@@ -397,6 +396,7 @@ function _prepare_downgrade_notice( $previous_version, $current_version ) {
  * @since 4.1.2 No longer can accidentally show the install notice after stale upgrade.
  * @since 4.2.0 The installation notice is now persistent, shown twice, to users with activate_plugins capability, on the main site.
  * @since 4.2.7 Added data checker directing users to the Transport extension.
+ * @since 4.2.8 Now displays the installation notice 3 times.
  * @TODO Add browser cache flush notice? Or set a pragma/cache-control header?
  *       Users that remove query strings (thanks to YSlow) are to blame, though.
  *       The authors of the plugin that allowed this to happen are even more to blame.
@@ -465,7 +465,7 @@ function _prepare_upgrade_notice( $previous_version, $current_version ) {
 					'excl_screens' => [ 'post', 'term', 'upload', 'media', 'plugin-editor', 'plugin-install', 'themes' ],
 					'capability'   => 'activate_plugins',
 					'user'         => 0,
-					'count'        => 1,
+					'count'        => 3,
 					'timeout'      => 2 * MINUTE_IN_SECONDS,
 				]
 			);
@@ -495,7 +495,7 @@ function _prepare_upgrade_notice( $previous_version, $current_version ) {
 
 		$found_titles = [];
 
-		foreach ( $meta_types as $type => $data ) {
+		foreach ( $meta_types as $data ) {
 			// in WP 6.2 we can use %i and whatnot. <https://core.trac.wordpress.org/ticket/52506>
 			// <https://make.wordpress.org/core/2022/10/08/escaping-table-and-field-names-with-wpdbprepare-in-wordpress-6-1/>
 			$indexes = implode( "', '", $esc_sql_in( $data['in'] ) );
@@ -537,7 +537,7 @@ function _prepare_upgrade_notice( $previous_version, $current_version ) {
 				'capability'   => 'activate_plugins',
 				'user'         => 0,
 				'count'        => 69,
-				'timeout'      => 7 * DAY_IN_SECONDS,
+				'timeout'      => WEEK_IN_SECONDS,
 			]
 		);
 	}

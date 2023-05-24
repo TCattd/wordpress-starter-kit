@@ -1,17 +1,17 @@
-# Copyright (C) 2022 Gravity Forms
+# Copyright (C) 2023 Gravity Forms
 # This file is distributed under the same license as the Gravity Forms Advanced Post Creation Add-On plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms Advanced Post Creation Add-On 1.3\n"
+"Project-Id-Version: Gravity Forms Advanced Post Creation Add-On 1.3.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2022-11-16T18:42:42+00:00\n"
+"POT-Creation-Date: 2023-04-25T19:02:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.6.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: gravityformsadvancedpostcreation\n"
 
 #. Plugin Name of the plugin
@@ -31,298 +31,298 @@ msgstr ""
 msgid "Gravity Forms"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:233
+#: class-gf-advancedpostcreation.php:242
 msgid "Create post only when payment is received."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:355
+#: class-gf-advancedpostcreation.php:364
 msgid "Select a User"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:390
+#: class-gf-advancedpostcreation.php:399
 msgid "Feed Name"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:396
-#: class-gf-advancedpostcreation.php:630
-#: class-gf-advancedpostcreation.php:1681
+#: class-gf-advancedpostcreation.php:405
+#: class-gf-advancedpostcreation.php:639
+#: class-gf-advancedpostcreation.php:1690
 msgid "Name"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:397
+#: class-gf-advancedpostcreation.php:406
 msgid "Enter a feed name to uniquely identify this setup."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:402
+#: class-gf-advancedpostcreation.php:411
 msgid "Action"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:417
-#: class-gf-advancedpostcreation.php:422
+#: class-gf-advancedpostcreation.php:426
+#: class-gf-advancedpostcreation.php:431
 msgid "Conditional Logic"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:418
+#: class-gf-advancedpostcreation.php:427
 msgid "Enable"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:419
+#: class-gf-advancedpostcreation.php:428
 msgid "Create if"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:423
+#: class-gf-advancedpostcreation.php:432
 msgid "When conditional logic is enabled, form submissions will only be created when the condition is met. When disabled, all form submissions will be created."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:467
+#: class-gf-advancedpostcreation.php:476
 msgid "Entry Date"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:471
+#: class-gf-advancedpostcreation.php:480
 msgid "Date & Time Fields"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:475
+#: class-gf-advancedpostcreation.php:484
 msgid "Custom Date & Time"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:489
+#: class-gf-advancedpostcreation.php:498
 msgid "Post Settings"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:493
+#: class-gf-advancedpostcreation.php:502
 msgid "Visibility"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:501
+#: class-gf-advancedpostcreation.php:510
 msgid "Public"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:505
+#: class-gf-advancedpostcreation.php:514
 msgid "Password Protected"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:511
+#: class-gf-advancedpostcreation.php:520
 msgid "Post Visibility"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:512
+#: class-gf-advancedpostcreation.php:521
 msgid "Visibility determines who can read the post."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:517
+#: class-gf-advancedpostcreation.php:526
 msgid "Password"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:523
+#: class-gf-advancedpostcreation.php:532
 msgid "Post Password"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:524
+#: class-gf-advancedpostcreation.php:533
 msgid "Users will be required to enter the chosen post password to view the post content"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:529
+#: class-gf-advancedpostcreation.php:538
 msgid "Type"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:536
-#: class-gf-advancedpostcreation.php:1682
+#: class-gf-advancedpostcreation.php:545
+#: class-gf-advancedpostcreation.php:1691
 msgid "Post Type"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:537
+#: class-gf-advancedpostcreation.php:546
 msgid "Select one of the defined WordPress post types for the post."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:542
-#: class-gf-advancedpostcreation.php:1683
+#: class-gf-advancedpostcreation.php:551
+#: class-gf-advancedpostcreation.php:1692
 msgid "Status"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:549
+#: class-gf-advancedpostcreation.php:558
 msgid "Post Status"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:550
+#: class-gf-advancedpostcreation.php:559
 msgid "Select the status for the post. If published status is selected and the post date is in the future, it will automatically be changed to scheduled."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:555
+#: class-gf-advancedpostcreation.php:564
 msgid "Date"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:562
+#: class-gf-advancedpostcreation.php:571
 msgid "Post Date"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:563
+#: class-gf-advancedpostcreation.php:572
 msgid "Define the post publish date. Custom date & time can be a specific date and time or a relative time (e.g. \"today\", \"next week\")."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:568
+#: class-gf-advancedpostcreation.php:577
 msgid "Author"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:575
+#: class-gf-advancedpostcreation.php:584
 msgid "Post Author"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:576
+#: class-gf-advancedpostcreation.php:585
 msgid "Select the user to be assigned to the post."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:582
+#: class-gf-advancedpostcreation.php:591
 msgid "Discussion"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:586
+#: class-gf-advancedpostcreation.php:595
 msgid "Allow Comments"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:590
+#: class-gf-advancedpostcreation.php:599
 msgid "Allow Trackbacks and Pingbacks"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:598
-#: class-gf-advancedpostcreation.php:618
+#: class-gf-advancedpostcreation.php:607
+#: class-gf-advancedpostcreation.php:627
 msgid "Post Content"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:602
+#: class-gf-advancedpostcreation.php:611
 msgid "Title"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:610
+#: class-gf-advancedpostcreation.php:619
 msgid "Content"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:619
+#: class-gf-advancedpostcreation.php:628
 msgid "Define the post's content. File upload field merge tags used within the post content will automatically have their files uploaded to the media library and associated with the post."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:624
-#: class-gf-advancedpostcreation.php:639
+#: class-gf-advancedpostcreation.php:633
+#: class-gf-advancedpostcreation.php:648
 msgid "Custom Fields"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:629
+#: class-gf-advancedpostcreation.php:638
 msgid "Custom Field Name"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:635
+#: class-gf-advancedpostcreation.php:644
 msgid "Custom Field Value"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:640
+#: class-gf-advancedpostcreation.php:649
 msgid "Map form values to post meta using an existing meta key or defining a new one."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:657
+#: class-gf-advancedpostcreation.php:666
 msgid "Format"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:680
+#: class-gf-advancedpostcreation.php:689
 msgid "Excerpt"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:707
+#: class-gf-advancedpostcreation.php:716
 msgid "Select a File Upload Field"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:717
-#: class-gf-advancedpostcreation.php:723
+#: class-gf-advancedpostcreation.php:726
+#: class-gf-advancedpostcreation.php:732
 msgid "Featured Image"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:724
+#: class-gf-advancedpostcreation.php:733
 msgid "Select a file upload field to use for the post's featured image. Only file upload fields limited to a single file are permitted."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:738
-#: class-gf-advancedpostcreation.php:746
+#: class-gf-advancedpostcreation.php:747
+#: class-gf-advancedpostcreation.php:755
 msgid "Media Library"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:742
+#: class-gf-advancedpostcreation.php:751
 msgid "Select File Upload Fields"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:747
+#: class-gf-advancedpostcreation.php:756
 msgid "Select file upload fields whose files should be uploaded to the media library and assigned to the post."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:764
+#: class-gf-advancedpostcreation.php:773
 msgid "Taxonomies"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:957
+#: class-gf-advancedpostcreation.php:966
 msgid "Select an Option"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:961
+#: class-gf-advancedpostcreation.php:970
 msgid "Field Value"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:965
+#: class-gf-advancedpostcreation.php:974
 msgid "Assign %s"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:979
-#: class-gf-advancedpostcreation.php:1648
+#: class-gf-advancedpostcreation.php:988
+#: class-gf-advancedpostcreation.php:1657
 msgid "Add New %s"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1128
+#: class-gf-advancedpostcreation.php:1137
 msgid "WordPress Post Types"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1169
+#: class-gf-advancedpostcreation.php:1178
 msgid "Custom Post Types"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1325
+#: class-gf-advancedpostcreation.php:1334
 msgid "Select a Custom Field Name"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1348
+#: class-gf-advancedpostcreation.php:1357
 msgid "Add New Custom Field Name"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1374
-#: class-gf-advancedpostcreation.php:1428
+#: class-gf-advancedpostcreation.php:1383
+#: class-gf-advancedpostcreation.php:1437
 msgid "Logged In User"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1413
-#: class-gf-advancedpostcreation.php:1418
-#: class-gf-advancedpostcreation.php:1603
-#: class-gf-advancedpostcreation.php:1608
+#: class-gf-advancedpostcreation.php:1422
+#: class-gf-advancedpostcreation.php:1427
+#: class-gf-advancedpostcreation.php:1612
+#: class-gf-advancedpostcreation.php:1617
 msgid "Access denied."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1499
+#: class-gf-advancedpostcreation.php:1508
 msgid "Assign terms to the post using a field value, an existing term or by adding a new term."
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1702
-#: class-gf-advancedpostcreation.php:1726
+#: class-gf-advancedpostcreation.php:1711
+#: class-gf-advancedpostcreation.php:1735
 msgid "Not Selected"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:1708
-#: class-gf-advancedpostcreation.php:1732
+#: class-gf-advancedpostcreation.php:1717
+#: class-gf-advancedpostcreation.php:1741
 msgid "Not Available"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:2687
+#: class-gf-advancedpostcreation.php:2696
 msgid "Created Posts"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:2721
+#: class-gf-advancedpostcreation.php:2730
 msgid "View Post"
 msgstr ""
 
-#: class-gf-advancedpostcreation.php:2723
+#: class-gf-advancedpostcreation.php:2732
 msgid "Edit Post"
 msgstr ""

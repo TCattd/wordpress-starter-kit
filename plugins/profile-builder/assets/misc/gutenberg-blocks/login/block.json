@@ -1,0 +1,52 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "wppb/login",
+    "title": "Login",
+    "category": "wppb-block",
+    "description": "Displays the Front End Login form.",
+    "keywords": [ "Login", "Form" ],
+    "textdomain": "profile-builder",
+    "attributes": {
+        "register_url": {
+            "type": "string",
+            "default": ""
+        },
+        "lostpassword_url": {
+            "type": "string",
+            "default": ""
+        },
+        "auth_field": {
+            "type": "boolean",
+            "default": false
+        },
+        "redirect_url": {
+            "type": "string",
+            "default": ""
+        },
+        "logout_redirect_url": {
+            "type": "string",
+            "default": ""
+        },
+        "is_preview": {
+            "type": "boolean",
+            "default": false
+        },
+        "is_editor": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "example": {
+        "attributes": {
+            "register_url": "",
+            "lostpassword_url": "",
+            "auth_field": false,
+            "redirect_url": "",
+            "logout_redirect_url": "",
+            "is_preview": true,
+            "is_editor": true
+        }
+    },
+    "editorScript": "wppb-block-login"
+}

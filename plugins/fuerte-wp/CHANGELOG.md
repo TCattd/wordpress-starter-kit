@@ -1,5 +1,8 @@
 # Changelog
 
+# 1.4.4 / 2023-02-20
+- Avoids a PHP Warning when getting the website's domain name.
+
 # 1.4.3 / 2022-11-28
 - REST API enabled by default for all users. Needed for the modern WordPress themes and other plugins.
 - Resolved an issue with Elementor Template Kits import.

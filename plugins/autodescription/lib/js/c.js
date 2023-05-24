@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -99,7 +99,7 @@ window.tsfC = function() {
 			newClass   = '',
 			exclaimer  = '';
 
-		let classes = {
+		const classes = {
 			bad:     'tsf-count-bad',
 			okay:    'tsf-count-okay',
 			good:    'tsf-count-good',
@@ -142,14 +142,8 @@ window.tsfC = function() {
 
 		el.innerHTML = exclaimer;
 
-		for ( let _c in classes )
-			el.classList.remove( classes[ _c ] );
-
-		for ( let _c in counterClasses )
-			el.classList.remove( counterClasses[ _c ] );
-
-		el.classList.add( newClass );
-		el.classList.add( counterClasses[ counterType ] );
+		el.classList.remove( ...Object.values( classes ), ...Object.values( counterClasses ) );
+		el.classList.add( newClass, counterClasses[ counterType ] );
 	}
 
 	/**
@@ -163,29 +157,26 @@ window.tsfC = function() {
 	 */
 	const updatePixelCounter = test => {
 
-		let el         = test.e,
-			text       = tsf.decodeEntities( test.text ),
-			guidelines = l10n.guidelines[ test.field ][ test.type ].pixels;
-
-		let wrap = el.parentElement;
+		const wrap = test.e.parentElement;
 
 		if ( ! wrap )
 			return;
 
-		let bar    = wrap.querySelector( '.tsf-pixel-counter-bar' ),
-			shadow = wrap.querySelector( '.tsf-pixel-counter-shadow' );
+		const bar    = wrap.querySelector( '.tsf-pixel-counter-bar' ),
+			  shadow = wrap.querySelector( '.tsf-pixel-counter-shadow' );
 
 		if ( ! bar || ! shadow )
 			return;
 
-		shadow.innerHTML = tsf.escapeString( text );
+		shadow.innerHTML = tsf.escapeString( tsf.decodeEntities( test.text ) );
 
 		let testWidth       = shadow.offsetWidth,
 			newClass        = '',
 			newWidth        = '',
 			guidelineHelper = '';
 
-		let classes = {
+		const guidelines = l10n.guidelines[ test.field ][ test.type ].pixels;
+		const classes    = {
 			bad:     'tsf-pixel-counter-bad',
 			okay:    'tsf-pixel-counter-okay',
 			good:    'tsf-pixel-counter-good',
@@ -220,19 +211,17 @@ window.tsfC = function() {
 			guidelineHelper = l10n.i18n.guidelines.long.good;
 		}
 
-		let sub = bar.querySelector( '.tsf-pixel-counter-fluid' ),
-			label;
+		let label = l10n.i18n.pixelsUsed
+			.replace( /%1\$d/g, testWidth )
+			.replace( /%2\$d/g, guidelines.goodUpper );
 
-		label = l10n.i18n.pixelsUsed.replace( /%1\$d/g, testWidth );
-		label = label.replace( /%2\$d/g, guidelines.goodUpper );
-
-		label += '<br>' + guidelineHelper;
+		label += `<br>${guidelineHelper}`;
 
 		bar.classList.remove( ...Object.values( classes ) );
 
 		// Set visuals.
 		bar.classList.add( newClass );
-		sub.style.width = newWidth;
+		bar.querySelector( '.tsf-pixel-counter-fluid' ).style.width = newWidth;
 
 		// Update tooltip and ARIA label.
 		bar.dataset.desc = label;

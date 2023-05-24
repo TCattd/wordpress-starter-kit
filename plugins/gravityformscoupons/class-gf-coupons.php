@@ -88,13 +88,13 @@ class GFCoupons extends GFFeedAddOn {
 		$styles = array(
 			array(
 				'handle'  => 'gform_coupon_style',
-				'src'     => $this->get_base_url() . "/css/gcoupons{$min}.css",
+				'src'     => $this->get_base_url() . "/assets/css/dist/theme{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array( array( 'field_types' => array( 'coupon' ) ) ),
 			),
 			array(
 				'handle'  => $this->is_gravityforms_supported( '2.5-beta' ) ? 'gform_coupon_admin' : 'gform_admin',
-				'src'     => $this->get_base_url() . "/css/admin{$min}.css",
+				'src'     => $this->get_base_url() . "/assets/css/dist/admin{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array( array( 'admin_page' => array( 'plugin_page' ) ) ),
 			),
@@ -105,6 +105,24 @@ class GFCoupons extends GFFeedAddOn {
 
 
 	// # UPDATE PRODUCT INFO -------------------------------------------------------------------------------------------
+
+	public function pre_init() {
+
+		parent::pre_init();
+
+		require_once 'includes/theme-layers/class-gf-coupons-theme-layer-handler.php';
+
+		$handler = new GF_Coupons_Theme_Layer_Handler( $this );
+
+		/**
+		 * Initialize the Theme Layer Handler on init.
+		 *
+		 * @since 1.0
+		 */
+		add_action( 'init', function () use ( $handler ) {
+			$handler->handle();
+		}, 0, 0 );
+	}
 
 	/**
 	 * Plugin starting point. Handles hooks and loading of language files.
@@ -640,7 +658,7 @@ class GFCoupons extends GFFeedAddOn {
 	public function feed_list_no_item_message() {
 		$url = add_query_arg( array( 'fid' => 0 ) );
 		/* Translators: 1. Opening anchor tag, 2.Closing anchor tag */
-		return sprintf( esc_html__( "You don't have any coupons configured. Let's go %1$1screate one%2$2s!", 'gravityformscoupons' ), "<a href='" . esc_url( $url ) . "'>", '</a>' );
+		return sprintf( esc_html__( 'You don\'t have any coupons configured. Let\'s go %1$screate one%2$s!', 'gravityformscoupons' ), "<a href='" . esc_url( $url ) . "'>", '</a>' );
 	}
 
 	/**

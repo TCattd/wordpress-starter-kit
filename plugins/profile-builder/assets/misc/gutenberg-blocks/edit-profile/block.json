@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "wppb/edit-profile",
+    "title": "Edit Profile",
+    "category": "wppb-block",
+    "description": "Displays the Front End Edit Profile Form.",
+    "keywords": [ "Edit", "Profile", "Form" ],
+    "textdomain": "profile-builder",
+    "attributes": {
+        "form_name": {
+            "type": "string",
+            "default": ""
+        },
+        "redirect_url": {
+            "type": "string",
+            "default": ""
+        },
+        "is_preview": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "example": {
+        "attributes": {
+            "form_name": "",
+            "redirect_url": "",
+            "is_preview": true
+        }
+    },
+    "editorScript": "wppb-block-edit-profile"
+}

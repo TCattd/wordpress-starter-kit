@@ -5,7 +5,7 @@
  * Author: OnTheGoSystems
  * Plugin URI: https://wpml.org/
  * Author URI: http://www.onthegosystems.com/
- * Version: 1.10.4
+ * Version: 2.0.5
  *
  * @package WPML\ACF
  */
@@ -27,8 +27,14 @@ function acfmlInit() {
 
 	require_once $vendorDir . '/autoload.php';
 
-	$acfml_dependencies_factory = new WPML_ACF_Dependencies_Factory();
-	$acfml = new WPML_ACF( $acfml_dependencies_factory );
+	define( 'ACFML_VERSION', '2.0.5' );
+	define( 'ACFML_PLUGIN_PATH', __DIR__ );
+	define( 'ACFML_PLUGIN_URL', untrailingslashit( plugin_dir_url( __FILE__ ) ) );
+
+	\WPML\Container\share( \ACFML\Container\Config::getSharedClasses() ); // @phpstan-ignore-line
+
+	$acfml = \WPML\Container\make( WPML_ACF::class );
+
 	if ( did_action( 'acf/init' ) ) {
 		$acfml->init_worker();
 	} else {
@@ -37,8 +43,10 @@ function acfmlInit() {
 
 	add_action( 'admin_enqueue_scripts', function() {
 		wp_enqueue_script( 'acfml_js', plugin_dir_url( __FILE__ ) . 'assets/js/admin-script.js', array( 'jquery' ) );
-		wp_enqueue_style( 'acfml_css', plugin_dir_url( __FILE__ ) . 'assets/css/admin-style.css' );
+		wp_enqueue_style( 'acfml_css', plugin_dir_url( __FILE__ ) . 'assets/css/admin-style.css', [], ACFML_VERSION );
 	} );
+
+	load_plugin_textdomain( 'acfml', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 }
 
 function loadACFMLrequirements() {

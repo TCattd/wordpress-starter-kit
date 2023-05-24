@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @return void
  */
 function wppb_private_website_submenu_page() {
-    add_submenu_page( null, __( 'Private Website', 'profile-builder' ), __( 'Private Website', 'profile-builder' ), 'manage_options', 'profile-builder-private-website', 'wppb_private_website_content' );
+    add_submenu_page( '', __( 'Private Website', 'profile-builder' ), __( 'Private Website', 'profile-builder' ), 'manage_options', 'profile-builder-private-website', 'wppb_private_website_content' );
 }
 add_action( 'admin_menu', 'wppb_private_website_submenu_page' );
 

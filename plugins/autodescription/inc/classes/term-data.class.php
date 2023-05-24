@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -250,7 +250,7 @@ class Term_Data extends Post_Data {
 		// Check again against ambiguous injection...
 		// Note, however: function wp_update_term() already performs all these checks for us before firing this callback's action.
 		if (
-			empty( $term->term_id ) // We could test for is_wp_error( $term ), but this is more to the point.
+			   empty( $term->term_id ) // We could test for is_wp_error( $term ), but this is more to the point.
 			|| ! \current_user_can( 'edit_term', $term->term_id )
 			|| ! isset( $_POST['_wpnonce'] )
 			|| ! \wp_verify_nonce( $_POST['_wpnonce'], "update-tag_{$term->term_id}" )
@@ -281,7 +281,7 @@ class Term_Data extends Post_Data {
 		// Check again against ambiguous injection...
 		// Note, however: function wp_ajax_inline_save_tax() already performs all these checks for us before firing this callback's action.
 		if (
-			empty( $term->term_id ) // We could test for is_wp_error( $term ), but this is more to the point.
+			   empty( $term->term_id ) // We could test for is_wp_error( $term ), but this is more to the point.
 			|| ! \current_user_can( 'edit_term', $term->term_id )
 			|| ! \check_ajax_referer( 'taxinlineeditnonce', '_inline_edit', false )
 		) return;
@@ -426,6 +426,36 @@ class Term_Data extends Post_Data {
 	}
 
 	/**
+	 * Tests whether term is populated. Also tests the child terms.
+	 * Memoizes the return value.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @param int    $term_id The term ID.
+	 * @param string $taxonomy The term taxonomy.
+	 * @return bool True when term or child terms are populated, false otherwise.
+	 */
+	public function is_term_populated( $term_id, $taxonomy ) {
+		return memo( null, $term_id, $taxonomy ) ?? memo(
+			! empty( \get_term( $term_id, $taxonomy )->count )
+			|| array_filter( // Filter count => 0 -- if all are 0, we get an empty array, boolean false.
+				array_column(
+					\get_terms( [
+						'taxonomy'   => $taxonomy,
+						'child_of'   => $term_id, // Get children of current term.
+						'childless'  => false,
+						'pad_counts' => false, // If true, this gives us the value we seek, but we can get it faster via column.
+						'get'        => '',
+					] ),
+					'count'
+				)
+			),
+			$term_id,
+			$taxonomy
+		);
+	}
+
+	/**
 	 * Returns the taxonomy type object label. Either plural or singular.
 	 *
 	 * @since 3.1.0
@@ -450,7 +480,7 @@ class Term_Data extends Post_Data {
 	 *
 	 * @param string $get       Whether to get the names or objects.
 	 * @param string $post_type The post type. Will default to current post type.
-	 * @return array The post type objects or names.
+	 * @return object[]|string[] The post type taxonomy objects or names.
 	 */
 	public function get_hierarchical_taxonomies_as( $get = 'objects', $post_type = '' ) {
 
@@ -467,16 +497,7 @@ class Term_Data extends Post_Data {
 			}
 		);
 
-		switch ( $get ) {
-			case 'names':
-				$taxonomies = array_keys( $taxonomies );
-				break;
-
-			default:
-			case 'objects':
-				break;
-		}
-
-		return $taxonomies;
+		// If names isn't $get, assume objects.
+		return 'names' === $get ? array_keys( $taxonomies ) : $taxonomies;
 	}
 }

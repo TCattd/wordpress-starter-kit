@@ -4,6 +4,7 @@
       "messages": {
          "": {
             "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "en"
          },
          "Accepted": [
@@ -19,10 +20,10 @@
             "Wstecz"
          ],
          "Turn off to not automatically load the next translation after finishing this review.": [
-            "Wyłącz, aby nie ładować automatycznie następnego tłumaczenia po zakończeniu tej recenzji."
+            "Wyłącz, aby kolejne tłumaczenie nie ładowało się automatycznie po ukończeniu tego sprawdzania."
          ],
-         "Turn on to automatically load the next translation after finishing this review.": [
-            "Włącz, by po zakończeniu sprawdzania automatycznie wczytać następne tłumaczenie."
+         "Turn on to automatically load the next translation after finishing this  .": [
+            "Włącz, aby automatycznie wczytać kolejne tłumaczenie po skończeniu tego."
          ],
          "Edit": [
             "Edycja"
@@ -30,14 +31,11 @@
          "Edit translation": [
             "Edytuj tłumaczenie"
          ],
-         "There was an error in applying translation.": [
-            "Wystąpił błąd w trakcie wdrażania tego tłumaczenia."
-         ],
          "Please wait, applying translation..": [
             "Poczekaj, trwa wdrażanie tłumaczenia."
          ],
          "Next review": [
-            "Następna recenzja"
+            "Kolejne sprawdzanie"
          ],
          "Publish this translation": [
             "Opublikuj to tłumaczenie"
@@ -46,10 +44,13 @@
             "Zaakceptuj to tłumaczenie"
          ],
          "Published!": [
-            "Opublikowany!"
+            "Opublikowane!"
          ],
-         "Reviewing the next translation...": [
-            "Trwa sprawdzanie kolejnego tłumaczenia."
+         "Someone is already reviewing this translation. Please try again later.": [
+            "Ktoś już recenzuje to tłumaczenie. Spróbuj ponownie później."
+         ],
+         "There was an error in applying translation.": [
+            "Wystąpił błąd w trakcie wdrażania tego tłumaczenia."
          ]
       }
    }

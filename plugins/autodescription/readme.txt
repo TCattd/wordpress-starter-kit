@@ -3,9 +3,9 @@ Contributors: Cybr
 Donate link: https://github.com/sponsors/sybrew
 Tags: seo, xml sitemap, google search, open graph, schema.org, twitter card, performance, headless
 Requires at least: 5.5
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 7.2.0
-Stable tag: 4.2.7.1
+Stable tag: 4.2.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -79,7 +79,7 @@ For additional functionality, check out our free companion plugin [Extension Man
 
 * [Focus](https://theseoframework.com/?p=2305) guides you through the process of writing targeted content that ranks with **focus keywords and synonyms**.
 * [Articles](https://theseoframework.com/?p=2303) **enhances your published posts** by automatically adding important Structured Data.
-* [Transport](https://theseoframework.com/?p=3962) **migrates and transforms metadata** from Rank Math and Yoast SEO to this plugin.
+* [Transport](https://theseoframework.com/?p=3962) **migrates and transforms metadata** from Rank Math, Yoast SEO, and SEOPress to this plugin.
 * [Honeypot](https://theseoframework.com/?p=2300) **catches comment spammers** through four lightweight yet powerful ways.
 * [Cord](https://theseoframework.com/?p=3404) helps you connect your website to **Google Analytics and Facebook Pixel**.
 * [Local](https://theseoframework.com/?p=2306) lets you set up **important local business information** for search engines to consume.
@@ -125,7 +125,8 @@ The SEO Framework works on many things without notifying you, because the best s
 * Altering oEmbed for improved sharing on Discord.
 * Detection of various other SEO tools to help you switch graciously.
 * Translation plugins like WPML, Polylang, WPGlobus, and MultilingualPress.
-* E-commerce plugins, like WooCommerce and Easy Digital Downloads.
+* E-commerce plugins like WooCommerce and Easy Digital Downloads.
+* Forum plugins like bbPress and wpForo.
 * Editing posts and terms via WordPress's native bulk-and-quick-edit interfaces.
 * Headless mode via a single [constant definition](https://kb.theseoframework.com/?p=136).
 
@@ -247,6 +248,10 @@ The SEO Framework does not provide the display of breadcrumbs. This is theme-ter
 If you wish to display breadcrumbs, then your theme should provide this. Alternatively, there are [other plugins](https://wordpress.org/plugins/search/breadcrumbs/) that help you do this.
 
 == Changelog ==
+
+= 4.2.8 =
+
+This minor update makes the SEO Bar easier on the eyes. We also improved compatibility with bbPress, wpForo, and WooCommerce, and added compatibility with another thousand plugins via Advanced Query Protection’s new plugin query variable detection. We also fixed a couple of bugs, added and improved syntax detection of SEOPress and Rank Math, introduced new APIs, dusted off some code, refined tooltip placement, added Site Icon as a fallback for the sitemap title logo, and perfected support for Custom Post Types by detecting [their changed arguments](https://theseoframework.com/?p=4059).
 
 = 4.2.7 =
 

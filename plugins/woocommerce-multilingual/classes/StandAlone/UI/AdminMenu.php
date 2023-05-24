@@ -5,20 +5,24 @@ namespace WCML\StandAlone\UI;
 use WCML\Utilities\AdminPages;
 use WCML_Admin_Menus;
 use WCML_Multi_Currency_UI;
+use WPML\Core\ISitePress;
+use WCML\StandAlone\NullSitePress;
+use SitePress;
+use woocommerce_wpml;
 use WPML\FP\Str;
 
 class AdminMenu extends \WCML_Menu_Wrap_Base {
 
-	/** @var \SitePress|\WCML\StandAlone\NullSitePress */
+	/** @var SitePress|NullSitePress */
 	private $sitepress;
 
 	/**
 	 * WCML_Menus_Wrap constructor.
 	 *
-	 * @param \SitePress|\WCML\StandAlone\NullSitePress $sitepress
-	 * @param \woocommerce_wpml                          $woocommerce_wpml
+	 * @param SitePress|NullSitePress $sitepress
+	 * @param woocommerce_wpml        $woocommerce_wpml
 	 */
-	public function __construct( \WPML\Core\ISitePress $sitepress, $woocommerce_wpml ) {
+	public function __construct( ISitePress $sitepress, $woocommerce_wpml ) {
 		parent::__construct( $woocommerce_wpml );
 
 		$this->sitepress = $sitepress;

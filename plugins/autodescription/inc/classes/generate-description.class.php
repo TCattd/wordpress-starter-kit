@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -108,7 +108,7 @@ class Generate_Description extends Generate {
 	 * Falls back to meta description.
 	 *
 	 * @since 3.1.0
-	 * @since 3.2.2 Now tests for the homepage as page prior getting custom field data.
+	 * @since 3.2.2 Now tests for the static frontpage metadata prior getting fallback data.
 	 * @since 4.0.0 Added term meta item checks.
 	 * @since 4.2.0 1. No longer returns an escaped custom field description.
 	 *              2. Now returns custom descriptions for post type archives.
@@ -119,7 +119,6 @@ class Generate_Description extends Generate {
 	 */
 	protected function get_custom_open_graph_description_from_query() {
 
-		$desc = '';
 		if ( $this->is_real_front_page() ) {
 			if ( $this->is_static_frontpage() ) {
 				$desc = $this->get_option( 'homepage_og_description' )
@@ -140,7 +139,7 @@ class Generate_Description extends Generate {
 				 ?: $this->get_description_from_custom_field( null, false );
 		}
 
-		return $desc;
+		return $desc ?? '' ?: '';
 	}
 
 	/**
@@ -148,7 +147,7 @@ class Generate_Description extends Generate {
 	 * Falls back to meta description.
 	 *
 	 * @since 3.1.0
-	 * @since 3.2.2 1. Now tests for the homepage as page prior getting custom field data.
+	 * @since 3.2.2 1. Now tests for the static frontpage metadata prior getting fallback data.
 	 *              2. Now obtains custom field data for terms.
 	 * @since 4.0.0 Added term meta item checks.
 	 * @since 4.2.0 1. No longer returns an escaped custom field description.
@@ -161,7 +160,6 @@ class Generate_Description extends Generate {
 	 */
 	protected function get_custom_open_graph_description_from_args( $args ) {
 
-		$desc = '';
 		if ( $args['taxonomy'] ) {
 			$desc = $this->get_term_meta_item( 'og_description', $args['id'] )
 				 ?: $this->get_description_from_custom_field( $args, false );
@@ -182,7 +180,7 @@ class Generate_Description extends Generate {
 			}
 		}
 
-		return $desc;
+		return $desc ?: '';
 	}
 
 	/**
@@ -238,7 +236,7 @@ class Generate_Description extends Generate {
 	 * Falls back to Open Graph description.
 	 *
 	 * @since 3.1.0
-	 * @since 3.2.2 1. Now tests for the homepage as page prior getting custom field data.
+	 * @since 3.2.2 1. Now tests for the static frontpage metadata prior getting fallback data.
 	 *              2. Now obtains custom field data for terms.
 	 * @since 4.0.0 Added term meta item checks.
 	 * @since 4.2.0 1. No longer returns an escaped custom field description.
@@ -250,39 +248,33 @@ class Generate_Description extends Generate {
 	 */
 	protected function get_custom_twitter_description_from_query() {
 
-		$desc = '';
 		if ( $this->is_real_front_page() ) {
 			if ( $this->is_static_frontpage() ) {
 				$desc = $this->get_option( 'homepage_twitter_description' )
 					 ?: $this->get_post_meta_item( '_twitter_description' )
 					 ?: $this->get_option( 'homepage_og_description' )
 					 ?: $this->get_post_meta_item( '_open_graph_description' )
-					 ?: $this->get_description_from_custom_field( null, false )
-					 ?: '';
+					 ?: $this->get_description_from_custom_field( null, false );
 			} else {
 				$desc = $this->get_option( 'homepage_twitter_description' )
 					?: $this->get_option( 'homepage_og_description' )
-					?: $this->get_description_from_custom_field( null, false )
-					?: '';
+					?: $this->get_description_from_custom_field( null, false );
 			}
 		} elseif ( $this->is_singular() ) {
 			$desc = $this->get_post_meta_item( '_twitter_description' )
 				 ?: $this->get_post_meta_item( '_open_graph_description' )
-				 ?: $this->get_description_from_custom_field( null, false )
-				 ?: '';
+				 ?: $this->get_description_from_custom_field( null, false );
 		} elseif ( $this->is_term_meta_capable() ) {
 			$desc = $this->get_term_meta_item( 'tw_description' )
 				 ?: $this->get_term_meta_item( 'og_description' )
-				 ?: $this->get_description_from_custom_field( null, false )
-				 ?: '';
+				 ?: $this->get_description_from_custom_field( null, false );
 		} elseif ( \is_post_type_archive() ) {
 			$desc = $this->get_post_type_archive_meta_item( 'tw_description' )
 				 ?: $this->get_post_type_archive_meta_item( 'og_description' )
-				 ?: $this->get_description_from_custom_field( null, false )
-				 ?: '';
+				 ?: $this->get_description_from_custom_field( null, false );
 		}
 
-		return $desc;
+		return $desc ?? '' ?: '';
 	}
 
 	/**
@@ -290,7 +282,7 @@ class Generate_Description extends Generate {
 	 * Falls back to Open Graph description.
 	 *
 	 * @since 3.1.0
-	 * @since 3.2.2 1. Now tests for the homepage as page prior getting custom field data.
+	 * @since 3.2.2 1. Now tests for the static frontpage metadata prior getting fallback data.
 	 *              2. Now obtains custom field data for terms.
 	 * @since 4.0.0 Added term meta item checks.
 	 * @since 4.2.0 1. No longer returns an escaped custom field description.
@@ -306,35 +298,30 @@ class Generate_Description extends Generate {
 		if ( $args['taxonomy'] ) {
 			$desc = $this->get_term_meta_item( 'tw_description', $args['id'] )
 				 ?: $this->get_term_meta_item( 'og_description', $args['id'] )
-				 ?: $this->get_description_from_custom_field( $args, false )
-				 ?: '';
+				 ?: $this->get_description_from_custom_field( $args, false );
 		} elseif ( $args['pta'] ) {
 			$desc = $this->get_post_type_archive_meta_item( 'tw_description', $args['pta'] )
 				 ?: $this->get_post_type_archive_meta_item( 'og_description', $args['pta'] )
-				 ?: $this->get_description_from_custom_field( $args, false )
-				 ?: '';
+				 ?: $this->get_description_from_custom_field( $args, false );
 		} else {
 			if ( $this->is_static_frontpage( $args['id'] ) ) {
 				$desc = $this->get_option( 'homepage_twitter_description' )
 					 ?: $this->get_post_meta_item( '_twitter_description', $args['id'] )
 					 ?: $this->get_option( 'homepage_og_description' )
 					 ?: $this->get_post_meta_item( '_open_graph_description', $args['id'] )
-					 ?: $this->get_description_from_custom_field( $args, false )
-					 ?: '';
+					 ?: $this->get_description_from_custom_field( $args, false );
 			} elseif ( $this->is_real_front_page_by_id( $args['id'] ) ) {
 				$desc = $this->get_option( 'homepage_twitter_description' )
 					 ?: $this->get_option( 'homepage_og_description' )
-					 ?: $this->get_description_from_custom_field( $args, false )
-					 ?: '';
+					 ?: $this->get_description_from_custom_field( $args, false );
 			} else {
 				$desc = $this->get_post_meta_item( '_twitter_description', $args['id'] )
 					 ?: $this->get_post_meta_item( '_open_graph_description', $args['id'] )
-					 ?: $this->get_description_from_custom_field( $args, false )
-					 ?: '';
+					 ?: $this->get_description_from_custom_field( $args, false );
 			}
 		}
 
-		return $desc;
+		return $desc ?: '';
 	}
 
 	/**
@@ -383,7 +370,7 @@ class Generate_Description extends Generate {
 	 * Gets a custom description, based on expected or current query, without escaping.
 	 *
 	 * @since 3.1.0
-	 * @since 3.2.2 Now tests for the homepage as page prior getting custom field data.
+	 * @since 3.2.2 Now tests for the static frontpage metadata prior getting fallback data.
 	 * @since 4.2.0 Now returns custom descriptions for post type archives.
 	 * @internal
 	 * @see $this->get_description_from_custom_field()
@@ -392,20 +379,17 @@ class Generate_Description extends Generate {
 	 */
 	protected function get_custom_description_from_query() {
 
-		$desc = '';
-
 		if ( $this->is_real_front_page() ) {
 			if ( $this->is_static_frontpage() ) {
 				$desc = $this->get_option( 'homepage_description' )
-					 ?: $this->get_post_meta_item( '_genesis_description' )
-					 ?: '';
+					 ?: $this->get_post_meta_item( '_genesis_description' );
 			} else {
-				$desc = $this->get_option( 'homepage_description' ) ?: '';
+				$desc = $this->get_option( 'homepage_description' );
 			}
 		} elseif ( $this->is_singular() ) {
-			$desc = $this->get_post_meta_item( '_genesis_description' ) ?: '';
+			$desc = $this->get_post_meta_item( '_genesis_description' );
 		} elseif ( $this->is_term_meta_capable() ) {
-			$desc = $this->get_term_meta_item( 'description' ) ?: '';
+			$desc = $this->get_term_meta_item( 'description' );
 		} elseif ( \is_post_type_archive() ) {
 			/**
 			 * @since 4.0.6
@@ -417,17 +401,17 @@ class Generate_Description extends Generate {
 				'the_seo_framework_pta_description',
 				[ $this->get_post_type_archive_meta_item( 'description' ) ?: '' ],
 				'4.2.0 of The SEO Framework'
-			) ?: '';
+			);
 		}
 
-		return $desc;
+		return $desc ?? '' ?: '';
 	}
 
 	/**
 	 * Gets a custom description, based on input arguments query, without escaping.
 	 *
 	 * @since 3.1.0
-	 * @since 3.2.2 Now tests for the homepage as page prior getting custom field data.
+	 * @since 3.2.2 Now tests for the static frontpage metadata prior getting fallback data.
 	 * @since 4.2.0 Now supports the `$args['pta']` index.
 	 * @internal
 	 * @see $this->get_description_from_custom_field()
@@ -438,22 +422,21 @@ class Generate_Description extends Generate {
 	protected function get_custom_description_from_args( $args ) {
 
 		if ( $args['taxonomy'] ) {
-			$desc = $this->get_term_meta_item( 'description', $args['id'] ) ?: '';
+			$desc = $this->get_term_meta_item( 'description', $args['id'] );
 		} elseif ( $args['pta'] ) {
-			$desc = $this->get_post_type_archive_meta_item( 'description', $args['pta'] ) ?: '';
+			$desc = $this->get_post_type_archive_meta_item( 'description', $args['pta'] );
 		} else {
 			if ( $this->is_static_frontpage( $args['id'] ) ) {
 				$desc = $this->get_option( 'homepage_description' )
-					 ?: $this->get_post_meta_item( '_genesis_description', $args['id'] )
-					 ?: '';
+					 ?: $this->get_post_meta_item( '_genesis_description', $args['id'] );
 			} elseif ( $this->is_real_front_page_by_id( $args['id'] ) ) {
-				$desc = $this->get_option( 'homepage_description' ) ?: '';
+				$desc = $this->get_option( 'homepage_description' );
 			} else {
-				$desc = $this->get_post_meta_item( '_genesis_description', $args['id'] ) ?: '';
+				$desc = $this->get_post_meta_item( '_genesis_description', $args['id'] );
 			}
 		}
 
-		return $desc;
+		return $desc ?: '';
 	}
 
 	/**
@@ -595,7 +578,7 @@ class Generate_Description extends Generate {
 			$excerpt = $this->get_archival_description_excerpt();
 		}
 
-		return memo( $excerpt ?? '' );
+		return memo( $excerpt ?? '' ?: '' );
 	}
 
 	/**
@@ -609,8 +592,6 @@ class Generate_Description extends Generate {
 	 * @return string
 	 */
 	protected function get_description_excerpt_from_args( $args ) {
-
-		$excerpt = '';
 
 		if ( $args['taxonomy'] ) {
 			$excerpt = $this->get_archival_description_excerpt( \get_term( $args['id'], $args['taxonomy'] ) );
@@ -626,7 +607,7 @@ class Generate_Description extends Generate {
 			}
 		}
 
-		return $excerpt;
+		return $excerpt ?? '' ?: '';
 	}
 
 	/**
@@ -692,8 +673,6 @@ class Generate_Description extends Generate {
 		);
 
 		if ( $excerpt ) return $excerpt;
-
-		$excerpt = '';
 
 		if ( $in_the_loop ) {
 			if ( $this->is_category() || $this->is_tag() || $this->is_tax() ) {
@@ -785,7 +764,7 @@ class Generate_Description extends Generate {
 			);
 		}
 
-		return ( $title ?? '' ) ?: '';
+		return $title ?? '' ?: '';
 	}
 
 	/**
@@ -826,6 +805,8 @@ class Generate_Description extends Generate {
 	 *              2. Now strips plausible embeds URLs.
 	 * @since 4.0.1 Now fetches the real ID when no post is supplied.
 	 *              Internally, this was never an issue. @see `$this->get_singular_description_excerpt()`
+	 * @since 4.2.8 1. Now tests for post type support of 'excerpt' before parsing the excerpt.
+	 *              2. Now tests for post type support of 'editor' before parsing the content.
 	 *
 	 * @param \WP_Post|int|null $post The Post or Post ID. Leave null to get current post.
 	 * @return string The excerpt.
@@ -834,16 +815,12 @@ class Generate_Description extends Generate {
 
 		$post = \get_post( $post ?: $this->get_the_real_ID() );
 
-		/**
-		 * @since 2.5.2
-		 * Fetch custom excerpt, if not empty, from the post_excerpt field.
-		 */
-		if ( ! empty( $post->post_excerpt ) ) {
+		if ( ! empty( $post->post_excerpt ) && \post_type_supports( $post->post_type, 'excerpt' ) ) {
 			$excerpt = $post->post_excerpt;
-		} elseif ( isset( $post->post_content, $post->ID ) && ! $this->uses_non_html_page_builder( $post->ID ) ) {
+		} elseif ( ! empty( $post->post_content ) && ! $this->uses_non_html_page_builder( $post->ID ) ) {
 			// We should actually get the parsed content here... but that can be heavy on the server.
 			// We could cache that parsed content, but that'd be asinine for a plugin. WordPress should've done that.
-			$excerpt = $post->post_content;
+			$excerpt = $this->get_post_content( $post );
 
 			if ( $excerpt ) {
 				$excerpt = $this->strip_newline_urls( $excerpt );
@@ -903,7 +880,7 @@ class Generate_Description extends Generate {
 	public function trim_excerpt( $excerpt, $min_char_length = 1, $max_char_length = 4096 ) {
 
 		// At least 1.
-		$min_char_length = $min_char_length < 1 ? 1 : $min_char_length;
+		$min_char_length = max( 1, $min_char_length );
 
 		// We should _actually_ use mb_strlen, but that's wasteful on resources for something benign.
 		// We'll rectify that later, somewhat, where characters are transformed.
@@ -916,16 +893,21 @@ class Generate_Description extends Generate {
 
 		// Find all words with $max_char_length, and trim when the last word boundary or punctuation is found.
 		preg_match( sprintf( '/.{0,%d}([^\P{Po}\'\":]|[\p{Pc}\p{Pd}\p{Pf}\p{Z}]|\Z){1}/su', $max_char_length ), trim( $excerpt ), $matches );
-		$excerpt = trim( ( $matches[0] ?? '' ) ?: '' );
 
-		$excerpt = trim( $excerpt );
+		$excerpt = trim( $matches[0] ?? '' ?: '' );
 
 		if ( \strlen( $excerpt ) < $min_char_length ) return '';
 
 		// Texturize to recognize the sentence structure. Decode thereafter since we get HTML returned.
-		$excerpt = htmlentities( $excerpt, ENT_QUOTES, 'UTF-8' );
-		$excerpt = \wptexturize( $excerpt );
-		$excerpt = html_entity_decode( $excerpt, ENT_QUOTES, 'UTF-8' );
+		$excerpt = html_entity_decode(
+			\wptexturize( htmlentities(
+				$excerpt,
+				ENT_QUOTES,
+				'UTF-8'
+			) ),
+			ENT_QUOTES,
+			'UTF-8'
+		);
 		/**
 		 * Play with it here: https://regex101.com/r/u0DIgx/5/ (old) https://regex101.com/r/G92lUt/5 (new)
 		 *

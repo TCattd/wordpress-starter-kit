@@ -4,7 +4,7 @@ namespace GFML\Compatibility\FeedAddon;
 
 use GFML_String_Name_Helper;
 
-class TranslatableKey {
+final class TranslatableKey {
 	/** @var string[] */
 	private $path;
 

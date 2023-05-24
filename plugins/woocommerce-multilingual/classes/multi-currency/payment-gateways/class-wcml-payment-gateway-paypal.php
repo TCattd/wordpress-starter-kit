@@ -137,7 +137,7 @@ class WCML_Payment_Gateway_PayPal extends WCML_Payment_Gateway {
 					$item_id ++;
 				}
 
-				$args['shipping_1'] = $this->woocommerce_wpml->cart->get_cart_shipping_in_currency( $gateway_setting['currency'] );
+				$args['shipping_1'] = $this->woocommerce_wpml->cart->convert_cart_shipping_to_currency( $gateway_setting['currency'] );
 			}
 		}
 

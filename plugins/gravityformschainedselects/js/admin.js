@@ -51,11 +51,12 @@
 			markup = '<input id="' + objectType + '_rule_value_' + ruleIndex + '" class="gfield_rule_select" type="text" value="' + value + '" placeholder="' + placeholder.join( '/' ) + '" onchange="SetRuleProperty(&quot;' + objectType + '&quot;, ' + ruleIndex + ', &quot;value&quot;, jQuery(this).val());" onkeyup="SetRuleProperty(&quot;' + objectType + '&quot;, ' + ruleIndex + ', &quot;' + value + '&quot;, jQuery(this).val());" />';
 		} else {
 			markup = '';
+			var emptyOption = '<option value="" selected="selected">Empty (no choices selected)</option>';
 			$.each( getAllChoicesByInputId( selectedFieldId, field ), function( i, choice ) {
 				var selectedMarkup = choice.value == value ? 'selected="selected"' : '';
 				markup += '<option value="' + choice.value + '" ' + selectedMarkup + '>' + choice.text + '</option>';
 			} );
-			markup = '<select id="' + objectType + '_rule_value_' + ruleIndex + '" class="gfield_rule_select gfield_rule_value_dropdown">' + markup + '</select>';
+			markup = '<select id="' + objectType + '_rule_value_' + ruleIndex + '" class="gfield_rule_select gfield_rule_value_dropdown">' + emptyOption + markup + '</select>';
 		}
 		return markup;
 	} );

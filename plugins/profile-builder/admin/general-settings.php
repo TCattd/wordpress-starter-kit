@@ -123,7 +123,7 @@ add_action( 'admin_menu', 'wppb_register_general_settings_submenu_page', 3 );
 
 
 function wppb_generate_default_settings_defaults(){
-	add_option( 'wppb_general_settings', array( 'extraFieldsLayout' => 'default', 'automaticallyLogIn' => 'No', 'emailConfirmation' => 'no', 'activationLandingPage' => '', 'adminApproval' => 'no', 'loginWith' => 'usernameemail', 'rolesEditor' => 'no', 'conditional_fields_ajax' => 'no' ) );
+	add_option( 'wppb_general_settings', array( 'extraFieldsLayout' => 'default', 'automaticallyLogIn' => 'No', 'emailConfirmation' => 'no', 'activationLandingPage' => '', 'adminApproval' => 'no', 'loginWith' => 'usernameemail', 'rolesEditor' => 'no', 'conditional_fields_ajax' => 'no', 'formsDesign' => 'form-style-default' ) );
 }
 
 
@@ -152,17 +152,33 @@ function wppb_general_settings_content() {
 		<?php settings_fields( 'wppb_general_settings' ); ?>
 
 		<table class="form-table">
-			<tr>
-				<th scope="row">
-					<?php esc_html_e( "Load Profile Builder's own CSS file in the front-end:", "profile-builder" ); ?>
-				</th>
-				<td>
-					<label><input type="checkbox" name="wppb_general_settings[extraFieldsLayout]"<?php echo ( ( isset( $wppb_generalSettings['extraFieldsLayout'] ) && ( $wppb_generalSettings['extraFieldsLayout'] == 'default' ) ) ? ' checked' : '' ); ?> value="default" class="wppb-select"><?php esc_html_e( 'Yes', 'profile-builder' ); ?></label>
-					<ul>
-						<li class="description"><?php printf( esc_html__( 'You can find the default file here: %1$s', 'profile-builder' ), '<a href="'.dirname( plugin_dir_url( __FILE__ ) ).'/assets/css/style-front-end.css" target="_blank">'.dirname( dirname( plugin_basename( __FILE__ ) ) ).'\assets\css\style-front-end.css</a>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></li>
-					</ul>
-				</td>
-			</tr>
+
+            <?php
+            if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR.'/features/form-designs/form-designs.php' ) ){
+            ?>
+                <tr id="form_desings">
+                    <th scope="row" colspan="2">
+                        <?php esc_html_e( "Select Form Design:", "profile-builder" ); ?>
+                        <?php echo wppb_render_forms_design_selector(); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                    </th>
+                    <td style="padding: 0; margin: 0;">
+                        <input type="hidden" id="wppb-active-form-design" name="wppb_general_settings[formsDesign]" value="<?php echo ( !empty( $wppb_generalSettings['formsDesign'] ) ? esc_html( $wppb_generalSettings['formsDesign'] ) : 'form-style-default' ) ?>" class="wppb-select">
+                    </td>
+                </tr>
+            <?php } ?>
+
+            <?php
+            if ( PROFILE_BUILDER == 'Profile Builder Free' ) {
+                ?>
+                <tr id="form_desings_showcase">
+                    <th scope="row" colspan="2">
+                        <?php esc_html_e( "Have a look at the new Profile Builder - Form Styles:", "profile-builder" ); ?>
+                        <?php echo wppb_display_form_designs_preview(); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+                        <p><?php printf( esc_html__( 'You can now beautify your forms using new Styles. Enable Form Designs by upgrading to %1$sBasic or PRO versions%2$s.', 'profile-builder' ),'<a href="https://www.cozmoslabs.com/wordpress-profile-builder/?utm_source=wpbackend&utm_medium=clientsite&utm_content=general-settings-link&utm_campaign=PBFree">', '</a>' )?></p>
+                    </th>
+
+                </tr>
+            <?php } ?>
 
             <tr>
                 <th scope="row">
@@ -384,6 +400,18 @@ function wppb_general_settings_content() {
                 </td>
             </tr>
 
+			<tr>
+				<th scope="row">
+					<?php esc_html_e( "Load Profile Builder's own CSS file in the front-end:", "profile-builder" ); ?>
+				</th>
+				<td>
+					<label><input type="checkbox" name="wppb_general_settings[extraFieldsLayout]"<?php echo ( ( isset( $wppb_generalSettings['extraFieldsLayout'] ) && ( $wppb_generalSettings['extraFieldsLayout'] == 'default' ) ) ? ' checked' : '' ); ?> value="default" class="wppb-select"><?php esc_html_e( 'Yes', 'profile-builder' ); ?></label>
+					<ul>
+						<li class="description"><?php printf( esc_html__( 'You can find the default file here: %1$s', 'profile-builder' ), '<a href="'.dirname( plugin_dir_url( __FILE__ ) ).'/assets/css/style-front-end.css" target="_blank">'.dirname( dirname( plugin_basename( __FILE__ ) ) ).'\assets\css\style-front-end.css</a>' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></li>
+					</ul>
+				</td>
+			</tr>
+
 			<?php do_action( 'wppb_extra_general_settings', $wppb_generalSettings ); ?>
 		</table>
 
@@ -411,13 +439,13 @@ function wppb_general_settings_sanitize( $wppb_generalSettings ) {
 	if( !empty( $wppb_generalSettings ) ){
 		foreach( $wppb_generalSettings as $settings_name => $settings_value ){
 			if( $settings_name == "minimum_password_length" || $settings_name == "activationLandingPage" )
-				$wppb_generalSettings[$settings_name] = filter_var( $settings_value, FILTER_SANITIZE_NUMBER_INT );
+				$wppb_generalSettings[$settings_name] = absint( $settings_value );
 			elseif( $settings_name == "extraFieldsLayout" || $settings_name == "emailConfirmation" || $settings_name == "adminApproval" || $settings_name == "loginWith" || $settings_name == "minimum_password_strength" )
-				$wppb_generalSettings[$settings_name] = filter_var( $settings_value, FILTER_SANITIZE_STRING );
+				$wppb_generalSettings[$settings_name] = sanitize_text_field( $settings_value );
 			elseif( $settings_name == "adminApprovalOnUserRole" ){
 				if( is_array( $settings_value ) && !empty( $settings_value ) ){
 					foreach( $settings_value as $key => $value ){
-						$wppb_generalSettings[$settings_name][$key] = filter_var( $value, FILTER_SANITIZE_STRING );
+						$wppb_generalSettings[$settings_name][$key] = sanitize_text_field( $value );
 					}
 				}
 			}
@@ -456,4 +484,106 @@ function wppb_adminApproval_onUserRole() {
 	unset( $roles['administrator'] );
 
 	return $roles;
+}
+
+
+
+/*
+ * Generate the Form Designs Preview Showcase
+ *
+ */
+function wppb_display_form_designs_preview() {
+    $form_designs_data = array(
+        array(
+            'id' => 'form-style-default',
+            'name' => 'Default',
+            'images' => array(
+                'main' => WPPB_PLUGIN_URL.'assets/images/pb-default-forms.jpg',
+            ),
+        ),
+        array(
+            'id' => 'form-style-1',
+            'name' => 'Style 1',
+            'images' => array(
+                'main' => WPPB_PLUGIN_URL.'assets/images/style1-slide1.jpg',
+                'slide1' => WPPB_PLUGIN_URL.'assets/images/style1-slide2.jpg',
+                'slide2' => WPPB_PLUGIN_URL.'assets/images/style1-slide3.jpg',
+            ),
+        ),
+        array(
+            'id' => 'form-style-2',
+            'name' => 'Style 2',
+            'images' => array(
+                'main' => WPPB_PLUGIN_URL.'assets/images/style2-slide1.jpg',
+                'slide1' => WPPB_PLUGIN_URL.'assets/images/style2-slide2.jpg',
+                'slide2' => WPPB_PLUGIN_URL.'assets/images/style2-slide3.jpg',
+            ),
+        ),
+        array(
+            'id' => 'form-style-3',
+            'name' => 'Style 3',
+            'images' => array(
+                'main' => WPPB_PLUGIN_URL.'assets/images/style3-slide1.jpg',
+                'slide1' => WPPB_PLUGIN_URL.'assets/images/style3-slide2.jpg',
+                'slide2' => WPPB_PLUGIN_URL.'assets/images/style3-slide3.jpg',
+            ),
+        )
+    );
+
+    $output = '<div id="wppb-forms-design-browser">';
+
+    foreach ( $form_designs_data as $form_design ) {
+
+        if ( $form_design['id'] != 'form-style-default' )
+            $preview_button = '<div class="wppb-forms-design-preview" id="'. $form_design['id'] .'-info">Preview</div>';
+        else $preview_button = '';
+
+        $output .= '
+                <div class="wppb-forms-design" id="'. $form_design['id'] .'">
+                   <div class="wppb-forms-design-screenshot">
+                      <img src="' . $form_design['images']['main'] . '" alt="Form Design">
+                      '. $preview_button .'
+                   </div>
+                   <div class="wppb-forms-design-details">
+                      <div class="wppb-forms-design-title" style="border:none;">
+                         <h2>'. $form_design['name'] .'</h2>
+                      </div>
+
+                   </div>
+                </div>
+        ';
+
+        $img_count = 0;
+        $image_list = '';
+        foreach ( $form_design['images'] as $image ) {
+            $img_count++;
+            $active_img = ( $img_count == 1 ) ? ' active' : '';
+            $image_list .= '<img class="wppb-forms-design-preview-image'. $active_img .'" src="'. $image .'">';
+        }
+
+        if ( $img_count > 1 ) {
+            $previous_button = '<div class="wppb-slideshow-button wppb-forms-design-sildeshow-previous disabled" data-theme-id="'. $form_design['id'] .'" data-slideshow-direction="previous"> < </div>';
+            $next_button = '<div class="wppb-slideshow-button wppb-forms-design-sildeshow-next" data-theme-id="'. $form_design['id'] .'" data-slideshow-direction="next"> > </div>';
+            $justify_content = 'space-between';
+        }
+        else {
+            $previous_button = $next_button = '';
+            $justify_content = 'center';
+        }
+
+        $output .= '<div id="modal-'. $form_design['id'] .'" class="wppb-forms-design-modal" title="'. $form_design['name'] .'">
+                        <div class="wppb-forms-design-modal-slideshow" style="justify-content: '. $justify_content .'">
+                            '. $previous_button .'
+                            <div class="wppb-forms-design-modal-images">
+                                '. $image_list .'
+                            </div>
+                            '. $next_button .'
+                        </div>
+                    </div>';
+
+    }
+
+    $output .= '</div>';
+
+    return $output;
 }

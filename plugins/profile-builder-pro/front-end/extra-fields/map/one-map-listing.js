@@ -1,5 +1,6 @@
 (function($) {
 	var poi_count = 0;
+	var infowindows = [];
 	// DEBUG: console.log(oneMapListing);
 
 	// This function will render a Google Map onto the selected jQuery element.
@@ -48,9 +49,11 @@
 			var infowindow = new google.maps.InfoWindow({
 				content: $marker.html()
 			});
+			infowindows.push( infowindow );
 
 			// Show info window when marker is clicked
 			google.maps.event.addListener(marker, 'click', function() {
+				infowindows.forEach( (infowindow) => { infowindow.close(); } );
 				infowindow.open(map, marker);
 			});
 		}

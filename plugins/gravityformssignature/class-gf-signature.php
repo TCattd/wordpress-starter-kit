@@ -98,6 +98,32 @@ class GFSignature extends GFAddOn {
 	}
 
 	/**
+	 * Enqueue styles.
+	 *
+	 * @since 4.4
+	 * @return array $styles
+	 */
+	public function styles() {
+
+		$base_url = $this->get_base_url();
+		$min      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+
+		$styles = array(
+			array(
+				'handle'  => 'gform_signature_foundation',
+				'src'     => $base_url . "/assets/css/dist/theme{$min}.css",
+				'version' => $this->_version,
+				'enqueue' => array(
+					array( $this, 'should_enqueue_frontend_script' ),
+				),
+			),
+		);
+
+		return array_merge( parent::styles(), $styles );
+	}
+
+
+	/**
 	 * Return the scripts which should be enqueued.
 	 *
 	 * @return array
@@ -121,13 +147,16 @@ class GFSignature extends GFAddOn {
 				'deps'      => array( 'jquery' ),
 				'in_footer' => true,
 				'enqueue'   => array(
-					array( 'field_types' => array( 'signature' ) ),
+					array( $this, 'should_enqueue_frontend_script' ),
 				),
 			),
 			array(
 				'handle'  => 'super_signature_base64',
 				'src'     => $this->get_base_url() . '/includes/super_signature/base64.js',
 				'version' => $this->get_version(),
+				'enqueue'   => array(
+					array( $this, 'should_enqueue_frontend_script' ),
+				),
 			),
 			array(
 				'handle'    => 'gform_signature_frontend',
@@ -136,7 +165,7 @@ class GFSignature extends GFAddOn {
 				'deps'      => array( 'jquery', 'super_signature_script', 'super_signature_base64' ),
 				'in_footer' => true,
 				'enqueue'   => array(
-					array( 'field_types' => array( 'signature' ) ),
+					array( $this, 'should_enqueue_frontend_script' ),
 				),
 				'strings'   => array(
 					'lockedReset' => wp_strip_all_tags( __( 'Reset to re-sign.', 'gravityformssignature' ) ),
@@ -148,8 +177,8 @@ class GFSignature extends GFAddOn {
 				'version'   => $this->get_version(),
 				'deps'      => array( 'jquery' ),
 				'in_footer' => true,
-				'enqueue'   => array(
-					'enqueue' => array( array( 'admin_page' => array( 'entry_edit', 'entry_view' ) ) ),
+				'enqueue' => array(
+					array( $this, 'should_enqueue_delete_script' ),
 				),
 				'strings'   => array(
 					'confirm_delete' => esc_html__( "Would you like to delete this file? 'Cancel' to stop. 'OK' to delete", 'gravityformssignature' ),
@@ -162,6 +191,38 @@ class GFSignature extends GFAddOn {
 		return array_merge( parent::scripts(), $scripts );
 	}
 
+	/**
+	 * Frontend scripts should only be enqueued if we're not on a GF admin page and the form contains our field type.
+	 *
+	 * @since 4.4
+	 *
+	 * @param array $form The current form object.
+	 *
+	 * @return bool
+	 */
+	public function should_enqueue_frontend_script( $form ) {
+
+		$is_frontend         = GFForms::get_page() === false;
+		$has_signature_field = ! rgempty( GFFormsModel::get_fields_by_type( $form, array( 'signature' ) ) );
+
+		return ( $is_frontend || $this->is_entry_edit() ) && $has_signature_field;
+	}
+
+	/**
+	 * Delete signature script should only be enqueued on the entry edit page on forms with a Signature field.
+	 *
+	 * @since 4.4
+	 *
+	 * @param array $form The current form object.
+	 *
+	 * @return bool
+	 */
+	public function should_enqueue_delete_script( $form ) {
+
+		$has_signature_field = ! rgempty( GFFormsModel::get_fields_by_type( $form, array( 'signature' ) ) );
+
+		return $this->is_entry_edit() && $has_signature_field;
+	}
 
 	// # FIELD SETTINGS -------------------------------------------------------------------------------------------------
 

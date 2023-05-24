@@ -1,0 +1,2008 @@
+/**************************************************/
+/*  GENERAL STYLES
+/**************************************************/
+
+#wppb-form-style-3-wrapper {
+    max-width: 900px;
+    font-family: "Poppins", sans-serif !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater li.wppb-rpf-action-wrap,
+#wppb-form-style-3-wrapper #wppb_auth_active,
+#wppb-form-style-3-wrapper li.wppb-form-field {
+    margin-left: 0;
+    list-style: none;
+}
+
+/* field descriptions */
+#wppb-form-style-3-wrapper .wppb-subscription-plans .description,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan-description,
+#wppb-form-style-3-wrapper .pms-field-description,
+#wppb-form-style-3-wrapper .wppb-description-delimiter {
+    margin-left: 5px;
+    padding-top: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #6E7A86;
+    word-break: break-word;
+}
+
+#wppb-form-style-3-wrapper .wppb-description-delimiter a {
+    color: #554FE6;
+    text-decoration: none;
+}
+
+#wppb-form-style-3-wrapper a {
+    color: #554FE6;
+    text-decoration: none;
+}
+
+#wppb-form-style-3-wrapper a:hover {
+    color: #443ECF;
+    text-decoration: none;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-field span.wppb-required {
+    color: #C62828;
+}
+
+#ui-datepicker-div {
+    z-index: 999 !important;
+}
+
+/* form title */
+#wppb-form-style-3-wrapper .wppb-form-title {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    margin-bottom: 15px;
+    color: #090A0B;
+    text-align: center;
+}
+
+/* headings */
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication h4,
+#wppb-form-style-3-wrapper .wppb-default-name-heading h4,
+#wppb-form-style-3-wrapper .wppb-heading h1,
+#wppb-form-style-3-wrapper .wppb-heading h2,
+#wppb-form-style-3-wrapper .wppb-heading h3,
+#wppb-form-style-3-wrapper .wppb-heading h4,
+#wppb-form-style-3-wrapper .wppb-heading h5,
+#wppb-form-style-3-wrapper .wppb-heading h6,
+#wppb-form-style-3-wrapper .wppb_billing_heading h4,
+#wppb-form-style-3-wrapper .wppb_shipping_heading h4,
+#wppb-form-style-3-wrapper .pms-field-section .pms-field-type-heading h3
+{
+    font-style: normal;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #090A0B;
+    text-transform: none;
+}
+
+#wppb-form-style-3-wrapper .wppb-heading h1 {
+    font-size: 40px;
+}
+
+#wppb-form-style-3-wrapper .wppb-heading h2 {
+    font-size: 36px;
+}
+
+#wppb-form-style-3-wrapper .wppb-heading h3 {
+    font-size: 32px;
+}
+
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication h4,
+#wppb-form-style-3-wrapper .wppb-default-name-heading h4,
+#wppb-form-style-3-wrapper .wppb-heading h4,
+#wppb-form-style-3-wrapper .wppb_billing_heading h4,
+#wppb-form-style-3-wrapper .wppb_shipping_heading h4,
+#wppb-form-style-3-wrapper .pms-field-section .pms-field-type-heading h3
+{
+    font-size: 28px;
+}
+
+#wppb-form-style-3-wrapper .wppb-heading h5 {
+    font-size: 24px;
+}
+
+#wppb-form-style-3-wrapper .wppb-heading h6 {
+    font-size: 20px;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount label,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state label,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state label,
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state label,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-name-field label,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field label,
+#wppb-form-style-3-wrapper .wppb-form-select-field label:not(.wppb-epaa-switch),
+#wppb-form-style-3-wrapper .wppb-form-text-field label:not(.wppb-epaa-switch) {
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #090A0B;
+    width: auto;
+    margin-bottom: 10px;
+}
+
+#wppb-form-style-3-wrapper .label-inside #pms-subscription-plans-discount label {
+    display: none;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-text-field.label-inside input::placeholder,
+#wppb-form-style-3-wrapper .wppb-form-text-field.label-inside textarea::placeholder,
+#wppb-form-style-3-wrapper .wppb-form-select-field.label-inside input::placeholder,
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms_subscription_plans_discount_code::placeholder {
+    color: #6E7A86;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+/* text/select inputs */
+#wppb-form-style-3-wrapper .label-inside #pms-subscription-plans-discount input#pms_subscription_plans_discount_code,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state.label-inside input,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state.label-inside input,
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state.label-inside input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans.label-inside .pms-group-name-field input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans.label-inside .pms-group-description-field textarea,
+#wppb-form-style-3-wrapper .wppb-form-text-field.label-inside input:not([type='radio']):not([type='checkbox']),
+#wppb-form-style-3-wrapper .wppb-form-text-field.label-inside textarea,
+#wppb-form-style-3-wrapper .wppb-form-select-field.label-inside select,
+#wppb-form-style-3-wrapper .wppb-form-select-field.label-inside .select2-container .select2-selection {
+    padding: 0 15px;
+}
+
+#wppb-form-style-3-wrapper .label-outside #pms-subscription-plans-discount input#pms_subscription_plans_discount_code,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state.label-outside input,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state.label-outside input,
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state.label-outside input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans.label-outside .pms-group-name-field input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans.label-outside .pms-group-description-field textarea,
+#wppb-form-style-3-wrapper .wppb-form-text-field.label-outside input,
+#wppb-form-style-3-wrapper .wppb-form-text-field.label-outside textarea,
+#wppb-form-style-3-wrapper .wppb-form-select-field.label-outside select,
+#wppb-form-style-3-wrapper .wppb-form-select-field.label-outside .select2-container .select2-selection {
+    padding: 0 15px;
+    position: relative;
+}
+
+/* hide WooCommerce Register section Form Titles  */
+.woocommerce #customer_login .u-column1 > h2,
+.woocommerce #customer_login .u-column2 > h2 {
+    display: none;
+}
+
+#wppb-form-style-3-wrapper .disabled-field > *:not(.wppb-description-delimiter) {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+#wppb-form-style-3-wrapper .wppb-language {
+    min-height: 0 !important;
+}
+
+/* PMS Email Confirmation Register Form - Selected Subscription */
+#wppb-form-style-3-wrapper #pms-register-form.pms-ec-register-form .pms-subscription-plan-name {
+    font-weight: 400;
+    color: #090A0B;
+    font-size: 22px;
+}
+
+#wppb-form-style-3-wrapper #pms-register-form.pms-ec-register-form .pms-subscription-plan-price {
+    color: #6E7A86;
+    font-weight: 300;
+    font-size: 20px;
+}
+
+#wppb-form-style-3-wrapper #pms-register-form.pms-ec-register-form .pms-subscription-plan-description {
+    margin-left: 5px;
+    padding-top: 5px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    color: #6E7A86;
+    word-break: break-word;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount.label-inside label {
+    display: none;
+}
+
+
+/**************************************************/
+/*  FORM BUTTONS
+/**************************************************/
+
+#wppb-form-style-3-wrapper .login-submit,
+#wppb-form-style-3-wrapper .form-submit {
+    border-bottom: 1px solid #CFD4DE;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+
+/* primary */
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-next,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-prev,
+#wppb-form-style-3-wrapper input[type="submit"] {
+    height: 48px;
+    border-radius: 100px !important;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    text-transform: none;
+    border: 1px solid transparent !important;
+    padding: 0 15px;
+    background: #554FE6 !important;
+    font-size: 16px;
+}
+
+/* secondary */
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type=button],
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload]::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload]::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button {
+    height: 34px;
+    width: 100px;
+    padding: 0;
+    font-size: 14px;
+    border-radius: 100px !important;
+    color: #554FE6 !important;
+    text-decoration: none;
+    text-transform: none;
+    border: 1px solid #554FE6!important;
+    background: transparent !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type=button],
+#wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-next:hover,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-prev:hover,
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type=button]:hover,
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload]:hover::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload]:hover::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button:hover,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button:hover,
+#wppb-form-style-3-wrapper input[type="submit"]:hover {
+    background: #443ECF !important;
+    text-decoration: none!important;
+    border: 1px solid #443ECF!important;
+    color: #FFFFFF !important;
+    cursor: pointer;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-next:focus,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-prev:focus,
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type=button]:focus,
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload]:focus::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload]:focus::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button:focus,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button:focus,
+#wppb-form-style-3-wrapper input[type="submit"]:focus {
+    outline: none;
+    border: 1px solid #FFFFFF !important;
+    box-shadow: 0 0 4px #443ECF;
+    border-radius: 100px;
+    background: #443ECF !important;
+    color: #FFFFFF !important;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-next:disabled,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-prev:disabled,
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type=button]:disabled,
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload]:disabled::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload]:disabled::file-selector-button,
+#wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button:disabled,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button:disabled,
+#wppb-form-style-3-wrapper input[type="submit"]:disabled {
+    color: #6E7A86;
+    background: transparent;
+    border: 1px solid #6E7A86 !important;
+    pointer-events: none;
+}
+
+/* form steps control buttons  */
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-prev {
+    order: 1;
+    margin-left: 0;
+    margin-right: auto;
+    min-width: 100px;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-prev:disabled {
+    display: none;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-next {
+    order: 2;
+    margin-left: auto;
+    margin-right: 0;
+    min-width: 100px;
+}
+
+#wppb-form-style-3-wrapper #wppb-msf-tabs,
+#wppb-form-style-3-wrapper .wppb-msf-step-commands {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#wppb-form-style-3-wrapper #wppb-msf-tabs {
+    justify-content: flex-start;
+    align-items: center;
+    margin: 25px 0 25px 0;
+    gap: 5px;
+}
+
+#wppb-form-style-3-wrapper .wppb-msf-step-commands #wppb-msf-pagination {
+    order: 3;
+    flex-basis: 100%;
+    border-top: 1px solid #CFD4DE;
+    margin-top: 40px;
+    padding-top: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-pagination {
+    text-decoration: none;
+    text-transform: none;
+    font-size: 14px;
+    opacity: 1;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs {
+    flex-basis: calc(25% - 5px);
+    border-radius: 0;
+    margin: 0;
+}
+
+#wppb-form-style-3-wrapper input[type="button"][value=""].wppb-msf-tabs {
+    height: 6px;
+    padding: 0;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs:nth-child(4n+1) {
+    border-radius: 10px 0 0 10px;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs:last-of-type,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs:nth-child(4n+4) {
+    border-radius: 0 10px 10px 0;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-pagination {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: #6E7A86;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-pagination.wppb-msf-active {
+    background: #554FE6;
+    color: #FFFFFF;
+    border: 1px solid #554FE6;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs:not(:disabled):hover,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-pagination:not(:disabled):hover {
+    background: #443ECF;
+    color: #FFFFFF;
+    border: 1px solid #443ECF;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs:focus,
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-pagination:focus {
+    border: 1px solid #FFFFFF !important;
+    box-shadow: 0 0 4px #443ECF;
+    background: #443ECF;
+}
+
+#wppb-form-style-3-wrapper input[type="button"].wppb-msf-tabs:disabled {
+    background: #CFD4DE;
+    color: #6E7A86;
+    border: 1px solid #CFD4DE;
+}
+
+
+/**************************************************/
+/*  UPLOAD FIELDS
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-upload,
+#wppb-form-style-3-wrapper .wppb-avatar {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload > label,
+#wppb-form-style-3-wrapper .wppb-avatar > label {
+    order: 1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    width: auto;
+    color: #090A0B;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    pointer-events: none;
+    z-index: 50;
+    position: relative;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload p,
+#wppb-form-style-3-wrapper .wppb-avatar p {
+    order: 5;
+    color: #C62828;
+    font-weight: 500;
+    font-size: 20px;
+    font-style: italic;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload:not(.file-selected) > label,
+#wppb-form-style-3-wrapper .wppb-avatar:not(.file-selected) > label {
+    padding-left: 100px;
+    position: relative;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload.file-selected > label,
+#wppb-form-style-3-wrapper .wppb-avatar.file-selected > label {
+    margin-bottom: 15px;
+}
+
+
+#wppb-form-style-3-wrapper .wppb-avatar > label:after {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='currentColor' class='bi bi-person' viewBox='0 0 16 16' transform='scale(1,1)'> <path d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z' id='mainIconPathAttribute' stroke-width='0.5' stroke='rgb(110, 122, 134)' fill='rgb(110, 122, 134)'></path> </svg>");
+}
+
+#wppb-form-style-3-wrapper .wppb-upload > label:after {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='currentColor' class='bi bi-image' viewBox='0 0 16 16' transform='scale(1,1)'> <path d='M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z' fill='rgb(110, 122, 134)'/> <path d='M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z' fill='rgb(110, 122, 134)'/> </svg>");
+}
+
+#wppb-form-style-3-wrapper .wppb-upload > label:after,
+#wppb-form-style-3-wrapper .wppb-avatar > label:after {
+    border: 2px solid #CFD4DE;
+    width: 80px;
+    height: 80px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload > label:after {
+    border-radius: 4px;
+}
+
+#wppb-form-style-3-wrapper .wppb-avatar > label:after {
+    border-radius: 100px;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload .wppb-description-delimiter:not(.wppb-epaa-description),
+#wppb-form-style-3-wrapper .wppb-avatar .wppb-description-delimiter:not(.wppb-epaa-description) {
+    order: 3;
+    margin: 0 0 10px 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    color: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button {
+    order: 4;
+    margin-left: 100px;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload .wppb-epaa-description,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb-epaa-description {
+    order: 5;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload .wppb_bdp_visibility_settings,
+#wppb-form-style-3-wrapper .wppb-avatar .wppb_bdp_visibility_settings {
+    order: 5;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload] {
+    padding: 3px;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload .upload-field-details,
+#wppb-form-style-3-wrapper .wppb-avatar .upload-field-details {
+    order: 2;
+    z-index: 100;
+}
+
+/* upload file */
+#wppb-form-style-3-wrapper .wppb-upload div.file-thumb,
+#wppb-form-style-3-wrapper .wppb-avatar div.file-thumb {
+    margin-right: 15px;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload span.file-name,
+#wppb-form-style-3-wrapper .wppb-avatar span.file-name {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+    color: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-upload span.file-type,
+#wppb-form-style-3-wrapper .wppb-avatar span.file-type {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 12px;
+    line-height: 14px;
+    color: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload span.wppb-remove-upload,
+#wppb-form-style-3-wrapper .wppb-avatar span.wppb-remove-upload {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+    color: #C62828;
+    margin-top: 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload span.wppb-remove-upload:focus,
+#wppb-form-style-3-wrapper .wppb-avatar span.wppb-remove-upload:focus {
+    border: none;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload span.wppb-remove-upload:before,
+#wppb-form-style-3-wrapper .wppb-avatar span.wppb-remove-upload:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none'><path d='M7 4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2h4a1 1 0 1 1 0 2h-1.069l-.867 12.142A2 2 0 0 1 17.069 22H6.93a2 2 0 0 1-1.995-1.858L4.07 8H3a1 1 0 0 1 0-2h4V4zm2 2h6V4H9v2zM6.074 8l.857 12H17.07l.857-12H6.074zM10 10a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0v-6a1 1 0 0 1 1-1z' fill='rgb(198, 40, 40)'/></svg>");
+    display: inline-flex;
+}
+
+#wppb-form-style-3-wrapper .wppb-avatar.file-selected label:after,
+#wppb-form-style-3-wrapper .wppb-avatar.file-selected .wppb-description-delimiter:not(.wppb-epaa-description),
+#wppb-form-style-3-wrapper .wppb-upload.file-selected label:after,
+#wppb-form-style-3-wrapper .wppb-upload.file-selected .wppb-description-delimiter:not(.wppb-epaa-description) {
+    display: none;
+}
+
+
+/**************************************************/
+/*  TEXT INPUT & TEXTAREA FIELDS
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-form-text-field,
+/* WooCommerce Fields */
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state,
+/* PMS Fields */
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-name-field,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field
+{
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0;
+    width: 100%;
+    margin: 0 auto 30px auto;
+    min-height: 56px;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field textarea {
+    margin-bottom: 30px;
+    padding-top: 25px !important;
+    min-height: 56px;
+    width: 100% !important;
+}
+
+#wppb-form-style-3-wrapper .pms-field-section .pms-field-type-text .pms-field-input-container {
+    width: 100%;
+}
+
+#wppb-form-style-3-wrapper button.wppb-toggle-pw {
+    right: 10px !important;
+    outline: none;
+    border: none !important;
+    opacity: 0.5;
+    max-height: 56px;
+    position: absolute;
+    background: none;
+}
+
+#wppb-form-style-3-wrapper button.wppb-toggle-pw img {
+    padding: 0;
+}
+
+#wppb-form-style-3-wrapper .label-outside button.wppb-toggle-pw {
+    top: 34px !important;
+}
+
+#wppb-form-style-3-wrapper .label-inside button.wppb-toggle-pw {
+    top: 0 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-text-field input:not([type='radio']):not([type='checkbox']):not([type='submit']),
+#wppb-form-style-3-wrapper .wppb-form-text-field textarea,
+/* WooCommerce Fields */
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state input,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state input,
+/* PMS Fields */
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-name-field input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field textarea,
+#wppb-form-style-3-wrapper #pms-stripe-credit-card-details,
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms_subscription_plans_discount_code
+{
+    width: 100% !important;
+    max-width: 100%;
+    background: #FFFFFF;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #CFD4DE;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #090A0B;
+    height: 56px;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-text-field input:not([type='radio']):not([type='checkbox']):not([type='submit']),
+    /* WooCommerce Fields */
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state input,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state input,
+    /* PMS Fields */
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state input,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-name-field input,
+#wppb-form-style-3-wrapper #pms-stripe-credit-card-details,
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms_subscription_plans_discount_code
+{
+    border-radius: 100px;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-text-field textarea,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field textarea {
+    border-radius: 4px;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field textarea {
+    height: 150px;
+}
+
+/* credit card field */
+#wppb-form-style-3-wrapper #pms-stripe-credit-card-details {
+    padding: 0 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+#wppb-form-style-3-wrapper #pms-stripe-credit-card-details .__PrivateStripeElement{
+    width: 100%;
+}
+
+/* discount code field */
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    margin: 0 auto 30px auto;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms_subscription_plans_discount_code {
+    flex-basis: 70%;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms-apply-discount {
+    flex-basis: 25%;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages-wrapper {
+    border: 1px solid #CFD4DE;
+    border-radius: 100px;
+    background-color: #FFFFFF;
+    margin-bottom: 30px;
+    padding: 10px 20px;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages-loading,
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    pointer-events: none;
+    line-height: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages-loading {
+    color: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages-loading:before {
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24px' height='24px' viewBox='0 0 24 24'><path d='M21,10.12H14.22L16.96,7.3C14.23,4.6 9.81,4.5 7.08,7.2C4.35,9.91 4.35,14.28 7.08,17C9.81,19.7 14.23,19.7 16.96,17C18.32,15.65 19,14.08 19,12.1H21C21,14.08 20.12,16.65 18.36,18.39C14.85,21.87 9.15,21.87 5.64,18.39C2.14,14.92 2.11,9.28 5.62,5.81C9.13,2.34 14.76,2.34 18.27,5.81L21,3V10.12M12.5,8V12.25L16,14.33L15.28,15.54L11,13V8H12.5Z' fill='rgb(110, 122, 134)'/></svg>");
+    height: 24px;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages.pms-discount-success {
+    color: #558B2F;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages.pms-discount-success:before {
+    content: url("../../icons/form-design-success-icon.png");
+    height: 24px;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages.pms-discount-error {
+    color: #C62828;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages.pms-discount-error:before {
+    content: url("../../icons/form-design-error-icon.png");
+    height: 24px;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages-wrapper:has(.pms-discount-success) {
+    border-color: #558B2F;
+}
+
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount-messages-wrapper:has(.pms-discount-error) {
+    border-color: #C62828;
+}
+
+
+/* textarea */
+#wppb-form-style-3-wrapper .wppb-default-biographical-info textarea,
+#wppb-form-style-3-wrapper .wppb-textarea textarea {
+    padding: 15px !important;
+    height: 220px;
+    width: 100% !important;
+}
+
+/* PWYW price input field */
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan-price input.pms_pwyw_pricing {
+    min-width: 60px;
+    background: #FFFFFF;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #CFD4DE;
+    border-radius: 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    color: #090A0B;
+    text-align: center;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan-price input.pms_pwyw_pricing:hover {
+    border: 1px solid #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan-price input.pms_pwyw_pricing:focus {
+    border: 1px solid #554FE6 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-text-field input:hover,
+#wppb-form-style-3-wrapper .wppb-form-text-field textarea:hover,
+/* WooCommerce Fields */
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state input:hover,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state input:hover,
+/* PMS Fields */
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state input:hover,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-name-field input:hover,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field textarea:hover,
+#wppb-form-style-3-wrapper #pms-stripe-credit-card-details:hover,
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms_subscription_plans_discount_code:hover
+{
+    border: 1px solid #6E7A86 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-phone input:focus:hover {
+    color: #090A0B;
+}
+
+
+#wppb-form-style-3-wrapper .wppb-form-text-field input:focus,
+#wppb-form-style-3-wrapper .wppb-form-text-field textarea:focus,
+/* WooCommerce Fields */
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-billing-address .wppb_billing_state input:focus,
+#wppb-form-style-3-wrapper .wppb-woocommerce-customer-shipping-address .wppb_shipping_state input:focus,
+/* PMS Fields */
+#wppb-form-style-3-wrapper .pms-field-section .pms-billing-state input:focus,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-name-field input:focus,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-group-description-field textarea:focus,
+#wppb-form-style-3-wrapper #pms-stripe-credit-card-details.StripeElement--focus,
+#wppb-form-style-3-wrapper #pms-subscription-plans-discount input#pms_subscription_plans_discount_code:focus
+{
+    border: 1px solid #554FE6 !important;
+}
+
+/* Tax Price Breakdown Table */
+#wppb-form-style-3-wrapper .pms-price-breakdown table,
+#wppb-form-style-3-wrapper .pms-price-breakdown table * {
+    border-color: #CFD4DE;
+    color: #6E7A86;
+    border-radius: 4px;
+}
+
+#wppb-form-style-3-wrapper .pms-price-breakdown table {
+    border-radius: 4px;
+
+    border: none;
+    background: #FFFFFF;
+    padding: 10px;
+}
+
+#wppb-form-style-3-wrapper .pms-price-breakdown tr .pms-label {
+    border-left: none;
+}
+
+#wppb-form-style-3-wrapper .pms-price-breakdown tr .pms-value {
+    border-right: none;
+}
+
+#wppb-form-style-3-wrapper .pms-price-breakdown tr:first-of-type .pms-label,
+#wppb-form-style-3-wrapper .pms-price-breakdown tr:first-of-type .pms-value {
+    border-top: none;
+}
+
+#wppb-form-style-3-wrapper .pms-price-breakdown tr:last-of-type .pms-label, .pms-price-breakdown tr:last-of-type .pms-value {
+    border-bottom: none;
+}
+
+
+/**************************************************/
+/*  CHECKBOX & RADIO
+/**************************************************/
+
+#wppb-form-style-3-wrapper #pms-paygates-wrapper,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan:last-of-type,
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-radio,
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox,
+#wppb-form-style-3-wrapper .wppb-gdpr-communication-preferences,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions,
+#wppb-form-style-3-wrapper .login-remember,
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-checkbox
+{
+    margin-bottom: 30px;
+    padding-bottom: 0;
+}
+
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew {
+    margin-top: 30px;
+}
+
+#wppb-form-style-3-wrapper .wppb-shipping-different-address label {
+    text-indent: 0 !important;
+    position: inherit;
+}
+
+#wppb-form-style-3-wrapper #pms-paygates-wrapper label,
+#wppb-form-style-3-wrapper .wppb-radios label,
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox label,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe label,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe label,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address label,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew label,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox label,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions label,
+#wppb-form-style-3-wrapper .login-remember label,
+#wppb-form-style-3-wrapper .wppb-checkboxes label
+{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    width: auto;
+    margin: 0 !important;
+    padding: 0 !important;
+    cursor: pointer;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+#wppb-form-style-3-wrapper #pms-paygates-wrapper label,
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan label,
+#wppb-form-style-3-wrapper .wppb-radios label,
+#wppb-form-style-3-wrapper .wppb-checkboxes label
+{
+    font-size: 16px;
+    color: #6E7A86;
+    word-break: break-word;
+}
+
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox label,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe label,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe label,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address label,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew label,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox label,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions label,
+#wppb-form-style-3-wrapper .login-remember label
+{
+    font-size: 16px;
+    color: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-shipping-different-address label strong {
+    font-weight: 400;
+}
+
+#wppb-form-style-3-wrapper #pms-credit-card-information h4,
+#wppb-form-style-3-wrapper #pms-paygates-wrapper h3,
+#wppb-form-style-3-wrapper .wppb-subscription-plans h4,
+#wppb-form-style-3-wrapper .wppb-radio > label,
+#wppb-form-style-3-wrapper .wppb-checkbox:not(.wppb-gdpr-checkbox) > label,
+#wppb-form-style-3-wrapper .wppb-gdpr-communication-preferences > label
+{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: #090A0B;
+    width: auto;
+    margin: 0 0 15px 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-shipping-different-address input[type="checkbox"],
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions input[type="checkbox"],
+#wppb-form-style-3-wrapper .login-remember input[type="checkbox"],
+#wppb-form-style-3-wrapper .wppb-checkboxes input[type="checkbox"]
+{
+    appearance: none;
+    content: ' ';
+    box-sizing: border-box;
+    border: 2px solid #6E7A86;
+    border-radius: 2px;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    margin-right: 10px !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .login-remember input[type="checkbox"]:checked,
+#wppb-form-style-3-wrapper .wppb-checkboxes input[type="checkbox"]:checked
+{
+    content: url("data:image/svg+xml,<svg style='color: white' xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='currentColor' class='bi bi-check' viewBox='0 0 16 16'> <path d='M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z' fill='white'></path> </svg>");
+    background: #554FE6;
+    border: none;
+}
+
+#wppb-form-style-3-wrapper #pms-paygates-wrapper input[type="radio"]:hover,
+#wppb-form-style-3-wrapper .wppb-subscription-plans input[type="radio"]:hover,
+#wppb-form-style-3-wrapper .wppb-radios input[type="radio"]:hover,
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .login-remember input[type="checkbox"]:hover,
+#wppb-form-style-3-wrapper .wppb-checkboxes input[type="checkbox"]:hover
+{
+    border-color: #554FE6;
+}
+
+#wppb-form-style-3-wrapper #pms-paygates-wrapper input[type="radio"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-subscription-plans input[type="radio"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-radios input[type="radio"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .login-remember input[type="checkbox"]:checked:disabled,
+#wppb-form-style-3-wrapper .wppb-checkboxes input[type="checkbox"]:checked:disabled
+{
+    background: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-two-factor-authentication input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-mailchimp-subscribe input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-mailpoet-subscribe input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-shipping-different-address input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .pms-subscription-plan-auto-renew input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-gdpr-checkbox input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-checkbox-terms-and-conditions input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .login-remember input[type="checkbox"]:focus,
+#wppb-form-style-3-wrapper .wppb-checkboxes input[type="checkbox"]:focus
+{
+    border-color:  #554FE6 !important;
+    outline: none;
+    box-shadow: inset 0 0 4px #554FE6, 0 0 4px #554FE6;
+}
+
+#wppb-form-style-3-wrapper p.login-remember {
+    overflow: visible !important;  /* for the checkbox box-shadow effect to be visible on :focus */
+    display: flex;
+    align-items: flex-start;
+}
+
+#wppb-form-style-3-wrapper .wppb-send-credentials-checkbox {
+    padding-bottom: 20px;
+}
+
+#wppb-form-style-3-wrapper .wppb-radio,
+#wppb-form-style-3-wrapper .wppb-checkbox,
+#wppb-form-style-3-wrapper .wppb-gdpr-communication-preferences {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#wppb-form-style-3-wrapper .wppb-radios,
+#wppb-form-style-3-wrapper .wppb-checkboxes {
+    column-count: 2;
+    margin: 0;
+}
+
+#wppb-form-style-3-wrapper #pms-paygates-wrapper label,
+#wppb-form-style-3-wrapper .wppb-radios li,
+#wppb-form-style-3-wrapper .wppb-checkboxes li:not(.wppb-hidden) {
+    margin-bottom: 20px !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-radios li.wppb-hidden,
+#wppb-form-style-3-wrapper .wppb-checkboxes li.wppb-hidden {
+    margin: 0;
+    padding: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-radios li,
+#wppb-form-style-3-wrapper .wppb-checkboxes li {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0;
+    line-height: 20px;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan span.pms-subscription-plan-name {
+    font-weight: 400;
+    color: #090A0B;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans .pms-subscription-plan span:not(.pms-subscription-plan-name) {
+    font-weight: 300;
+    font-size: 15px;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings input,
+#wppb-form-style-3-wrapper #pms-paygates-wrapper input[type="radio"],
+#wppb-form-style-3-wrapper .wppb-subscription-plans input[type="radio"],
+#wppb-form-style-3-wrapper .wppb-radios input[type="radio"] {
+    appearance: none;
+    outline: none;
+    background-color: #FFFFFF;
+    min-width: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid #6E7A86;
+    border-radius: 50%;
+    margin-right: 10px !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-subscription-plans input[type="radio"] {
+    margin-bottom: -4px;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings input:checked,
+#wppb-form-style-3-wrapper #pms-paygates-wrapper input[type="radio"]:checked,
+#wppb-form-style-3-wrapper .wppb-subscription-plans input[type="radio"]:checked,
+#wppb-form-style-3-wrapper .wppb-radios input[type="radio"]:checked {
+    background: #554FE6;
+    border-color: #554FE6;
+    box-shadow: inset 0 0 0 3px #ffffff;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings input:focus,
+#wppb-form-style-3-wrapper #pms-paygates-wrapper input[type="radio"]:focus,
+#wppb-form-style-3-wrapper .wppb-subscription-plans input[type="radio"]:focus,
+#wppb-form-style-3-wrapper .wppb-radios input[type="radio"]:focus {
+    border-color: #554FE6;
+    box-shadow: inset 0 0 0 3px #ffffff, 0 0 4px #554FE6;
+}
+
+/* BuddyPress Field Visibility Settings */
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings fieldset {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings label {
+    position: inherit !important;
+    font-size: 16px;
+    color: #6E7A86;
+    word-break: break-word;
+    width: auto;
+    padding: 0;
+    text-indent: 0 !important;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings label:hover {
+    color: #554FE6;
+    cursor: pointer;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings label:hover input {
+    border-color: #554FE6;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings input {
+    padding: 0;
+    margin: 0 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-field-visibility-settings-toggle {
+    margin: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-checkbox:not(.wppb-gdpr-checkbox) .wppb-field-visibility-settings-toggle,
+#wppb-form-style-3-wrapper .wppb-checkbox:not(.wppb-gdpr-checkbox) .wppb-field-visibility-settings,
+#wppb-form-style-3-wrapper .wppb-radio .wppb-field-visibility-settings-toggle,
+#wppb-form-style-3-wrapper .wppb-radio .wppb-field-visibility-settings,
+#wppb-form-style-3-wrapper .wppb-map .wppb-field-visibility-settings-toggle,
+#wppb-form-style-3-wrapper .wppb-map .wppb-field-visibility-settings {
+    margin: -30px 0 30px 0;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings {
+    text-align: left;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings legend,
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-field-visibility-settings-toggle {
+    color: #6E7A86;
+    text-align: left;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-visibility-toggle-link {
+    color: #554FE6;
+    text-decoration: none;
+    font-style: normal;
+    font-size: 18px;
+    font-weight: 100;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-current-visibility-level {
+    font-size: 21px;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .field-visibility-text {
+    font-size: 16px;
+    font-weight: 100;
+}
+
+#wppb-form-style-3-wrapper .wppb_bdp_visibility_settings .wppb-visibility-toggle-link:hover {
+    color: #443ECF;
+}
+
+#wppb-form-style-3-wrapper .wppb-map .wppb_bdp_visibility_settings {
+    margin-top: 10px;
+}
+
+
+/**************************************************/
+/*  SELECT, SELECT2, SELECT MULTIPLE 2
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-form-select-field
+{
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    padding: 0;
+    width: 100%;
+    margin: 0 auto 30px auto;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-selection--multiple,
+#wppb-form-style-3-wrapper .wppb-form-select-field select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'> <path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/> </svg>") no-repeat !important;
+    background-size: 10px !important;
+    background-position-x: calc( 100% - 5px ) !important;
+    background-position-y: 23px !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-select-field select,
+#wppb-form-style-3-wrapper .wppb-form-select-field .select2-container .select2-selection
+{
+    width: 100%;
+    background-color: #FFFFFF !important;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #CFD4DE;
+    border-radius: 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #090A0B;
+    height: 56px;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-container .select2-selection {
+    min-height: 56px;
+    height: auto;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-container .select2-selection .select2-selection__rendered {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-container .select2-selection .select2-selection__rendered .select2-search--inline {
+    padding: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-container .select2-selection .select2-selection__rendered .select2-selection__choice {
+    margin-top: 3px;
+    font-size: 14px;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-select-field select:hover,
+#wppb-form-style-3-wrapper .wppb-form-select-field .select2-container:not(.select2-container--focus, .select2-container--open):hover .select2-selection
+{
+    border: 1px solid #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-select-field select:focus,
+#wppb-form-style-3-wrapper .wppb-form-select-field .select2-container--focus .select2-selection,
+#wppb-form-style-3-wrapper .wppb-form-select-field .select2-container--open .select2-selection
+{
+    border: 1px solid #554FE6;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2 .select2-selection,
+#wppb-form-style-3-wrapper .wppb-select-cpt .select2-selection,
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-selection
+{
+    display: flex;
+    align-items: center;
+}
+
+#wppb-form-style-3-wrapper .wppb-select2 .select2-container,
+#wppb-form-style-3-wrapper .wppb-select-cpt .select2-container,
+#wppb-form-style-3-wrapper .wppb-select2-multiple .select2-container
+{
+    width: 100% !important;
+    margin-left: 0;
+    z-index: 90;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-cpt .select2-container .select2-selection__arrow,
+#wppb-form-style-3-wrapper .wppb-select2 .select2-container .select2-selection__arrow
+{
+    height: 56px;
+}
+
+.select2-container--default.select2-container--open .select2-dropdown {
+    border: 1px solid #6E7A86;
+}
+
+.select2-container--default.select2-container--open .select2-dropdown--above {
+    border-bottom: 0;
+}
+
+.select2-container--default.select2-container--open .select2-dropdown--below {
+    border-top: 0;
+}
+
+#wppb-form-style-3-wrapper .select2-container .select2-selection--single {
+    background-image: none;
+}
+
+
+/**************************************************/
+/*  SELECT MULTIPLE
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-select-multiple {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple label {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: #090A0B;
+    width: auto;
+    margin-bottom: 15px;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select.custom_field_multiple_select {
+    width: 100%;
+    padding: 5px;
+    max-height: 250px;
+    background: #FFFFFF;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #CFD4DE;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #090A0B;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select.custom_field_multiple_select:hover {
+    border: 1px solid #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select.custom_field_multiple_select:focus {
+    border: 1px solid #554FE6;
+}
+
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select option:checked {
+    background-color: #CFD4DE;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select:focus option:checked {
+    background: #554FE6 linear-gradient(0deg, #554FE6 0%, #554FE6 100%);
+}
+
+/* scrollbar */
+#wppb-form-style-3-wrapper .wppb-select-multiple select::-webkit-scrollbar {
+    width: 5px;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select::-webkit-scrollbar-track {
+    border-radius: 4px;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select::-webkit-scrollbar-thumb {
+    background-color: #CFD4DE;
+    border-radius: 4px;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select:hover::-webkit-scrollbar-thumb {
+    background-color: #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-select-multiple select:focus::-webkit-scrollbar-thumb {
+    background-color: #554FE6;
+}
+
+
+/**************************************************/
+/*  MAP & WYSIWYG & HTML & reCAPTCHA Fields
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-recaptcha,
+#wppb-form-style-3-wrapper .wppb-html,
+#wppb-form-style-3-wrapper .wppb-map,
+#wppb-form-style-3-wrapper .wppb-wysiwyg {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+#wppb-form-style-3-wrapper .wppb-recaptcha label,
+#wppb-form-style-3-wrapper .wppb-html label,
+#wppb-form-style-3-wrapper .wppb-map label,
+#wppb-form-style-3-wrapper .wppb-wysiwyg label {
+    order: 1;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: #090A0B;
+    width: auto;
+}
+
+#wppb-form-style-3-wrapper .wppb-map label {
+    margin-bottom: 15px;
+}
+
+#wppb-form-style-3-wrapper .wppb-map .wppb-map-container,
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wp-editor-wrap {
+    order: 2;
+    width: 100%;
+}
+
+#wppb-form-style-3-wrapper .wppb-recaptcha .wppb-recaptcha-element,
+#wppb-form-style-3-wrapper .wppb-html .custom_field_html {
+    order: 2;
+    width: 100%;
+    margin: 0 0 30px 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-recaptcha .wppb-description-delimiter,
+#wppb-form-style-3-wrapper .wppb-html .wppb-description-delimiter,
+#wppb-form-style-3-wrapper .wppb-map .wppb-description-delimiter,
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wppb-description-delimiter {
+    order: 3;
+}
+
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wppb_bdp_visibility_settings,
+#wppb-form-style-3-wrapper .wppb-map .wppb_bdp_visibility_settings {
+    order: 4;
+}
+
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wp-editor-container {
+    border: 1px solid #CFD4DE;
+    border-radius: 4px;
+}
+
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wp-editor-container:hover {
+    border: 1px solid #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-html label,
+#wppb-form-style-3-wrapper .wppb-wysiwyg label,
+#wppb-form-style-3-wrapper .wppb-map label {
+    text-indent: 0 !important;
+    left: 0;
+    position: relative;
+}
+
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wp-editor-container button,
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wp-editor-container input[type=button] {
+    background-color: inherit;
+    border: none;
+    color: #646970;
+}
+
+#wppb-form-style-3-wrapper .wppb-wysiwyg .html-active .switch-html,
+#wppb-form-style-3-wrapper .wppb-wysiwyg .tmce-active .switch-tmce {
+    background-color: #f6f7f7;
+    color: #50575e;
+    border-bottom-color: #f6f7f7;
+}
+
+#wppb-form-style-3-wrapper .wppb-wysiwyg .wp-switch-editor {
+    background: #f0f0f1;
+    color: #646970;
+    border: 1px solid #dcdcde !important;
+}
+
+
+/**************************************************/
+/*  TIME PICKER
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-timepicker {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+#wppb-form-style-3-wrapper .wppb-timepicker label:not(.wppb-field-visibility-settings label) {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    color: #090A0B;
+    margin-right: 15px;
+    width: auto;
+    max-width: 45%;
+    pointer-events: none;
+}
+
+#wppb-form-style-3-wrapper .wppb-timepicker > select {
+    background: #FFFFFF;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #CFD4DE;
+    border-radius: 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    color: #090A0B;
+    height: 56px;
+    padding: 0 15px;
+    flex-basis: 23%;
+    text-align: center;
+    margin: 0;
+}
+
+#wppb-form-style-3-wrapper .wppb-timepicker > span.wppb-timepicker-separator {
+    margin: 0 10px;
+}
+
+#wppb-form-style-3-wrapper .wppb-timepicker > select:hover {
+    border: 1px solid #6E7A86;
+}
+
+#wppb-form-style-3-wrapper .wppb-timepicker > select:focus {
+    border: 1px solid #554FE6;
+}
+
+#wppb-form-style-3-wrapper .wppb-timepicker .wppb_bdp_visibility_settings {
+    flex-basis: 100%;
+}
+
+#wppb-form-style-3-wrapper .wppb-map .wppb_bdp_visibility_settings,
+#wppb-form-style-3-wrapper .wppb-radio .wppb_bdp_visibility_settings,
+#wppb-form-style-3-wrapper .wppb-checkbox .wppb_bdp_visibility_settings {
+    margin-top: 40px;
+}
+
+#wppb-form-style-3-wrapper .wppb-language .wppb_bdp_visibility_settings {
+    display: none;
+}
+
+/**************************************************/
+/*  REPEATER FIELD
+/**************************************************/
+
+#wppb-form-style-3-wrapper .wppb-repeater {
+    border: none;
+    margin-bottom: 60px;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-group {
+    border-bottom: 1px solid #CFD4DE;
+    margin-bottom: 30px;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add {
+    bottom: -15px;
+    left: calc(50% - 15px);
+    border: 1px solid #554FE6;
+    color: #554FE6;
+    background: #ffffff;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-remove {
+    background: #ffffff;
+    color: #C62828;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-remove,
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add {
+    border-radius: 100px;
+    text-decoration: none;
+    text-transform: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#wppb-form-style-3-wrapper .wppb-rpf-singular-set .wppb-rpf-action.wppb-rpf-remove {
+    display: none !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add:hover {
+    background: #443ECF;
+    border: 1px solid #443ECF;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-remove:hover {
+    background: #C62828;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-remove:hover,
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add:hover {
+    color: #FFFFFF;
+    cursor: pointer;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add:focus {
+    border: 1px solid #FFFFFF;
+    box-shadow: 0 0 4px #443ECF;
+    background: #443ECF;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-remove:focus,
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add:focus {
+    border-radius: 100px;
+    color: #FFFFFF;
+}
+
+#wppb-form-style-3-wrapper .wppb-repeater .wppb-rpf-add:disabled {
+    color: #6E7A86;
+    background: transparent;
+    border: 1px solid #6E7A86;
+}
+
+
+/**************************************************/
+/*  SOCIAL CONNECT
+/**************************************************/
+
+#wppb-form-style-3-wrapper div.wppb-sc-buttons-container {
+    order: 3;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    margin: 30px 0;
+}
+
+#wppb-form-style-3-wrapper div.wppb-sc-buttons-container a {
+    text-decoration: none;
+    height: 45px;
+    border-right: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+}
+
+#wppb-form-style-3-wrapper div.wppb-sc-buttons-container div.wppb-sc-heading-before-reg-buttons h3 {
+    margin: 0;
+    display: block;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 26px;
+    line-height: 45px;
+    color: #090A0B;
+    width: auto;
+}
+
+
+/**************************************************/
+/*  PASSWORD STRENGTH
+/**************************************************/
+
+#wppb-form-style-3-wrapper #pass-strength-result {
+    height: auto;
+    line-height: 40px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    color: #6E7A86;
+    border-radius: 100px;
+    pointer-events: none;
+    background-color: #F2F6FC;
+}
+
+#wppb-form-style-3-wrapper #pass-strength-result.short {
+    background: #FFCDD2;
+    border-color: #C62828;
+}
+
+#wppb-form-style-3-wrapper #pass-strength-result.bad {
+    background: #EED8CA;
+    border-color: #F97625;
+}
+
+#wppb-form-style-3-wrapper #pass-strength-result.good {
+    background: #FFF9C4;
+    border-color: #F9A825;
+}
+
+#wppb-form-style-3-wrapper #pass-strength-result.strong {
+    background: #DCEDC8;
+    border-color: #689F38;
+}
+
+/**************************************************/
+/*  ERROR STATE
+/**************************************************/
+
+/* Form Fields  */
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error {
+    background-color: transparent;
+    border: none;
+    margin-bottom: 30px !important;
+    padding: 0 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error > label
+{
+    color: #C62828 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error input,
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error textarea,
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error select,
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error .select2-selection
+{
+    border: 1px solid #C62828 !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error .wppb-form-error {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 20px;
+    color: #C62828;
+    border: none;
+    margin: 0;
+    padding: 5px 0 0 10px;
+}
+
+#wppb-form-style-3-wrapper .wppb-avatar.wppb-field-error .wppb-form-error,
+#wppb-form-style-3-wrapper .wppb-upload.wppb-field-error .wppb-form-error {
+    order: 5;
+}
+
+#wppb-form-style-3-wrapper .wppb-upload.wppb-field-error input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-avatar.wppb-field-error input[name^=simple_upload],
+#wppb-form-style-3-wrapper .wppb-upload.wppb-field-error .wppb_upload_button,
+#wppb-form-style-3-wrapper .wppb-avatar.wppb-field-error .wppb_upload_button,
+#wppb-form-style-3-wrapper .wppb-upload.wppb-field-error input[name^=simple_upload]:before,
+#wppb-form-style-3-wrapper .wppb-avatar.wppb-field-error input[name^=simple_upload]:before,
+#wppb-form-style-3-wrapper .wppb-upload.wppb-field-error .wppb_upload_button:before,
+#wppb-form-style-3-wrapper .wppb-avatar.wppb-field-error .wppb_upload_button:before
+{
+    margin-bottom: 10px;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-field.wppb-field-error input.select2-search__field {
+    border: none;
+}
+
+
+/**************************************************/
+/*  FORM NOTIFICATIONS
+/**************************************************/
+#wppb-form-style-3-wrapper p.wppb-success strong,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning strong,
+#wppb-form-style-3-wrapper p.wppb-error strong,
+#wppb-form-style-3-wrapper p.wppb-warning strong
+{
+    display: none;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning,
+#wppb-form-style-3-wrapper p.wppb-error,
+#wppb-form-style-3-wrapper p.wppb-warning
+{
+    border-radius: 45px;
+    padding: 20px 20px 20px 100px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #6E7A86 !important;
+    background-color: #F9F9F9;
+    border: 1px solid #CFD4DE;
+    position: relative;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success a,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning a,
+#wppb-form-style-3-wrapper p.wppb-error a,
+#wppb-form-style-3-wrapper p.wppb-warning a {
+    color: #554FE6 !important;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success a:hover,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning a:hover,
+#wppb-form-style-3-wrapper p.wppb-error a:hover,
+#wppb-form-style-3-wrapper p.wppb-warning a:hover {
+    text-decoration: underline;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success a:focus,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning a:focus,
+#wppb-form-style-3-wrapper p.wppb-error a:focus,
+#wppb-form-style-3-wrapper p.wppb-warning a:focus {
+    background: transparent !important;
+}
+
+#wppb-form-style-3-wrapper .wppb-alert-title .wppb-alert-icon-container {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    border-radius: 50%;
+
+    height: 60px;
+    width: 60px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success .wppb-alert-title .wppb-alert-icon-container {
+    background: #DCEDC8;
+    border: 1px solid #689F38;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success .wppb-alert-title {
+    color: #558B2F;
+}
+
+#wppb-form-style-3-wrapper p.wppb-success {
+    border: 1px solid #689F38;
+}
+
+#wppb-form-style-3-wrapper p.wppb-warning .wppb-alert-title .wppb-alert-icon-container,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning .wppb-alert-title .wppb-alert-icon-container {
+    background: #FFF9C4;
+    border: 1px solid #F9A825;
+}
+
+#wppb-form-style-3-wrapper p.wppb-warning .wppb-alert-title,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning .wppb-alert-title {
+    color: #F9A825;
+}
+
+#wppb-form-style-3-wrapper p.wppb-warning,
+#wppb-form-style-3-wrapper p.wppb-epaa-warning {
+    border: 1px solid #F9A825;
+}
+
+#wppb-form-style-3-wrapper p.wppb-error .wppb-alert-title .wppb-alert-icon-container {
+    background: #FFCDD2;
+    border: 1px solid #C62828;
+}
+
+#wppb-form-style-3-wrapper p.wppb-error .wppb-alert-title {
+    color: #C62828;
+}
+
+#wppb-form-style-3-wrapper p.wppb-error {
+    border: 1px solid #C62828;
+}
+
+#wppb-form-style-3-wrapper p.wppb-error a[title="Password Lost and Found."] {
+    display: block;
+}
+
+#wppb-form-style-3-wrapper .wppb-alert-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 26px;
+    text-transform: uppercase;
+}
+
+#wppb-form-style-3-wrapper #wppb_register_pre_form_message img[title^="This message is only visible by administrators"] {
+    display: none;
+}
+
+
+/**************************************************/
+/*  MOBILE
+/**************************************************/
+
+@media screen and (max-width: 480px) {
+
+    #wppb-form-style-3-wrapper .wppb-upload .wppb-description-delimiter:not(.wppb-epaa-description),
+    #wppb-form-style-3-wrapper .wppb-avatar .wppb-description-delimiter:not(.wppb-epaa-description) {
+        order: 4;
+        margin: 0;
+    }
+
+    #wppb-form-style-3-wrapper .wppb-upload input[name^=simple_upload],
+    #wppb-form-style-3-wrapper .wppb-avatar input[name^=simple_upload],
+    #wppb-form-style-3-wrapper .wppb-upload .wppb_upload_button,
+    #wppb-form-style-3-wrapper .wppb-avatar .wppb_upload_button {
+        order: 3;
+        margin: 10px 0 10px 100px;
+    }
+
+    #wppb-form-style-3-wrapper .wppb-upload:not(.file-selected) > label,
+    #wppb-form-style-3-wrapper .wppb-avatar:not(.file-selected) > label {
+        margin-bottom: 0;
+    }
+
+    #wppb-form-style-3-wrapper .wppb-timepicker label:not(.wppb-field-visibility-settings label) {
+        flex-basis: 100%;
+        margin-bottom: 10px;
+        max-width: 100%;
+    }
+
+    #wppb-form-style-3-wrapper .wppb-timepicker > select {
+        flex-basis: 40%;
+        margin: 0;
+    }
+
+    #wppb-form-style-3-wrapper .wppb-timepicker > span.wppb-timepicker-separator {
+        margin: 0 10px;
+    }
+
+    #wppb-form-style-3-wrapper .wppb-msf-step-commands #wppb-msf-pagination {
+        gap: 5px;
+    }
+
+}
+
+@media screen and (max-width: 920px) {
+
+    #wppb-form-style-3-wrapper {
+        max-width: calc(100% - 20px);
+    }
+
+}
+
+
+

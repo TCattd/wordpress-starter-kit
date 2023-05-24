@@ -23,23 +23,7 @@ class WCML_Payment_Gateway_Stripe extends WCML_Payment_Gateway {
 	}
 
 	public function add_hooks() {
-		add_filter( 'woocommerce_stripe_request_body', [ $this, 'filter_request_body' ] );
-	}
 
-	public function filter_request_body( $request ) {
-
-		$client_currency = $this->woocommerce_wpml->multi_currency->get_client_currency();
-		$gateway_setting = $this->get_setting( strtoupper( $request['currency'] ) );
-
-		if ( $gateway_setting ) {
-
-			if ( $client_currency !== $gateway_setting['currency'] ) {
-				$request['currency'] = strtolower( $gateway_setting['currency'] );
-				$request['amount']   = WC_Stripe_Helper::get_stripe_amount( $this->woocommerce_wpml->cart->get_cart_total_in_currency( $gateway_setting['currency'] ), $gateway_setting['currency'] );
-			}
-		}
-
-		return $request;
 	}
 
 	/**

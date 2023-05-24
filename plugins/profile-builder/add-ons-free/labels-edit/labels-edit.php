@@ -60,6 +60,7 @@ function wppb_le_scan_labels( $nonce ) {
 			'email.php',
 			'username.php',
 			'password-repeat.php',
+            'form-designs.php',
             'profile-builder.catalog.php'
 		)
 	);
@@ -212,7 +213,7 @@ function wppb_le_page() {
 
 	// array with fields for Edit Labels metabox
 	$pble_fields = array(
-		array( 'type' => 'select', 'slug' => 'pble-label', 'title' => __( 'Label to Edit', 'profile-builder' ), 'default-option' => true, 'values' => $pble_labels, 'options' => $pble_labels, 'description' => 'Here you will see the default label so you can copy it.' ),
+		array( 'type' => 'select', 'slug' => 'pble-label', 'title' => __( 'Label to Edit', 'profile-builder' ), 'default-option' => true, 'values' => $pble_labels, 'options' => $pble_labels, 'description' => __( 'Here you will see the default label so you can copy it.', 'profile-builder' ) ),
 		array( 'type' => 'textarea', 'slug' => 'pble-newlabel', 'title' => __( 'New Label', 'profile-builder' ) ),
 	);
 
@@ -247,7 +248,7 @@ add_action( 'add_meta_boxes', 'wppb_le_side_metabox' );
 function wppb_le_rescan_button() {
 	?>
 	<div class="wrap">
-		<p>Rescan all Profile Builder labels.</p>
+        <?php echo '<p>'. esc_html__( 'Rescan all Profile Builder labels.', 'profile-builder' ) .'</p>'; ?>
 
 		<form action="" method="post">
             <input type="hidden" name="wppb_nonce" value="<?php echo esc_attr( wp_create_nonce( 'wppb_rescan_labels' ) ); ?>" />
@@ -273,20 +274,20 @@ add_action( 'add_meta_boxes', 'wppb_le_info_side_metabox' );
 function wppb_le_info() {
 	?>
 	<div class="wrap">
-		<p><b>Variables:</b></p>
+        <p><b> <?php echo  esc_html__( 'Variables:', 'profile-builder' ) ?> </b></p>
 		<ul>
 			<li>%1$s</li>
 			<li>%2$s</li>
 			<li>%s</li>
 			<li>etc.</li>
 		</ul>
-		<p><b>Place them like in the default string!</b></p>
-		<p>Example:</p>
+        <p><b> <?php echo  esc_html__( 'Place them like in the default string!', 'profile-builder' ) ?> </b></p>
+		<p><?php echo  esc_html__( 'Example:', 'profile-builder' ) ?></p>
 		<p>
-			<b>Old Label:</b><br>in %1$d sec, click %2$s.%3$s<br>
-			<b>New Label:</b><br>click %2$s.%3$s in %1$d sec<br>
+			<b><?php echo  esc_html__( 'Old Label', 'profile-builder' ) ?>:</b><br>in %1$d sec, click %2$s.%3$s<br>
+			<b><?php echo  esc_html__( 'New Label', 'profile-builder' ) ?>:</b><br>click %2$s.%3$s in %1$d sec<br>
 		</p>
-		<a href="http://www.cozmoslabs.com/?p=40126" target="_blank">Read more detailed informations</a>
+		<a href="http://www.cozmoslabs.com/?p=40126" target="_blank"><?php echo  esc_html__( 'Read more detailed informations', 'profile-builder' ) ?></a>
 	</div>
 <?php
 }

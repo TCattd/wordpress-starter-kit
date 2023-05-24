@@ -4,13 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitceba3d32c866c344468ecd4fb420375a
+class ComposerStaticInitd1d01bd7ce63adf46be85c9deb725f8f
 {
     public static $files = array (
         'b45b351e6b6f7487d819961fef2fda77' => __DIR__ . '/..' . '/jakeasmith/http_build_url/src/http_build_url.php',
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'IWPML_PB_Media_Nodes_Iterator' => __DIR__ . '/../..' . '/classes/Shared/media/interface-iwpml-pb-media-nodes-iterator.php',
         'IWPML_PB_Media_Update' => __DIR__ . '/../..' . '/classes/Shared/media/interface-iwpml-pb-media-update.php',
         'IWPML_PB_Media_Update_Factory' => __DIR__ . '/../..' . '/classes/Shared/media/interface-iwpml-pb-media-update-factory.php',
@@ -298,7 +299,7 @@ class ComposerStaticInitceba3d32c866c344468ecd4fb420375a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitceba3d32c866c344468ecd4fb420375a::$classMap;
+            $loader->classMap = ComposerStaticInitd1d01bd7ce63adf46be85c9deb725f8f::$classMap;
 
         }, null, ClassLoader::class);
     }

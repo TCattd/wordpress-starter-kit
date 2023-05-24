@@ -7,7 +7,7 @@ namespace The_SEO_Framework\Bridges;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -97,9 +97,10 @@ abstract class ListTable {
 	 */
 	public function _prepare_columns_wp_ajax_add_tag() {
 
-		if ( ! \check_ajax_referer( 'add-tag', '_wpnonce_add-tag', false )
-		|| empty( $_POST['taxonomy'] ) )
-			return;
+		if (
+			   ! \check_ajax_referer( 'add-tag', '_wpnonce_add-tag', false )
+			|| empty( $_POST['taxonomy'] )
+		) return;
 
 		$taxonomy   = stripslashes( $_POST['taxonomy'] );
 		$tax_object = $taxonomy ? \get_taxonomy( $taxonomy ) : false;
@@ -116,10 +117,11 @@ abstract class ListTable {
 	 */
 	public function _prepare_columns_wp_ajax_inline_save() {
 
-		if ( ! \check_ajax_referer( 'inlineeditnonce', '_inline_edit', false )
-		|| empty( $_POST['post_ID'] )
-		|| empty( $_POST['post_type'] ) )
-			return;
+		if (
+			   ! \check_ajax_referer( 'inlineeditnonce', '_inline_edit', false )
+			|| empty( $_POST['post_ID'] )
+			|| empty( $_POST['post_type'] )
+		) return;
 
 		$post_type = stripslashes( $_POST['post_type'] );
 		$pto       = $post_type ? \get_post_type_object( $post_type ) : false;
@@ -138,9 +140,10 @@ abstract class ListTable {
 	 */
 	public function _prepare_columns_wp_ajax_inline_save_tax() {
 
-		if ( ! \check_ajax_referer( 'taxinlineeditnonce', '_inline_edit', false )
-		|| empty( $_POST['tax_ID'] ) )
-			return;
+		if (
+			   ! \check_ajax_referer( 'taxinlineeditnonce', '_inline_edit', false )
+			|| empty( $_POST['tax_ID'] )
+		) return;
 
 		if ( \current_user_can( 'edit_term', (int) $_POST['tax_ID'] ) )
 			$this->init_columns_ajax();
@@ -155,9 +158,10 @@ abstract class ListTable {
 	 */
 	private function init_columns( $screen ) {
 
-		if ( ! \tsf()->is_wp_lists_edit()
-		|| empty( $screen->id ) )
-			return;
+		if (
+			   ! \tsf()->is_wp_lists_edit()
+			|| empty( $screen->id )
+		) return;
 
 		$post_type = $screen->post_type ?? '';
 		$taxonomy  = $screen->taxonomy ?? '';

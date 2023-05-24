@@ -26,9 +26,9 @@ class WCML_xDomain_Data implements \IWPML_Backend_Action, \IWPML_Frontend_Action
 	}
 
 	/**
-	 * @param $data
+	 * @param array $data
 	 *
-	 * @return mixed
+	 * @return array
 	 */
 	public function pass_data_to_domain( $data ) {
 

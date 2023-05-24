@@ -2,6 +2,7 @@
 
 use WCML\StandAlone\NullSitePress;
 use WCML\Utilities\WcAdminPages;
+use WPML\API\Sanitize;
 use WPML\Collect\Support\Collection;
 use WPML\Core\ISitePress;
 use WPML\FP\Fns;
@@ -15,12 +16,12 @@ class WCML_WC_Gateways {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress|NullSitePress */
+	/** @var SitePress|NullSitePress */
 	private $sitepress;
 
 	/**
 	 * @param woocommerce_wpml        $woocommerce_wpml
-	 * @param Sitepress|NullSitePress $sitepress
+	 * @param SitePress|NullSitePress $sitepress
 	 */
 	public function __construct( woocommerce_wpml $woocommerce_wpml, ISitePress $sitepress ) {
 		$this->sitepress        = $sitepress;
@@ -97,15 +98,20 @@ class WCML_WC_Gateways {
 		}
 	}
 
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 */
 	public function payment_gateways_filters( $gateway ) {
 
 		if ( isset( $gateway->id ) ) {
-			$gateway_id = $gateway->id;
 			$this->translate_gateway_strings( $gateway );
 		}
 
 	}
 
+	/**
+	 * @param WC_Payment_Gateway $gateway
+	 */
 	public function translate_gateway_strings( $gateway ) {
 
 		if ( isset( $gateway->enabled ) && $gateway->enabled !== 'no' ) {
@@ -122,8 +128,6 @@ class WCML_WC_Gateways {
 				$gateway->title = $this->translate_gateway_title( $gateway->title, $gateway->id );
 			}
 		}
-
-		return $gateway;
 
 	}
 
@@ -338,7 +342,7 @@ class WCML_WC_Gateways {
 
 		if ( isset( $gateway ) ) {
 			if ( 'woocommerce_bacs' === $gateway && isset( $_POST['bacs-currency'] ) ) {
-				update_option( self::WCML_BACS_ACCOUNTS_CURRENCIES_OPTION, filter_var_array( $_POST['bacs-currency'], FILTER_SANITIZE_STRING ) );
+				update_option( self::WCML_BACS_ACCOUNTS_CURRENCIES_OPTION, array_map( [ Sanitize::class, 'string' ], $_POST['bacs-currency'] ) );
 			}
 		}
 

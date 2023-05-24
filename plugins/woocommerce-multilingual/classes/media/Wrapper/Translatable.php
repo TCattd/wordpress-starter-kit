@@ -11,9 +11,9 @@ class Translatable implements IMedia {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var  SitePress */
+	/** @var \SitePress */
 	private $sitepress;
-	/** @var  wpdb */
+	/** @var wpdb */
 	private $wpdb;
 
 	public $settings = [];
@@ -117,7 +117,9 @@ class Translatable implements IMedia {
 		$translated_thumbnail_id = $this->sitepress->get_object_id( $thumbnail_id, 'attachment', false, $language );
 
 		if ( is_null( $translated_thumbnail_id ) && $thumbnail_id ) {
-			$factory                 = new WPML_Media_Attachments_Duplication_Factory();
+			$factory = new WPML_Media_Attachments_Duplication_Factory();
+
+			/** @var \WPML_Media_Attachments_Duplication */
 			$media_duplicate         = $factory->create();
 			$translated_thumbnail_id = $media_duplicate->create_duplicate_attachment(
 				$thumbnail_id,
@@ -167,8 +169,9 @@ class Translatable implements IMedia {
 	}
 
 	public function create_base_media_translation( $attachment_id, $parent_id, $target_lang ) {
+		$factory = new WPML_Media_Attachments_Duplication_Factory();
 
-		$factory         = new WPML_Media_Attachments_Duplication_Factory();
+		/** @var \WPML_Media_Attachments_Duplication */
 		$media_duplicate = $factory->create();
 		$duplicated_id   = $media_duplicate->create_duplicate_attachment( $attachment_id, $parent_id, $target_lang );
 

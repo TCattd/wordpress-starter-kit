@@ -127,7 +127,7 @@ function wppb_in_buddypress_settings_content() {
 
 
                 <?php // Check Profile Builder version, display User Listing only for Pro
-                $versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+                $versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
                 if ( defined('PROFILE_BUILDER') && in_array( PROFILE_BUILDER, $versions ) ) { ?>
 

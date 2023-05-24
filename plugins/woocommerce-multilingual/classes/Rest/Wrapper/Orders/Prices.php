@@ -8,7 +8,7 @@ use WCML\Rest\Exceptions\InvalidCurrency;
 
 class Prices extends Handler {
 
-	/** @var WCML_Multi_Currency_Orders */
+	/** @var \WCML_Multi_Currency_Orders */
 	private $wcmlMultiCurrencyOrders;
 
 	public function __construct(
@@ -20,9 +20,9 @@ class Prices extends Handler {
 	/**
 	 * Sets the product information according to the provided language
 	 *
-	 * @param object $object
-	 * @param WP_REST_Request $request
-	 * @param bool $creating
+	 * @param object           $object
+	 * @param \WP_REST_Request $request
+	 * @param bool             $creating
 	 *
 	 * @throws InvalidCurrency
 	 *

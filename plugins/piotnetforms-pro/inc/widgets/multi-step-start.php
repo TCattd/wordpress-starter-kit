@@ -293,6 +293,19 @@ class Piotnetforms_Multi_Step_Start extends Base_Widget_Piotnetforms {
 		$active = ( $name == 'active' ) ? '.active' : '';
 
 		$this->add_control(
+			'progress_bar_step_title_color_' . $name,
+			[
+				'label' => __( 'Step Title Color', 'piotnetforms' ),
+				'type' => 'color',
+				'default' => '',
+				'render_type' => 'none',
+				'selectors' => [
+					'{{WRAPPER}} ' . $active . ' .piotnetforms-multi-step-form__progressbar-item-title' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
 			'progress_bar_step_number_color_' . $name,
 			[
 				'label' => __( 'Step Number Color', 'piotnetforms' ),
@@ -328,6 +341,9 @@ class Piotnetforms_Multi_Step_Start extends Base_Widget_Piotnetforms {
 		$form_version = empty( get_post_meta( $form_post_id, '_piotnetforms_version', true ) ) ? 1 : get_post_meta( $form_post_id, '_piotnetforms_version', true );
 		$form_id = $form_version == 1 ? get_post_meta( $form_post_id, '_piotnetforms_form_id', true ) : $form_post_id;
 		$steps_title = json_decode( $settings['steps_title'], true );
+		$step_title_hide_destop = !empty($settings['progress_bar_step_title_hide_desktop']) ? $settings['progress_bar_step_title_hide_desktop'] : '' ;
+		$step_title_hide_table = !empty($settings['progress_bar_step_title_hide_table']) ? $settings['progress_bar_step_title_hide_table'] : '' ;
+		$step_title_hide_mobile = !empty($settings['progress_bar_step_title_hide_mobile']) ? $settings['progress_bar_step_title_hide_mobile'] : '' ;
 
 		$this->add_render_attribute( 'wrapper', 'class', 'piotnetforms-multi-step-form' );
 		$this->add_render_attribute( 'wrapper', 'data-piotnetforms-multi-step-form-id', $form_id );
@@ -348,7 +364,7 @@ class Piotnetforms_Multi_Step_Start extends Base_Widget_Piotnetforms {
 							<div class="piotnetforms-multi-step-form__progressbar-item-step-number">
 								<div class="piotnetforms-multi-step-form__progressbar-item-step"><?php echo $key + 1; ?></div>
 							</div>
-							<div class="piotnetforms-multi-step-form__progressbar-item-title <?php echo $settings['progress_bar_step_title_hide_desktop'] . ' ' . $settings['progress_bar_step_title_hide_tablet'] . ' ' . $settings['progress_bar_step_title_hide_mobile'] ; ?>"><?php echo $steps_title_item; ?></div>
+							<div class="piotnetforms-multi-step-form__progressbar-item-title <?php echo $step_title_hide_destop  . ' ' . $step_title_hide_table . ' ' . $step_title_hide_mobile ; ?>"><?php echo $steps_title_item; ?></div>
 						</div>
 					<?php endforeach; ?>
 				</div>

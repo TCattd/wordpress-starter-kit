@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -93,47 +93,22 @@ class Admin_Init extends Init {
 	 * @since 4.1.2 Now autoenqueues on edit.php and edit-tags.php regardless of SEO Bar output (for quick/bulk-edit support).
 	 * @since 4.1.4 Now considers headlessness.
 	 * @access private
-	 *
-	 * @param string|null $hook The current page hook.
 	 */
-	public function _init_admin_scripts( $hook = null ) {
+	public function _init_admin_scripts() {
 
-		$autoenqueue = false;
-
-		if ( $this->is_seo_settings_page() ) {
-			$autoenqueue = true;
-		} elseif ( $hook ) {
-
-			$enqueue_hooks = [];
-
-			$prepare_edit_screen = false;
-
-			if ( ! $this->is_headless['meta'] ) {
-				if ( $this->is_archive_admin() ) {
-					$prepare_edit_screen = $this->is_taxonomy_supported();
-				} elseif ( $this->is_singular_admin() ) {
-					$prepare_edit_screen = $this->is_post_type_supported( $this->get_admin_post_type() );
-				}
-			}
-
-			if ( $prepare_edit_screen ) {
-				$enqueue_hooks = [
-					'edit.php',
-					'post.php',
-					'post-new.php',
-					'edit-tags.php',
-					'term.php',
-				];
-			}
-
-			if ( \in_array( $hook, $enqueue_hooks, true ) )
-				$autoenqueue = true;
-
-			if ( $this->get_static_cache( 'persistent_notices', [] ) )
-				$autoenqueue = true;
+		if (
+			   $this->is_seo_settings_page()
+			// Notices can be outputted if not entirely headless -- this very method only runs when not entirely headless.
+			|| $this->get_static_cache( 'persistent_notices', [] )
+			|| (
+				! $this->is_headless['meta'] && (
+					   ( $this->is_archive_admin() && $this->is_taxonomy_supported() )
+					|| ( $this->is_singular_admin() && $this->is_post_type_supported( $this->get_admin_post_type() ) )
+				)
+			)
+		) {
+			$this->init_admin_scripts();
 		}
-
-		$autoenqueue and $this->init_admin_scripts();
 	}
 
 	/**
@@ -376,8 +351,8 @@ class Admin_Init extends Init {
 	 * @since 2.9.3 1. Query arguments work again (regression 2.9.2).
 	 *              2. Now only accepts http and https protocols.
 	 * @since 4.2.0 Now allows query arguments with value 0|'0'.
-	 * @TODO Remove failsafe? WP 5.2/5.4 broke it (this method can never run on failure...)
-	 *       Maybe we should investigate the cause and remove WP's blockade. This is a corner-case, however.
+	 * @TODO WP 5.2/5.4 will cause this method to never run on wp_die().
+	 *       We should further investigate the cause and remove WP's blockade. This is a corner-case, however.
 	 *
 	 * @param string $page Menu slug. This slug must exist, or the redirect will loop back to the current page.
 	 * @param array  $query_args Optional. Associative array of query string arguments
@@ -591,9 +566,10 @@ class Admin_Init extends Init {
 		// Notice was deleted already elsewhere, or key was faulty. Either way, ignore--should be self-resolving.
 		if ( empty( $notices[ $key ]['conditions']['capability'] ) ) return;
 
-		if ( ! \current_user_can( $notices[ $key ]['conditions']['capability'] )
-		// phpcs:ignore, WordPress.Security.NonceVerification.Missing -- We require the POST data to find locally stored nonces.
-		|| ! \wp_verify_nonce( $_POST['tsf_notice_nonce'] ?? '', $this->_get_dismiss_notice_nonce_action( $key ) ) ) {
+		if (
+			   ! \current_user_can( $notices[ $key ]['conditions']['capability'] )
+			|| ! \wp_verify_nonce( $_POST['tsf_notice_nonce'] ?? '', $this->_get_dismiss_notice_nonce_action( $key ) )
+		) {
 			\wp_die( -1, 403 );
 		}
 

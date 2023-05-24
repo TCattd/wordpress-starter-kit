@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7da2b10f3726366a1aa4039f5a2e7723
+class ComposerStaticInit33c95e2da3171daaf74c5753020757dc
 {
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'IWPML_ST_Rewrite_Rule_Filter' => __DIR__ . '/../..' . '/classes/slug-translation/iwpml-st-rewrite-rule-filter.php',
         'IWPML_ST_String_Scanner' => __DIR__ . '/../..' . '/classes/strings-scanning/iwpml-st-string-scanner.php',
         'IWPML_ST_Translations_File' => __DIR__ . '/../..' . '/classes/translations-file-scan/translations-file/iwpml-st-translations-file.php',
@@ -326,7 +327,7 @@ class ComposerStaticInit7da2b10f3726366a1aa4039f5a2e7723
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit7da2b10f3726366a1aa4039f5a2e7723::$classMap;
+            $loader->classMap = ComposerStaticInit33c95e2da3171daaf74c5753020757dc::$classMap;
 
         }, null, ClassLoader::class);
     }

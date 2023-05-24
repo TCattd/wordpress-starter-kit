@@ -40,7 +40,7 @@ class Query implements \IWPML_REST_Action {
 	/**
 	 * Validates if products query is valid.
 	 *
-	 * @param $results
+	 * @param object $results
 	 *
 	 * @return bool
 	 */

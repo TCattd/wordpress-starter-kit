@@ -147,7 +147,7 @@ class WCML_Dynamic_Pricing implements \IWPML_Action {
 			);
 
 		if ( $class_name ) {
-			return wpml_collect( $requirements[ $class_name ] )
+			return (bool) wpml_collect( $requirements[ $class_name ] )
 				->filter(
 					function ( $property ) use ( $dynamic_pricing ) {
 						return isset( $dynamic_pricing->$property ) && $dynamic_pricing->$property;

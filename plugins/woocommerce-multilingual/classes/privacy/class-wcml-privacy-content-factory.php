@@ -6,7 +6,7 @@
 class WCML_Privacy_Content_Factory implements IWPML_Backend_Action_Loader {
 
 	/**
-	 * @return IWPML_Action
+	 * @return IWPML_Action|null
 	 */
 	public function create() {
 		if ( class_exists( 'WPML_Privacy_Content' ) ) {

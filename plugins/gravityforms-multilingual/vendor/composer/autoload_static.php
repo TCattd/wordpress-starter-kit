@@ -4,14 +4,20 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3b3d03e86d4d8fe1133b71f2c5664bb5
+class ComposerStaticInit7ca6208351c22c027ec47e90da84487f
 {
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'GFML\\Compatibility\\FeedAddon\\FeedAddon' => __DIR__ . '/../..' . '/classes/compatibility/feed_addon/FeedAddon.php',
         'GFML\\Compatibility\\FeedAddon\\GravityFlow' => __DIR__ . '/../..' . '/classes/compatibility/feed_addon/GravityFlow.php',
+        'GFML\\Compatibility\\FeedAddon\\GravityFlowFactory' => __DIR__ . '/../..' . '/classes/compatibility/feed_addon/GravityFlowFactory.php',
         'GFML\\Compatibility\\FeedAddon\\TranslatableKey' => __DIR__ . '/../..' . '/classes/compatibility/feed_addon/TranslatableKey.php',
         'GFML\\Compatibility\\FeedAddon\\Value' => __DIR__ . '/../..' . '/classes/compatibility/feed_addon/Value.php',
         'GFML\\Compatibility\\UserRegistration\\Hooks' => __DIR__ . '/../..' . '/classes/compatibility/user_registration/Hooks.php',
+        'GFML\\Compatibility\\Woocommerce\\Currency' => __DIR__ . '/../..' . '/classes/compatibility/woocommerce/class-gfml-currency.php',
+        'GFML\\Confirmation\\SaveAndContinue' => __DIR__ . '/../..' . '/classes/Confirmation/SaveAndContinue.php',
+        'GFML\\Container\\Config' => __DIR__ . '/../..' . '/classes/Container/Config.php',
+        'GFML\\Loader' => __DIR__ . '/../..' . '/classes/Loader.php',
         'GFML_Conditional_Logic' => __DIR__ . '/../..' . '/classes/class-gfml-conditional-logic.php',
         'GFML_Form' => __DIR__ . '/../..' . '/classes/class-gfml-form.php',
         'GFML_Hooks' => __DIR__ . '/../..' . '/classes/class-gfml-hooks.php',
@@ -34,7 +40,7 @@ class ComposerStaticInit3b3d03e86d4d8fe1133b71f2c5664bb5
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInit3b3d03e86d4d8fe1133b71f2c5664bb5::$classMap;
+            $loader->classMap = ComposerStaticInit7ca6208351c22c027ec47e90da84487f::$classMap;
 
         }, null, ClassLoader::class);
     }

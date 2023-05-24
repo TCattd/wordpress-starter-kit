@@ -10,7 +10,7 @@ add_action( 'admin_init', 'wppb_pbie_export_our_json' );
 function wppb_pbie_export_our_json() {
 	if( isset( $_POST['cozmos-export'] ) && isset( $_POST['wppb_nonce'] ) && wp_verify_nonce( sanitize_text_field( $_POST['wppb_nonce'] ), 'wppb_export_settings' ) ) {
 		/* get Profile Builder version */
-		$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+		$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 		if( in_array( PROFILE_BUILDER, $versions ) ) {
 			$version = 'pro';

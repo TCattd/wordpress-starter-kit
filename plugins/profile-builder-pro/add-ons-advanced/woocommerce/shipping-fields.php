@@ -165,7 +165,7 @@ function wppb_in_woo_shipping_handler( $output, $form_location, $field, $user_id
 
                 if ($field_key == 'shipping_country') {
 
-                    $output .= '<li class="wppb-form-field wppb_' . $field_key . $error_class . '">
+                    $output .= '<li class="wppb-form-field wppb_' . $field_key . $error_class . apply_filters( 'wppb_woo_field_extra_css_class', '', $field_key) . '">
                             <label for="' . $field_key . '">' . $field_val['label'] . $error_mark . '</label>
                             <select name="' . $field_key . '" id="' . $field_key . '" class="country_to_state custom_field_country_select">';
                     $output .= '<option value="" selected >' . esc_attr__('Select an option&hellip;', 'woocommerce') . '</option>'; //phpcs:ignore
@@ -194,7 +194,7 @@ function wppb_in_woo_shipping_handler( $output, $form_location, $field, $user_id
 
                         $style = ( empty($states_array[$selected_country]) ) ? 'display:none' : '';
 
-                        $output .= '<li style="'.$style.';" class="wppb-form-field wppb_' . $field_key . $error_class . '">
+                        $output .= '<li style="'.$style.';" class="wppb-form-field wppb_' . $field_key . $error_class . apply_filters( 'wppb_woo_field_extra_css_class', '', $field_key) . '">
                                     <label for="' . $field_key . '">' . $field_val['label'] . $error_mark . '</label>';
 
                         // Display a select with the available States
@@ -214,14 +214,14 @@ function wppb_in_woo_shipping_handler( $output, $form_location, $field, $user_id
 
                     } else {
                         //display an input if selected country has no states
-                        $output .= '<li class="wppb-form-field wppb_' . $field_key . $error_class . '">
+                        $output .= '<li class="wppb-form-field wppb_' . $field_key . $error_class . apply_filters( 'wppb_woo_field_extra_css_class', '', $field_key) . '">
                                    <label for="' . $field_key . '">' . $field_val['label'] . $error_mark . '</label>';
                         $output .= '<input class="extra_field_input" name="' . $field_key . '" type="text" id="' . $field_key . '" value="' . esc_attr(wp_unslash($$field_key)) . '" ' . $extra_attribute . '/> ' . $is_error . '</li>';
                     }
 
                 } else {
                     // Output a standard input field (if it's not country or state select)
-                    $output .= '<li class="wppb-form-field wppb_' . $field_key . $error_class . '">
+                    $output .= '<li class="wppb-form-field wppb_' . $field_key . $error_class . apply_filters( 'wppb_woo_field_extra_css_class', '', $field_key) . '">
                             <label for="' . $field_key . '">' . $field_val['label'] . $error_mark . '</label>
                             <input class="extra_field_input" name="' . $field_key . '" type="text" id="' . $field_key . '" value="' . esc_attr(wp_unslash($$field_key)) . '" ' . $extra_attribute . '/>' . $is_error . '</li>';
                 }

@@ -1,9 +1,12 @@
 <?php
 
 use WCML\StandAlone\UI\AdminMenu;
+use WCML\AdminNotices\WizardNotice;
 use WCML\Utilities\AdminPages;
 use WPML\FP\Fns;
 use WPML\FP\Str;
+
+use function WCML\functions\getSetting;
 use function WCML\functions\isStandAlone;
 
 /**
@@ -11,7 +14,7 @@ use function WCML\functions\isStandAlone;
  */
 class WCML_Admin_Menus {
 
-    const SLUG = 'wpml-wcml';
+	const SLUG = 'wpml-wcml';
 
 	/** @var woocommerce_wpml */
 	private static $woocommerce_wpml;
@@ -56,7 +59,9 @@ class WCML_Admin_Menus {
 		if ( is_admin() && ! is_null( $sitepress ) && self::$woocommerce_wpml->dependencies_are_ok && WCML_Capabilities::canManageWcml() ) {
 			add_action( 'admin_footer', [ __CLASS__, 'documentation_links' ] );
 			add_action( 'admin_head', [ __CLASS__, 'hide_multilingual_content_setup_box' ] );
-			add_action( 'admin_init', [ __CLASS__, 'restrict_admin_with_redirect' ] );
+			if ( ! isStandAlone() ) {
+				add_action( 'admin_init', [ __CLASS__, 'restrict_admin_with_redirect' ] );
+			}
 			add_filter( 'plugin_action_links_woocommerce-multilingual/wpml-woocommerce.php', [ __CLASS__, 'add_settings_links_to_plugin_actions' ] );
 		}
 
@@ -142,9 +147,12 @@ class WCML_Admin_Menus {
 			if ( isStandAlone() ) {
 				$plugins_wrap = new AdminMenu( self::$sitepress, self::$woocommerce_wpml );
 				$plugins_wrap->show();
-			} else {
+			} elseif ( getSetting( 'set_up_wizard_run' ) ) {
 				$menus_wrap = new WCML_Menus_Wrap( self::$woocommerce_wpml );
 				$menus_wrap->show();
+			} else {
+				$wizard_wrap = new WizardNotice( self::$woocommerce_wpml );
+				$wizard_wrap->show();
 			}
 		}
 	}
@@ -252,7 +260,7 @@ class WCML_Admin_Menus {
 					wcml_safe_redirect( admin_url( 'admin.php?page=wpml-wcml&tab=products&prid=' . $prid ) );
 				}
 			} elseif ( self::is_admin_duplicate_page_action( $pagenow ) && self::is_post_product_translation_screen() ) {
-			    wcml_safe_redirect( admin_url( 'admin.php?page=wpml-wcml&tab=products' ) );
+				wcml_safe_redirect( admin_url( 'admin.php?page=wpml-wcml&tab=products' ) );
 			}
 		} elseif ( 'post.php' === $pagenow && self::is_post_product_translation_screen() ) {
 			add_action( 'admin_notices', [ __CLASS__, 'inf_editing_product_in_non_default_lang' ] );

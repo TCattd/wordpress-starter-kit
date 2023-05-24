@@ -24,6 +24,10 @@
 
         wait: 'prepare',
 
+        actions: {
+            'refresh_post_screen': 'onRefreshScreen',
+        },
+
         events: {
             'click .acfe-dev-delete-meta': 'onDeleteSingle',
             'click .acfe-dev-bulk [type="submit"]': 'onDeleteBulk',
@@ -80,7 +84,7 @@
                 this.$wp().remove();
             }
 
-            if (!this.count('acf') && !this.count('wp')) {
+            if ((!this.count('acf') && !this.count('wp')) || (!this.$acf().is(':visible') && !this.$wp().is(':visible'))) {
                 this.hideBulk();
             }
 
@@ -105,9 +109,7 @@
                 },
                 beforeSend: function() {
 
-                    $tr.css({
-                        backgroundColor: '#faafaa'
-                    }).fadeOut(350, function() {
+                    $tr.addClass('deleted').delay(200).fadeOut(250, function() {
                         $tr.remove();
                         self.syncMetaboxes();
                     });
@@ -116,9 +118,7 @@
                 success: function(response) {
 
                     if (response !== '1') {
-                        $tr.css({
-                            backgroundColor: ''
-                        });
+                        $tr.removeClass('deleted');
                         $tr.show();
                     }
 
@@ -164,9 +164,7 @@
                 beforeSend: function() {
 
                     trs.map(function(tr) {
-                        $(tr).css({
-                            backgroundColor: '#faafaa'
-                        }).fadeOut(350, function() {
+                        $(tr).addClass('deleted').delay(200).fadeOut(250, function() {
                             $(tr).remove();
                             self.syncMetaboxes();
                         });
@@ -190,6 +188,18 @@
             }
 
         },
+
+        onRefreshScreen: function(data) {
+
+            // fix dev mode postbox being hidden
+            // on page attributes template change
+            data.hidden.map(function(id) {
+                if (id === 'acfe-wp-custom-fields' || id === 'acfe-acf-custom-fields' || id === 'acfe-performance') {
+                    acf.getPostbox(id).showEnable();
+                }
+            });
+
+        }
 
     });
 
@@ -452,6 +462,71 @@
             return text;
 
         }
+
+    });
+
+})(jQuery);
+(function($) {
+
+    if (typeof acf === 'undefined' || typeof acfe === 'undefined') {
+        return;
+    }
+
+    var moduleManager = new acf.Model({
+        wait: 'prepare',
+        priority: 1,
+        initialize: function() {
+            if (acfe.get('module') && acfe.get('module').screen === 'post') {
+                new module(acfe.get('module'));
+            }
+        }
+    });
+
+    var module = acf.Model.extend({
+
+        setup: function(props) {
+            this.inherit(props);
+        },
+
+        filters: {
+            'validation_complete': 'onValidationComplete',
+        },
+
+        onValidationComplete: function(data, $el, instance) {
+
+            // title
+            var $title = $('#titlewrap #title');
+
+            // validate post title
+            if (!$title.val()) {
+
+                // data
+                data.valid = 0;
+                data.errors = data.errors || [];
+
+                // push error
+                data.errors.push({
+                    input: '',
+                    message: this.get('messages.label')
+                });
+
+                $title.focus();
+
+            }
+
+            return data;
+
+        },
+
+        initialize: function() {
+
+            // update status
+            $('#post-status-display').html(this.get('messages.status'));
+
+            // move export links
+            $('.acfe-misc-export').insertAfter('.misc-pub-post-status');
+
+        },
 
     });
 

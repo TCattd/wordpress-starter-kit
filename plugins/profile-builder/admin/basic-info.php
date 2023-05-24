@@ -23,7 +23,7 @@ function wppb_basic_info_content() {
 
 	$version = 'Free';
 	$version = ( ( PROFILE_BUILDER == 'Profile Builder Pro' ) ? 'Pro' : $version );
-	$version = ( ( PROFILE_BUILDER == 'Profile Builder Elite' ) ? 'Elite' : $version );
+	$version = ( ( PROFILE_BUILDER == 'Profile Builder Agency' ) ? 'Agency' : $version );
 	$version = ( ( PROFILE_BUILDER == 'Profile Builder Unlimited' ) ? 'Unlimited' : $version );
 	$version = ( ( PROFILE_BUILDER == 'Profile Builder Basic' ) ? 'Basic' : $version );
 

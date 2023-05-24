@@ -197,7 +197,7 @@ class WCML_Adventure_tours implements \IWPML_Action {
 
 							$package['contents'][ 'wc_adventure_tour:' . $tour_tab_id . ':' . $field ] = [
 								'translate' => 1,
-								'data'      => $this->tp->encode_field_data( $tour_tab_meta[ $field ], 'base64' ),
+								'data'      => $this->tp->encode_field_data( $tour_tab_meta[ $field ] ),
 								'format'    => 'base64',
 							];
 

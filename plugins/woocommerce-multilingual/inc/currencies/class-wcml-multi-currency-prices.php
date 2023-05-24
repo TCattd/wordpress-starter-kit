@@ -1,5 +1,6 @@
 <?php
 
+use WPML\FP\Fns;
 use WPML\FP\Logic;
 use WPML\FP\Obj;
 use WPML\FP\Str;
@@ -14,14 +15,21 @@ class WCML_Multi_Currency_Prices {
 	 * @var array
 	 */
 	private $currency_options;
+
 	/**
 	 * @var WCML_Multi_Currency
 	 */
 	private $multi_currency;
+
 	/**
-	 * @var orders_list_currency
+	 * @var string
 	 */
 	private $orders_list_currency;
+
+	/**
+	 * @var bool
+	 */
+	private $isSavingPost = false;
 
 	public function __construct( WCML_Multi_Currency $multi_currency, array $currency_options ) {
 		$this->multi_currency   = $multi_currency;
@@ -94,6 +102,18 @@ class WCML_Multi_Currency_Prices {
 
 		// need for display correct price format for order on orders list page.
 		add_filter( 'get_post_metadata', [ $this, 'save_order_currency_for_filter' ], 10, 4 );
+
+		// Set a flag to skip the currency filter while applying a translation.
+		add_filter( 'wpml_pre_save_pro_translation', Fns::tap( [ $this, 'enableSavingPost' ] ) );
+		add_action( 'wpml_pro_translation_completed', [ $this, 'disableSavingPost' ] );
+	}
+
+	public function enableSavingPost() {
+		$this->isSavingPost = true;
+	}
+
+	public function disableSavingPost() {
+		$this->isSavingPost = false;
 	}
 
 	public function currency_filter( $currency ) {
@@ -219,9 +239,10 @@ class WCML_Multi_Currency_Prices {
 			&& in_array( get_post_type( $object_id ), [ 'product', 'product_variation' ] )
 			&& in_array( $meta_key, wcml_price_custom_fields( $object_id ) )
 			&& $this->is_multi_currency_filters_loaded()
+			&& ! $this->isSavingPost
 		) {
 			$unlocked = false;
-			$currency  = $this->multi_currency->get_client_currency();
+			$currency = $this->multi_currency->get_client_currency();
 
 			// $get_price_by_legacy_ccr :: void -> float|void
 			$get_price_by_legacy_ccr = function() use ( $object_id, $meta_key, $single, $currency ) {
@@ -232,7 +253,7 @@ class WCML_Multi_Currency_Prices {
 
 				if (
 					$ccr_rate
-					&& in_array( $meta_key, [ '_price', '_regular_price', '_sale_price'] )
+					&& in_array( $meta_key, [ '_price', '_regular_price', '_sale_price' ] )
 				) {
 					$price_original = get_post_meta( $original_object_id, $meta_key, $single );
 					if ( is_numeric( $price_original ) ) {
@@ -249,7 +270,7 @@ class WCML_Multi_Currency_Prices {
 			// $get_price_by_auto_conversion :: void -> float|void
 			$get_price_by_auto_conversion = function() use ( $object_id, $meta_key, $single ) {
 				$price_original = get_post_meta( $object_id, $meta_key, $single );
-				if( is_numeric( $price_original ) ){
+				if ( is_numeric( $price_original ) ) {
 					return apply_filters( 'wcml_raw_price_amount', $price_original );
 				}
 			};
@@ -378,7 +399,14 @@ class WCML_Multi_Currency_Prices {
 
 	}
 
-	// convert back to default currency.
+	/**
+	 * Convert back to default currency.
+	 *
+	 * @param float        $amount
+	 * @param string|false $currency
+	 *
+	 * @return float
+	 */
 	public function unconvert_price_amount( $amount, $currency = false ) {
 
 		if ( empty( $currency ) ) {
@@ -462,9 +490,9 @@ class WCML_Multi_Currency_Prices {
 	/**
 	 * The PHP 5.2 compatible equivalent to "round($amount, 0, PHP_ROUND_HALF_UP)"
 	 *
-	 * @param int $amount
+	 * @param float|int $amount
 	 *
-	 * @return int
+	 * @return float|int
 	 */
 	private function round_up( $amount ) {
 		if ( $amount - floor( $amount ) < 0.5 ) {

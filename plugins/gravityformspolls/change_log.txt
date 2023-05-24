@@ -1,3 +1,14 @@
+### 4.1 | 2023-05-10
+- Fixed deprecation notices in PHP 8.0 or higher.
+- Fixed a compatibility issue with WordPress 6.2 where the poll block is not rendered.
+- Fixed a bug that prevents styles from being applied to the poll results shortcode.
+- Updated styles to work with the latest version of the CSS API.
+
+### 4.0 | 2023-01-25
+- Updated styles to work with the Orbital theme in Gravity Forms 2.7.
+- Fixed an issue where the poll settings have gform-icon--poll text before the heading.
+- Fixed an issue that causes the field values and associated toggle to show in the Choices UI of the form editor.
+
 ### 3.9 | 2021-09-08
 - Fixed an issue where the polls blocks enqueue breaks the Gutenberg editor in WordPress 5.8.x and later.
 - Fixed an issue where the polls shortcode renders the form even when it is not active.

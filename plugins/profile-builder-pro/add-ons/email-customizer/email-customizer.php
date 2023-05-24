@@ -168,8 +168,9 @@ function wppb_email_customizer_email_confirmation_filter_handler( $default_strin
 
 function wppb_email_customizer_password_reset_content_filter_handler( $default_string, $user_id, $user_login, $user_email ) {
 	$email_customizer_option = get_option( 'wppb_user_emailc_reset_email_content', 'not_found' );
-	$key = wppb_retrieve_activation_key( $user_login );
-	$url = add_query_arg( array( 'key' => $key ), wppb_curpageurl() );
+	$user = new WP_User( $user_id );
+	$key = get_password_reset_key( $user );
+	$url = add_query_arg( array( 'key' => $key, 'login' => $user->user_login ), wppb_curpageurl() );
 
 	if( $email_customizer_option != 'not_found' ) {
 		wppb_change_email_from_headers();

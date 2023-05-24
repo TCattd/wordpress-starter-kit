@@ -226,6 +226,8 @@ class WPML_String_Scanner {
 			'%d'
 		);
 
+		// Action called after string context is fixed/updated
+		do_action( 'wpml_st_string_updated' );
 	}
 
 	protected function set_stats( $key, $item ) {
@@ -412,6 +414,9 @@ class WPML_String_Scanner {
 				// We don't have any translations so we can delete the string.
 
 				$wpdb->delete( $wpdb->prefix . 'icl_strings', array( 'id' => $string->id ), array( '%d' ) );
+
+				// Action called after string is deleted form ic_strings table
+				do_action( 'wpml_st_string_unregistered' );
 			} else {
 				// check if we have a new string in the right context
 
@@ -458,6 +463,9 @@ class WPML_String_Scanner {
 							// We don't have any old translations that are not in the new strings so we can delete the string.
 
 							$wpdb->delete( $wpdb->prefix . 'icl_strings', array( 'id' => $string->id ), array( '%d' ) );
+
+							// Action called after string is deleted from icl_strings table
+							do_action( 'wpml_st_string_unregistered' );
 							break;
 						}
 					}
@@ -494,6 +502,9 @@ class WPML_String_Scanner {
 					$obsolete_context
 				)
 			);
+
+			// Action called after string is updated.
+			do_action( 'wpml_st_string_updated' );
 		}
 
 	}

@@ -291,6 +291,13 @@ class GFSignup {
 			return new WP_Error( 'already_active', __( 'The user is already active.' ), $signup );
 		}
 
+		$signup_meta = unserialize( $signup->meta );
+		$lead        = GFFormsModel::get_lead( $signup_meta['lead_id'] );
+
+		if ( $lead === false ) {
+			return new WP_Error( 'invalid_lead', __( 'Activation key is not valid.' ), $signup );
+		}
+
 		return new GFSignup( $signup );
 	}
 

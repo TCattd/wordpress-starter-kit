@@ -4,9 +4,10 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitabc161378a3c33570f406fed70936642
+class ComposerStaticInit139c100947ebe20dc53665d8d73fa297
 {
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'WPML\\Media\\Classes\\WPML_Media_Classic_Audio_Parser' => __DIR__ . '/../..' . '/classes/media-translation/class-wpml-media-classic-audio-parser.php',
         'WPML\\Media\\Classes\\WPML_Media_Classic_Element_Parser' => __DIR__ . '/../..' . '/classes/media-translation/class-wpml-media-classic-element-parser.php',
         'WPML\\Media\\Classes\\WPML_Media_Classic_Video_Parser' => __DIR__ . '/../..' . '/classes/media-translation/class-wpml-media-classic-video-parser.php',
@@ -80,7 +81,6 @@ class ComposerStaticInitabc161378a3c33570f406fed70936642
         'WPML_Media_Submitted_Basket_Notice_Factory' => __DIR__ . '/../..' . '/classes/media-selector/class-wpml-media-submitted-basket-notice-factory.php',
         'WPML_Media_Translated_Images_Update' => __DIR__ . '/../..' . '/classes/media-translation/class-wpml-media-translated-images-update.php',
         'WPML_Media_Translation_Status' => __DIR__ . '/../..' . '/classes/media-translation/class-wpml-media-translation-status.php',
-        'WPML_Media_Translation_Status_Factory' => __DIR__ . '/../..' . '/classes/media-translation/class-wpml-media-translation-status-factory.php',
         'WPML_Media_Translations_UI' => __DIR__ . '/../..' . '/classes/menus/wpml-media-translations-ui.php',
         'WPML_Media_Upgrade' => __DIR__ . '/../..' . '/inc/wpml-media-upgrade.class.php',
         'WPML_Media_Usage' => __DIR__ . '/../..' . '/classes/media-usage/class-wpml-media-usage.php',
@@ -91,7 +91,7 @@ class ComposerStaticInitabc161378a3c33570f406fed70936642
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->classMap = ComposerStaticInitabc161378a3c33570f406fed70936642::$classMap;
+            $loader->classMap = ComposerStaticInit139c100947ebe20dc53665d8d73fa297::$classMap;
 
         }, null, ClassLoader::class);
     }

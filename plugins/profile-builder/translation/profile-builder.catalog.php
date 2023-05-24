@@ -1,4 +1,3 @@
-<?php __("", "profile-builder"); ?>
 <?php __("To enable updates, your licence needs to be renewed. Please go to the <a href=\"%s\">Cozmoslabs Account</a> page and login to renew.", "profile-builder"); ?>
 <?php __("To enable updates, please enter your serial number on the <a href=\"%s\">Register Version</a> page. If you don't have a serial number, please see <a href=\"%s\" target=\"_blank\">details & pricing</a>.", "profile-builder"); ?>
 <?php __("%s is also activated. You need to deactivate it before activating this version of the plugin.", "profile-builder"); ?>
@@ -79,12 +78,12 @@
 <?php __("General Settings", "profile-builder"); ?>
 <?php __("Display name publicly as - only appears on the Edit Profile page!", "profile-builder"); ?>
 <?php __("Blog Details - only appears on the Registration page!", "profile-builder"); ?>
-<?php __("<strong>ERROR</strong>: The password must have the minimum length of %s characters", "profile-builder"); ?>
+<?php __("<strong>ERROR:</strong> The password must have the minimum length of %s characters", "profile-builder"); ?>
 <?php __("Very weak", "profile-builder"); ?>
 <?php __("Weak", "profile-builder"); ?>
 <?php __("Medium", "profile-builder"); ?>
 <?php __("Strong", "profile-builder"); ?>
-<?php __("<strong>ERROR</strong>: The password must have a minimum strength of %s", "profile-builder"); ?>
+<?php __("<strong>ERROR:</strong> The password must have a minimum strength of %s", "profile-builder"); ?>
 <?php __("Save Settings", "profile-builder"); ?>
 <?php __("Add Field", "profile-builder"); ?>
 <?php __("Settings", "profile-builder"); ?>
@@ -93,6 +92,8 @@
 <?php __("You can now style %s forms from the %s interface. To get started, add a form widget to a page through %s and go to the <strong>Style</strong> tab.", "profile-builder"); ?>
 <?php __("See details", "profile-builder"); ?>
 <?php __("Dismiss this notice.", "profile-builder"); ?>
+<?php __('You can now beautify your Forms using %1$sForm Styles%2$s. Have a look at the new Styles in %3$sProfile Builder -> Settings%4$s.', 'profile-builder' ); ?>
+<?php __('You can now beautify your Forms using new %1$sForm Styles%2$s by selecting and activating the one you like in %3$sProfile Builder -> Settings%4$s.', 'profile-builder' ); ?>
 <?php __("Basic Information", "profile-builder"); ?>
 <?php __("Version %s", "profile-builder"); ?>
 <?php __("<strong>Profile Builder </strong> %s", "profile-builder"); ?>
@@ -185,10 +186,11 @@
 <?php __("User Emails", "profile-builder"); ?>
 <?php __("Administrator Emails", "profile-builder"); ?>
 <?php __("Profile Builder Settings", "profile-builder"); ?>
-<?php __("Load Profile Builder's own CSS file in the front-end:", "profile-builder"); ?>
-<?php __("Yes", "profile-builder"); ?>
-<?php __('You can find the default file here: %1$s', 'profile-builder' ); ?>
+<?php __("Select Form Design:", "profile-builder"); ?>
+<?php __("Have a look at the new Profile Builder - Form Styles:", "profile-builder"); ?>
+<?php __('You can now beautify your forms using new Styles. Enable Form Designs by upgrading to %1$sBasic or PRO versions%2$s.', 'profile-builder' ); ?>
 <?php __("Automatically Log In:", "profile-builder"); ?>
+<?php __("Yes", "profile-builder"); ?>
 <?php __("No", "profile-builder"); ?>
 <?php __("Select \"Yes\" to automatically log in new users after successful registration.", "profile-builder"); ?>
 <?php __("\"Email Confirmation\" Activated:", "profile-builder"); ?>
@@ -219,6 +221,8 @@
 <?php __("Select Recover Password Page:", "profile-builder"); ?>
 <?php __("None", "profile-builder"); ?>
 <?php __('Select the page which contains the %1$s[wppb-recover-password]%2$s shortcode.', 'profile-builder' ); ?>
+<?php __("Load Profile Builder's own CSS file in the front-end:", "profile-builder"); ?>
+<?php __('You can find the default file here: %1$s', 'profile-builder' ); ?>
 <?php __("Form Fields", "profile-builder"); ?>
 <?php __("Manage Form Fields", "profile-builder"); ?>
 <?php __("Standard", "profile-builder"); ?>
@@ -864,14 +868,14 @@
 <?php __("User to edit:", "profile-builder"); ?>
 <?php __("Select User", "profile-builder"); ?>
 <?php __("Something went wrong. Please try again!", "profile-builder"); ?>
-<?php __('<strong>ERROR</strong>: Cookies are blocked due to unexpected output. For help, please see <a href=\%1$s\>this documentation</a> or try the <a href=\%2$s\>support forums</a>.', 'profile-builder' ); ?>
+<?php __('<strong>ERROR:</strong> Cookies are blocked due to unexpected output. For help, please see <a href=\%1$s\>this documentation</a> or try the <a href=\%2$s\>support forums</a>.', 'profile-builder' ); ?>
 <?php __("Username or Email Address", "profile-builder"); ?>
 <?php __("Remember Me", "profile-builder"); ?>
 <?php __("Log In", "profile-builder"); ?>
-<?php __("SUCCESS", "profile-builder"); ?>
+<?php __("SUCCESS: ", "profile-builder"); ?>
 <?php __("Activation email sent to %s", "profile-builder"); ?>
-<?php __("ERROR", "profile-builder"); ?>
-<?php __('You need to confirm your Email Address before logging in! To resend the Confirmation Email  %1$sclick here%2$s', 'profile-builder' ); ?>
+<?php __("ERROR: ", "profile-builder"); ?>
+<?php __('You need to confirm your Email Address before logging in! </br>To resend the Confirmation Email  %1$sclick here%2$s.', 'profile-builder' ); ?>
 <?php __("The password field is empty.", "profile-builder"); ?>
 <?php __("The password you entered is incorrect.", "profile-builder"); ?>
 <?php __("The username field is empty", "profile-builder"); ?>
@@ -902,6 +906,7 @@
 <?php __("You are already logged in. You can change your password on the edit profile form.", "profile-builder"); ?>
 <?php __("The password must not be empty!", "profile-builder"); ?>
 <?php __("The key cannot be empty!", "profile-builder"); ?>
+<?php __("Login cannot be empty!", "profile-builder"); ?>
 <?php __("Invalid key!", "profile-builder"); ?>
 <?php __("The entered passwords don't match!", "profile-builder"); ?>
 <?php __("The password must have the minimum length of %s characters", "profile-builder"); ?>
@@ -911,8 +916,8 @@
 <?php __("The email address entered wasn't found in the database!", "profile-builder"); ?>
 <?php __("Please check that you entered the correct email address.", "profile-builder"); ?>
 <?php __("Check your email for the confirmation link.", "profile-builder"); ?>
-<?php __('There was an error while trying to send the activation link to %1$s!', 'profile-builder' ); ?>
 <?php __("ERROR:", "profile-builder"); ?>
+<?php __('There was an error while trying to send the activation link to %1$s!', 'profile-builder' ); ?>
 <?php __("Invalid activation key!", "profile-builder"); ?>
 <?php __("This username is now active!", "profile-builder"); ?>
 <?php __("There was an error while trying to activate the user.", "profile-builder"); ?>
@@ -965,83 +970,6 @@
 <?php __("the URL of the previously visited page", "profile-builder"); ?>
 <?php __("the default URL set by WordPress after login", "profile-builder"); ?>
 <?php __("You can't add duplicate redirects!", "profile-builder"); ?>
-<?php __("Admin Email Customizer", "profile-builder"); ?>
-<?php __("Admin Email Customizer Settings", "profile-builder"); ?>
-<?php __("Settings saved.", "profile-builder"); ?>
-<?php __("These settings are also replicated in the \"User Email Customizer\" settings-page upon save.", "profile-builder"); ?>
-<?php __("Valid tags {{reply_to}} and {{site_name}}", "profile-builder"); ?>
-<?php __("From (name)", "profile-builder"); ?>
-<?php __("From (reply-to email)", "profile-builder"); ?>
-<?php __("Must be a valid email address or the tag {{reply_to}} which defaults to the administrator email", "profile-builder"); ?>
-<?php __("Common Settings", "profile-builder"); ?>
-<?php __("<p>New subscriber on {{site_name}}.</p>\n<p>Username:{{username}}</p>\n<p>Email:{{user_email}}</p>\n", "profile-builder"); ?>
-<?php __("Email Subject", "profile-builder"); ?>
-<?php __("A new subscriber has (been) registered!", "profile-builder"); ?>
-<?php __("Enable email", "profile-builder"); ?>
-<?php __("Default Registration & Registration with Email Confirmation", "profile-builder"); ?>
-<?php __("<p>New subscriber on {{site_name}}.</p>\n<p>Username:{{username}}</p>\n<p>Email:{{user_email}}</p>\n<p>The Admin Approval feature was activated at the time of registration,\nso please remember that you need to approve this user before he/she can log in!</p>", "profile-builder"); ?>
-<?php __("Registration with Admin Approval", "profile-builder"); ?>
-<?php __("<p>{{username}} has requested a password change via the password reset feature.</p>\n", "profile-builder"); ?>
-<?php __("Admin Notification for User Password Reset", "profile-builder"); ?>
-<?php __("<p>The user {{username}} has updated their profile and some of the fields require admin approval:</p>\n<br>\n{{modified_fields}}\n<br>\n<p>Access this link to approve changes: {{approval_url}}</p>\n", "profile-builder"); ?>
-<?php __("[{{site_name}}] A user has updated their profile. Some fields need approval", "profile-builder"); ?>
-<?php __("Admin Notification for Edit Profile Approved by Admin", "profile-builder"); ?>
-<?php __("Available Tags", "profile-builder"); ?>
-<?php __("User Fields Tags", "profile-builder"); ?>
-<?php __("Site Url", "profile-builder"); ?>
-<?php __("Site Name", "profile-builder"); ?>
-<?php __("User Id", "profile-builder"); ?>
-<?php __("User Role Label", "profile-builder"); ?>
-<?php __("Reply To", "profile-builder"); ?>
-<?php __("Blog URL", "profile-builder"); ?>
-<?php __("Activation Key", "profile-builder"); ?>
-<?php __("Activation Url", "profile-builder"); ?>
-<?php __("Activation Link", "profile-builder"); ?>
-<?php __("Reset Key", "profile-builder"); ?>
-<?php __("Reset Url", "profile-builder"); ?>
-<?php __("Reset Link", "profile-builder"); ?>
-<?php __("Change Email Address Link", "profile-builder"); ?>
-<?php __("Approve User Url", "profile-builder"); ?>
-<?php __("Approve User Link", "profile-builder"); ?>
-<?php __("Unapprove User Url", "profile-builder"); ?>
-<?php __("Unapprove User Link", "profile-builder"); ?>
-<?php __("Approved Fields", "profile-builder"); ?>
-<?php __("Unapproved Fields", "profile-builder"); ?>
-<?php __("Modified Fields", "profile-builder"); ?>
-<?php __("Approval URL", "profile-builder"); ?>
-<?php __("The users selected password at signup", "profile-builder"); ?>
-<?php __("Your selected password at signup", "profile-builder"); ?>
-<?php __("User Email Customizer", "profile-builder"); ?>
-<?php __("User Email Customizer Settings", "profile-builder"); ?>
-<?php __("These settings are also replicated in the \"Admin Email Customizer\" settings-page upon save.", "profile-builder"); ?>
-<?php __("<h3>Welcome to {{site_name}}!</h3>\n<p>Your username is: {{username}}</p>\n", "profile-builder"); ?>
-<?php __("Default Registration", "profile-builder"); ?>
-<?php __("<p>To activate your user, please click the following link:<br/>\n{{{activation_link}}}</p>\n<p>After you activate, you will receive another email with your credentials.</p>\n", "profile-builder"); ?>
-<?php __("[{{site_name}}] Activate {{username}}", "profile-builder"); ?>
-<?php __("Registration with Email Confirmation", "profile-builder"); ?>
-<?php __("<h3>Welcome to {{site_name}}!</h3>\n<p>Your username is: {{username}}</p>\n<p>Before you can access your account, an administrator needs to approve it. You will be notified via email.</p>\n", "profile-builder"); ?>
-<?php __("A new account has been created for you on {{site_name}}", "profile-builder"); ?>
-<?php __("<h3>Good News!</h3>\n<p>An administrator has just approved your account: {{username}} on {{site_name}}.</p>\n", "profile-builder"); ?>
-<?php __("Your account on {{site_name}} has been approved!", "profile-builder"); ?>
-<?php __("User Approval Notification", "profile-builder"); ?>
-<?php __("<h3>Hello,</h3>\n<p>Unfortunatelly an administrator has just unapproved your account: {{username}} on {{site_name}}.</p>\n", "profile-builder"); ?>
-<?php __("Your account on {{site_name}} has been unapproved!", "profile-builder"); ?>
-<?php __("Unapproved User Notification", "profile-builder"); ?>
-<?php __("<p>Someone requested that the password be reset for the following account: {{site_name}}<br/>\nUsername: {{username}}</p>\n<p>If this was a mistake, just ignore this email and nothing will happen.</p>\n<p>To reset your password, visit the following address:<br/>\n{{{reset_link}}}</p>\n", "profile-builder"); ?>
-<?php __("[{{site_name}}] Password Reset", "profile-builder"); ?>
-<?php __("Password Reset Email", "profile-builder"); ?>
-<?php __("<p>You have successfully reset your password.</p>\n", "profile-builder"); ?>
-<?php __("[{{site_name}}] Password Reset Successfully", "profile-builder"); ?>
-<?php __("Password Reset Success Email", "profile-builder"); ?>
-<?php __("<h3>Hi {{username}},</h3>\n<p>There is an email address change request on {{site_name}}.</p>\n<p>To change your email address click on: {{{user_email_change_link}}}</p>\n<p>Regards,<br>\nAll at {{site_name}}<br>\n<a href=\"{{site_url}}\">{{site_url}}</a></p>", "profile-builder"); ?>
-<?php __("[{{site_name}}] Notice of Email Change Request", "profile-builder"); ?>
-<?php __("Change Email Address Request Notification", "profile-builder"); ?>
-<?php __("<h3>Hi {{username}},</h3>\n<p>This notice confirms that your email was changed on {{site_name}}.</p>\n<p>If you did not change your email, please contact the Site Administrator at %s</p>\n<p>This email has been sent to {{user_email}}</p>\n<p>Regards,<br>\nAll at {{site_name}}<br>\n<a href=\"{{site_url}}\">{{site_url}}</a></p>", "profile-builder"); ?>
-<?php __("[{{site_name}}] Notice of Email Change", "profile-builder"); ?>
-<?php __("Changed Email Address Notification", "profile-builder"); ?>
-<?php __("<p>Your profile has been reviewed by an administrator:</p>\n<br>\n<p>Approved Fields: {{approved_fields}}</p>\n<p>Unapproved Fields: {{unapproved_fields}}</p>\n", "profile-builder"); ?>
-<?php __("[{{site_name}}] Your profile has been reviewed by an administrator", "profile-builder"); ?>
-<?php __("User Notification for Edit Profile Approved by Admin", "profile-builder"); ?>
 <?php __("Edit-profile Form", "profile-builder"); ?>
 <?php __("Add New", "profile-builder"); ?>
 <?php __("Add new Edit-profile Form", "profile-builder"); ?>
@@ -1097,6 +1025,7 @@
 <?php __("Search the User Listing", "profile-builder"); ?>
 <?php __("No User Listing found", "profile-builder"); ?>
 <?php __("No User Listing found in trash", "profile-builder"); ?>
+<?php __("Blog URL", "profile-builder"); ?>
 <?php __("Display name as", "profile-builder"); ?>
 <?php __("Role", "profile-builder"); ?>
 <?php __("Role Slug", "profile-builder"); ?>
@@ -1111,6 +1040,7 @@
 <?php __("Faceted Menus", "profile-builder"); ?>
 <?php __("User Count", "profile-builder"); ?>
 <?php __("Map of listed users", "profile-builder"); ?>
+<?php __("User Fields Tags", "profile-builder"); ?>
 <?php __("Sort Tags", "profile-builder"); ?>
 <?php __("Extra Functions", "profile-builder"); ?>
 <?php __("Go Back Link", "profile-builder"); ?>
@@ -1193,7 +1123,6 @@
 <?php __("Choose the fields in which the Search Field will look in", "profile-builder"); ?>
 <?php __("Search Settings", "profile-builder"); ?>
 <?php __("Themes: add style to your user listing section", "profile-builder"); ?>
-<?php __("You can now add beautifully pre-designed templates to showcase the user base on your website using one of the <strong>user listing templates</strong> available in the %sUser Listing add-on%s.", "profile-builder"); ?>
 <?php __("You need to activate the Userlisting feature from within the \"Add-ons\" page!", "profile-builder"); ?>
 <?php __("You can find it in the Profile Builder menu.", "profile-builder"); ?>
 <?php __("No results found!", "profile-builder"); ?>
@@ -1241,6 +1170,14 @@
 <?php __("iFrame Size", "profile-builder"); ?>
 <?php __("Height (px)", "profile-builder"); ?>
 <?php __("Width (px)", "profile-builder"); ?>
+<?php __("<p>Your profile has been reviewed by an administrator:</p>\n<br>\n<p>Approved Fields: {{approved_fields}}</p>\n<p>Unapproved Fields: {{unapproved_fields}}</p>\n", "profile-builder"); ?>
+<?php __("Email Subject", "profile-builder"); ?>
+<?php __("[{{site_name}}] Your profile has been reviewed by an administrator", "profile-builder"); ?>
+<?php __("Enable email", "profile-builder"); ?>
+<?php __("User Notification for Edit Profile Approved by Admin", "profile-builder"); ?>
+<?php __("<p>The user {{username}} has updated their profile and some of the fields require admin approval:</p>\n<br>\n{{modified_fields}}\n<br>\n<p>Access this link to approve changes: {{approval_url}}</p>\n", "profile-builder"); ?>
+<?php __("[{{site_name}}] A user has updated their profile. Some fields need approval", "profile-builder"); ?>
+<?php __("Admin Notification for Edit Profile Approved by Admin", "profile-builder"); ?>
 <?php __("Requires Admin Approval on Edit Profile", "profile-builder"); ?>
 <?php __("Choose if this field requires an administrator to approve any modifications on the edit profile forms", "profile-builder"); ?>
 <?php __("This field requires admin approval on edit profile", "profile-builder"); ?>
@@ -1300,6 +1237,7 @@
 <?php __("Facebook App ID", "profile-builder"); ?>
 <?php __("Google Login", "profile-builder"); ?>
 <?php __("Google Client ID", "profile-builder"); ?>
+<?php __("Google Client Name", "profile-builder"); ?>
 <?php __("Twitter Login", "profile-builder"); ?>
 <?php __("Twitter API Key", "profile-builder"); ?>
 <?php __("Twitter API Secret", "profile-builder"); ?>
@@ -1337,9 +1275,9 @@
 <?php __("You have successfully linked your account to %%.", "profile-builder"); ?>
 <?php __("Something went wrong. Please try again later!", "profile-builder"); ?>
 <?php __("Before you can access your account you need to confirm your email address. Please check your inbox and click the activation link.", "profile-builder"); ?>
-<?php __("<strong>ERROR</strong>: You need to confirm your email address before you can log in.", "profile-builder"); ?>
+<?php __("<strong>ERROR:</strong> You need to confirm your email address before you can log in.", "profile-builder"); ?>
 <?php __("Before you can access your account an administrator has to approve it. You will be notified via email.", "profile-builder"); ?>
-<?php __("<strong>ERROR</strong>: Your account has to be confirmed by an administrator before you can log in.", "profile-builder"); ?>
+<?php __("<strong>ERROR:</strong> Your account has to be confirmed by an administrator before you can log in.", "profile-builder"); ?>
 <?php __("You will be redirected in 5 seconds. If not, click %%.", "profile-builder"); ?>
 <?php __("<strong>You can only login with social accounts, not register!</strong><br>Please link your social account to an existing user account first.", "profile-builder"); ?>
 <?php __("Wrong password!", "profile-builder"); ?>
@@ -1405,10 +1343,16 @@
 <?php __("This will overwrite your old PB settings! Are you sure you want to continue?", "profile-builder"); ?>
 <?php __(" labels scanned.", "profile-builder"); ?>
 <?php __("Label to Edit", "profile-builder"); ?>
+<?php __("Here you will see the default label so you can copy it.", "profile-builder"); ?>
 <?php __("New Label", "profile-builder"); ?>
 <?php __("Edit Labels", "profile-builder"); ?>
 <?php __("Rescan Lables", "profile-builder"); ?>
+<?php __("Rescan all Profile Builder labels.", "profile-builder"); ?>
 <?php __("Informations", "profile-builder"); ?>
+<?php __("Variables:", "profile-builder"); ?>
+<?php __("Place them like in the default string!", "profile-builder"); ?>
+<?php __("Old Label", "profile-builder"); ?>
+<?php __("Read more detailed informations", "profile-builder"); ?>
 <?php __("Import and Export Labels", "profile-builder"); ?>
 <?php __("Import Labels from a .json file.", "profile-builder"); ?>
 <?php __("Easily import the labels from another site.", "profile-builder"); ?>
@@ -1543,11 +1487,93 @@
 <?php __("To activate your user, please click the following link:<br><br>%s%s%s<br><br>After you activate it you will receive yet *another email* with your login.", "profile-builder"); ?>
 <?php __("There was an error while trying to activate the user", "profile-builder"); ?>
 <?php __("That username is already activated!", "profile-builder"); ?>
+<?php __("A new subscriber has (been) registered!", "profile-builder"); ?>
 <?php __('New subscriber on %1$s.<br/><br/>Username:%2$s<br/>Email:%3$s<br/>', 'profile-builder' ); ?>
 <?php __('[%1$s] Your new account information', 'profile-builder' ); ?>
+<?php __("Your selected password at signup", "profile-builder"); ?>
 <?php __('Welcome to %1$s!<br/><br/><br/>Your username is: %2$s and the password: %3$s<br/><br/>Access your account: %4$s ', 'profile-builder' ); ?>
 <?php __('Welcome to %1$s!<br/><br/><br/>Your username is: %2$s and your password is the one that you have selected during registration.<br/><br/>Access your account: %3$s ', 'profile-builder' ); ?>
 <?php __("The \"Admin Approval\" feature was activated at the time of registration, so please remember that you need to approve this user before he/she can log in!", "profile-builder"); ?>
+<?php __("Admin Email Customizer", "profile-builder"); ?>
+<?php __("Admin Email Customizer Settings", "profile-builder"); ?>
+<?php __("Settings saved.", "profile-builder"); ?>
+<?php __("These settings are also replicated in the \"User Email Customizer\" settings-page upon save.", "profile-builder"); ?>
+<?php __("Valid tags {{reply_to}} and {{site_name}}", "profile-builder"); ?>
+<?php __("From (name)", "profile-builder"); ?>
+<?php __("From (reply-to email)", "profile-builder"); ?>
+<?php __("Must be a valid email address or the tag {{reply_to}} which defaults to the administrator email", "profile-builder"); ?>
+<?php __("Common Settings", "profile-builder"); ?>
+<?php __("<p>New subscriber on {{site_name}}.</p>\n<p>Username:{{username}}</p>\n<p>Email:{{user_email}}</p>\n", "profile-builder"); ?>
+<?php __("Default Registration & Registration with Email Confirmation", "profile-builder"); ?>
+<?php __("<p>New subscriber on {{site_name}}.</p>\n<p>Username:{{username}}</p>\n<p>Email:{{user_email}}</p>\n<p>The Admin Approval feature was activated at the time of registration,\nso please remember that you need to approve this user before he/she can log in!</p>", "profile-builder"); ?>
+<?php __("Registration with Admin Approval", "profile-builder"); ?>
+<?php __("<p>{{username}} has requested a password change via the password reset feature.</p>\n", "profile-builder"); ?>
+<?php __("Admin Notification for User Password Reset", "profile-builder"); ?>
+<?php __("Available Tags", "profile-builder"); ?>
+<?php __("Site Url", "profile-builder"); ?>
+<?php __("Site Name", "profile-builder"); ?>
+<?php __("User Id", "profile-builder"); ?>
+<?php __("User Role Label", "profile-builder"); ?>
+<?php __("Reply To", "profile-builder"); ?>
+<?php __("Activation Key", "profile-builder"); ?>
+<?php __("Activation Url", "profile-builder"); ?>
+<?php __("Activation Link", "profile-builder"); ?>
+<?php __("Reset Key", "profile-builder"); ?>
+<?php __("Reset Url", "profile-builder"); ?>
+<?php __("Reset Link", "profile-builder"); ?>
+<?php __("Change Email Address Link", "profile-builder"); ?>
+<?php __("Approve User Url", "profile-builder"); ?>
+<?php __("Approve User Link", "profile-builder"); ?>
+<?php __("Unapprove User Url", "profile-builder"); ?>
+<?php __("Unapprove User Link", "profile-builder"); ?>
+<?php __("Approved Fields", "profile-builder"); ?>
+<?php __("Unapproved Fields", "profile-builder"); ?>
+<?php __("Modified Fields", "profile-builder"); ?>
+<?php __("Approval URL", "profile-builder"); ?>
+<?php __("The users selected password at signup", "profile-builder"); ?>
+<?php __("User Email Customizer", "profile-builder"); ?>
+<?php __("User Email Customizer Settings", "profile-builder"); ?>
+<?php __("These settings are also replicated in the \"Admin Email Customizer\" settings-page upon save.", "profile-builder"); ?>
+<?php __("<h3>Welcome to {{site_name}}!</h3>\n<p>Your username is: {{username}}</p>\n", "profile-builder"); ?>
+<?php __("Default Registration", "profile-builder"); ?>
+<?php __("<p>To activate your user, please click the following link:<br/>\n{{{activation_link}}}</p>\n<p>After you activate, you will receive another email with your credentials.</p>\n", "profile-builder"); ?>
+<?php __("[{{site_name}}] Activate {{username}}", "profile-builder"); ?>
+<?php __("Registration with Email Confirmation", "profile-builder"); ?>
+<?php __("<h3>Welcome to {{site_name}}!</h3>\n<p>Your username is: {{username}}</p>\n<p>Before you can access your account, an administrator needs to approve it. You will be notified via email.</p>\n", "profile-builder"); ?>
+<?php __("A new account has been created for you on {{site_name}}", "profile-builder"); ?>
+<?php __("<h3>Good News!</h3>\n<p>An administrator has just approved your account: {{username}} on {{site_name}}.</p>\n", "profile-builder"); ?>
+<?php __("Your account on {{site_name}} has been approved!", "profile-builder"); ?>
+<?php __("User Approval Notification", "profile-builder"); ?>
+<?php __("<h3>Hello,</h3>\n<p>Unfortunatelly an administrator has just unapproved your account: {{username}} on {{site_name}}.</p>\n", "profile-builder"); ?>
+<?php __("Your account on {{site_name}} has been unapproved!", "profile-builder"); ?>
+<?php __("Unapproved User Notification", "profile-builder"); ?>
+<?php __("<p>Someone requested that the password be reset for the following account: {{site_name}}<br/>\nUsername: {{username}}</p>\n<p>If this was a mistake, just ignore this email and nothing will happen.</p>\n<p>To reset your password, visit the following address:<br/>\n{{{reset_link}}}</p>\n", "profile-builder"); ?>
+<?php __("[{{site_name}}] Password Reset", "profile-builder"); ?>
+<?php __("Password Reset Email", "profile-builder"); ?>
+<?php __("<p>You have successfully reset your password.</p>\n", "profile-builder"); ?>
+<?php __("[{{site_name}}] Password Reset Successfully", "profile-builder"); ?>
+<?php __("Password Reset Success Email", "profile-builder"); ?>
+<?php __("<h3>Hi {{username}},</h3>\n<p>There is an email address change request on {{site_name}}.</p>\n<p>To change your email address click on: {{{user_email_change_link}}}</p>\n<p>Regards,<br>\nAll at {{site_name}}<br>\n<a href=\"{{site_url}}\">{{site_url}}</a></p>", "profile-builder"); ?>
+<?php __("[{{site_name}}] Notice of Email Change Request", "profile-builder"); ?>
+<?php __("Change Email Address Request Notification", "profile-builder"); ?>
+<?php __("<h3>Hi {{username}},</h3>\n<p>This notice confirms that your email was changed on {{site_name}}.</p>\n<p>If you did not change your email, please contact the Site Administrator at %s</p>\n<p>This email has been sent to {{user_email}}</p>\n<p>Regards,<br>\nAll at {{site_name}}<br>\n<a href=\"{{site_url}}\">{{site_url}}</a></p>", "profile-builder"); ?>
+<?php __("[{{site_name}}] Notice of Email Change", "profile-builder"); ?>
+<?php __("Changed Email Address Notification", "profile-builder"); ?>
+<?php __('To display the %1$sForm Labels%2$s as depicted in the Preview images, activate the \Enable Placeholder Labels\ Option in %3$sAdvanced Settings%4$s.', 'profile-builder' ); ?>
+<?php __("Address Line 2", "profile-builder"); ?>
+<?php __("Address Line 1", "profile-builder"); ?>
+<?php __("Don’t have an account?", "profile-builder"); ?>
+<?php __("WELCOME BACK", "profile-builder"); ?>
+<?php __("Please enter your details.", "profile-builder"); ?>
+<?php __("Manage your profile information", "profile-builder"); ?>
+<?php __("ERROR!", "profile-builder"); ?>
+<?php __("SUCCESS!", "profile-builder"); ?>
+<?php __("NOTE!", "profile-builder"); ?>
+<?php __("WARNING!", "profile-builder"); ?>
+<?php __("Log in", "profile-builder"); ?>
+<?php __("Create a new account", "profile-builder"); ?>
+<?php __("Edit account", "profile-builder"); ?>
+<?php __("Subscription Payment", "profile-builder"); ?>
 <?php __("This login widget lets you add a login form in the sidebar.", "profile-builder"); ?>
 <?php __("Profile Builder Login Widget", "profile-builder"); ?>
 <?php __("Title:", "profile-builder"); ?>
@@ -1632,6 +1658,7 @@
 <?php __("Authenticator Code", "profile-builder"); ?>
 <?php __("The usernames cannot be changed.", "profile-builder"); ?>
 <?php __("This Profile Builder add-on has been migrated to the main plugin and is no longer used. You can delete it.", "profile-builder"); ?>
+<?php __("ERROR", "profile-builder"); ?>
 <?php __("Limit", "profile-builder"); ?>
 <?php __("Enable limit to the number of fields to be generated by users in front end forms ", "profile-builder"); ?>
 <?php __("General Limit", "profile-builder"); ?>
@@ -1813,16 +1840,6 @@
 <?php __("This field is available in our paid plans.", "profile-builder"); ?>
 <?php __("Install the free Paid Member Subscriptions plugin to get access this field.", "profile-builder"); ?>
 <?php __("Profile Builder Forms", "profile-builder"); ?>
-<?php __("Displays the Front End Edit Profile Form.", "profile-builder"); ?>
-<?php __("Profile", "profile-builder"); ?>
-<?php __("Form", "profile-builder"); ?>
-<?php __("Displays the Front End Login form.", "profile-builder"); ?>
-<?php __("Displays the Front End Recover Password Form.", "profile-builder"); ?>
-<?php __("Recover", "profile-builder"); ?>
-<?php __("Displays the Front End Registration Form.", "profile-builder"); ?>
-<?php __("Displays the Front End User Listing.", "profile-builder"); ?>
-<?php __("User", "profile-builder"); ?>
-<?php __("Listing", "profile-builder"); ?>
 <?php __("Remove", "profile-builder"); ?>
 <?php __("Yes, I'd like to create a new site", "profile-builder"); ?>
 <?php __("Your site url will look like this:<br>", "profile-builder"); ?>
@@ -1871,6 +1888,7 @@
 <?php __('Someone requested to change the email address for your account.<br/>If this was a mistake, just ignore this email and nothing will happen.<br/>To update your account email address to the one requested (%1$s), visit the following link: %2$s', 'profile-builder' ); ?>
 <?php __("Placeholder Labels", "profile-builder"); ?>
 <?php __("Replace labels with placeholders:", "profile-builder"); ?>
+<?php __("Select an option", "profile-builder"); ?>
 <?php __("Resend activation email", "profile-builder"); ?>
 <?php __("Allow users with the 'delete_users' capability to view the Admin Approval list", "profile-builder"); ?>
 <?php __("By checking this option, you will allow users that have the 'delete_users' capability to access and use the Admin Approval list.", "profile-builder"); ?>
@@ -2002,6 +2020,7 @@
 <?php __("Registration", "profile-builder"); ?>
 <?php __("Show Authenticator Code Field", "profile-builder"); ?>
 <?php __("Redirects", "profile-builder"); ?>
+<?php __("Form", "profile-builder"); ?>
 <?php __("Assigned Role", "profile-builder"); ?>
 <?php __("Automatic Login", "profile-builder"); ?>
 <?php __('Edit the Settings for this form %1$shere%2$s', 'profile-builder' ); ?>

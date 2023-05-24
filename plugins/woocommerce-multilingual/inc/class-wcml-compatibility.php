@@ -1,10 +1,27 @@
 <?php
 
+use WPML\FP\Lst;
 use WPML\FP\Logic;
 use WPML\FP\Relation;
 use function WCML\functions\getWooCommerceWpml;
 
 class WCML_Compatibility {
+
+	/**
+	 * Initialize compatibility classes that need to run before multi-currency.
+	 */
+	public function init_before_multicurrency() {
+		$loaders = wpml_collect( [
+			\WCML\Compatibility\WpSuperCache\Factory::class => function_exists( 'wp_cache_is_enabled' ) && wp_cache_is_enabled(),
+		] )->filter( Logic::isTruthy() )
+			->keys()
+			->toArray();
+
+		// This one needs to run after all caching classes.
+		$loaders = Lst::append( \WCML\AdminNotices\CachePlugins::class, $loaders );
+
+		( new \WCML\StandAlone\ActionFilterLoader() )->load( $loaders );
+	}
 
 	/**
 	 * Initialize class

@@ -62,7 +62,7 @@ class WPPB_Roles_Editor {
 			'page_title' 	=> __( 'Roles Editor', 'profile-builder' ),
 			'menu_slug'		=> 'wppb-roles-editor',
 			'page_type'		=> 'submenu_page',
-			'capability'	=> 'manage_options',
+			'capability'	=> 'delete_users',
 			'priority'		=> 12,
 			'parent_slug'	=> 'profile-builder'
 		);
@@ -235,7 +235,7 @@ class WPPB_Roles_Editor {
 
     function get_role_capabilities() {
 
-        if( ! current_user_can( 'manage_options' ) ) {
+        if( ! current_user_can( 'delete_users' ) ) {
             die();
         }
 
@@ -270,7 +270,7 @@ class WPPB_Roles_Editor {
 
     function create_roles_editor_cpt(){
 
-        if( is_admin() && current_user_can( 'manage_options' ) ) {
+        if( is_admin() && current_user_can( 'delete_users' ) ) {
             $labels = array(
                 'name' => esc_html__( 'Roles Editor', 'profile-builder' ),
                 'singular_name' => esc_html__( 'Roles Editor', 'profile-builder' ),
@@ -584,7 +584,7 @@ class WPPB_Roles_Editor {
             return $data;
         }
 
-        if( ! current_user_can( 'manage_options' ) ) {
+        if( ! current_user_can( 'delete_users' ) ) {
             return $data;
         }
 
@@ -604,7 +604,7 @@ class WPPB_Roles_Editor {
             return;
         }
 
-        if( ! current_user_can( 'manage_options' ) ) {
+        if( ! current_user_can( 'delete_users' ) ) {
             return;
         }
 
@@ -621,7 +621,7 @@ class WPPB_Roles_Editor {
 
     function update_role_capabilities() {
 
-        if( ! current_user_can( 'manage_options' ) ) {
+        if( ! current_user_can( 'delete_users' ) ) {
             die();
         }
 
@@ -844,7 +844,7 @@ class WPPB_Roles_Editor {
 
     function delete_capability_permanently() {
 
-        if( ! current_user_can( 'manage_options' ) ) {
+        if( ! current_user_can( 'delete_users' ) ) {
             die();
         }
 

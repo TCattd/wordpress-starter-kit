@@ -1,3 +1,13 @@
+### 4.4.1
+- Fixed an issue that makes the signature reset button hard to press using mobile browsers.
+
+### 4.4 | 2023-01-18
+- Updated styles to work with the Orbital theme in Gravity Forms 2.7.
+- Updated the location of reset icons and lock icon to provide better accessibility and better user experience.
+- Updated the editor icon.
+- Fixed an issue on the entry edit page that prevents the signature from being edited.
+
+
 ### 4.3 | 2022-06-15
 - Fixed an issue where the signature field has no width when used in multiple forms on a page.
 

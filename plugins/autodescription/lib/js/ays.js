@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -313,11 +313,11 @@ window.tsfAys = function() {
 		//= Redirect-save actions.
 		registerUnloadListener(
 			[
-				'.tsf-metaboxes input[type="submit"]',
-				'#publishing-action input[type="submit"]',
-				'#save-action input[type="submit"]',
+				'.tsf-metaboxes input[type=submit]',
+				'#publishing-action input[type=submit]',
+				'#save-action input[type=submit]',
 				'a.submitdelete',
-				'.edit-tag-actions input[type="submit"]',
+				'.edit-tag-actions input[type=submit]',
 				'.edit-tag-actions .delete',
 			],
 			'click'

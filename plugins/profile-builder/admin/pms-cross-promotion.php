@@ -8,7 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @return void
  */
 function wppb_register_pms_cross_promo() {
-	add_submenu_page( 'null', __( 'Paid Accounts', 'profile-builder' ), __( 'Paid Accounts', 'profile-builder' ), 'manage_options', 'profile-builder-pms-promo', 'wppb_pms_cross_promo' );
+	add_submenu_page( '', __( 'Paid Accounts', 'profile-builder' ), __( 'Paid Accounts', 'profile-builder' ), 'manage_options', 'profile-builder-pms-promo', 'wppb_pms_cross_promo' );
 }
 add_action( 'admin_menu', 'wppb_register_pms_cross_promo', 2 );
 

@@ -20,7 +20,7 @@ class Review implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_A
 	/** @var wpdb $wpdb */
 	private $wpdb;
 
-	/** @var SitePress $sitepress */
+	/** @var \SitePress $sitepress */
 	private $sitepress;
 
 	/**
@@ -28,7 +28,7 @@ class Review implements IWPML_Backend_Action, IWPML_Frontend_Action, IWPML_DIC_A
 	 *
 	 * @param WPML_Notices $wpmlNotices
 	 * @param wpdb $wpdb
-	 * @param SitePress $sitepress
+	 * @param \SitePress $sitepress
 	 */
 	public function __construct( WPML_Notices $wpmlNotices, wpdb $wpdb, ISitePress $sitepress ) {
 		$this->wpmlNotices = $wpmlNotices;

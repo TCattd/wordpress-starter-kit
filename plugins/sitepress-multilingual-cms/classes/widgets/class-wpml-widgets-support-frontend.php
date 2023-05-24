@@ -14,6 +14,11 @@ use WPML\LIB\WP\Hooks;
  */
 class WPML_Widgets_Support_Frontend implements IWPML_Action {
 
+	/**
+	 * @see \WPML\PB\Gutenberg\Widgets\Block\DisplayTranslation::PRIORITY_BEFORE_REMOVE_BLOCK_MARKUP
+	 */
+	const PRIORITY_AFTER_TRANSLATION_APPLIED = 0;
+
 	/** @var array $displayFor */
 	private $displayFor;
 
@@ -27,8 +32,8 @@ class WPML_Widgets_Support_Frontend implements IWPML_Action {
 	}
 
 	public function add_hooks() {
-		add_filter( 'widget_block_content', [ $this, 'filterByLanguage' ], - PHP_INT_MAX, 1 );
-		add_filter( 'widget_display_callback', array( $this, 'display' ), - PHP_INT_MAX, 1 );
+		add_filter( 'widget_block_content', [ $this, 'filterByLanguage' ], self::PRIORITY_AFTER_TRANSLATION_APPLIED );
+		add_filter( 'widget_display_callback', [ $this, 'display' ], - PHP_INT_MAX );
 	}
 
 	/**

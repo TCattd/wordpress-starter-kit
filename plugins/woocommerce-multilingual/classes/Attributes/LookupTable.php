@@ -3,6 +3,7 @@
 namespace WCML\Attributes;
 
 use Automattic\WooCommerce\Internal\ProductAttributesLookup\LookupDataStore as ProductAttributesLookupDataStore;
+use WPML\Convert\Ids;
 use WPML\FP\Obj;
 use WPML\LIB\WP\Hooks;
 use function WPML\FP\spreadArgs;
@@ -59,6 +60,7 @@ class LookupTable implements \IWPML_Action {
 	 */
 	public function adjustTermsFilters() {
 		add_filter( 'woocommerce_product_get_attributes', [ $this, 'translateAttributeOptions' ], 10, 2 );
+		add_filter( 'woocommerce_product_variation_get_attributes', [ $this, 'translateVariationTerms' ], 10, 2 );
 
 		return remove_filter( 'terms_clauses', [ $this->sitepress, 'terms_clauses' ] );
 	}
@@ -72,31 +74,68 @@ class LookupTable implements \IWPML_Action {
 		}
 
 		remove_filter( 'woocommerce_product_get_attributes', [ $this, 'translateAttributeOptions' ] );
+		remove_filter( 'woocommerce_product_variation_get_attributes', [ $this, 'translateVariationTerms' ] );
 	}
 
 	/**
-	 * @param WC_Product_Attribute[] $attrs
-	 * @param WC_Product             $product
+	 * @param \WC_Product_Attribute[] $attributes
+	 * @param \WC_Product             $product
 	 *
-	 * @return WC_Product_Attribute[]
+	 * @return \WC_Product_Attribute[]
 	 */
-	public function translateAttributeOptions( $attrs, $product ) {
+	public function translateAttributeOptions( $attributes, $product ) {
 		$language = $this->sitepress->get_language_for_element(
 			$product->get_id(),
 			'post_product'
 		);
 
-		if ( $language && is_array( $attrs ) ) {
-			foreach ( $attrs as $taxonomy => $attr ) {
-				$options = $attr->get_options();
-				foreach ( $options as $index => $option ) {
-					$options[ $index ] = $this->sitepress->get_object_id( $option, $taxonomy, false, $language );
-				}
-				$attr->set_options( $options );
-			}
+		if ( $language ) {
+			// $getTranslatedOptions :: string -> string|null
+			$getTranslatedOptions = function( $attribute, $taxonomy ) use ( $language ) {
+				$attribute->set_options( Ids::convert( $attribute->get_options(), $taxonomy, true, $language ) );
+
+				return $attribute;
+			};
+
+			$attributes = wpml_collect( $attributes )
+				->map( $getTranslatedOptions )
+				->toArray();
 		}
 
-		return $attrs;
+		return $attributes;
+	}
+
+	/**
+	 * @param array                 $attributes
+	 * @param \WC_Product_Variation $product
+	 *
+	 * @return array
+	 */
+	public function translateVariationTerms( $attributes, $product ) {
+		$language = $this->sitepress->get_language_for_element(
+			$product->get_id(),
+			'post_product_variation'
+		);
+
+		if ( $language ) {
+			// $getTranslatedSlug :: string -> string|null
+			$getTranslatedSlug = function( $slug, $taxonomy ) use ( $language ) {
+				$term = get_term_by( 'slug', $slug, $taxonomy );
+				if ( false === $term ) {
+					return $slug;
+				}
+				$termId         = Ids::convert( $term->term_id, $taxonomy, true, $language );
+				$translatedTerm = get_term( $termId, $taxonomy );
+
+				return Obj::prop( 'slug', $translatedTerm );
+			};
+
+			$attributes = wpml_collect( $attributes )
+				->map( $getTranslatedSlug )
+				->toArray();
+		}
+
+		return $attributes;
 	}
 
 	public function regenerateTable() {

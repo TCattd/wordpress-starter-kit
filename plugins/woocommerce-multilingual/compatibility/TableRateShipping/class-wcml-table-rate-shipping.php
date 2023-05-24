@@ -94,11 +94,11 @@ class WCML_Table_Rate_Shipping implements \IWPML_Action {
 	}
 
 	/**
-	 * @param $terms
-	 * @param $post_id
-	 * @param $taxonomy
+	 * @param WP_Term[] $terms
+	 * @param int       $post_id
+	 * @param string    $taxonomy
 	 *
-	 * @return mixed
+	 * @return WP_Term[]
 	 */
 	public function shipping_class_id_in_default_language( $terms, $post_id, $taxonomy ) {
 		global $icl_adjust_id_url_filter_off;

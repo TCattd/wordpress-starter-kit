@@ -4,6 +4,7 @@
       "messages": {
          "": {
             "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
             "lang": "en"
          },
          "You can choose which posts to translate from the <strong>Translation Management Dashboard</strong>.": [
@@ -19,10 +20,10 @@
             "Você deve usar o Advanced Translation Editor se quiser traduzir seu conteúdo automaticamente."
          ],
          "Synchronize translators and translation managers with ATE": [
-            "Sincronize tradutores e gerentes de tradução com o ATE"
+            "Sincronizar tradutores e gerentes de tradução com o ATE"
          ],
          "Please try again in a few minutes. If the problem persists, please contact %sWPML support%s.": [
-            "Por favor, tente novamente em alguns minutos. Se o problema persistir, entre em contato %sSuporte WPML%s."
+            "Tente novamente daqui a alguns minutos. Se o problema continuar, entre em contato com %so suporte do WPML%s."
          ],
          "Save": [
             "Salvar"

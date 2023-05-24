@@ -17,7 +17,7 @@ function wppb_avatar_handler( $output, $form_location, $field, $user_id, $field_
         add_action( 'get_footer', 'wppb_dequeue_script' );
          */
         $upload_script_vars = array(
-            'nonce'            => wp_create_nonce( 'wppb_woo_simple_upload' ),
+            'nonce'            => wp_create_nonce( 'wppb_ajax_simple_upload' ),
             'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
             'remove_link_text' => __( 'Remove', 'profile-builder' )
         );
@@ -39,7 +39,7 @@ function wppb_avatar_handler( $output, $form_location, $field, $user_id, $field_
             else
                 $input_value = $request_data[wppb_handle_meta_name( $field['meta-name'] )];
 
-            if( !empty( $input_value ) && !is_numeric( $input_value ) ){
+            if( !empty( $input_value ) && !is_numeric( $input_value ) && apply_filters( 'wppb_avatar_field_transform_file_to_attachment', true, $field ) ){
                 /* we have a file url and we need to change it into an attachment */
                 // Check the type of file. We'll use this as the 'post_mime_type'.
                 $wp_upload_dir = wp_upload_dir();
@@ -209,15 +209,15 @@ function wppb_avatar_add_upload_for_user_signup( $field_value, $field, $request_
 add_filter( 'wppb_add_to_user_signup_form_field_avatar', 'wppb_avatar_add_upload_for_user_signup', 10, 3 );
 
 /* handle simple upload at the WooCommerce Checkout */
-function wppb_woo_simple_avatar(){
-    check_ajax_referer( 'wppb_woo_simple_upload', 'nonce' );
+function wppb_ajax_simple_avatar(){
+    check_ajax_referer( 'wppb_ajax_simple_upload', 'nonce' );
     if ( isset($_POST["name"]) ) {
         echo json_encode( wppb_avatar_save_simple_upload_file( sanitize_text_field( $_POST["name"] ) ) );
     }
     wp_die();
 }
-add_action( 'wp_ajax_nopriv_wppb_woo_simple_avatar', 'wppb_woo_simple_avatar' );
-add_action( 'wp_ajax_wppb_woo_simple_avatar', 'wppb_woo_simple_avatar' );
+add_action( 'wp_ajax_nopriv_wppb_ajax_simple_avatar', 'wppb_ajax_simple_avatar' );
+add_action( 'wp_ajax_wppb_ajax_simple_avatar', 'wppb_ajax_simple_avatar' );
 
 /* handle field validation */
 function wppb_check_avatar_value( $message, $field, $request_data, $form_location ){
@@ -247,7 +247,7 @@ add_filter( 'wppb_check_form_field_avatar', 'wppb_check_avatar_value', 10, 4 );
 /* register image size defined in avatar field */
 add_action( 'after_setup_theme', 'wppb_add_avatar_image_sizes' );
 function wppb_add_avatar_image_sizes() {
-    if ( isset($_REQUEST['action']) && ( ( 'upload-attachment' == $_REQUEST['action'] && isset($_REQUEST['wppb_upload']) && 'true' == $_REQUEST['wppb_upload'] ) || 'wppb_woo_simple_avatar' == $_REQUEST['action'] ) ) {
+    if ( isset($_REQUEST['action']) && ( ( 'upload-attachment' == $_REQUEST['action'] && isset($_REQUEST['wppb_upload']) && 'true' == $_REQUEST['wppb_upload'] ) || 'wppb_ajax_simple_avatar' == $_REQUEST['action'] ) ) {
 
         $all_fields = get_option('wppb_manage_fields');
         if( !empty( $all_fields ) ) {

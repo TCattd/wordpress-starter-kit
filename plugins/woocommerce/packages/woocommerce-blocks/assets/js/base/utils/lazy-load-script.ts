@@ -20,14 +20,40 @@ interface AppendScriptAttributesParam {
 	src?: string;
 }
 
+declare global {
+	interface Window {
+		wc: {
+			wcBlocksRegistry: Record< string, unknown >;
+		};
+	}
+}
+
 /**
  * In WP, registered scripts are loaded into the page with an element like this:
  * `<script src='...' id='[SCRIPT_ID]'></script>`
  * This function checks whether an element matching that selector exists.
  * Useful to know if a script has already been appended to the page.
  */
-const isScriptTagInDOM = ( scriptId: string ): boolean => {
-	const scriptElements = document.querySelectorAll( `script#${ scriptId }` );
+const isScriptTagInDOM = ( scriptId: string, src = '' ): boolean => {
+	// If the store is using a plugin to concatenate scripts, we might have some
+	// cases where we don't detect whether a script has already been loaded.
+	// Because of that, we add an extra protection to the wc-blocks-registry-js
+	// script, to avoid ending up with two registries.
+	if ( scriptId === 'wc-blocks-registry-js' ) {
+		if ( typeof window?.wc?.wcBlocksRegistry === 'object' ) {
+			return true;
+		}
+	}
+
+	const srcParts = src.split( '?' );
+	if ( srcParts?.length > 1 ) {
+		src = srcParts[ 0 ];
+	}
+	const selector = src
+		? `script#${ scriptId }, script[src*="${ src }"]`
+		: `script#${ scriptId }`;
+	const scriptElements = document.querySelectorAll( selector );
+
 	return scriptElements.length > 0;
 };
 
@@ -37,7 +63,10 @@ const isScriptTagInDOM = ( scriptId: string ): boolean => {
  */
 const appendScript = ( attributes: AppendScriptAttributesParam ): void => {
 	// Abort if id is not valid or a script with the same id exists.
-	if ( ! isString( attributes.id ) || isScriptTagInDOM( attributes.id ) ) {
+	if (
+		! isString( attributes.id ) ||
+		isScriptTagInDOM( attributes.id, attributes?.src )
+	) {
 		return;
 	}
 	const scriptElement = document.createElement( 'script' );
@@ -92,7 +121,7 @@ const lazyLoadScript = ( {
 	translations,
 }: LazyLoadScriptParams ): Promise< void > => {
 	return new Promise( ( resolve, reject ) => {
-		if ( isScriptTagInDOM( `${ handle }-js` ) ) {
+		if ( isScriptTagInDOM( `${ handle }-js`, src ) ) {
 			resolve();
 		}
 

@@ -1,0 +1,57 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "wppb/user-listing",
+    "title": "User Listing",
+    "category": "wppb-block",
+    "description": "Displays the Front End User Listing form.",
+    "keywords": [ "User", "Listing", "Form" ],
+    "textdomain": "profile-builder",
+    "attributes": {
+        "name": {
+            "type": "string",
+            "default": ""
+        },
+        "single": {
+            "type": "boolean",
+            "default": false
+        },
+        "meta_key": {
+            "type": "string",
+            "default": ""
+        },
+        "meta_value": {
+            "type": "string",
+            "default": ""
+        },
+        "include_manual": {
+            "type": "string",
+            "default": ""
+        },
+        "exclude_manual": {
+            "type": "string",
+            "default": ""
+        },
+        "id": {
+            "type": "string",
+            "default": ""
+        },
+        "is_preview": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "example": {
+        "attributes": {
+            "name": "",
+            "single": false,
+            "meta_key": "",
+            "meta_value": "",
+            "include_manual": "",
+            "exclude_manual": "",
+            "id": "",
+            "is_preview": true
+        }
+    },
+    "editorScript": "wppb-block-user-listing"
+}

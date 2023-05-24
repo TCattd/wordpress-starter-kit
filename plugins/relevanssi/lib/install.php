@@ -11,11 +11,11 @@
 /**
  * Installs Relevanssi on a new plugin if Relevanssi is network active.
  *
- * Hooks on to 'wpmu_new_blog' and 'wp_insert_site' action hooks and runs
+ * Hooks on to 'wpmu_new_blog' and 'wp_initialize_site' action hooks and runs
  * '_relevanssi_install' on the new blog.
  *
  * @param int|object $blog Either the blog ID (if 'wpmu_new_blog') or new site
- * object (if 'wp_insert_site').
+ * object (if 'wp_initialize_site').
  */
 function relevanssi_new_blog( $blog ) {
 	if ( is_int( $blog ) ) {
@@ -78,6 +78,7 @@ function _relevanssi_install() {
 	add_option( 'relevanssi_content_boost', $relevanssi_variables['content_boost_default'] );
 	add_option( 'relevanssi_css', 'text-decoration: underline; color: #ff0000' );
 	add_option( 'relevanssi_db_version', '0' );
+	add_option( 'relevanssi_debugging_mode', 'off' );
 	add_option( 'relevanssi_default_orderby', 'relevance' );
 	add_option( 'relevanssi_disable_or_fallback', 'off' );
 	add_option( 'relevanssi_exact_match_bonus', 'on' );
@@ -85,6 +86,7 @@ function _relevanssi_install() {
 	add_option( 'relevanssi_excerpt_allowable_tags', '' );
 	add_option( 'relevanssi_excerpt_custom_fields', 'off' );
 	add_option( 'relevanssi_excerpt_length', '30' );
+	add_option( 'relevanssi_excerpt_specific_fields', 'off' );
 	add_option( 'relevanssi_excerpt_type', 'words' );
 	add_option( 'relevanssi_excerpts', 'on' );
 	add_option( 'relevanssi_exclude_posts', '' );

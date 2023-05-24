@@ -121,6 +121,8 @@ function gformSignatureResize( $instance ) {
 
 		// Resize signature.
 		ResizeSignature( signature.fieldID, fieldWidth, fieldHeight );
+		// Set toolbar width to new signature area width
+		$this.closest( '.gfield_signature_ui_container' ).find('div:last-child').css('width', resizedSignature.width);
 		ClearSignature( signature.fieldID );
 
 		if ( decodedSignatureData ) {
@@ -131,9 +133,15 @@ function gformSignatureResize( $instance ) {
 	init( $instance );
 }
 
-jQuery( window ).on( 'gform_post_render', function( event, form_id ) {
-
-	jQuery( '#gform_' + form_id ).find( '.gfield_signature_container' ).each( function() {
+/**
+ * Handles initialization of all reset buttons and resizing logic
+ *
+ * @since 4.4
+ *
+ * @param form_id Current form ID.
+ */
+function gformSignatureInit( parent ) {
+	parent.find( '.gfield_signature_container' ).each( function() {
 
 		var $this = jQuery( this );
 
@@ -142,14 +150,13 @@ jQuery( window ).on( 'gform_post_render', function( event, form_id ) {
 			return;
 		}
 
-		var width  = parseFloat( $this.css( 'width' ) ),
-			height = parseFloat( $this.css( 'height' ) ),
-			containerID = $this.closest( '.gfield' ).find( '.gfield_label' ).attr( 'for' ),
-			$resetButton = jQuery( '#' + containerID + '_resetbutton' );
+		var width = parseFloat( $this.css( 'width' ) );
+		var height = parseFloat( $this.css( 'height' ) );
+		var containerID = $this.attr( 'id' ).replace( '_Container', '' );
+		var $resetButton = jQuery( '#' + containerID + '_resetbutton' );
 
 		// Add a locked reset button for when a signature is present and resized.
-		$resetButton.parent().append( '<button type="button" id="' + containerID + '_lockedReset" class="gform_signature_locked_reset" style="display:none;height:24px;cursor:pointer;padding: 0 0 0 1.8em;opacity:0.75;font-size:0.813em;border:0;background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIiBjbGFzcz0idW5kZWZpbmVkIj48cGF0aCBkPSJNNDAwIDIyNGgtMjR2LTcyQzM3NiA2OC4yIDMwNy44IDAgMjI0IDBTNzIgNjguMiA3MiAxNTJ2NzJINDhjLTI2LjUgMC00OCAyMS41LTQ4IDQ4djE5MmMwIDI2LjUgMjEuNSA0OCA0OCA0OGgzNTJjMjYuNSAwIDQ4LTIxLjUgNDgtNDhWMjcyYzAtMjYuNS0yMS41LTQ4LTQ4LTQ4em0tMTA0IDBIMTUydi03MmMwLTM5LjcgMzIuMy03MiA3Mi03MnM3MiAzMi4zIDcyIDcydjcyeiIgY2xhc3M9InVuZGVmaW5lZCIvPjwvc3ZnPg==) no-repeat left center;background-size:16px;">' + gform_signature_frontend_strings.lockedReset + '</button>' );
-
+		$resetButton.parent().append( '<button type="button" id="' + containerID + '_lockedReset" class="gform_signature_locked_reset gform-theme-no-framework" style="color: var(--gform-theme-control-description-color);display:none;height:24px;cursor:pointer;padding: 0 0 0 1.8em;opacity:0.75;font-size:0.813em;border:0;background: transparent url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNTEyIiBjbGFzcz0idW5kZWZpbmVkIj48cGF0aCBkPSJNNDAwIDIyNGgtMjR2LTcyQzM3NiA2OC4yIDMwNy44IDAgMjI0IDBTNzIgNjguMiA3MiAxNTJ2NzJINDhjLTI2LjUgMC00OCAyMS41LTQ4IDQ4djE5MmMwIDI2LjUgMjEuNSA0OCA0OCA0OGgzNTJjMjYuNSAwIDQ4LTIxLjUgNDgtNDhWMjcyYzAtMjYuNS0yMS41LTQ4LTQ4LTQ4em0tMTA0IDBIMTUydi03MmMwLTM5LjcgMzIuMy03MiA3Mi03MnM3MiAzMi4zIDcyIDcydjcyeiIgY2xhc3M9InVuZGVmaW5lZCIvPjwvc3ZnPg==) no-repeat left center;background-size:16px;float:left;direction:ltr;">' + gform_signature_frontend_strings.lockedReset + '</button>' );
 		var $lockedResetButton = jQuery( '#' + containerID + '_lockedReset' );
 
 		// Force reset button to work even when Signature is disabled.
@@ -161,11 +168,19 @@ jQuery( window ).on( 'gform_post_render', function( event, form_id ) {
 			$lockedResetButton.hide();
 		} );
 
-		// Trigger reset when Locked Reset button is clicked.
 		$lockedResetButton.click( function() {
 			jQuery( this ).hide();
 			$resetButton.click();
 		} );
+
+		// Setup the "Sign Again" icons
+		jQuery( '#' + containerID + '_signAgain, #' + containerID + '_lockedSignAgain' ).each( function() {
+			jQuery( this ).click( function( e ) {
+				e.preventDefault();
+				jQuery( '#' + containerID + '_signature_image' ).hide();
+				jQuery( '#' + containerID + '_Container' ).show();
+			} );
+		});
 
 		// Hide the status box so that our Locked Reset button display left-aligned.
 		jQuery( '#' + containerID + '_status' ).hide();
@@ -174,9 +189,12 @@ jQuery( window ).on( 'gform_post_render', function( event, form_id ) {
 		$this.data( 'original-width', width );
 
 		setTimeout(function () { gformSignatureResize( $this ); }, 0 );
-
 	} );
+}
 
+jQuery( window ).on( 'gform_post_render', function( event, form_id ) {
+	const parent = jQuery( '#gform_' + form_id );
+	gformSignatureInit( parent );
 } );
 
 jQuery( document ).ready( function( $ ) {

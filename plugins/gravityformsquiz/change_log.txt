@@ -1,3 +1,12 @@
+### 4.1 | 2023-05-11
+- Added additional html classes to quiz confirmation wrapper to standardize styling across themes.
+- Fixed deprecation notices on quiz fields with randomized choices in PHP 8+.
+
+
+### 4.0 | 2023-01-10
+- Updated stylesheets for compatibility with Gravity Forms 2.7.
+
+
 ### 3.9 | 2022-03-10
 - Fixed an issue where the instant feedback icon is breaking to the next line on the Twenty Twenty theme.
 - Fixed an issue where the existing display quiz confirmation settings are not being respected when upgrading from 3.7.

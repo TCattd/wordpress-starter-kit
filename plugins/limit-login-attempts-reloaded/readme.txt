@@ -3,8 +3,8 @@ Contributors: wpchefgadget
 Donate link: https://www.paypal.com/donate?hosted_button_id=FKD4MYFCMNVQQ
 Tags: brute force, login, security, firewall, protection
 Requires at least: 3.0
-Tested up to: 6.1
-Stable tag: 2.25.9
+Tested up to: 6.2
+Stable tag: 2.25.17
 
 Block excessive login attempts and protect your site against brute force attacks. Simple, yet powerful tools to improve site performance.
 
@@ -31,6 +31,7 @@ https://www.youtube.com/watch?v=wzmPXu55zLU
 * Safelist/Blocklist of IPs and Usernames (Support IP ranges).
 * **Sucuri** compatibility.
 * **Wordfence** compatibility.
+* **Ultimate Member** compatibility.
 * **XMLRPC** gateway protection.
 * **Woocommerce** login page protection.
 * **Multi-site** compatibility with extra MU settings.
@@ -97,6 +98,46 @@ By default, you will need to copy and paste the lists to each site manually. For
 Please follow this link: <a href="https://www.limitloginattempts.com/resources/">https://www.limitloginattempts.com/resources/</a>
 
 == Changelog ==
+
+= 2.25.17 =
+* Refactoring.
+* Server load reducing optimization.
+
+= 2.25.16 =
+* Double slashes in paths removed.
+* Better handling of cloud response codes.
+
+= 2.25.15 =
+* Error messages logic fixed.
+
+= 2.25.14 =
+* Multisite support improved.
+* CSS outside of the plugin issue fixed.
+* Better number formatting on the dashboard.
+* Lockout email template updated.
+
+= 2.25.13 =
+* Ultimate Member compatibility.
+* Fixed conflicting URL parameters in some rare cases.
+* Updated attempts counter logic.
+
+= 2.25.12 =
+* Fixed IPv4 validation when passed with a port number.
+* Fixed texts and translations.
+
+= 2.25.11 =
+* PHP 8 compatibility fixed.
+* Logs loading issue fixed.
+* Help and Extensions tabs added.
+* Notification about auto updates added.
+* Displaying of plugin version added.
+* Text changes made.
+
+= 2.25.10 =
+* Tested with PHP 8.
+* Small styles refactoring.
+* Fixed a rare issue with events log not being displayed correctly.
+* Chart library updated.
 
 = 2.25.9 =
 * Welcome page replaced with a modal.

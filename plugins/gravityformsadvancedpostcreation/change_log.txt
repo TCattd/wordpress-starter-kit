@@ -1,3 +1,9 @@
+### 1.3.2
+- Fixed an issue to allow File Upload fields that have been extended by a developer to be processed. Credit: GravityPDF
+
+### 1.3.1
+- Added support for async (background) feed processing to improve form submission performance.
+
 ### 1.3 | 2022-11-16
 - Added the [gform_advancedpostcreation_taxonomy_mapping_field](https://docs.gravityforms.com/gform_advancedpostcreation_taxonomy_mapping_field/) filter.
 - Added the [gform_advancedpostcreation_file_url_pre_set_post_thumbnail](https://docs.gravityforms.com/gform_advancedpostcreation_file_url_pre_set_post_thumbnail/) filter.

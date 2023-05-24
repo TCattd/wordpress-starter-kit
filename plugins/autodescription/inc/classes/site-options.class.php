@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -342,7 +342,8 @@ class Site_Options extends Sanitize {
 	 * @uses THE_SEO_FRAMEWORK_SITE_OPTIONS
 	 *
 	 * @param string|string[] $key       Option name, or a map of indexes therefor.
-	 *                                   If you send an empty array, you'll get all options. Don't.
+	 *                                   If you send an empty array, you'll get all options.
+	 *                                   Don't do that; use get_all_options() instead.
 	 * @param boolean         $use_cache Optional. Whether to use the cache value or not. Defaults to true.
 	 * @return mixed The value of this $key in the database. Empty string when not set.
 	 */
@@ -849,7 +850,7 @@ class Site_Options extends Sanitize {
 	 * @param string $item      The item to get.
 	 * @param string $post_type The post type.
 	 * @param bool   $use_cache Whether to use caching.
-	 * @return array|null The post type archive's meta item's value. Null when item isn't registered.
+	 * @return ?mixed The post type archive's meta item value. Null when item isn't registered.
 	 */
 	public function get_post_type_archive_meta_item( $item, $post_type = '', $use_cache = true ) {
 		return $this->get_post_type_archive_meta(

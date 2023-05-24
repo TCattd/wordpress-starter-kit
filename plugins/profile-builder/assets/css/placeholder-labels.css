@@ -2,12 +2,14 @@
 .wppb-user-forms #wppb-loginform .login-username label,
 .wppb-user-forms #wppb-loginform .login-password label,
 .wppb-user-forms #wppb-loginform .wppb-recaptcha label,
-.wppb-form-field.pbpl-class label {
+.wppb-form-field.pbpl-class label,
+.pms-field.pbpl-class label {
     text-indent: -99999px;
     position: absolute;
     left: -99999px;
 }
 
+.wppb-form-field.wppb-two-factor-authentication.pbpl-class label,
 .wppb-form-field.wppb-campaign-monitor-subscribe.pbpl-class label,
 .wppb-form-field.wppb-mailchimp-subscribe.pbpl-class label,
 .wppb-form-field.wppb-mailpoet-subscribe.pbpl-class label,
@@ -24,6 +26,10 @@
     width: 100%;
 }
 
+.wppb-form-field.wppb-two-factor-authentication.pbpl-class label {
+    display: inline;
+}
+
 .wppb-form-field.pbpl-class .wppb-radios li label,
 .wppb-form-field.wppb-radio.pbpl-class label,
 .wppb-form-field.pbpl-class .wppb-checkboxes li label,
@@ -32,6 +38,12 @@
     position: relative;
     left: 0;
     width: auto;
+    display: inline-block;
+}
+
+.wppb-form-field.pbpl-class .wppb-radios li label,
+.wppb-form-field.pbpl-class .wppb-checkboxes li label {
+    margin: 0 5px;
 }
 
 .wppb-user-forms #wppb-loginform .login-username input[type="text"],
@@ -63,4 +75,10 @@
 .wppb-form-field.wppb-select2-multiple.pbpl-class span.select2.select2-container {
     width: 100% !important;
     margin-left: 0 !important;
+}
+
+.wppb-form-field label.wppb-epaa-switch {
+    width: 50px !important;
+    left: 0;
+    position: relative !important;
 }

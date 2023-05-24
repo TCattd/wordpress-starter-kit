@@ -42,15 +42,16 @@ class WCML_WC_Admin_Duplicate_Product {
 		if ( ! is_numeric( $new_id ) ) {
 			$new_id = $new_id->get_id();
 		}
+		$element_type = apply_filters( 'wpml_element_type', get_post_type( $product_id ) );
 
 		// duplicate original first.
-		$trid      = $this->sitepress->get_element_trid( $product_id, 'post_' . $post->post_type );
+		$trid      = $this->sitepress->get_element_trid( $product_id, $element_type );
 		$orig_id   = $this->sitepress->get_original_element_id_by_trid( $trid );
 		$orig_lang = $this->woocommerce_wpml->products->get_original_product_language( $product_id );
 
 		if ( $orig_id == $product_id ) {
-			$this->sitepress->set_element_language_details( $new_id, 'post_' . $post->post_type, false, $orig_lang );
-			$new_trid    = $this->sitepress->get_element_trid( $new_id, 'post_' . $post->post_type );
+			$this->sitepress->set_element_language_details( $new_id, $element_type, false, $orig_lang );
+			$new_trid    = $this->sitepress->get_element_trid( $new_id, $element_type );
 			$new_orig_id = $new_id;
 		} else {
 			$post_to_duplicate = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT * FROM {$this->wpdb->posts} WHERE ID=%d", $orig_id ) );
@@ -59,12 +60,12 @@ class WCML_WC_Admin_Duplicate_Product {
 				$new_orig_id = $this->wc_duplicate_product( $post_to_duplicate );
 
 				do_action( 'wcml_after_duplicate_product', $new_id, $post_to_duplicate );
-				$this->sitepress->set_element_language_details( $new_orig_id, 'post_' . $post->post_type, false, $orig_lang );
-				$new_trid = $this->sitepress->get_element_trid( $new_orig_id, 'post_' . $post->post_type );
+				$this->sitepress->set_element_language_details( $new_orig_id, $element_type, false, $orig_lang );
+				$new_trid = $this->sitepress->get_element_trid( $new_orig_id, $element_type );
 				if ( get_post_meta( $orig_id, '_icl_lang_duplicate_of' ) ) {
 					update_post_meta( $new_id, '_icl_lang_duplicate_of', $new_orig_id );
 				}
-				$this->sitepress->set_element_language_details( $new_id, 'post_' . $post->post_type, $new_trid, $this->sitepress->get_current_language() );
+				$this->sitepress->set_element_language_details( $new_id, $element_type, $new_trid, $this->sitepress->get_current_language() );
 			}
 		}
 
@@ -79,7 +80,7 @@ class WCML_WC_Admin_Duplicate_Product {
 			}
 		}
 
-		$translations                        = $this->sitepress->get_element_translations( $trid, 'post_' . $post->post_type );
+		$translations                        = $this->sitepress->get_element_translations( $trid, $element_type );
 		$duplicated_products['translations'] = [];
 		if ( $translations ) {
 
@@ -90,7 +91,13 @@ class WCML_WC_Admin_Duplicate_Product {
 					if ( ! empty( $post_to_duplicate ) ) {
 						$new_id     = $this->wc_duplicate_product( $post_to_duplicate );
 						$new_id_obj = get_post( $new_id );
-						$new_slug   = wp_unique_post_slug( sanitize_title( $new_id_obj->post_title ), $new_id, $post_to_duplicate->post_status, $post_to_duplicate->post_type, $new_id_obj->post_parent );
+						$new_slug   = wp_unique_post_slug(
+							sanitize_title( $new_id_obj->post_title ),
+							$new_id,
+							get_post_status( $post_to_duplicate ),
+							get_post_type( $post_to_duplicate ),
+							$new_id_obj->post_parent
+						);
 
 						$this->wpdb->update(
 							$this->wpdb->posts,
@@ -102,7 +109,7 @@ class WCML_WC_Admin_Duplicate_Product {
 						);
 
 						do_action( 'wcml_after_duplicate_product', $new_id, $post_to_duplicate );
-						$this->sitepress->set_element_language_details( $new_id, 'post_' . $post->post_type, $new_trid, $translation->language_code );
+						$this->sitepress->set_element_language_details( $new_id, $element_type, $new_trid, $translation->language_code );
 						if ( get_post_meta( $translation->element_id, '_icl_lang_duplicate_of' ) ) {
 							update_post_meta( $new_id, '_icl_lang_duplicate_of', $new_orig_id );
 						}

@@ -61,6 +61,7 @@ class GFPolls extends GFAddOn {
 	protected $_title = 'Gravity Forms Polls Add-On';
 	protected $_short_title = 'Polls';
 	protected $_enable_rg_autoupgrade = true;
+	protected $_enable_theme_layer = true;
 	private $_form_meta_by_id = array();
 	public $gpoll_add_scripts;
 
@@ -310,7 +311,7 @@ class GFPolls extends GFAddOn {
 		$styles = array(
 			array(
 				'handle'  => 'gpoll_form_editor_css',
-				'src'     => $this->get_base_url() . "/css/gpoll_form_editor{$min}.css",
+				'src'     => $this->get_base_url() . "/assets/css/dist/admin{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array(
 					array( 'admin_page' => array( 'form_editor' ) ),
@@ -318,7 +319,7 @@ class GFPolls extends GFAddOn {
 			),
 			array(
 				'handle'  => 'gpoll_css',
-				'src'     => $this->get_base_url() . "/css/gpoll{$min}.css",
+				'src'     => $this->get_base_url() . "/assets/css/dist/theme{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array(
 					array( 'field_types' => array( 'poll' ) ),
@@ -329,6 +330,38 @@ class GFPolls extends GFAddOn {
 
 		return array_merge( parent::styles(), $styles );
 	}
+
+	/**
+	 * An array of styles to enqueue.
+	 *
+	 * @since 4.0
+	 *
+	 * @param $form
+	 * @param $ajax
+	 * @param $settings
+	 * @param $block_settings
+	 *
+	 * @return array|\string[][]
+	 */
+	public function theme_layer_styles( $form, $ajax, $settings, $block_settings = array() ) {
+		$theme_slug = \GFFormDisplay::get_form_theme_slug( $form );
+
+		if ( $theme_slug !== 'orbital' ) {
+			return array();
+		}
+
+		$base_url = plugins_url( '', __FILE__ );
+
+		return array(
+			'foundation' => array(
+				array( 'gravity_forms_polls_theme_foundation', "$base_url/assets/css/dist/theme-foundation.css" ),
+			),
+			'framework' => array(
+				array( 'gravity_forms_polls_theme_framework', "$base_url/assets/css/dist/theme-framework.css" ),
+			),
+		);
+	}
+
 
 	/**
 	 * Localize the strings used by the scripts.
@@ -694,12 +727,13 @@ class GFPolls extends GFAddOn {
 		// Clean content from new line characters.
 		$content = str_replace( '&#13;', ' ', $content );
 		$content = trim( preg_replace( '/\s\s+/', ' ', $content ) );
-		$loader  = libxml_disable_entity_loader( true );
+		if (\LIBXML_VERSION < 20900) {
+			libxml_disable_entity_loader(true);
+		}
 		$errors  = libxml_use_internal_errors( true );
 		$dom->loadHTML( $content );
 		libxml_clear_errors();
 		libxml_use_internal_errors( $errors );
-		libxml_disable_entity_loader( $loader );
 		$content = $dom->saveXML( $dom->documentElement );
 
 		$nodes = $this->get_choices_to_randomize( $dom, $form_id, $field );
@@ -1231,7 +1265,7 @@ class GFPolls extends GFAddOn {
 				'name'         => 'gravityformspolls',
 				'label'        => esc_html__( 'Polls', 'gravityformspolls' ),
 				'capabilities' => array( $this->_capabilities_form_settings ),
-				'icon'         => $this->form_settings_icon(),
+				'icon'         => $this->get_menu_icon(),
 			);
 		}
 
@@ -1374,13 +1408,13 @@ class GFPolls extends GFAddOn {
 
 
 	/**
-	 * Customizes the icon displayed on the form settings screen.
+	 * Return the plugin's icon for the plugin/form settings menu.
 	 *
-	 * @since 3.8
+	 * @since 3.9.1
 	 *
 	 * @return string
 	 */
-	public function form_settings_icon() {
+	public function get_menu_icon() {
 		return 'gform-icon--poll';
 	}
 
@@ -2067,7 +2101,7 @@ class GFPolls extends GFAddOn {
 
 		// each bar will receive this HTML formatting
 		$bar_html = "<div class='gpoll_wrapper {$style}'><div class='gpoll_ratio_box'><div class='gpoll_ratio_label'>%s</div></div><div class='gpoll_bar'>";
-		$bar_html .= "<span class='gpoll_bar_juice' data-origwidth='%s' style='width: %s%%'><span class='gpoll_bar_count'>%s</span></span></div></div>";
+		$bar_html .= "<span class='gpoll_bar_juice' data-origwidth='%s' style='width: %s%%'><span class='gpoll_bar_count'>%s</span></span></div></div></div><!-- .gpoll_choice_wrapper -->";
 
 
 		// if data is cached then pull the data out of the cache
@@ -2080,7 +2114,6 @@ class GFPolls extends GFAddOn {
 
 
 		// build HTML output
-
 		$gpoll_output['summary'] = "<div class='gpoll_container'>";
 		$field_counter           = 0;
 
@@ -2148,7 +2181,7 @@ class GFPolls extends GFAddOn {
 				}
 
 				//build the bar and add it to the summary
-				$gpoll_output['summary'] .= sprintf( "<div class='gpoll_choice_label%s'>%s</div>", $selected_class, rgar( $input, 'label' ) );
+				$gpoll_output['summary'] .= sprintf( "<div class='gpoll_choice_wrapper'><div class='gfield_description gpoll_choice_label%s'>%s</div>", $selected_class, rgar( $input, 'label' ) );
 				$ratio            = rgar( $input, 'ratio' );
 				$count            = $show_counts === true ? rgar( $input, 'total_entries' ) : '';
 				$percentage_label = $show_percentages === true ? $ratio . '%' : '';
@@ -2167,7 +2200,7 @@ class GFPolls extends GFAddOn {
 
 				$input_counter += 1;
 			}
-			$gpoll_output['summary'] .= '</div>';
+			$gpoll_output['summary'] .= '</div><!-- .gpoll_field -->';
 			$field_counter += 1;
 		}
 		$gpoll_output['summary'] .= '</div>';
@@ -2334,7 +2367,7 @@ class GFPolls extends GFAddOn {
 		if ( $mode == 'results' ) {
 
 			$results = $this->gpoll_get_results( $form_id, $field_id, $style, $percentages, $counts );
-			$output  = $results['summary'];
+			$output  = "<div class='gform_wrapper gravity-theme gform-theme--no-framework'>" . $results['summary'] . "</div>";
 
 
 		} else {

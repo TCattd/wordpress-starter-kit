@@ -387,7 +387,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 				'text' => __( 'Add a comma-separated list of URL arguments that you want WPML to pass when switching languages.', 'sitepress' ),
 				'link' => array(
 					'text'   => __( 'Preserving URL arguments', 'sitepress' ),
-					'url'    => 'https://wpml.org/documentation/getting-started-guide/language-setup/language-switcher-options/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore#preserving-url-parameters',
+					'url'    => 'https://wpml.org/documentation/getting-started-guide/language-setup/language-switcher-options/preserve-url-arguments-when-switching-languages/?utm_source=plugin&utm_medium=gui&utm_campaign=languages',
 					'target' => '_blank',
 				),
 			),
@@ -395,7 +395,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 				'text' => __( 'Enter CSS to add to the page. This is useful when you want to add styling to the language switcher, without having to edit the CSS file on the server.', 'sitepress' ),
 				'link' => array(
 					'text'   => __( 'Styling the language switcher with additional CSS', 'sitepress' ),
-					'url'    => 'https://wpml.org/documentation/getting-started-guide/language-setup/language-switcher-options/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore#styling-the-language-switcher-with-additional-css',
+					'url'    => 'https://wpml.org/documentation/getting-started-guide/language-setup/language-switcher-options/how-to-fix-styling-and-css-issues-for-the-language-switchers/?utm_source=plugin&utm_medium=gui&utm_campaign=languages',
 					'target' => '_blank',
 				),
 			),
@@ -539,7 +539,7 @@ class WPML_LS_Admin_UI extends WPML_Templates_Factory {
 	public function get_shortcode_actions_strings() {
 
 		$description_link_text = _x( "insert WPML's switchers in custom locations", 'Custom languuage switcher description: external link text', 'sitepress' );
-		$description_link_url  = 'https://wpml.org/documentation/getting-started-guide/language-setup/language-switcher-options/?utm_source=plugin&utm_medium=gui&utm_campaign=wpmlcore#custom-locations';
+		$description_link_url  = 'https://wpml.org/documentation/getting-started-guide/language-setup/language-switcher-options/adding-language-switchers-using-php-and-shortcodes/?utm_source=plugin&utm_medium=gui&utm_campaign=languages';
 		$description_link      = '<a href="' . $description_link_url . '" target="_blank">' . $description_link_text . '</a>';
 		$description           = _x( 'Need more options? See how you can %s.', 'Custom languuage switcher description: text', 'sitepress' );
 

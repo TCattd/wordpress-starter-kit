@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -52,15 +52,27 @@ class Admin_Pages extends Generate_Ldjson {
 
 		if ( has_run( __METHOD__ ) ) return;
 
-		$menu = [
-			'page_title' => \esc_html__( 'SEO Settings', 'autodescription' ),
-			'menu_title' => \esc_html__( 'SEO', 'autodescription' ),
-			'capability' => $this->get_settings_capability(),
-			'menu_slug'  => $this->seo_settings_page_slug,
-			'callback'   => [ $this, '_output_settings_wrap' ],
-			'icon'       => 'dashicons-search',
-			'position'   => '90.9001',
-		];
+		$issue_count = $this->get_admin_issue_count();
+
+		if ( $issue_count )
+			$issue_badge = $this->get_admin_menu_issue_badge( $issue_count );
+
+		/**
+		 * @since 4.2.8
+		 * @param array $args The menu arguments. All indexes must be maintained.
+		 */
+		$menu = \apply_filters(
+			'the_seo_framework_top_menu_args',
+			[
+				'page_title' => \esc_html__( 'SEO Settings', 'autodescription' ),
+				'menu_title' => \esc_html__( 'SEO', 'autodescription' ) . ( $issue_badge ?? '' ),
+				'capability' => $this->get_settings_capability(),
+				'menu_slug'  => $this->seo_settings_page_slug,
+				'callback'   => [ $this, '_output_settings_wrap' ],
+				'icon'       => 'dashicons-search',
+				'position'   => '90.9001',
+			]
+		);
 
 		$this->seo_settings_page_hook = \add_menu_page(
 			$menu['page_title'],
@@ -88,6 +100,49 @@ class Admin_Pages extends Generate_Ldjson {
 		// Enqueue scripts
 		\add_action( "admin_print_scripts-{$this->seo_settings_page_hook}", [ $this, '_init_admin_scripts' ], 11 );
 		\add_action( "load-{$this->seo_settings_page_hook}", [ $this, '_register_seo_settings_meta_boxes' ] );
+	}
+
+	/**
+	 * Returns the number of issues registered.
+	 * Always returns 0 when the settings are headless.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @return int The registered issue count.
+	 */
+	public function get_admin_issue_count() {
+
+		if ( $this->is_headless['settings'] ) return 0;
+
+		/**
+		 * @since 4.2.8
+		 * @param int The issue count. Don't overwrite, but increment it!
+		 */
+		return memo() ?? memo( \absint( \apply_filters( 'the_seo_framework_top_menu_issue_count', 0 ) ) );
+	}
+
+	/**
+	 * Returns formatted text for the notice count to be displayed in the admin menu as a number.
+	 *
+	 * @since 4.2.8
+	 *
+	 * @param int $issue_count The issue count.
+	 * @return string The issue count badge.
+	 */
+	public function get_admin_menu_issue_badge( $issue_count ) {
+
+		$notice_i18n = \number_format_i18n( $issue_count );
+
+		return ' ' . sprintf(
+			'<span class="tsf-menu-issue menu-counter count-%d"><span class=tsf-menu-issue-text aria-hidden=true>%s</span><span class=screen-reader-text>%s</span></span>',
+			$issue_count,
+			$notice_i18n,
+			sprintf(
+				/* translators: %s: number of issues waiting */
+				\_n( '%s issue waiting', '%s issues waiting', $issue_count, 'autodescription' ),
+				$notice_i18n
+			)
+		);
 	}
 
 	/**
@@ -123,12 +178,11 @@ class Admin_Pages extends Generate_Ldjson {
 	 * @since 4.0.0
 	 *
 	 * @param string   $post_type The current post type.
-	 * @param \WP_Post $post      The Post object.
+	 * @param \WP_Post $post      The Post object. Unused.
 	 */
 	public function _init_post_edit_view( $post_type, $post ) {
 
-		if ( ! $this->is_post_edit() ) return;
-		if ( ! $this->is_post_type_supported( $post_type ) ) return;
+		if ( ! $this->is_post_edit() || ! $this->is_post_type_supported( $post_type ) ) return;
 
 		/**
 		 * @since 2.0.0
@@ -158,7 +212,7 @@ class Admin_Pages extends Generate_Ldjson {
 
 		/**
 		 * @since 2.6.0
-		 * @param int $priority The metabox term priority.
+		 * @param int $priority The meta box term priority.
 		 *                      Defaults to a high priority, this box is seen soon below the default edit inputs.
 		 */
 		$priority = (int) \apply_filters( 'the_seo_framework_term_metabox_priority', 0 );
@@ -286,8 +340,12 @@ class Admin_Pages extends Generate_Ldjson {
 			\The_SEO_Framework\Builders\Scripts::footer_enqueue();
 		}
 
-		if ( \in_array( $type, [ 'warning', 'info' ], true ) )
-			$type = "notice-$type";
+		switch ( $type ) {
+			case 'warning':
+			case 'info':
+				$type = "notice-$type";
+				break;
+		}
 
 		return vsprintf(
 			'<div class="notice %s tsf-notice %s %s">%s%s</div>',
@@ -363,7 +421,7 @@ class Admin_Pages extends Generate_Ldjson {
 			$cond = $notice['conditions'];
 
 			if (
-				! \current_user_can( $cond['capability'] )
+				   ! \current_user_can( $cond['capability'] )
 				|| ( $cond['user'] && $cond['user'] !== $this->get_user_id() )
 				|| ( $cond['screens'] && ! \in_array( $screenbase, $cond['screens'], true ) )
 				|| ( $cond['excl_screens'] && \in_array( $screenbase, $cond['excl_screens'], true ) )

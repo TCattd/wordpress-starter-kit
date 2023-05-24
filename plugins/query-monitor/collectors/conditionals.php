@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * Template conditionals collector.
  *
@@ -9,9 +9,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class QM_Collector_Conditionals extends QM_Collector {
+/**
+ * @extends QM_DataCollector<QM_Data_Conditionals>
+ */
+class QM_Collector_Conditionals extends QM_DataCollector {
 
 	public $id = 'conditionals';
+
+	public function get_storage(): QM_Data {
+		return new QM_Data_Conditionals();
+	}
 
 	/**
 	 * @return void
@@ -23,7 +30,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param string[] $conditionals The list of conditional function names.
+		 * @param array<int, string> $conditionals The list of conditional function names.
 		 */
 		$conds = apply_filters( 'qm/collect/conditionals', array(
 			'is_404',
@@ -72,7 +79,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 		 *
 		 * @since 2.7.0
 		 *
-		 * @param string[] $conditionals The list of conditional function names.
+		 * @param array<int, string> $conditionals The list of conditional function names.
 		 */
 		$conds = apply_filters( 'query_monitor_conditionals', $conds );
 
@@ -100,7 +107,7 @@ class QM_Collector_Conditionals extends QM_Collector {
 				$na[] = $cond;
 			}
 		}
-		$this->data['conds'] = compact( 'true', 'false', 'na' );
+		$this->data->conds = compact( 'true', 'false', 'na' );
 
 	}
 

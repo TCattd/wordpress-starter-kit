@@ -72,6 +72,11 @@ class GF_User_Registration extends GFFeedAddOn {
 			wp_schedule_event( time(), 'twicedaily', 'gform_userregistration_cron' );
 		}
 
+		if ( $this->is_gravityforms_supported( '2.7.0.2' ) ) {
+			// Only enabling for GF versions that call `delay_feed()` when adding the feed to the queue.
+			$this->_async_feed_processing = true;
+		}
+
 	}
 
 	/**
@@ -521,21 +526,23 @@ class GF_User_Registration extends GFFeedAddOn {
 					unset( $errors['user_name'] );
 				}
 
-				// Check if the email already belongs to a user
+				// Check if the email already belongs to a user.
 				if ( isset( $errors['user_email'] ) ) {
 
 					for ( $i = count( $errors['user_email'] ) - 1; $i >= 0; $i -- ) {
 
-						$error_message = $errors['user_email'][$i];
+						$error_message = $errors['user_email'][ $i ];
 
-						// If the user is submitting their own email address, allow it by removing the error entry
+						// If the user is submitting their own email address, allow it by removing the error entry.
 						if ( $error_message == __( 'Sorry, that email address is already used!' ) && $this->is_users_email( $user_email, $user_id ) ) {
-							unset( $errors['user_email'][$i] );
+							unset( $errors['user_email'][ $i ] );
 						} // Same as the above, but for a different message.
 						elseif ( $error_message == __( 'That email address has already been used. Please check your inbox for an activation email. It will become available in a couple of days if you do nothing.' ) && $this->is_users_email( $user_email, $user_id ) ) {
-							unset( $errors['user_email'][$i] );
+							unset( $errors['user_email'][ $i ] );
+						} // Same as the above, but for a different message.
+						elseif ( $error_message == sprintf( __( '<strong>Error:</strong> This email address is already registered. %sLog in%s with this address or choose another one.' ), '<a href="' . wp_login_url() . '">', '</a>' ) && $this->is_users_email( $user_email, $user_id ) ) {
+							unset( $errors['user_email'][ $i ] );
 						}
-
 					}
 
 					// If there aren't any errors left, remove the key completely
@@ -1187,6 +1194,10 @@ class GF_User_Registration extends GFFeedAddOn {
 
 				$bp_field = xprofile_get_field( $bp_field_id );
 
+				if ( ! $bp_field ) {
+					continue;
+				}
+
 				if ( in_array( $bp_field->type, array( 'url', 'datebox' ) ) ) {
 					$value = BP_XProfile_ProfileData::get_value_byid( $bp_field_id, $user->ID );
 				} else {
@@ -1421,7 +1432,13 @@ class GF_User_Registration extends GFFeedAddOn {
 		$user_id = wp_update_user( $user );
 		$role    = rgar( $meta, 'role' );
 
-		// if a role is provied and it is not the 'preserve' option, update the role
+		if ( ! empty( $user_data['password_hash'] ) ) {
+			$this->log( sprintf( 'Setting hashed password for user ID %d.', $user_id ) );
+			$this->set_hashed_password( $user_id, $user_data['password_hash'] );
+			clean_user_cache( $user_id );
+		}
+
+		// if a role is provided and it is not the 'preserve' option, update the role
 		if ( $role && $role != 'gfur_preserve_role' ) {
 			$this->log( sprintf( 'Setting role: %s', $role ) );
 			$user_obj->set_role( $role );
@@ -2890,9 +2907,8 @@ class GF_User_Registration extends GFFeedAddOn {
 				array(
 					'name'      => 'userMeta',
 					'label'     => '',
-					'type'      => 'dynamic_field_map',
+					'type'      => 'generic_map',
 					'field_map' => $this->get_user_meta_choices(),
-					'class'     => 'medium'
 				)
 			)
 		);
@@ -2910,10 +2926,8 @@ class GF_User_Registration extends GFFeedAddOn {
 					array(
 						'name'      => 'bpMeta',
 						'label'     => '',
-						'type'      => 'dynamic_field_map',
+						'type'      => 'generic_map',
 						'field_map' => $this->get_buddypress_fields(),
-						'class'     => 'medium',
-						'disable_custom' => true
 					)
 				)
 			);
@@ -3760,26 +3774,6 @@ class GF_User_Registration extends GFFeedAddOn {
 		}
 
 		return $html;
-	}
-
-	public function single_setting_row( $field ) {
-
-		$display = rgar( $field, 'hidden' ) || rgar( $field, 'type' ) == 'hidden' ? 'style="display:none;"' : '';
-
-		?>
-
-		<tr id="gaddon-setting-row-<?php echo $field['name'] ?>" <?php echo $display; ?>>
-			<?php if( $field['type'] != 'dynamic_field_map' ): ?>
-				<th>
-					<?php $this->single_setting_label( $field ); ?>
-				</th>
-			<?php endif; ?>
-			<td>
-				<?php $this->single_setting( $field ); ?>
-			</td>
-		</tr>
-
-	<?php
 	}
 
 	/**

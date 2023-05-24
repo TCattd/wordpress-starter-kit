@@ -1,3 +1,10 @@
+## 1.1.2
+- Fixed an issue that causes the scripts for the frontend to not be in production mode when compiled by Webpack.
+
+## 1.1.1
+- Fixed an issue where scripts were sometimes missing dependencies, and sometimes getting loaded unneccessarily.
+- Updated the reCAPTCHA settings link for the Captcha field "To use the reCAPTCHA field" message in the form editor.
+
 ## 1.1 | 2021-07-21
 - Fixed an issue where an undefined variable notice appears on the add-on settings page.
 - Fixed an issue where forms can fail validation if they include dynamically added fields such as the honeypot.

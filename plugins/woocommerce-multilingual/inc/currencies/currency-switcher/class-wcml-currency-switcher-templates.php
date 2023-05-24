@@ -29,7 +29,7 @@ class WCML_Currency_Switcher_Templates {
 	/**
 	 * @var array $templates Collection of WCML_CS_Template
 	 */
-	private $templates = false;
+	private $templates = [];
 
 	/**
 	 * @var array $enqueued_templates
@@ -170,7 +170,7 @@ class WCML_Currency_Switcher_Templates {
 			$this->templates = $this->get_templates_from_transient();
 		}
 
-		if ( false === $this->templates ) {
+		if ( [] === $this->templates ) {
 			$templates    = [];
 			$dirs_to_scan = [];
 
@@ -225,7 +225,7 @@ class WCML_Currency_Switcher_Templates {
 		if ( $templates && $this->are_template_paths_valid( $templates ) ) {
 			return $templates;
 		}
-		return false;
+		return [];
 	}
 
 
@@ -421,8 +421,8 @@ class WCML_Currency_Switcher_Templates {
 
 
 	/**
-	 * @param $slug
-	 * @param $template
+	 * @param string $slug
+	 * @param string $template
 	 */
 	public function maybe_late_enqueue_template( $slug, $template ) {
 		if ( ! in_array( $slug, $this->enqueued_templates ) ) {

@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -160,10 +160,16 @@ class Render extends Admin_Init {
 		$attr = '';
 
 		foreach ( $attributes as $_name => $_value ) {
-			if ( \in_array( $_name, [ 'href', 'xlink:href', 'src' ], true ) ) {
-				$_secure_attr_value = \esc_url_raw( $_value );
-			} else {
-				$_secure_attr_value = \esc_attr( $_value );
+
+			switch ( $_name ) {
+				case 'href':
+				case 'xlink:href':
+				case 'src':
+					$_secure_attr_value = \esc_url_raw( $_value );
+					break;
+				default:
+					$_secure_attr_value = \esc_attr( $_value );
+					break;
 			}
 
 			// phpcs:disable -- Security hint for later, left code intact; Redundant, internal... for now.
@@ -652,6 +658,7 @@ class Render extends Admin_Init {
 	 * @since 4.1.2 Now forwards the `multi_og_image` option to the generator. Although
 	 *              it'll always use just one image, we read this option so we'll only
 	 *              use a single cache instance internally with the generator.
+	 * @since 4.2.8 Removed support for the long deprecated `twitter:image:height` and `twitter:image:width`.
 	 *
 	 * @return string The Twitter Image meta tag.
 	 */
@@ -666,17 +673,6 @@ class Render extends Admin_Init {
 				'name'    => 'twitter:image',
 				'content' => $image['url'],
 			] );
-
-			if ( $image['height'] && $image['width'] ) {
-				$output .= $this->render_element( [
-					'name'    => 'twitter:image:width',
-					'content' => $image['width'],
-				] );
-				$output .= $this->render_element( [
-					'name'    => 'twitter:image:height',
-					'content' => $image['height'],
-				] );
-			}
 
 			if ( $image['alt'] ) {
 				$output .= $this->render_element( [

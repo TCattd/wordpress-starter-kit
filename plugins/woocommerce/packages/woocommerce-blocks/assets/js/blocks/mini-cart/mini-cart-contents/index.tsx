@@ -2,10 +2,11 @@
  * External dependencies
  */
 import { __ } from '@wordpress/i18n';
-import { cart } from '@woocommerce/icons';
+import { cart, filledCart, removeCart } from '@woocommerce/icons';
 import { Icon } from '@wordpress/icons';
 import { registerBlockType } from '@wordpress/blocks';
 import type { BlockConfiguration } from '@wordpress/blocks';
+import { isFeaturePluginBuild } from '@woocommerce/block-settings';
 
 /**
  * Internal dependencies
@@ -41,12 +42,17 @@ const settings: BlockConfiguration = {
 			link: true,
 		},
 		lock: false,
+		...( isFeaturePluginBuild() && {
+			__experimentalBorder: {
+				color: true,
+				width: true,
+			},
+		} ),
 	},
 	attributes: {
 		isPreview: {
 			type: 'boolean',
 			default: false,
-			save: false,
 		},
 		lock: {
 			type: 'object',
@@ -54,6 +60,32 @@ const settings: BlockConfiguration = {
 				remove: true,
 				move: true,
 			},
+		},
+		currentView: {
+			type: 'string',
+			default: 'woocommerce/filled-mini-cart-contents-block',
+			source: 'readonly', // custom source to prevent saving to post content
+		},
+		editorViews: {
+			type: 'object',
+			default: [
+				{
+					view: 'woocommerce/filled-mini-cart-contents-block',
+					label: __(
+						'Filled Mini Cart',
+						'woo-gutenberg-products-block'
+					),
+					icon: <Icon icon={ filledCart } />,
+				},
+				{
+					view: 'woocommerce/empty-mini-cart-contents-block',
+					label: __(
+						'Empty Mini Cart',
+						'woo-gutenberg-products-block'
+					),
+					icon: <Icon icon={ removeCart } />,
+				},
+			],
 		},
 	},
 	example: {

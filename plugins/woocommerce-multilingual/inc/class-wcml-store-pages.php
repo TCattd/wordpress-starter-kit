@@ -1,16 +1,13 @@
 <?php
 
+use WPML\Convert\Ids;
 use WPML\FP\Obj;
 
 class WCML_Store_Pages {
 
-	/**
-	 * @var woocommerce_wpml
-	 */
+	/** @var woocommerce_wpml $woocommerce_wpml */
 	private $woocommerce_wpml;
-	/**
-	 * @var SitePress
-	 */
+	/** @var SitePress $sitepress */
 	private $sitepress;
 
 	/** @var int|string $front_page_id */
@@ -20,7 +17,7 @@ class WCML_Store_Pages {
 	/** @var WP_Post|null $shop_page */
 	private $shop_page;
 
-	public function __construct( woocommerce_wpml $woocommerce_wpml, \WPML\Core\ISitePress $sitepress ) {
+	public function __construct( woocommerce_wpml $woocommerce_wpml, SitePress $sitepress ) {
 
 		$this->woocommerce_wpml = $woocommerce_wpml;
 		$this->sitepress        = $sitepress;
@@ -177,36 +174,51 @@ class WCML_Store_Pages {
 	}
 
 	public function add_filter_to_get_shop_translated_page_id() {
-
-		$woo_pages = [
-			'shop_page_id',
-			'cart_page_id',
-			'checkout_page_id',
-			'myaccount_page_id',
-			'lost_password_page_id',
-			'edit_address_page_id',
-			'view_order_page_id',
-			'change_password_page_id',
-			'logout_page_id',
-			'pay_page_id',
-			'thanks_page_id',
-			'terms_page_id',
-			'review_order_page_id',
+		$slugs = [
+			'shop',
+			'cart',
+			'checkout',
+			'myaccount',
+			'terms',
+			'refund_returns',
 		];
 
-		foreach ( $woo_pages as $woo_page ) {
-			add_filter( 'woocommerce_get_' . $woo_page, [ $this, 'translate_pages_in_settings' ] );
-			// I think following filter not needed because "option_woocommerce_..." not used in Woo, but I need ask David to confirm this
-			add_filter( 'option_woocommerce_' . $woo_page, [ $this, 'translate_pages_in_settings' ] );
-		}
-	}
+		$prefetchTranslationIds = function() use ( $slugs ) {
+			// $getOption :: string -> int|false
+			$getOption = function( $slug ) {
+				return get_option( 'woocommerce_' . $slug . '_page_id' );
+			};
 
-	public function translate_pages_in_settings( $id ) {
-		return apply_filters( 'translate_object_id', $id, 'page', true );
+			$ids = wpml_collect( $slugs )
+				->map( $getOption )
+				->filter()
+				->toArray();
+
+			$this->sitepress->post_translations()->prefetch_ids( $ids );
+		};
+
+		$addFilters = function() use ( $slugs ) {
+			// $convertPageId :: int|string -> int|string
+			$convertPageId = function( $id ) {
+				return $id ? Ids::convert( $id, 'page', true ) : $id;
+			};
+
+			// $addFilter :: string -> void
+			$addFilter = function( $slug ) use ( $convertPageId ) {
+				add_filter( 'option_woocommerce_' . $slug . '_page_id', $convertPageId );
+			};
+
+			wpml_collect( $slugs )->map( $addFilter );
+		};
+
+		$prefetchTranslationIds();
+		$addFilters();
 	}
 
 	/**
-	 * Filters WooCommerce query for translated shop page
+	 * Filters WooCommerce query for translated shop page.
+	 *
+	 * @param WP_Query $q
 	 */
 	public function shop_page_query( $q ) {
 		if ( ! $q->is_main_query() ) {

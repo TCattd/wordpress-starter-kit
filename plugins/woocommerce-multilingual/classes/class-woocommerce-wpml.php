@@ -8,6 +8,7 @@ use function WPML\Container\make;
 /**
  * Class woocommerce_wpml
  */
+/* phpcs:ignore PEAR.NamingConventions.ValidClassName.StartWithCapital, PEAR.NamingConventions.ValidClassName.Invalid */
 class woocommerce_wpml {
 
 	/** @var mixed|void Settings */
@@ -157,8 +158,7 @@ class woocommerce_wpml {
 			if ( is_admin() && AdminPages::isWcmlSettings() ) {
 				WCML_Capabilities::set_up_capabilities();
 
-				wp_register_style( 'otgs-ico', WCML_PLUGIN_URL . '/res/css/otgs-ico.css', null, WCML_VERSION );
-				wp_enqueue_style( 'otgs-ico' );
+				wp_enqueue_style( 'otgs-icons' );
 
 				WCML_Resources::load_management_css();
 				WCML_Resources::load_tooltip_resources();
@@ -186,6 +186,9 @@ class woocommerce_wpml {
 
 		$this->cart = new WCML_Cart( $this, $sitepress, $woocommerce );
 
+		$this->compatibility = new WCML_Compatibility();
+		$this->compatibility->init_before_multicurrency();
+
 		$action = filter_input( INPUT_POST, 'action' );
 		if ( WCML_MULTI_CURRENCIES_INDEPENDENT === (int) $this->settings['enable_multi_currency']
 			|| AdminPages::isMultiCurrency()
@@ -198,15 +201,12 @@ class woocommerce_wpml {
 			add_shortcode( 'currency_switcher', '__return_empty_string' );
 		}
 
-		if ( $this->dependencies_are_ok ) {
-			$this->compatibility = new WCML_Compatibility();
-			$this->compatibility->init();
+		$this->compatibility->init();
 
-			if ( isStandAlone() ) {
-				return $this->init_standalone( $sitepress, $wpdb );
-			} else {
-				return $this->init_full( $sitepress, $wpdb, $woocommerce, $wpml_url_converter, $wpml_post_translations, $wpml_term_translations );
-			}
+		if ( isStandAlone() ) {
+			return $this->init_standalone( $sitepress, $wpdb );
+		} else {
+			return $this->init_full( $sitepress, $wpdb, $woocommerce, $wpml_url_converter, $wpml_post_translations, $wpml_term_translations );
 		}
 	}
 
@@ -349,7 +349,7 @@ class woocommerce_wpml {
 		];
 
 		if ( empty( $this->settings ) ) {
-			$this->settings = get_option( '_wcml_settings' );
+			$this->settings = get_option( '_wcml_settings', [] );
 		}
 
 		foreach ( $defaults as $key => $value ) {
@@ -367,7 +367,7 @@ class woocommerce_wpml {
 	 * @param string      $key
 	 * @param null|string $default
 	 *
-	 * @return null|string
+	 * @return null|string|array
 	 */
 	public function get_setting( $key, $default = null ) {
 		if ( array_key_exists( $key, $this->settings ) ) {
@@ -431,10 +431,7 @@ class woocommerce_wpml {
 	 * @return string
 	 */
 	public function get_stable_wc_version() {
-		/** @var $woocommerce WooCommerce */
-		global $woocommerce;
-
-		$file    = $woocommerce->plugin_path() . '/readme.txt';
+		$file    = WC()->plugin_path() . '/readme.txt';
 		$values  = file( $file );
 		$wc_info = explode( ':', $values[5] );
 		$version = '';

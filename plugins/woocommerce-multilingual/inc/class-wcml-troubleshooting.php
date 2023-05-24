@@ -1,5 +1,6 @@
 <?php
 
+use WCML\Utilities\DB;
 use WPML\FP\Obj;
 use function WPML\Container\make;
 
@@ -62,11 +63,8 @@ class WCML_Troubleshooting {
 		$get_variation_term_taxonomy_ids = apply_filters( 'wcml_variation_term_taxonomy_ids', (array) $get_variation_term_taxonomy_ids );
 
 		$get_variables_products = $this->wpdb->get_results(
-			$this->wpdb->prepare(
-				"SELECT tr.element_id as id,tr.language_code as lang FROM {$this->wpdb->prefix}icl_translations AS tr LEFT JOIN {$this->wpdb->term_relationships} as t ON tr.element_id = t.object_id LEFT JOIN {$this->wpdb->posts} AS p ON tr.element_id = p.ID
-                                WHERE p.post_status = 'publish' AND tr.source_language_code is NULL AND tr.element_type = 'post_product' AND t.term_taxonomy_id IN (%s) ORDER BY tr.element_id",
-				join( ',', $get_variation_term_taxonomy_ids )
-			),
+			"SELECT tr.element_id as id,tr.language_code as lang FROM {$this->wpdb->prefix}icl_translations AS tr LEFT JOIN {$this->wpdb->term_relationships} as t ON tr.element_id = t.object_id LEFT JOIN {$this->wpdb->posts} AS p ON tr.element_id = p.ID
+				WHERE p.post_status = 'publish' AND tr.source_language_code is NULL AND tr.element_type = 'post_product' AND t.term_taxonomy_id IN (" . DB::prepareIn( $get_variation_term_taxonomy_ids, '%d' ) . ") ORDER BY tr.element_id",
 			ARRAY_A
 		);
 

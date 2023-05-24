@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -585,13 +585,19 @@ class Post_Data extends Detect {
 	 *
 	 * @since 2.6.0
 	 * @since 3.1.0 No longer applies WordPress's default filters.
+	 * @since 4.2.8 Now tests for post type support of 'editor' before parsing the content.
 	 *
-	 * @param int $id The post ID.
+	 * @param \WP_Post|int|null $post The Post or Post ID. Leave null to get current post.
 	 * @return string The post content.
 	 */
-	public function get_post_content( $id = 0 ) {
+	public function get_post_content( $post = null ) {
+
+		$post = \get_post( $post ?: $this->get_the_real_ID() );
+
 		// '0' is not deemed content. Return empty string for it's a slippery slope.
-		return ( \get_post( $id ?: $this->get_the_real_ID() )->post_content ?? '' ) ?: '';
+		return ! empty( $post->post_content ) && \post_type_supports( $post->post_type, 'editor' )
+			? $post->post_content
+			: '';
 	}
 
 	/**
@@ -651,7 +657,10 @@ class Post_Data extends Detect {
 	 * @return bool True if protected or private, false otherwise.
 	 */
 	public function is_protected( $post = null ) {
-		$post = \get_post( $post ); // This is here so we don't have to create another instance hereinafter.
+
+		// This is here so we don't have to create another instance hereinafter.
+		$post = \get_post( $post );
+
 		return $this->is_password_protected( $post ) || $this->is_private( $post );
 	}
 
@@ -690,7 +699,15 @@ class Post_Data extends Detect {
 	 * @return bool True if draft, false otherwise.
 	 */
 	public function is_draft( $post = null ) {
-		return \in_array( \get_post( $post )->post_status ?? '', [ 'draft', 'auto-draft', 'pending' ], true );
+
+		switch ( \get_post( $post )->post_status ?? '' ) {
+			case 'draft':
+			case 'auto-draft':
+			case 'pending':
+				return true;
+		}
+
+		return false;
 	}
 
 	/**

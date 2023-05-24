@@ -40,11 +40,16 @@ if( !class_exists('WPPB_EDD_SL_Plugin_Updater') ) {
             $this->name = plugin_basename($_plugin_file);
             $this->slug = basename($_plugin_file, '.php');
 
-            // IMPORTANT TranslatePress modification.
-            // if ( $this->slug === 'index') {
-            //     // $this->slug is the add-on file name. For Deepl and Translator accounts the file name is 'index' causing a conflict.
-            //     $this->slug = dirname( plugin_basename( $_plugin_file ) );
-            // }
+            /**
+             * Necessary in order for the View Details button to work properly when multiple products using 
+             * this class aare active
+             * 
+             * The original takes the base file name as the slug, but our file names are just `index.php` so we
+             * use the folder name instead
+             */
+            if ( $this->slug === 'index') {
+                $this->slug = dirname( plugin_basename( $_plugin_file ) );
+            }
             // end modification
 
             $this->version = $_api_data['version'];

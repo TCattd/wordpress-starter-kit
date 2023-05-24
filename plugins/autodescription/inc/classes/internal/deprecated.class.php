@@ -8,7 +8,7 @@ namespace The_SEO_Framework\Internal;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -153,7 +153,7 @@ final class Deprecated {
 					. $tsf->pint_site_output();
 		elseif ( $tsf->is_query_exploited() ) :
 			// aqp = advanced query protection
-			$output = '<meta name="tsf:aqp" value="1" />' . "\n";
+			$output = '<meta name="tsf:aqp" value="1" />' . "\n"; // Keep XHTML valid!
 		else :
 			// Inefficient concatenation is inefficient. Improve this?
 			$output = $tsf->the_description()
@@ -299,8 +299,7 @@ final class Deprecated {
 		$tsf->_deprecated_function( 'tsf()->can_do_sitemap_robots()', '4.2.0' );
 
 		if ( $check_option ) {
-			if ( ! $tsf->get_option( 'sitemaps_output' )
-			|| ! $tsf->get_option( 'sitemaps_robots' ) )
+			if ( ! $tsf->get_option( 'sitemaps_output' ) || ! $tsf->get_option( 'sitemaps_robots' ) )
 				return false;
 		}
 
@@ -1555,7 +1554,7 @@ final class Deprecated {
 		$tsf = \tsf();
 		\tsf()->_deprecated_function( 'tsf()->prepend_tax_label_prefix()', '4.2.0' );
 
-		$prefix = $tsf->get_tax_type_label( $taxonomy ) ?: '';
+		$prefix = $tsf->get_tax_type_label( $taxonomy );
 
 		if ( $prefix ) {
 			$title = sprintf(

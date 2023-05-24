@@ -8,25 +8,23 @@ use WPML\FP\Obj;
 
 class TopSeller extends Handler {
 
-	/** @var Sitepress */
+	/** @var \SitePress */
 	private $sitepress;
 
-	public function __construct(
-		\WPML\Core\ISitePress $sitepress
-	) {
+	public function __construct( \SitePress $sitepress ) {
 		$this->sitepress = $sitepress;
 	}
 
 	/**
 	 * Check the language information for top sellers response.
 	 *
-	 * @param WP_REST_Response $response
-	 * @param object $object
-	 * @param WP_REST_Request $request
+	 * @param \WP_REST_Response $response
+	 * @param object            $object
+	 * @param \WP_REST_Request  $request
 	 *
 	 * @throws InvalidLanguage
 	 *
-	 * @return WP_REST_Response|false
+	 * @return \WP_REST_Response|false
 	 */
 	public function prepare( $response, $object, $request ) {
 

@@ -25,6 +25,13 @@
       margin-left: auto;
       margin-right: auto;
 
+      .doughnut-chart-wrap {
+        position: relative;
+        width: 150px;
+        height: auto;
+        margin: 0 auto;
+      }
+
       .llar-retries-count {
         position: absolute;
         top: 50%;

@@ -1,11 +1,10 @@
 <?php
 
+namespace LLAR\Core;
+
 if( !defined( 'ABSPATH' ) ) exit();
 
-/**
- * Class LLA_Shortcodes
- */
-class LLA_Shortcodes {
+class Shortcodes {
 
 	/**
 	 * Register all shortcodes
@@ -18,18 +17,18 @@ class LLA_Shortcodes {
 	/**
 	 * [llar-link url="" text=""] callback
 	 *
-	 * @param $atts
+	 * @param $attr
+	 *
 	 * @return string
 	 */
-	public function llar_link_callback( $atts ) {
+	public function llar_link_callback( $attr ) {
 
-		$atts = shortcode_atts( array(
+		$attr = shortcode_atts( array(
 			'url' 	=> '#',
 			'text' 	=> 'Link'
-		), $atts );
+		), $attr );
 
-		return '<a href="' . esc_attr( $atts['url'] ) . '" target="_blank">' . esc_html( $atts['text'] ) . '</a>';
+		return '<a href="' . esc_attr( $attr['url'] ) . '" target="_blank">' . esc_html( $attr['text'] ) . '</a>';
 	}
 
 }
-(new LLA_Shortcodes())->register();

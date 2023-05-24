@@ -41,8 +41,14 @@ function wppbGPOnClick( e ) {
 
 function wppbOnLoadCallback() {
     gapi.load( 'auth2', function() {
+
+        if ( !wppb_sc_google_data.client_id || !wppb_sc_google_data.plugin_name) {
+            console.log("Something went wrong initializing the google auth2 api: there is a problem with the Google Client ID or Name");
+            return;
+        }
         var config = {
             'client_id'       :   wppb_sc_google_data.client_id,
+            'plugin_name'     :   wppb_sc_google_data.plugin_name,
             'cookie_policy'   :   'single_host_origin',
             'scope'           :   'profile email'
         };

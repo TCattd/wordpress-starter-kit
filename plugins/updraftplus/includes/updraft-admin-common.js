@@ -62,7 +62,10 @@ function updraft_send_command(action, data, callback, options) {
 					} else {
 						console.log(e);
 						console.log(response);
-						if (options.alert_on_error) { alert(updraftlion.unexpectedresponse+' '+response); }
+						if (options.alert_on_error) {
+							if ('string' === typeof response && response.match(/security\scheck\s?/i)) response += ' (' + updraftlion.expired_tokens + ' ' + updraftlion.reload_page + ')';
+							alert(updraftlion.unexpectedresponse+' '+response);
+						}
 						return;
 					}
 				}
@@ -125,7 +128,7 @@ function updraft_delete(key, nonce, showremote) {
 }
 
 function updraft_remote_storage_tab_activation(the_method){
-	jQuery('.updraftplusmethod').hide();
+	jQuery('.updraftplusmethod').not('.error').hide();
 	jQuery('.remote-tab').data('active', false);
 	jQuery('.remote-tab').removeClass('nav-tab-active');
 	jQuery('.updraftplusmethod.'+the_method).show();
@@ -182,6 +185,8 @@ function updraft_remote_storage_tabs_setup() {
 	jQuery(set).each(function(ind, obj) {
 		var ser = jQuery(obj).val();
 		
+		jQuery('.error.updraftplusmethod.'+ser).show();
+
 		if (jQuery(obj).attr('id') != 'updraft_servicecheckbox_none') {
 			anychecked++;
 		}
@@ -218,11 +223,13 @@ function updraft_remote_storage_tabs_setup() {
 			if (null != serv && '' != serv) {
 				if (jQuery(this).is(':checked')) {
 					anychecked++;
+					jQuery('.error.updraftplusmethod.'+serv).show();
 					jQuery('.remote-tab-'+serv).fadeIn();
 					updraft_remote_storage_tab_activation(serv);
 					if (jQuery('#updraft-navtab-settings-content #updraft_report_row_no_addon').length && 'email' === serv) set_email_report_storage_interface(true);
 				} else {
 					anychecked--;
+					jQuery('.error.updraftplusmethod.'+serv).hide();
 					jQuery('.remote-tab-'+serv).hide();
 					// Check if this was the active tab, if yes, switch to another
 					if (jQuery('.remote-tab-'+serv).data('active') == true) {
@@ -1884,11 +1891,15 @@ function updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_noclo
 	params.incremental = (typeof extradata.incremental !== 'undefined') ? extradata.incremental : 0;
 	delete extradata.incremental;
 
-	params.db_anon_all = (typeof extradata.db_anon_all !== 'undefined') ? extradata.db_anon_all : 0;
-	delete extradata.db_anon_all;
+	params.db_anon_all = (typeof extradata.db_anon !== 'undefined' && typeof extradata.db_anon.all !== 'undefined') ? extradata.db_anon.all : 0;
+	params.db_anon_non_staff = (typeof extradata.db_anon !== 'undefined' && typeof extradata.db_anon.non_staff !== 'undefined') ? extradata.db_anon.non_staff : 0;
+	params.db_anon_wc_orders = (typeof extradata.db_anon !== 'undefined' && typeof extradata.db_anon.wc_orders !== 'undefined') ? extradata.db_anon.wc_orders : 0;
+	if ('undefined' !== typeof extradata.db_anon) {
+		delete extradata.db_anon.all;
+		delete extradata.db_anon.non_staff;
+		delete extradata.db_anon.wc_orders;
+	}
 
-	params.db_anon_non_staff = (typeof extradata.db_anon_non_staff !== 'undefined') ? extradata.db_anon_non_staff : 0;
-	delete extradata.db_anon_non_staff;
 
 	// Display Request start message
 	if (!jQuery('.updraft_requeststart').length) {
@@ -2014,6 +2025,15 @@ jQuery(function($) {
 		}
 	});
 	
+	$('div.ud-phpseclib-notice').on('click', 'button.notice-dismiss', function (event) {
+		event.stopImmediatePropagation();
+		updraft_send_command('dismiss_phpseclib_notice', null, function(resp, status, response) {
+			if (!resp.hasOwnProperty('success') || 1 !== resp.success) {
+				console.log(resp);
+				alert(updraftlion.unexpectedresponse+' '+response);
+			}
+		});
+	});
 
 	// Delete button
 	$('#updraft-navtab-backups-content').on('click', '.js--delete-selected-backups', function(e) {
@@ -2315,6 +2335,7 @@ jQuery(function($) {
 		var use_queue = $('#updraftplus_clone_use_queue').is(':checked') ? 1 : 0;
 		var db_anon_all = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_backupnow_db_anon_all').is(':checked') ? 1 : 0;
 		var db_anon_non_staff = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_backupnow_db_anon_non_staff').is(':checked') ? 1 : 0;
+		var db_anon_wc_orders = $('#updraft-navtab-migrate-content .updraft_migrate_widget_module_content #updraftplus_clone_backupnow_db_anon_wc_order_data').is(':checked') ? 1 : 0;
 
 		var backup_nonce = 'current';
 		var backup_timestamp = 'current';
@@ -2345,6 +2366,7 @@ jQuery(function($) {
 		var backup_options = {
 			db_anon_all: db_anon_all,
 			db_anon_non_staff: db_anon_non_staff,
+			db_anon_wc_orders: db_anon_wc_orders,
 			clone_region: region
 		}
 
@@ -2765,7 +2787,7 @@ jQuery(function($) {
 			backupnow_nodb: 0,
 			backupnow_nofiles: 0,
 			backupnow_nocloud: 0,
-			backupnow_label: 'UpdraftPlus Clone',
+			backupnow_label: 'UpdraftClone',
 			extradata: '',
 			onlythisfileentity: 'plugins,themes,uploads,others',
 			clone_id: clone_id,
@@ -2776,6 +2798,7 @@ jQuery(function($) {
 			backup_timestamp: backup_timestamp,
 			db_anon_all: backup_options['db_anon_all'],
 			db_anon_non_staff: backup_options['db_anon_non_staff'],
+			db_anon_wc_orders: backup_options['db_anon_wc_orders'],
 			clone_region: backup_options['clone_region']
 		};
 
@@ -3044,12 +3067,25 @@ jQuery(function($) {
 		$('#backupnow_database_moreoptions').toggle();
 	});
 
+	$('#updraft-navtab-migrate-content').on('click', '#backupnow_database_showmoreoptions', function (e) {
+		e.preventDefault();
+		$('#updraft-navtab-migrate-content #backupnow_database_moreoptions').toggle();
+	});
+
 	$('#backupnow_db_anon_all').on('click', function(e) {
 		if ($('#backupnow_db_anon_non_staff').prop('checked')) $('#backupnow_db_anon_non_staff').prop("checked", false);
 	});
 
 	$('#backupnow_db_anon_non_staff').on('click', function(e) {
 		if ($('#backupnow_db_anon_all').prop('checked')) $('#backupnow_db_anon_all').prop("checked", false);
+	});
+
+	$('#updraft-navtab-migrate-content').on('click', '#updraftplus_migration_backupnow_db_anon_all', function() {
+		if ($('#updraftplus_migration_backupnow_db_anon_non_staff').prop('checked')) $('#updraftplus_migration_backupnow_db_anon_non_staff').prop("checked", false);
+	});
+
+	$('#updraft-navtab-migrate-content').on('click', '#updraftplus_migration_backupnow_db_anon_non_staff', function() {
+		if ($('#updraftplus_migration_backupnow_db_anon_all').prop('checked')) $('#updraftplus_migration_backupnow_db_anon_all').prop("checked", false);
 	});
 
 	$('#updraft-navtab-migrate-content').on('click', '#updraftplus_clone_backupnow_db_anon_all', function() {
@@ -3592,6 +3628,7 @@ jQuery(function($) {
 		var backupnow_nocloud = jQuery('#backupnow_includecloud').is(':checked') ? 0 : 1;
 		var db_anon_all = jQuery('#backupnow_db_anon_all').is(':checked') ? 1 : 0;
 		var db_anon_non_staff = jQuery('#backupnow_db_anon_non_staff').is(':checked') ? 1 : 0;
+		var db_anon_wc_orders = jQuery('#backupnow_db_anon_wc_order_data').is(':checked') ? 1 : 0;
 		var onlythesetableentities = backupnow_whichtables_checked('');
 		var always_keep = jQuery('#always_keep').is(':checked') ? 1 : 0;
 		var incremental = ('incremental' == jQuery('#updraft-backupnow-modal').data('backup-type')) ? 1 : 0;
@@ -3649,7 +3686,7 @@ jQuery(function($) {
 			});
 		}, 1700);
 	
-		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep, incremental: incremental, db_anon_all: db_anon_all, db_anon_non_staff: db_anon_non_staff}, jQuery('#backupnow_label').val(), onlythesetableentities, only_these_cloud_services);
+		updraft_backupnow_go(backupnow_nodb, backupnow_nofiles, backupnow_nocloud, onlythesefileentities, {always_keep: always_keep, incremental: incremental, db_anon: { all: db_anon_all, non_staff: db_anon_non_staff, wc_orders: db_anon_wc_orders }}, jQuery('#backupnow_label').val(), onlythesetableentities, only_these_cloud_services);
 	};
 	backupnow_modal_buttons[updraftlion.cancel] = function() {
 	jQuery(this).dialog("close"); };
@@ -4472,9 +4509,48 @@ jQuery(function($) {
 		e.preventDefault();
 		jQuery('.updraft_restore_plugins_options').prop('checked', false);
 	});
+	jQuery('.updraftmessage.admin-warning-litespeed').on('click', '.notice-dismiss', function(e) {
+		e.preventDefault();
+		updraft_send_command('dismiss_admin_warning_litespeed', 1, function (response) {});
+	});
+	
+	function apply_search_on_db_size() {
+		var value = jQuery('.db-search').val().toLowerCase();
+		jQuery(".db-size-content tr").filter(function() {
+			jQuery(this).toggle(jQuery(this).text().toLowerCase().indexOf(value) > -1)
+		});
+	}
+
+	jQuery('#db_size.advanced_tools_button, .db-size-refresh').on('click', function(e) {
+		e.preventDefault();
+
+		var $total_size = jQuery('.advanced_settings_content .advanced_tools.db_size .total-size');
+		var $table_body = jQuery('.advanced_settings_content .advanced_tools.db_size tbody.db-size-content');
+
+		// trigger the ajax from the 'Database size' menu only for the first time
+		if (jQuery(this).hasClass('advanced_tools_button') && '' != $table_body.html()) { return; }
+		
+		$table_body.html('');
+
+		updraft_send_command('db_size', 1, function (response) {
+			$total_size.html(response.size);
+			$table_body.html(response.html);
+			apply_search_on_db_size();
+		});
+	});
+
+	jQuery('.db-search').on('input', function() {
+		apply_search_on_db_size();
+	});
+
+	jQuery('.db-search-clear').on('click', function(e) {
+		e.preventDefault();
+		jQuery('.db-search').val('');
+		apply_search_on_db_size();
+	});
 });
 
-// UpdraftPlus Vault
+// UpdraftVault
 jQuery(function($) {
 	
 	var settings_css_prefix = '#updraft-navtab-settings-content ';
@@ -4956,6 +5032,9 @@ jQuery(function($) {
 		for (var method in updraftlion.remote_storage_templates) {
 			if ('undefined' != typeof updraftlion.remote_storage_options[method] && not_instance_ids.length < Object.keys(updraftlion.remote_storage_options[method]).length) {
 				var template = Handlebars.compile(updraftlion.remote_storage_templates[method]);
+				for (var partial_template_name in updraftlion.remote_storage_partial_templates[method]) {
+					Handlebars.registerPartial(partial_template_name, Handlebars.compile(updraftlion.remote_storage_partial_templates[method][partial_template_name]));
+				}
 				var first_instance = true;
 				var instance_count = 1;
 				for (var instance_id in updraftlion.remote_storage_options[method]) {

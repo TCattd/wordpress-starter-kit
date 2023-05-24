@@ -337,6 +337,13 @@
 								$time  = strtotime( $tag_value );
 								$tag_value = date( get_option( 'date_format' ), $time );
 							}
+							if (is_array($tag_value)) {
+	                            if ( !empty($tag['attr']['key'])) {
+	                                $tag_value = $tag_value[$tag['attr']['key']];
+	                            } else {
+	                            	$tag_value = '';
+	                            }
+	                        }
 						}
 					}
 
@@ -349,6 +356,13 @@
 								$time  = strtotime( $tag_value );
 								$tag_value = date( get_option( 'date_format' ), $time );
 							}
+							if (is_array($tag_value)) {
+	                            if ( !empty($tag['attr']['key'])) {
+	                                $tag_value = $tag_value[$tag['attr']['key']];
+	                            } else {
+	                            	$tag_value = '';
+	                            }
+	                        }
 						}
 					}
 
@@ -357,6 +371,13 @@
 						$sp_post_type = get_post_type();
 						if ( !empty( $tag['attr']['name'] ) ) {
 							$tag_value = pods_field( $sp_post_type, $post_id, $tag['attr']['name'], true );
+							if (is_array($tag_value)) {
+	                            if ( !empty($tag['attr']['key'])) {
+	                                $tag_value = $tag_value[$tag['attr']['key']];
+	                            } else {
+	                            	$tag_value = '';
+	                            }
+	                        }
 						}
 					}
 
@@ -365,6 +386,13 @@
 						if ( !empty( $tag['attr']['name'] ) ) {
 							$meta_key = 'wpcf-' . $tag['attr']['name'];
 							$tag_value = get_post_meta( $post_id, $meta_key, true );
+							if (is_array($tag_value)) {
+	                            if ( !empty($tag['attr']['key'])) {
+	                                $tag_value = $tag_value[$tag['attr']['key']];
+	                            } else {
+	                            	$tag_value = '';
+	                            }
+	                        }
 						}
 					}
 
@@ -372,6 +400,13 @@
 						$post_id = $post_id;
 						if ( !empty( $tag['attr']['name'] ) ) {
 							$tag_value = get_post_meta( $post_id, $tag['attr']['name'], true );
+							if (is_array($tag_value)) {
+	                            if ( !empty($tag['attr']['key'])) {
+	                                $tag_value = $tag_value[$tag['attr']['key']];
+	                            } else {
+	                            	$tag_value = '';
+	                            }
+	                        }
 						}
 					}
 

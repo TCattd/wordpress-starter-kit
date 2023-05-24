@@ -12,7 +12,7 @@ class WCML_Sensei implements \IWPML_Action {
 	/**
 	 * WCML_Sensei constructor.
 	 *
-	 * @param Sitepress           $sitepress
+	 * @param SitePress           $sitepress
 	 * @param wpdb                $wpdb
 	 * @param WPML_Custom_Columns $custom_columns
 	 */

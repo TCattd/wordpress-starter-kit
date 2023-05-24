@@ -24,7 +24,7 @@ function wppb_email_handler( $output, $form_location, $field, $user_id, $field_c
 
 		$extra_attr = apply_filters( 'wppb_extra_attribute', '', $field, $form_location );
 
-        $email_input_status = apply_filters( 'wppb_set_input_status', '' );
+        $email_input_status = !current_user_can( 'manage_options' ) ? apply_filters( 'wppb_set_input_status', '' ) : '';
 
         $output = '
 			<label for="email">'.$item_title.$error_mark.'</label>
@@ -36,15 +36,15 @@ function wppb_email_handler( $output, $form_location, $field, $user_id, $field_c
             if ( $email_input_status == 'enabled' ) {
                 $output .= '<span class="wppb-description-delimiter">' . __('If you change this, we will send you an email at your new address to confirm it. <br /><strong>The new address will not become active until confirmed.</strong>', 'profile-builder') . '</span>';
             }
-        else if ( $email_input_status == 'disabled' ) {
-            $current_url = wppb_curpageurl();
-            $pending_request_nonce = wp_create_nonce( 'wppb_email_change_action_nonce' );
-            $arr_params = array( 'wppb_email_change_action' => 'cancel_pending_email_address_change','_wpnonce' => $pending_request_nonce );
-            $cancel_request_url = add_query_arg($arr_params, $current_url);
-            $pending_new_email_address = apply_filters('wppb_new_email_address','');
+            else if ( $email_input_status == 'disabled' ) {
+                $current_url = wppb_curpageurl();
+                $pending_request_nonce = wp_create_nonce( 'wppb_email_change_action_nonce' );
+                $arr_params = array( 'wppb_email_change_action' => 'cancel_pending_email_address_change','_wpnonce' => $pending_request_nonce );
+                $cancel_request_url = add_query_arg($arr_params, $current_url);
+                $pending_new_email_address = apply_filters('wppb_new_email_address','');
 
                 $output .= '<span class="wppb-description-delimiter">' . sprintf(__('There is a pending change request of your email to: %s', 'profile-builder'), '<strong>' . $pending_new_email_address . '</strong>');
-                $output .= '<a style="float: right;" href="' . esc_url($cancel_request_url) . '">' . __('Cancel request', 'profile-builder') . '</a></span>';
+                $output .= '<a class="wppb-cancel-request" style="float: right;" href="' . esc_url($cancel_request_url) . '">' . __('Cancel request', 'profile-builder') . '</a></span>';
             }
         }
 

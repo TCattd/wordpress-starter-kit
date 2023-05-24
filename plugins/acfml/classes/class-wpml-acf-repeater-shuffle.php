@@ -1,17 +1,16 @@
 <?php
 
+use ACFML\FieldGroup\Mode;
 use ACFML\FieldState;
 use ACFML\Repeater\Shuffle\Strategy;
+use ACFML\Repeater\Sync\CheckboxUI;
 
 /**
  * Handle the case when the user changes translated repeater state (reorder fields, add new field in the middle...).
  *
  * @package acfml
  */
-class WPML_ACF_Repeater_Shuffle {
-
-	const ACTION_SYNCHRONISE         = 'wpml_synchronise_acf_fields_translations_nonce';
-	const SYNCHRONISE_WP_OPTION_NAME = 'acfml_synchronise_repeater_fields';
+class WPML_ACF_Repeater_Shuffle implements \IWPML_Backend_Action {
 
 	/**
 	 * @var array Meta data after the shuffle.
@@ -21,11 +20,6 @@ class WPML_ACF_Repeater_Shuffle {
 	 * @var array Final metadata values in another languages to save
 	 */
 	private $meta_to_update;
-
-	/**
-	 * @var bool Store information if synchronisation checkbox has been already displayed.
-	 */
-	private $synchronisation_checkbox_displayed = false;
 
 	/**
 	 * @var Strategy
@@ -56,53 +50,12 @@ class WPML_ACF_Repeater_Shuffle {
 	/**
 	 * Registers hooks used while repeater field's values are being updated.
 	 */
-	public function register_hooks() {
-		add_action( 'acf/save_post', [ $this, 'storeSynchroniseOption' ], 4, 1 );
-		add_action( 'acf/save_post', [ $this, 'store_state_before' ], 5, 1 );
-		add_action( 'acf/save_post', [ $this, 'update_translated_repeaters' ], 15, 1 );
-		add_action( 'acf/render_fields', [ $this, 'display_synchronisation_switcher' ], 10, 2 );
-		add_filter( 'wpml_custom_field_values_for_post_signature', [ $this, 'revertFieldValuesForSignature' ], 10, 2 );
-	}
-
-	/**
-	 * Outputs HTML with checkbox to enable synchronisation for changes in order of fields.
-	 *
-	 * @param mixed $fields  The ACF fields to display on the post edit screen.
-	 * @param int   $element_id Current post ID.
-	 */
-	public function display_synchronisation_switcher( $fields, $element_id ) {
-		if ( $this->hasRepeaterOrFlexibleField( $fields ) && $this->should_display_synchronisation_switcher( $element_id ) ) {
-			?>
-			<div class="acf-field acfml-synchronise-repeater-checkbox">
-				<div class="acf-label">
-					<label for="wpml_synchronise_acf_fields_translations"><?php esc_html_e( 'Synchronise translations', 'acfml' ); ?></label>
-				</div>
-				<div class="acf-input">
-					<div class="acf-input-wrap">
-						<input type="checkbox" name="wpml_synchronise_acf_fields_translations" value="synchronise" <?php checked( $this->isSynchroniseOptionChecked( $element_id ), true, true ); ?> />
-						<?php wp_nonce_field( self::ACTION_SYNCHRONISE, self::ACTION_SYNCHRONISE ); ?>
-						<?php esc_html_e( 'Keep repeater and flexible sub-fields in the same order as the default language.', 'acfml' ); ?>
-					</div>
-				</div>
-			</div>
-			<?php
+	public function add_hooks() {
+		if ( Mode::LOCALIZATION !== Mode::getForFieldableEntity( $this->shuffled->getEntityType() ) ) {
+			add_action( 'acf/save_post', [ $this, 'store_state_before' ], 5, 1 );
+			add_action( 'acf/save_post', [ $this, 'update_translated_repeaters' ], 15, 1 );
+			add_filter( 'wpml_custom_field_values_for_post_signature', [ $this, 'revertFieldValuesForSignature' ], 10, 2 );
 		}
-	}
-
-	/**
-	 * Checks if synchronisation switcher (select box) should be displayed.
-	 *
-	 * @param int $element_id The element ID.
-	 *
-	 * @return bool
-	 */
-	private function should_display_synchronisation_switcher( $element_id ) {
-		$should = false;
-		if ( ! $this->synchronisation_checkbox_displayed ) {
-			$this->synchronisation_checkbox_displayed = true;
-			$should                                   = $this->shuffled->hasTranslations( $element_id );
-		}
-		return $should;
 	}
 
 	/**
@@ -111,11 +64,25 @@ class WPML_ACF_Repeater_Shuffle {
 	 * @param int $post_id ID of the post being saved.
 	 */
 	public function store_state_before( $post_id = 0 ) {
-		if ( $this->synchronise_option_selected() ) {
+		if ( $this->shouldSupportSync( $post_id ) ) {
 			$this->field_state->storeStateBefore( $post_id );
 		}
 	}
 
+	/**
+	 * @param int|string $entityId
+	 *
+	 * @return bool
+	 */
+	public function shouldSupportSync( $entityId ) {
+		$isEntityTranslatable = function() {
+			$isTranslatable = Mode::TRANSLATION === Mode::getForFieldableEntity( $this->shuffled->getEntityType() );
+
+			return $isTranslatable || CheckboxUI::isSelected();
+		};
+
+		return $this->shuffled->isOriginal( $entityId ) && $isEntityTranslatable();
+	}
 
 	/**
 	 * @param int $post_id ID of the post being saved.
@@ -146,7 +113,8 @@ class WPML_ACF_Repeater_Shuffle {
 	 * @return bool
 	 */
 	private function should_translation_update_run( $post_id = 0 ) {
-		return $this->synchronise_option_selected() && $this->shuffled->isValidId( $post_id ) && $this->field_state->getStateBefore();
+		return $this->shouldSupportSync( $post_id ) &&
+			$this->shuffled->isValidId( $post_id ) && $this->field_state->getStateBefore();
 	}
 
 	/**
@@ -239,81 +207,6 @@ class WPML_ACF_Repeater_Shuffle {
 	}
 
 	/**
-	 * Checks if checkbox to synchronise is selected.
-	 *
-	 * @return bool
-	 */
-	private function synchronise_option_selected() {
-		return isset( $_POST[ self::ACTION_SYNCHRONISE ] )
-			&& wp_verify_nonce( $_POST[ self::ACTION_SYNCHRONISE ], self::ACTION_SYNCHRONISE )
-			&& isset( $_POST['wpml_synchronise_acf_fields_translations'] )
-			&& 'synchronise' === $_POST['wpml_synchronise_acf_fields_translations'];
-	}
-
-	/**
-	 * Checks if synchronise checkbox has been sent during the post save.
-	 *
-	 * @return bool
-	 */
-	private function synchroniseOptionSent() {
-		return isset( $_POST[ self::ACTION_SYNCHRONISE ] );
-	}
-
-	/**
-	 * Checks if post/taxonomy has repeater field associated with it.
-	 *
-	 * @param array $fields Fields belonging to the element (post or taxonomy).
-	 *
-	 * @return bool
-	 */
-	private function hasRepeaterOrFlexibleField( $fields ) {
-		foreach ( (array) $fields as $field ) {
-			if ( isset( $field['type'] ) && in_array( $field['type'], [ 'repeater', 'flexible_content' ], true ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Save repeater synchronisation option in wp_options table.
-	 *
-	 * @param int $elementID Processed element (post, taxonomy) ID.
-	 */
-	public function storeSynchroniseOption( $elementID ) {
-		if ( $this->shuffled->hasTranslations( $elementID ) ) {
-			$trid = $this->shuffled->getTrid( $elementID );
-			if ( $trid && $this->synchroniseOptionSent() ) {
-				$synchroniseOption = get_option( self::SYNCHRONISE_WP_OPTION_NAME, [] );
-				if ( $this->synchronise_option_selected() ) {
-					$synchroniseOption[ $trid ] = true;
-				} else {
-					$synchroniseOption[ $trid ] = false;
-				}
-				update_option( self::SYNCHRONISE_WP_OPTION_NAME, $synchroniseOption );
-			}
-		}
-	}
-
-	/**
-	 * Get repeater synchronisation option from wp_options table.
-	 *
-	 * @param int $elementID Processed element (post, taxonomy) ID.
-	 *
-	 * @return bool
-	 */
-	protected function isSynchroniseOptionChecked( $elementID ) {
-		$trid = $this->shuffled->getTrid( $elementID );
-		if ( $trid ) {
-			$synchroniseOption = get_option( self::SYNCHRONISE_WP_OPTION_NAME, [] );
-			if ( isset( $synchroniseOption[ $trid ] ) ) {
-				return (bool) $synchroniseOption[ $trid ];
-			}
-		}
-		return defined( 'ACFML_REPEATER_SYNC_DEFAULT' ) ? (bool) constant( 'ACFML_REPEATER_SYNC_DEFAULT' ) : true;
-	}
-
-	/**
 	 * If option to synchronise custom fields has been selected, replace repeater subfields
 	 * with values from version before meta data update.
 	 *
@@ -326,7 +219,7 @@ class WPML_ACF_Repeater_Shuffle {
 	 * @return array
 	 */
 	public function revertFieldValuesForSignature( $customFields, $postId = 0 ) {
-		if ( $this->synchronise_option_selected() && is_array( $customFields ) && ! empty( $customFields ) && is_numeric( $postId ) && $postId > 0 ) {
+		if ( CheckboxUI::isSelected() && is_array( $customFields ) && ! empty( $customFields ) && is_numeric( $postId ) && $postId > 0 ) {
 			foreach ( $customFields as $key => $value ) {
 				if ( isset( $this->field_state->getStateBefore()[ $key ] )
 					 && $this->isChildOfRepeaterField( $key, $postId )

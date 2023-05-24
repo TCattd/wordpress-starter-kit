@@ -6,8 +6,8 @@ function wppb_radio_handler( $output, $form_location, $field, $user_id, $field_c
 		$item_description = wppb_icl_t( 'plugin profile-builder-pro', 'custom_field_'.$field['id'].'_description_translation', $field['description'], true );
 		$item_option_labels = wppb_icl_t( 'plugin profile-builder-pro', 'custom_field_'.$field['id'].'_labels_translation', $field['labels'], true );
 
-		$radio_labels = explode( ',', $item_option_labels );
-		$radio_values = explode( ',', $field['options'] );
+		$radio_labels = apply_filters( 'wppb_radio_labels_array', explode( ',', $item_option_labels ), $field, $form_location, $user_id, $request_data );
+		$radio_values = apply_filters( 'wppb_radio_options_array', explode( ',', $field['options'] ), $field, $form_location, $user_id, $request_data );
 
         if( $form_location != 'register' )
 		    $input_value = ( ( wppb_user_meta_exists ( $user_id, $field['meta-name'] ) != null ) ? stripslashes(get_user_meta( $user_id, $field['meta-name'], true )) : $field['default-option'] );

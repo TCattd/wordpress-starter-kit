@@ -24,7 +24,7 @@ class GF_Chained_Field_Select extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_icon() {
-		return gf_chained_selects()->get_base_url() . '/images/menu-icon.svg';
+		return gf_chained_selects()->is_gravityforms_supported( '2.5-beta-4' ) ? 'gform-icon--chained-selects' : gf_chained_selects()->get_base_url() . '/images/menu-icon.svg';
 	}
 
 	/**
@@ -464,7 +464,7 @@ class GF_Chained_Field_Select extends GF_Field {
 		?>
 
 		<style type="text/css">
-			.gfcs-processing { background: url(<?php echo GFCommon::get_base_url(); ?>/images/spinner.gif); }
+			.gfcs-processing { background: url(<?php echo gf_chained_selects()->get_spinner_url(); ?>); }
 			.gfcs-file-icon { background: url(<?php echo GFCommon::get_base_url(); ?>/images/doctypes/icon_xls.gif); }
 		</style>
 
@@ -582,6 +582,7 @@ class GF_Chained_Field_Select extends GF_Field {
                 field.choices = gformChainedSelectData.defaultChoices;
                 field.inputs  = GFCSAdmin.getDefaultInputs( field );
                 field.chainedSelectsAlignment = "horizontal";  
+                field.chainedSelectsHideInactive = false;
                 return field;
             };',
             $this->type
@@ -626,16 +627,17 @@ class GF_Chained_Field_Select extends GF_Field {
 		    $markup = '';
 		    foreach ( $this->inputs as $index => $input ) {
 			    $html_id = sprintf( 'input_%d_%s', $form['id'], str_replace( '.', '_', $input['id'] ) );
+				$class = 'horizontal' == $this->chainedSelectsAlignment ? 'gform-grid-col--size-auto' : '';
 			    $markup .= sprintf(
-				    "<span id='%s'>
+				    "<span id='%s' class='gform-grid-col %s'>
                         <select name='input_%s' id='%s' disabled='disabled'>
                             <option value=''>%s</option>
                         </select>
                     </span>",
-				    $html_id . '_container', $input['id'], $html_id, $input['label']
+				    $html_id . '_container', $class, $input['id'], $html_id, $input['label']
 			    );
             }
-            return "<div class='ginput_container ginput_chained_selects_container {$this->chainedSelectsAlignment}'>{$markup}</div>";
+            return "<div class='ginput_container ginput_complex gform-grid-row ginput_chained_selects_container {$this->chainedSelectsAlignment}'>{$markup}</div>";
         }
 
 		$form_id         = $form['id'];
@@ -650,7 +652,8 @@ class GF_Chained_Field_Select extends GF_Field {
 
 		foreach ( $this->inputs as $index => $input ) {
 			$html_id   = sprintf( 'input_%d_%s', $form_id, str_replace( '.', '_', $input['id'] ) );
-			$css_class = $this->has_no_options( $value, $input ) ? 'gf_no_options' : ''; // @alex: Do you think this name is confusing? has_no_choices isn't exactly the same thing in this context...
+			$css_class = $this->has_no_options( $value, $input ) ? 'gf_no_options' : '';
+			$css_class .= 'horizontal' == $this->chainedSelectsAlignment ? 'gform-grid-col--size-auto' : '';
 			$tabindex  = $this->get_tabindex();
 			$atts      = array( $logic_event, $tabindex, $disabled_attr );
 			$input_markup = sprintf(
@@ -658,7 +661,7 @@ class GF_Chained_Field_Select extends GF_Field {
 					$input['id'], $html_id, $css_class, implode( ' ', $atts ), $this->get_choices( $value, $input )
 			);
 			$input_container_markup = sprintf(
-					"<span id='%s' class='%s'>
+					"<span id='%s' class='%s gform-grid-col'>
 					%s
 				</span>",
 					$html_id . '_container', $css_class, $input_markup
@@ -674,7 +677,7 @@ class GF_Chained_Field_Select extends GF_Field {
 				'gfield_chainedselect'
 		);
 		$css_class = esc_attr( trim( implode( ' ', $classes ) ) );
-		$markup = sprintf( "<div class='ginput_container %s' id='%s'>%s</div>", $css_class, $field_html_id, $markup );
+		$markup = sprintf( "<div class='ginput_container ginput_complex gform-grid-row %s' id='%s'>%s</div>", $css_class, $field_html_id, $markup );
 
 		return $markup;
 	}

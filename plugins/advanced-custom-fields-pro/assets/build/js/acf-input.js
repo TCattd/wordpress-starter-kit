@@ -1456,6 +1456,13 @@
         suppressFilters: true
       });
     }
+    if (!fields.length && $('#acf-basic-settings').length) {
+      fields = acf.getFields({
+        key: key,
+        parent: $('#acf-basic-settings'),
+        suppressFilters: true
+      });
+    }
 
     // return
     if (fields.length) {
@@ -2001,6 +2008,7 @@
     onClickAdd: function (e, $el) {
       var html = '<li><input class="acf-checkbox-custom" type="checkbox" checked="checked" /><input type="text" name="' + this.getInputName() + '[]" /></li>';
       $el.parent('li').before(html);
+      $el.parent('li').parent().find('input[type="text"]').last().focus();
     },
     onClickToggle: function (e, $el) {
       // Vars.
@@ -4094,6 +4102,9 @@
       if (this.get('key') === 'acf_field_group_settings_tabs') {
         filter = '.field-group-settings-tab';
       }
+      if (this.get('key') === 'acf_browse_fields_tabs') {
+        filter = '.acf-field-types-tab';
+      }
       return this.$el.nextUntil('.acf-field-tab', filter);
     },
     getFields: function () {
@@ -4219,7 +4230,8 @@
     tabs: [],
     active: false,
     actions: {
-      refresh: 'onRefresh'
+      refresh: 'onRefresh',
+      close_field_object: 'onCloseFieldObject'
     },
     data: {
       before: false,
@@ -4264,6 +4276,11 @@
       i++;
     },
     initializeTabs: function () {
+      // Bail if tabs are disabled.
+      if ('acf_field_settings_tabs' === this.get('key') && $('#acf-field-group-fields').hasClass('hide-tabs')) {
+        return;
+      }
+
       // find first visible tab
       var tab = this.getVisible().shift();
 
@@ -4375,10 +4392,8 @@
       if (this.hasActive()) {
         return false;
       }
-
       // find next active tab
       var tab = this.getVisible().shift();
-
       // open tab
       if (tab) {
         this.openTab(tab);
@@ -4403,6 +4418,20 @@
 
       // add css
       $parent.css(attribute, height);
+    },
+    onCloseFieldObject: function (fieldObject) {
+      const tab = this.getVisible().find(item => {
+        const id = item.$el.closest('div[data-id]').data('id');
+        if (fieldObject.data.id === id) {
+          return item;
+        }
+      });
+      if (tab) {
+        // Wait for field group drawer to close
+        setTimeout(() => {
+          this.openTab(tab);
+        }, 300);
+      }
     }
   });
   var Tab = acf.Model.extend({
@@ -4499,6 +4528,10 @@
 
       // loop
       this.getTabs().map(function (group) {
+        // Do not save selected tab on field settings, or an acf-advanced-settings when unloading
+        if (group.$el.children('.acf-field-settings-tab-bar').length || group.$el.parents('#acf-advanced-settings.postbox').length) {
+          return true;
+        }
         var active = group.hasActive() ? group.getActive().index() : 0;
         order.push(active);
       });
@@ -5677,7 +5710,8 @@
       sibling: false,
       limit: false,
       visible: false,
-      suppressFilters: false
+      suppressFilters: false,
+      excludeSubFields: false
     });
 
     // filter args
@@ -5716,6 +5750,10 @@
     // query
     if (args.parent) {
       $fields = args.parent.find(selector);
+      // exclude sub fields if required (only if a parent is provided)
+      if (args.excludeSubFields) {
+        $fields = $fields.not(args.parent.find('.acf-is-subfields .acf-field'));
+      }
     } else if (args.sibling) {
       $fields = args.sibling.siblings(selector);
     } else {
@@ -7955,7 +7993,11 @@
       },
       ajaxResults: function (json) {
         return json;
-      }
+      },
+      templateSelection: false,
+      templateResult: false,
+      dropdownCssClass: '',
+      suppressFilters: false
     });
 
     // initialize
@@ -8212,6 +8254,10 @@
         allowClear: this.get('allowNull'),
         placeholder: this.get('placeholder'),
         multiple: this.get('multiple'),
+        templateSelection: this.get('templateSelection'),
+        templateResult: this.get('templateResult'),
+        dropdownCssClass: this.get('dropdownCssClass'),
+        suppressFilters: this.get('suppressFilters'),
         data: [],
         escapeMarkup: function (markup) {
           if (typeof markup !== 'string') {
@@ -8221,14 +8267,30 @@
         }
       };
 
+      // Clear empty templateSelections, templateResults, or dropdownCssClass.
+      if (!options.templateSelection) {
+        delete options.templateSelection;
+      }
+      if (!options.templateResult) {
+        delete options.templateResult;
+      }
+      if (!options.dropdownCssClass) {
+        delete options.dropdownCssClass;
+      }
+
       // Only use the template if SelectWoo is not loaded to work around https://github.com/woocommerce/woocommerce/pull/30473
       if (!acf.isset(window, 'jQuery', 'fn', 'selectWoo')) {
-        options.templateSelection = function (selection) {
-          var $selection = $('<span class="acf-selection"></span>');
-          $selection.html(acf.escHtml(selection.text));
-          $selection.data('element', selection.element);
-          return $selection;
-        };
+        if (!options.templateSelection) {
+          options.templateSelection = function (selection) {
+            var $selection = $('<span class="acf-selection"></span>');
+            $selection.html(acf.escHtml(selection.text));
+            $selection.data('element', selection.element);
+            return $selection;
+          };
+        }
+      } else {
+        delete options.templateSelection;
+        delete options.templateResult;
       }
 
       // multiple
@@ -8261,8 +8323,10 @@
 
       // filter for 3rd party customization
       //options = acf.applyFilters( 'select2_args', options, $select, this );
-      var field = this.get('field');
-      options = acf.applyFilters('select2_args', options, $select, this.data, field || false, this);
+      if (!options.suppressFilters) {
+        var field = this.get('field');
+        options = acf.applyFilters('select2_args', options, $select, this.data, field || false, this);
+      }
 
       // add select2
       $select.select2(options);
@@ -8316,7 +8380,9 @@
       }
 
       // action for 3rd party customization
-      acf.doAction('select2_init', $select, options, this.data, field || false, this);
+      if (!options.suppressFilters) {
+        acf.doAction('select2_init', $select, options, this.data, field || false, this);
+      }
     },
     mergeOptions: function () {
       // vars
@@ -9630,7 +9696,7 @@
    *  @return	jQuery
    */
   acf.enableSubmit = function ($submit) {
-    return $submit.removeClass('disabled');
+    return $submit.removeClass('disabled').removeAttr('disabled');
   };
 
   /**
@@ -9645,7 +9711,7 @@
    *  @return	jQuery
    */
   acf.disableSubmit = function ($submit) {
-    return $submit.addClass('disabled');
+    return $submit.addClass('disabled').attr('disabled', true);
   };
 
   /**
@@ -9763,6 +9829,12 @@
 
     // front end form
     var $wrap = $form.find('.acf-form-submit');
+    if ($wrap.length) {
+      return $wrap;
+    }
+
+    // ACF 6.0+ headerbar submit
+    var $wrap = $('.acf-headerbar-actions');
     if ($wrap.length) {
       return $wrap;
     }

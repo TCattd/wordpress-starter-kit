@@ -3,8 +3,19 @@
    "locale_data": {
       "messages": {
          "": {
-            "domain": "messages"
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "en"
          },
+         "hide the translations instead.": [
+            "nascondi invece le traduzioni."
+         ],
+         "Error happened! Please try again.": [
+            "Si è verificato un errore! Riprova."
+         ],
+         "Cancel": [
+            "Annulla"
+         ],
          "Choose Content to Automatically Translate into": [
             "Seleziona i contenuti da tradurre automaticamente in"
          ],
@@ -17,8 +28,8 @@
          "Save": [
             "Salva"
          ],
-         "Choose Content to Automatically Translate into New Language": [
-            "Seleziona i contenuti da tradurre automaticamente in una nuova lingua"
+         "Only automatically translate new content.": [
+            "Traduci automaticamente solo i nuovi contenuti."
          ],
          "Add languages and start translating": [
             "Aggiungi le lingue e inizia a tradurre"
@@ -32,11 +43,11 @@
          "Never mind. Don't add new language": [
             "Lascia perdere. Non aggiungere la nuova lingua"
          ],
+         "Choose Content to Automatically Translate into New Language": [
+            "Seleziona i contenuti da tradurre automaticamente in una nuova lingua"
+         ],
          "Automatically translate all of my existing posts and pages right now, plus new content as I create it.": [
             "Traduci automaticamente tutti gli articoli e le pagine esistenti al momento, oltre ai nuovi contenuti man mano che vengono creati."
-         ],
-         "Only automatically translate new content.": [
-            "Traduci automaticamente solo i nuovi contenuti."
          ],
          "You are using <a>Translate Everything</a> mode, which translates your site content automatically.": [
             "Stai utilizzando la modalità <a>Traduci tutto</a> che traduce i contenuti del tuo sito automaticamente."

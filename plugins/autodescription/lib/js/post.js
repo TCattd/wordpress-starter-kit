@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -620,26 +620,6 @@ window.tsfPost = function( $ ) {
 	}
 
 	/**
-	 * Initializes tooltip boundaries.
-	 *
-	 * @since 4.0.0
-	 * @access private
-	 *
-	 * @function
-	 */
-	const _initTooltipBoundaries = () => {
-
-		if ( ! l10n.states.isGutenbergPage ) return;
-
-		'tsfTT' in window && tsfTT.addBoundary( '#editor' );
-
-		// Listen to the Gutenberg state changes.
-		document.addEventListener( 'tsf-gutenberg-sidebar-opened', () => {
-			'tsfTT' in window && tsfTT.addBoundary( '.edit-post-sidebar .components-panel' );
-		} );
-	}
-
-	/**
 	 * Updates the SEO Bar and meta description placeholders on successful save.
 	 *
 	 * @since 4.0.0
@@ -766,9 +746,6 @@ window.tsfPost = function( $ ) {
 
 		// Initializes flex tab listeners and fixes positions.
 		_initTabs();
-
-		// Sets tooltip boundaries
-		_initTooltipBoundaries();
 
 		// Set Gutenberg update listeners.
 		_initUpdateMetaBox();

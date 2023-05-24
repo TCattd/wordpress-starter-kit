@@ -206,27 +206,28 @@ class WCML_Product_Bundles implements \IWPML_Action {
 	}
 
 	public function sync_product_bundle_meta_with_translations( $bundle_id ) {
-		/**
-		 * @return array {
-		 * @var int                              $original_bundle_id
-		 * @var \WPML\Collect\Support\Collection $translations_only
-		 * }
-		 */
-		$get_original_id_and_translations = Fns::memorize( function() use ( $bundle_id ) {
-			$trid               = $this->sitepress->get_element_trid( $bundle_id, 'post_product' );
-			$translations       = wpml_collect( $this->sitepress->get_element_translations( $trid, 'post_product' ) );
-			$original_bundle_id = (int) $translations->filter( Obj::prop( 'original' ) )
-			                                         ->map( Obj::prop( 'element_id' ) )
-			                                         ->first();
+		$get_original_id_and_translations = Fns::memorize(
+			/**
+			 * @return array {
+			 * @var int                              $original_bundle_id
+			 * @var \WPML\Collect\Support\Collection $translations_only
+			 * }
+			 */
+			function() use ( $bundle_id ) {
+				$trid               = $this->sitepress->get_element_trid( $bundle_id, 'post_product' );
+				$translations       = wpml_collect( $this->sitepress->get_element_translations( $trid, 'post_product' ) );
+				$original_bundle_id = (int) $translations->filter( Obj::prop( 'original' ) )
+			                                             ->map( Obj::prop( 'element_id' ) )
+			                                             ->first();
 
-			$translations_only = $translations
-				->reject( function( $translation ) use ( $original_bundle_id ) {
-					return (int) $translation->element_id === $original_bundle_id;
-				} );
+				$translations_only = $translations
+					->reject( function( $translation ) use ( $original_bundle_id ) {
+						return (int) $translation->element_id === $original_bundle_id;
+					} );
 
-			return [ $original_bundle_id, $translations_only ];
-		} );
-
+				return [ $original_bundle_id, $translations_only ];
+			}
+		);
 
 		if ( $this->is_bundle_product( $bundle_id ) ) {
 			list( $original_bundle_id, $translations_only ) = $get_original_id_and_translations();
@@ -496,7 +497,7 @@ class WCML_Product_Bundles implements \IWPML_Action {
 						if ( $product_data[ 'override_' . $field ] == 'yes' && ! empty( $product_data[ $field ] ) ) {
 							$package['contents'][ self::get_job_field_name( $product_id, $item_id, $field ) ] = [
 								'translate' => 1,
-								'data'      => $this->tp->encode_field_data( $product_data[ $field ], 'base64' ),
+								'data'      => $this->tp->encode_field_data( $product_data[ $field ] ),
 								'format'    => 'base64',
 							];
 						}

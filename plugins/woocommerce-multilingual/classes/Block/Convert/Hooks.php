@@ -5,18 +5,24 @@ namespace WCML\Block\Convert;
 use IWPML_DIC_Action;
 use IWPML_Frontend_Action;
 use WPML\Core\ISitePress;
+use WCML\StandAlone\NullSitePress;
+use SitePress;
 use WCML\Rest\Frontend\Language;
 use WPML\FP\Just;
 use WPML\FP\Str;
 
 class Hooks implements IWPML_Frontend_Action, IWPML_DIC_Action {
 
-	/** @var SitePress $sitepress */
+	/** @var SitePress|NullSitePress $sitepress */
 	private $sitepress;
 
 	/** @var Language $frontendRestLang */
 	private $frontendRestLang;
 
+	/**
+	 * @param SitePress|NullSitePress $sitepress
+	 * @param Language                $frontendRestLang
+	 */
 	public function __construct( ISitePress $sitepress, Language $frontendRestLang ) {
 		$this->sitepress        = $sitepress;
 		$this->frontendRestLang = $frontendRestLang;
@@ -84,7 +90,7 @@ class Hooks implements IWPML_Frontend_Action, IWPML_DIC_Action {
 	 */
 	public function filterProductSearchForm( $blockContent ) {
 		// $replaceActionUrl :: string -> string
-		$replaceActionUrl = Str::pregReplace( '/(<form[^>]*action=")([^"]*)"/', "$1" . home_url( '/' ) . '"' );
+		$replaceActionUrl = Str::pregReplace( '/(<form[^>]*action=")([^"]*)"/', '$1' . home_url( '/' ) . '"' );
 
 		// $addLanguageHiddenField :: string -> string
 		$addLanguageHiddenField = [ $this->sitepress, 'get_search_form_filter' ];

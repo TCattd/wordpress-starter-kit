@@ -2,6 +2,8 @@
 
 use WCML\Utilities\AdminPages;
 
+use function WCML\functions\getSetting;
+
 class WCML_Menus_Wrap extends WCML_Menu_Wrap_Base {
 
 	private $product_attribute_names = [];
@@ -166,6 +168,7 @@ class WCML_Menus_Wrap extends WCML_Menu_Wrap_Base {
 					'url'    => admin_url( 'admin.php?page=wpml-wcml&tab=troubleshooting' ),
 				],
 			],
+			'set_up_wizard_run'   => getSetting( 'set_up_wizard_run' ),
 			'can_manage_options'  => current_user_can( 'wpml_manage_woocommerce_multilingual' ),
 			'content'             => $this->get_current_menu_content( $current_tab ),
 		];

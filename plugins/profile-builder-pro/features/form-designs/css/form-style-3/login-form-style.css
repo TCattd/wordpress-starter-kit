@@ -1,0 +1,83 @@
+#wppb-form-style-3-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 470px;
+}
+
+#wppb-form-style-3-wrapper .wppb-form-title {
+    order: 1;
+    margin-bottom: 50px !important;
+}
+
+#wppb-form-style-3-wrapper p.wppb-error,
+#wppb-form-style-3-wrapper p.wppb-success {
+    order: 2;
+}
+
+#wppb-login-wrap {
+    width: 100%;
+    max-width: 470px;
+    order: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+#wppb-login-wrap form#wppb-loginform {
+    order: 1;
+    width: 100%;
+    margin-bottom: 0;
+}
+
+#wppb-login-wrap p.login-register-lost-password {
+    order: 2;
+    margin-bottom: 40px;
+    color: #6E7A86;
+    font-size: 0;
+    width: 100%;
+}
+
+#wppb-login-wrap .wppb-register-message {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #6E7A86;
+    text-align: center;
+    margin: 0 5px 0 0;
+    display: inline-block;
+}
+
+#wppb-login-wrap p.login-register-lost-password a {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    text-decoration: none;
+    color: #554FE6;
+}
+
+#wppb-login-wrap p.login-register-lost-password a:hover {
+    text-decoration: underline;
+}
+
+#wppb-login-wrap p.login-register-lost-password a:focus {
+    background: transparent !important;
+}
+
+#wppb-login-wrap p.login-register-lost-password a.login-lost-password {
+    float: right;
+}
+
+#wppb-loginform .login-submit input#wppb-submit {
+    width: 100%;
+}
+
+#wppb-loginform .login-submit {
+    overflow: visible;  /* for the button box-shadow effect to be visible on :focus */
+
+    border-bottom: 1px solid #CFD4DE;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}

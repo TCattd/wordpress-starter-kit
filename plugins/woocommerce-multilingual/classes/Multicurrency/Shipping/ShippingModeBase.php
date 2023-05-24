@@ -4,7 +4,7 @@ namespace WCML\Multicurrency\Shipping;
 
 trait ShippingModeBase {
 	/**
-	 * @param array|object
+	 * @param array|object $rate_settings
 	 *
 	 * @return bool
 	 */

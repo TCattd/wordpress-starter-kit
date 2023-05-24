@@ -433,3 +433,11 @@
         add_filter('the_content', 'wppb_WAPF_compatibility', 13, 1);
     }
 
+    /****************************************************
+     * Plugin Name: WooCommerce
+     * Plugin URI: https://wordpress.org/plugins/woocommerce/
+     * Don't allow WooCommerce to Login User after registration if PB Admin Approval is Active
+     ****************************************************/
+    if( wppb_get_admin_approval_option_value() === 'yes' ) {
+        add_filter( 'woocommerce_registration_auth_new_customer', '__return_false' );
+    }

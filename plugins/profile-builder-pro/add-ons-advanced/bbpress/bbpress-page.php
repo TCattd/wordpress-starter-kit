@@ -32,7 +32,7 @@ function wppb_in_bbpress_settings_defaults(){
 
     $edit_profile_form = 'wppb-default-edit-profile';
 
-    $versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+    $versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
     // Check Profile Builder version, display User Listing only for Pro
     if ( defined('PROFILE_BUILDER') && in_array( PROFILE_BUILDER, $versions ) )
@@ -80,7 +80,7 @@ function wppb_in_bbpress_settings_content() {
             <table class="form-table">
 
                 <?php // Check Profile Builder version, display User Listing only for Pro
-                $versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+                $versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
                 if ( defined('PROFILE_BUILDER') && in_array( PROFILE_BUILDER, $versions ) ) { ?>
 

@@ -32,6 +32,8 @@ class Factory implements \IWPML_Backend_Action_Loader, \IWPML_REST_Action_Loader
 		if ( wcml_is_multi_currency_on() ) {
 			return new Hooks( $woocommerce_wpml, $wpdb );
 		}
+
+		return null;
 	}
 
 }

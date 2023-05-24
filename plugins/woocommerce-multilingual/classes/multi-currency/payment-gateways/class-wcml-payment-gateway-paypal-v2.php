@@ -16,6 +16,7 @@ class WCML_Payment_Gateway_PayPal_V2 extends WCML_Payment_Gateway_PayPal {
 		'merchant_id',
 		'client_id',
 		'client_secret',
+		'currency',
 	];
 
 	const BEARER_TOKEN_TRANSIENT = 'ppcp-paypal-bearerppcp-bearer';
@@ -58,8 +59,7 @@ class WCML_Payment_Gateway_PayPal_V2 extends WCML_Payment_Gateway_PayPal {
 				$currencies_details[ $code ][ $key ] = $getSetting( $key );
 			}
 
-			$currencies_details[ $code ]['currency'] = $code;
-			$currencies_details[ $code ]['isValid']  = $this->is_valid_for_use( $code );
+			$currencies_details[ $code ]['isValid'] = $this->is_valid_for_use( $code );
 		}
 
 		return $currencies_details;

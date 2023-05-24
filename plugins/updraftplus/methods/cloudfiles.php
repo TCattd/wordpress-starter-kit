@@ -8,7 +8,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No direct access.');
  * Migration code for "new"-style options removed: Feb 2017 (created: Dec 2013)
  */
 
-if (!class_exists('UpdraftPlus_BackupModule')) require_once(UPDRAFTPLUS_DIR.'/methods/backup-module.php');
+if (!class_exists('UpdraftPlus_BackupModule')) updraft_try_include_file('methods/backup-module.php', 'require_once');
 
 /**
  * Old SDK
@@ -29,7 +29,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 		$storage = $this->get_storage();
 		if (!empty($storage)) return $storage;
 		
-		if (!class_exists('UpdraftPlus_CF_Authentication')) include_once(UPDRAFTPLUS_DIR.'/includes/cloudfiles/cloudfiles.php');
+		if (!class_exists('UpdraftPlus_CF_Authentication')) updraft_try_include_file('includes/cloudfiles/cloudfiles.php', 'include_once');
 
 		if (!defined('UPDRAFTPLUS_SSL_DISABLEVERIFY')) define('UPDRAFTPLUS_SSL_DISABLEVERIFY', UpdraftPlus_Options::get_updraft_option('updraft_ssl_disableverify'));
 
@@ -134,7 +134,7 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 
 				if ($uploaded_size <= $orig_file_size) {
 
-					$fp = @fopen($fullpath, "rb");// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+					$fp = @fopen($fullpath, "rb");// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
 					if (!$fp) {
 						$this->log("failed to open file: $fullpath");
 						$this->log("$file: ".__('Error: Failed to open local file', 'updraftplus'), 'error');
@@ -589,13 +589,13 @@ class UpdraftPlus_BackupModule_cloudfiles_oldsdk extends UpdraftPlus_BackupModul
 
 		echo __('Success', 'updraftplus').": ".__('We accessed the container, and were able to create files within it.', 'updraftplus');
 
-		@$container_object->delete_object($try_file);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		@$container_object->delete_object($try_file);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the method.
 	}
 }
 
 // Moved to the bottom to fix a bug in some version or install of PHP which required UpdraftPlus_BackupModule_cloudfiles_oldsdk to be defined earlier in the file (despite the conditionality) - see HS#19911
 if (version_compare(PHP_VERSION, '5.3.3', '>=') && (!defined('UPDRAFTPLUS_CLOUDFILES_USEOLDSDK') || UPDRAFTPLUS_CLOUDFILES_USEOLDSDK != true)) {
-	include_once(UPDRAFTPLUS_DIR.'/methods/cloudfiles-new.php');
+	updraft_try_include_file('methods/cloudfiles-new.php', 'include_once');
 	class UpdraftPlus_BackupModule_cloudfiles extends UpdraftPlus_BackupModule_cloudfiles_opencloudsdk {
 	}
 } else {

@@ -30,7 +30,8 @@ class ShippingModeProvider {
     }
 
 	/**
-	 * @param $className
+	 * @param string $className
+	 *
 	 * @return ShippingMode
 	 */
     private static function make( $className ) {

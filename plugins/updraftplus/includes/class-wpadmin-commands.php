@@ -6,7 +6,7 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No access.');
 	See class-commands.php for explanation about how these classes work.
 */
 
-if (!class_exists('UpdraftPlus_Commands')) require_once(UPDRAFTPLUS_DIR.'/includes/class-commands.php');
+if (!class_exists('UpdraftPlus_Commands')) updraft_try_include_file('includes/class-commands.php', 'require_once');
 
 /**
  * An extension, because commands available via wp-admin are a super-set of those which are available through all mechanisms
@@ -69,7 +69,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 
 		if (empty($data['wpaction'])) return new WP_Error('error', '', 'no command sent');
 		
-		$response = $this->_updraftplus_admin->call_wp_action($data, array($this->_uc_helper, '_updraftplus_background_operation_started'));// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$response = $this->_updraftplus_admin->call_wp_action($data, array($this->_uc_helper, '_updraftplus_background_operation_started'));// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Unused variable is for future use.
 
 		die;
 
@@ -123,8 +123,8 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 			$warn = array();
 			$err = array();
 
-			if (function_exists('set_time_limit')) @set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
-			$max_execution_time = (int) @ini_get('max_execution_time');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			if (function_exists('set_time_limit')) @set_time_limit(UPDRAFTPLUS_SET_TIME_LIMIT);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
+			$max_execution_time = (int) @ini_get('max_execution_time');// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
 
 			if ($max_execution_time>0 && $max_execution_time<61) {
 				$warn[] = sprintf(__('The PHP setup on this webserver allows only %s seconds for PHP to run, and does not allow this limit to be raised. If you have a lot of data to import, and if the restore operation times out, then you will need to ask your web hosting company for ways to raise this limit (or attempt the restoration piece-by-piece).', 'updraftplus'), $max_execution_time);
@@ -339,6 +339,16 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	}
 
 	/**
+	 * Update and set dismiss_phpseclib_notice option name to true
+	 *
+	 * @return array - an associative array containing a key named 'success' with 1 value which indicates the successful of updating the option
+	 */
+	public function dismiss_phpseclib_notice() {
+		UpdraftPlus_Options::update_updraft_option('updraft_dismiss_phpseclib_notice', true);
+		return array('success' => 1);
+	}
+
+	/**
 	 * This function is called via ajax and will update the WooCommerce clone notice dismiss time
 	 *
 	 * @return array - an empty array
@@ -383,7 +393,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 		if (function_exists('phpinfo')) phpinfo(INFO_ALL ^ (INFO_CREDITS | INFO_LICENSE));
 
 		echo '<h3 id="ud-debuginfo-constants">'.__('Constants', 'updraftplus').'</h3>';
-		$opts = @get_defined_constants();// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+		$opts = @get_defined_constants();// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
 		ksort($opts);
 		echo '<table><thead></thead><tbody>';
 		foreach ($opts as $key => $opt) {
@@ -518,22 +528,23 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 
 		// # is the root node if it's the root node then this is the first call so create a parent node otherwise it's a child node and we should get the path from the node id
 		if ('#' == $params['node']['id']) {
-				$path = ABSPATH;
-				
-				if (!empty($params['path'])) $path = $params['path'];
+			$path = ABSPATH;
+			
+			if (!empty($params['path']) && is_dir($params['path']) && is_readable($params['path'])) $path = $params['path'];
+			$one_dir_up = dirname($path);
 
-				if (!empty($params['drop_directory']) && true == $params['drop_directory']) $path = dirname($path);
-				if (empty($params['skip_root_node'])) {
-					$node_array[] = array(
-						'text' => basename($path),
-						'children' => true,
-						'id' => $path,
-						'icon' => 'jstree-folder',
-						'state' => array(
-							'opened' => true
-						)
-					);
-				}
+			if (!empty($params['drop_directory']) && true == $params['drop_directory'] && is_readable($one_dir_up)) $path = $one_dir_up;
+			if (empty($params['skip_root_node'])) {
+				$node_array[] = array(
+					'text' => basename($path),
+					'children' => true,
+					'id' => $path,
+					'icon' => 'jstree-folder',
+					'state' => array(
+						'opened' => true
+					)
+				);
+			}
 		} else {
 			$path = $params['node']['id'];
 		}
@@ -699,7 +710,7 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 					)
 				);
 
-				@$zip->close();// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				@$zip->close();// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the method.
 			}
 		}
 
@@ -803,5 +814,55 @@ class UpdraftPlus_WPAdmin_Commands extends UpdraftPlus_Commands {
 	 */
 	public function reset_tour_status() {
 		return class_exists('UpdraftPlus_Tour') ? UpdraftPlus_Tour::get_instance()->reset_tour_status() : false;
+	}
+
+	/**
+	 * Return the database information
+	 *
+	 * @return array
+	 */
+	public function db_size() {
+		global $wpdb;
+		
+		$db_table_res = $wpdb->get_results('SHOW TABLE STATUS', ARRAY_A);
+		$db_table_size = 0;
+		$db_table_html = '';
+
+		if ($wpdb->num_rows > 0) {
+			$key_field_name = UpdraftPlus_Manipulation_Functions::backquote('Key');
+			
+			foreach ($db_table_res as $row) {
+				// Try search from transient
+				$rows_count = get_transient('wpo_'.$row['Name'].'_count');
+				if (false === $rows_count) {
+					// If not found, try search primary key first
+					$table_name = UpdraftPlus_Manipulation_Functions::backquote($row['Name']);
+					$primary_key = $wpdb->get_row("SHOW COLUMNS FROM $table_name WHERE $key_field_name = 'PRI'", ARRAY_A);
+
+					if ($primary_key) {
+						// Count rows by primary key
+						$primary_key_field = UpdraftPlus_Manipulation_Functions::backquote($primary_key['Field']);
+						$rows_count = $wpdb->get_var("SELECT COUNT($primary_key_field) FROM ".$table_name);
+					}
+
+					if (is_null($rows_count) || false === $rows_count) $rows_count = $wpdb->get_var("SELECT COUNT(*) FROM ".$table_name);
+				}
+
+				$db_table_html .= '<tr>';
+				$db_table_html .= sprintf('<td>%s</td>', esc_html($row['Name']));
+				$db_table_html .= sprintf('<td>%s</td>', esc_html($rows_count));
+				$db_table_html .= sprintf('<td>%s</td>', esc_html(size_format($row['Data_length'], 2)));
+				$db_table_html .= sprintf('<td>%s</td>', esc_html(size_format($row['Index_length'], 2)));
+				$db_table_html .= sprintf('<td>%s</td>', esc_html($row['Engine']));
+				$db_table_html .= '</tr>';
+
+				$db_table_size += $row['Data_length'] + $row['Index_length'];
+			}
+		}
+
+		return array(
+			'size' => size_format((int) $db_table_size, 2),
+			'html' => $db_table_html
+		);
 	}
 }

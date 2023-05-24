@@ -636,6 +636,25 @@
 
 			$form_version = empty( get_post_meta( $post_id, '_piotnetforms_version', true ) ) ? 1 : get_post_meta( $post_id, '_piotnetforms_version', true );
 			$form_id = $form_version == 1 ? $form['settings']['form_id'] : $post_id;
+            $form_id = !empty($form_id) ? $form_id : get_post_meta( $post_id, '_piotnetforms_form_id', true );
+
+			// Validate pre submission
+			$custom_message = false;
+			$custom_message = apply_filters( 'piotnetforms/form_builder/validate_pre_submit_form', $custom_message, $fields, $form, $form_id );
+			if ( !empty( $custom_message ) ) {
+				echo json_encode( [
+					'payment_status' => 'succeeded',
+					'status' => '',
+					'payment_id' => '',
+					'post_url' => '',
+					'redirect' => '',
+					'register_message' => '',
+					'failed_status' => 0,
+					'custom_message' => $custom_message
+				] );
+				wp_die();
+				return;
+			}
 
 			$args = [
 					'post_type' => 'piotnetforms-data',
@@ -698,13 +717,21 @@
 										if ( $fields[$key_field]['attach-files'] == 1 ) {
 											$attachment[] = WP_CONTENT_DIR . '/uploads/piotnetforms/files/' . $filename;
 										} else {
-											if ( $fields[$key_field]['value'] == '' && in_array( $file['name'][$i], $field['file_name'] ) ) {
-												$fields[$key_field]['value'] = $file_url;
-											} else {
-												if ( in_array( $file['name'][$i], $field['file_name'] ) && $i != ( count( $file['name'] ) - 1 ) ) {
-													$fields[$key_field]['value'] .= ', ' . $file_url;
-												}
-											}
+                                            if(is_array($field['file_name'])){
+                                                if ( $fields[$key_field]['value'] == '' && in_array( $file['name'][$i], $field['file_name'] ) ) {
+                                                    $fields[$key_field]['value'] = $file_url;
+                                                } else {
+                                                    if ( in_array( $file['name'][$i], $field['file_name'] ) && $i != ( count( $file['name'] ) - 1 ) ) {
+                                                        $fields[$key_field]['value'] .= ', ' . $file_url;
+                                                    }
+                                                }
+                                            }else{
+                                                $fields[$key_field]['value'] = $fields[$key_field]['value'] . $file_url;
+												if ( $i != (count($file['name']) - 1) ) {
+													$fields[$key_field]['value'] = $fields[$key_field]['value'] . ' , ';
+                                                }
+                                            }
+											
 										}
 									}
 								}
@@ -1024,6 +1051,9 @@
 				$mollie_api_key = get_option( 'piotnetforms-mollie-api-key' );
 				$payment_status = piotnetforms_get_mollie_payment_status( $payment_id, $mollie_api_key );
 				$form_submission['payment_status'] = $payment_status;
+                if(!empty($form['settings']['mollie_send_email'])){
+                    $failed = $payment_status != 'paid' ? true : $failed;
+                }
 			}
 			// Google Calendar
 
@@ -1096,15 +1126,11 @@
 				$recaptcha = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', $recaptcha_request );
 
 				$recaptcha = json_decode( wp_remote_retrieve_body( $recaptcha ) );
-
-				// Take action based on the score returned:
-				if ( $recaptcha->score >= 0.5 ) {
-					// Verified - send email
-				} else {
-					// Not verified - show form error
-					$recaptcha_check = 0;
-				}
-			}
+                $recaptcha_score = !empty($form['settings']['piotnetforms_recaptcha_score']) && !empty($form['settings']['piotnetforms_recaptcha_score_value']) ? floatval($form['settings']['piotnetforms_recaptcha_score_value']) : 0.5;
+                if($recaptcha->score < $recaptcha_score){
+                    $recaptcha_check = 0;
+                }
+            }
 
 			// Honeypot
 
@@ -1330,7 +1356,7 @@
 						}
 
 						// Fields Database Filter Hook
-						$fields_database = apply_filters( 'pafe/form_builder/fields_database', $fields_database );
+						$fields_database = apply_filters( 'piotnetforms/form_builder/fields_database', $fields_database );
 
 						if ( !empty( $form['settings']['piotnetforms_database_hidden_field'] ) && $form['settings']['piotnetforms_database_hidden_field'] == 'yes' && !empty( $form['settings']['piotnetforms_database_list_field_hidden'] ) ) {
 							$fields_database_hideen = $form['settings']['piotnetforms_database_list_field_hidden'];
@@ -1622,7 +1648,7 @@
 								// Jetengine MetaBoxes
 								if ( $meta_type == 'jet_engine_repeater' ) {
 									foreach ( $fields_array as $field_key => $value ) {
-										if ( $field_key == get_field_name_shortcode( $sp_custom_field['submit_post_custom_field_id'] ) ) {
+										if ( $field_key == get_field_name_shortcode_piotnetforms( $sp_custom_field['submit_post_custom_field_id'] ) ) {
 											$custom_field_value = $value;
 										}
 									}
@@ -1691,7 +1717,7 @@
 								// Metabox Group
 								if ( $meta_type == 'meta_box_group' ) {
 									foreach ( $fields_array as $field_key => $value ) {
-										if ( $field_key == get_field_name_shortcode( $sp_custom_field['submit_post_custom_field_id'] ) ) {
+										if ( $field_key == get_field_name_shortcode_piotnetforms( $sp_custom_field['submit_post_custom_field_id'] ) ) {
 											$custom_field_value = $value;
 										}
 									}
@@ -2142,7 +2168,7 @@
 
 				$form_submission['fields'] = $fields_data;
 
-				$form_submission['form']['id'] = $form['settings']['form_id'];
+				$form_submission['form']['id'] = $form_id;
 
 				$form_submission['form']['title'] = get_the_title( $post_id );
 
@@ -2641,6 +2667,7 @@
 								$item_image_y = floatval( $item['pdfgenerator_image_set_y']['size'] ) * 3.556;
 							}
 							$type = $item['pdfgenerator_field_type'];
+                            $pdf_align = !empty($item['pdf_text_align']) ? $item['pdf_text_align'] : 'J';
 							if ( $type == 'image' ) {
 								$pdf_image_url = !empty( replace_email_piotnetforms( $item['pdfgenerator_field_shortcode'], $fields, $payment_status, $payment_id ) ) ? replace_email_piotnetforms( $item['pdfgenerator_field_shortcode'], $fields, $payment_status, $payment_id ) : false;
 								if(wp_http_validate_url($pdf_image_url)){
@@ -2662,10 +2689,10 @@
 										if ( strpos( $pdf_txt, '[field id="' ) !== false ) {
 											continue;
 										} else {
-											$pdf->WriteHTML2( $pdf_txt, $item_width, $item_x, $item_y );
+											$pdf->WriteHTML2( $pdf_txt, $item_width, $item_x, $item_y, $pdf_align );
 										}
 									} else {
-										$pdf->WriteHTML2( $pdf_txt, $item_width, $item_x, $item_y );
+										$pdf->WriteHTML2( $pdf_txt, $item_width, $item_x, $item_y, $pdf_align );
 									}
 								}
 							}
@@ -3215,8 +3242,14 @@
 								}
 							}
 						}
-						$sendgrid_fields['custom_fields'] = $custom_field;
-						$post_fields['contacts'] = [$sendgrid_fields];
+						
+						if(!empty($custom_field)) {
+							$sendgrid_fields['custom_fields'] = $custom_field;
+						}
+
+						if (!empty($sendgrid_fields)) {
+							$post_fields['contacts'] = [$sendgrid_fields];
+						}
 
 						$curl = curl_init();
 						curl_setopt_array( $curl, [
@@ -3615,6 +3648,12 @@
 				if ( in_array( 'redirect', $form['settings']['submit_actions'] ) ) {
 					$redirect = replace_email_piotnetforms( $form['settings']['redirect_to'], $fields, '', '', '', '', '', $form_database_post_id );
 					$redirect = apply_filters( 'piotnetforms/form_builder/redirect', $redirect, $fields );
+                    $redirect_part = parse_url($redirect);
+                    parse_str($redirect_part['query'], $params);
+                    if(!empty($params)){
+                        $redirect = strstr($redirect, '?', true) . '?' . http_build_query($params);
+                    }
+
 				}
 
 				// Woocommerce Add to Cart
@@ -3858,6 +3897,7 @@
 													if ( !empty( $image_id ) ) {
 														$custom_field_value = $image_id;
 													}
+													update_user_meta( $register_user, $register_user_meta_key, $custom_field_value );
 												}
 
 												if ( $meta_type == 'gallery' ) {
@@ -4137,7 +4177,7 @@
 											// }
 
 											update_field( $user_meta_key, $custom_field_value, 'user_' . $user_id );
-										} elseif ( function_exists( 'rwmb_set_meta' ) && $user_meta == 'metabox' ) {
+										} elseif ( function_exists( 'rwmb_set_meta' ) && $user_meta['update_user_meta'] == 'metabox' ) {
 											$meta_type = $user_meta['update_user_meta_type'];
 											$custom_field_value = piotnetforms_get_field_value( $user_meta['update_user_meta_field_shortcode'], $fields );
 
@@ -4147,6 +4187,7 @@
 												if ( !empty( $image_id ) ) {
 													$custom_field_value = $image_id;
 												}
+												update_user_meta( $user_id, $user_meta_key, $custom_field_value );
 											}
 
 											if ( $meta_type == 'gallery' ) {
@@ -4450,10 +4491,13 @@
 						'custom_message' => $custom_message
 					];
 				echo json_encode( $piotnetforms_response );
-				//echo $payment_status . ',' . $status . ',' . $payment_id . ',' . $post_url . ',' . $redirect . ',' . json_encode($register_message) . ',' . $failed_status;
-					// echo '<br>';
-					// echo $message;
-			} // End $recaptcha_check = 1;
+			}else{
+                $piotnetforms_response = [
+                    'status' => false,
+                    'reacaptcha' => !empty($form['settings']['piotnetforms_recaptcha_msg_error']) ? $form['settings']['piotnetforms_recaptcha_msg_error'] : 'Cannot verify recaptcha identity.'
+                ];
+                echo json_encode($piotnetforms_response);               
+            }
 		}
 		wp_die();
 	}

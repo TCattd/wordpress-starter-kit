@@ -1,5 +1,5 @@
 <?php
-class WPML_ACF_Field_Annotations {
+class WPML_ACF_Field_Annotations implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
 	/**
 	 * @var WPML_ACF_Options_Page
@@ -25,7 +25,7 @@ class WPML_ACF_Field_Annotations {
 	/**
 	 * Registers WP hooks related to field annotations.
 	 */
-	public function register_hooks() {
+	public function add_hooks() {
 		if ( !defined( 'ACFML_HIDE_FIELD_ANNOTATIONS' ) || ACFML_HIDE_FIELD_ANNOTATIONS != true ) {
 			add_action( 'acf/create_field', array( $this, 'acf_create_field' ), 10, 2 );
 			add_action( 'acf/render_field', array( $this, 'acf_create_field' ), 10, 2 );

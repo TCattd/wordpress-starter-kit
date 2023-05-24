@@ -2,30 +2,32 @@
 
 class WCML_Tracking_Link {
 
-	// WPML general links
-	const WPML_HOME = 'https://wpml.org/';
-	const WPML_PURCHASE = 'https://wpml.org/purchase/';
-	const WPML_SUPPORT = 'https://wpml.org/forums/forum/english-support/';
-	const WPML_ACCOUNT = 'https://wpml.org/shop/account/';
+	// WPML general links.
+	const WPML_HOME                 = 'https://wpml.org/';
+	const WPML_ST_FAQ               = 'https://wpml.org/faq/how-to-add-string-translation-to-your-site/';
+	const WPML_PURCHASE             = 'https://wpml.org/purchase/';
+	const WPML_SUPPORT              = 'https://wpml.org/forums/forum/english-support/';
+	const WPML_ACCOUNT              = 'https://wpml.org/shop/account/';
 	const WPML_AUTO_TRANSLATION_DOC = 'https://wpml.org/documentation/automatic-translation/';
 
-	// WCML general links
-	const WCML_MAIN_DOC = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/';
-	const WCML_MULTI_CURRENCY_DOC = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/multi-currency-support-woocommerce/';
-	const WCML_CLEAR_CART_DOC = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/clearing-cart-contents-when-language-or-currency-change/';
+	// WCML general links.
+	const WCML_MAIN_DOC                  = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/';
+	const WCML_MULTI_CURRENCY_DOC        = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/multi-currency-support-woocommerce/';
+	const WCML_CLEAR_CART_DOC            = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/clearing-cart-contents-when-language-or-currency-change/';
 	const WCML_DISPLAY_AS_TRANSLATED_DOC = 'https://wpml.org/documentation/related-projects/woocommerce-multilingual/displaying-untranslated-products-in-secondary-languages/';
 
-	// WCML compatibility links
-	const WCML_BOOKINGS_DOC = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-bookings-woocommerce-multilingual/';
-	const WCML_PRODUCT_ADDONS_DOC = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-product-add-ons-woocommerce-multilingual/';
-	const WCML_TAB_MANAGER_DOC = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-tab-manager-woocommerce-multilingual/';
+	// WCML compatibility links.
+	const WCML_BOOKINGS_DOC            = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-bookings-woocommerce-multilingual/';
+	const WCML_PRODUCT_ADDONS_DOC      = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-product-add-ons-woocommerce-multilingual/';
+	const WCML_TAB_MANAGER_DOC         = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-tab-manager-woocommerce-multilingual/';
 	const WCML_TABLE_RATE_SHIPPING_DOC = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-table-rate-shipping-woocommerce-multilingual/';
-	const WCML_SUBSCRIPTIONS_DOC = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-subscriptions-woocommerce-multilingual/';
-	const WCML_CUSTOM_PRODUCT_TABS = 'https://wpml.org/plugin/custom-product-tabs-for-woocommerce/';
+	const WCML_SUBSCRIPTIONS_DOC       = 'https://wpml.org/documentation/woocommerce-extensions-compatibility/translating-woocommerce-subscriptions-woocommerce-multilingual/';
+	const WCML_CUSTOM_PRODUCT_TABS     = 'https://wpml.org/plugin/custom-product-tabs-for-woocommerce/';
 
 	/**
 	 * @param string       $link
-	 * @param string|false $id e.g. '#some-section'
+	 * @param string|false $id     e.g. '#some-section'.
+	 * @param array        $params
 	 *
 	 * @return string
 	 */
@@ -68,6 +70,15 @@ class WCML_Tracking_Link {
 	 *
 	 * @return string
 	 */
+	public static function getWpmlStFaq( $isStandalone = false ) {
+		return self::generate( self::WPML_ST_FAQ, false, self::getStandaloneParams( $isStandalone ) );
+	}
+
+	/**
+	 * @param bool $isStandalone
+	 *
+	 * @return string
+	 */
 	public static function getWpmlPurchase( $isStandalone = false ) {
 		return self::generate( self::WPML_PURCHASE, false, self::getStandaloneParams( $isStandalone ) );
 	}
@@ -94,7 +105,7 @@ class WCML_Tracking_Link {
 	}
 
 	/**
-	 * @param false|string $id e.g. '#some-section'
+	 * @param false|string $id e.g. '#some-section'.
 	 *
 	 * @return string
 	 */
@@ -103,7 +114,7 @@ class WCML_Tracking_Link {
 	}
 
 	/**
-	 * @param false|string $id e.g. '#some-section'
+	 * @param false|string $id e.g. '#some-section'.
 	 *
 	 * @return string
 	 */

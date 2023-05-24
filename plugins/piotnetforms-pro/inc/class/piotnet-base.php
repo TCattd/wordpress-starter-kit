@@ -15,6 +15,12 @@ class piotnetforms_Base extends piotnetforms_Variables_Pro {
 	public function __construct() {
 		parent::__construct();
 		$this->post_id = get_the_ID();
+        
+		if ( ! wp_script_is( 'jquery', 'enqueued' ) ) {
+
+			//Enqueue
+			wp_enqueue_script( 'jquery' );
+		}
 
 		if ( method_exists( $this, 'get_script' ) ) {
 			$scripts = $this->get_script();
@@ -47,7 +53,7 @@ class piotnetforms_Base extends piotnetforms_Variables_Pro {
 		$settings   = $this->settings;
 		$visibility = true;
 		if ( !empty( $settings['conditional_visibility_enable'] ) && 'yes' === $settings['conditional_visibility_enable'] ) {
-			$visibility_roles = $settings['conditional_visibility_roles'];
+			$visibility_roles = is_array($settings['conditional_visibility_roles']) ? $settings['conditional_visibility_roles'] : [];
 			//$condition1       = false;
 			$condition2 = true;
 			$show = 'show';

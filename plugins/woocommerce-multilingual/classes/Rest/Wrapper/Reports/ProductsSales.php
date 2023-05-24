@@ -11,13 +11,13 @@ class ProductsSales extends Handler {
 	/**
 	 * Return currency information for products selles response.
 	 *
-	 * @param WP_REST_Response $response
-	 * @param object $object
-	 * @param WP_REST_Request $request
+	 * @param \WP_REST_Response $response
+	 * @param object            $object
+	 * @param \WP_REST_Request  $request
 	 *
 	 * @throws InvalidLanguage
 	 *
-	 * @return WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
 	public function prepare( $response, $object, $request ) {
 

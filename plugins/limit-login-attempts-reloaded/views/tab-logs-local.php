@@ -1,25 +1,29 @@
 <?php
 
+use LLAR\Core\Config;
+use LLAR\Core\Helpers;
+use LLAR\Core\LimitLoginAttempts;
+
 if( !defined( 'ABSPATH' ) ) exit();
 
 /**
- * @var $this Limit_Login_Attempts
+ * @var $this LimitLoginAttempts
  */
 
-$lockouts_total = $this->get_option( 'lockouts_total' );
-$lockouts = $this->get_option( 'login_lockouts' );
+$lockouts_total = Config::get( 'lockouts_total' );
+$lockouts = Config::get( 'login_lockouts' );
 $lockouts_now = is_array( $lockouts ) ? count( $lockouts ) : 0;
 
-$white_list_ips = $this->get_option( 'whitelist' );
+$white_list_ips = Config::get( 'whitelist' );
 $white_list_ips = ( is_array( $white_list_ips ) && !empty( $white_list_ips ) ) ? implode( "\n", $white_list_ips ) : '';
 
-$white_list_usernames = $this->get_option( 'whitelist_usernames' );
+$white_list_usernames = Config::get( 'whitelist_usernames' );
 $white_list_usernames = ( is_array( $white_list_usernames ) && !empty( $white_list_usernames ) ) ? implode( "\n", $white_list_usernames ) : '';
 
-$black_list_ips = $this->get_option( 'blacklist' );
+$black_list_ips = Config::get( 'blacklist' );
 $black_list_ips = ( is_array( $black_list_ips ) && !empty( $black_list_ips ) ) ? implode( "\n", $black_list_ips ) : '';
 
-$black_list_usernames = $this->get_option( 'blacklist_usernames' );
+$black_list_usernames = Config::get( 'blacklist_usernames' );
 $black_list_usernames = ( is_array( $black_list_usernames ) && !empty( $black_list_usernames ) ) ? implode( "\n", $black_list_usernames ) : '';
 ?>
 
@@ -93,11 +97,11 @@ $black_list_usernames = ( is_array( $black_list_usernames ) && !empty( $black_li
     </p>
 </form>
 <?php
-$log = $this->get_option( 'logged' );
+$log = Config::get( 'logged' );
 
-$log = LLA_Helpers::sorted_log_by_date( $log );
+$log = Helpers::sorted_log_by_date( $log );
 
-$lockouts = (array)$this->get_option('lockouts');
+$lockouts = (array) Config::get('lockouts');
 
 if( is_array( $log ) && ! empty( $log ) ) { ?>
     <h3><?php echo __( 'Lockout log', 'limit-login-attempts-reloaded' ); ?></h3>

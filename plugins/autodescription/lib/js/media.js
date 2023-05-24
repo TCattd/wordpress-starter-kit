@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2018 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2018 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -64,7 +64,7 @@ window.tsfMedia = function( $ ) {
 	 * @param {String} str
 	 * @return {(string|undefined)} HTML to jQuery converted string
 	 */
-	// const escapeKey = ( str ) => {
+	// const escapeKey = str => {
 	// 	if ( str )
 	// 		return str.replace( /(?!\\)(?=[\[\]\/])/g, '\\' );
 	// 	return str;
@@ -209,6 +209,7 @@ window.tsfMedia = function( $ ) {
 	 *
 	 * @since 3.1.0
 	 * @since 4.1.1 Removed second parameter, shifted third to second.
+	 * @since 4.2.8 Now parses button classList data.
 	 * @access private
 	 *
 	 * @function
@@ -226,7 +227,7 @@ window.tsfMedia = function( $ ) {
 		// Don't append another remove button if one's found.
 		if ( document.getElementById( `${inputId}-remove` ) ) return;
 
-		let button = document.createElement( 'button' );
+		const button = document.createElement( 'button' );
 
 		button.type              = 'button';
 		button.id                = `${inputId}-remove`
@@ -234,7 +235,8 @@ window.tsfMedia = function( $ ) {
 		button.dataset.inputType = inputType;
 		button.title             = tsf.decodeEntities( l10n.labels[ inputType ].imgRemoveTitle );
 		button.innerHTML         = tsf.escapeString( tsf.decodeEntities( l10n.labels[ inputType ].imgRemove ) );
-		button.classList.add( 'tsf-remove-image-button', 'button', 'button-small' );
+
+		button.classList.add( 'tsf-remove-image-button', ...( JSON.parse( target.dataset?.buttonClass || 0 )?.remove || [] ) );
 
 		target.insertAdjacentElement( 'afterend', button );
 
@@ -518,9 +520,9 @@ window.tsfMedia = function( $ ) {
 
 		if ( ! control.params.isFlex ) {
 			imgSelectOptions.handles = 'corners';
-			imgSelectOptions.aspectRatio = xInit + ':' + yInit;
+			imgSelectOptions.aspectRatio = `${xInit}:${yInit}`;
 		} else if ( ! flexHeight && ! flexWidth ) {
-			imgSelectOptions.aspectRatio = xInit + ':' + yInit;
+			imgSelectOptions.aspectRatio = `${xInit}:${yInit}`;
 		} else {
 			if ( flexHeight ) {
 				imgSelectOptions.minHeight = control.params.minHeight;

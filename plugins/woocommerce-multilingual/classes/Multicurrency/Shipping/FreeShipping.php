@@ -62,8 +62,8 @@ class FreeShipping implements ShippingMode {
 	/**
 	 * @see \WCML\Multicurrency\Shipping\ShippingMode::getShippingCostValue
 	 *
-	 * @param array|object $rate
-	 * @param string       $currency
+	 * @param object $rate
+	 * @param string $currency
 	 *
 	 * @return int|mixed|string
 	 */

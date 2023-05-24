@@ -27,7 +27,7 @@ function wppb_in_cpm_setup_nav_menu_item( $item ) {
 	global $pagenow;
 
 	$redirect_after_logout_url = '';
-	$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+	$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 	if( defined( 'PROFILE_BUILDER' ) && in_array( PROFILE_BUILDER, $versions ) ) {
 		$wppb_module_settings = get_option( 'wppb_module_settings' );

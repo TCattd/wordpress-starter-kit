@@ -1,0 +1,47 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "wppb/register",
+    "title": "Register",
+    "category": "wppb-block",
+    "description": "Displays the Front End Registration form.",
+    "keywords": [ "Register", "Form" ],
+    "textdomain": "profile-builder",
+    "attributes": {
+        "form_name": {
+            "type": "string",
+            "default": ""
+        },
+        "role": {
+            "type": "string",
+            "default": ""
+        },
+        "automatic_login": {
+            "type": "boolean",
+            "default": false
+        },
+        "redirect_url": {
+            "type": "string",
+            "default": ""
+        },
+        "logout_redirect_url": {
+            "type": "string",
+            "default": ""
+        },
+        "is_preview": {
+            "type": "boolean",
+            "default": false
+        }
+    },
+    "example": {
+        "attributes": {
+            "form_name": "",
+            "role": "",
+            "automatic_login": false,
+            "redirect_url": "",
+            "logout_redirect_url": "",
+            "is_preview": true
+        }
+    },
+    "editorScript": "wppb-block-register"
+}

@@ -138,7 +138,7 @@ function relevanssi_search_form( $atts ) {
 				}
 			} elseif ( 'dropdown' === $key && 'post_type' === $value ) {
 				$field = '<select name="post_type">';
-				$types = get_option( 'relevanssi_index_post_types' );
+				$types = get_option( 'relevanssi_index_post_types', array() );
 				if ( ! is_array( $types ) ) {
 					$types = array();
 				}
@@ -160,11 +160,12 @@ function relevanssi_search_form( $atts ) {
 					$name = 'tag';
 				}
 				$args                = array(
-					'taxonomy'         => $value,
-					'echo'             => 0,
-					'hide_if_empty'    => true,
-					'show_option_none' => __( 'None' ),
-					'name'             => $name,
+					'taxonomy'          => $value,
+					'echo'              => 0,
+					'hide_if_empty'     => true,
+					'show_option_none'  => __( 'None' ),
+					'name'              => $name,
+					'option_none_value' => 0,
 				);
 				$additional_fields[] = wp_dropdown_categories( $args );
 			} elseif ( 'checklist' === $key && 'post_type' !== $value ) {

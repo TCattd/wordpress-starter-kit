@@ -8,6 +8,8 @@ if (!defined('UPDRAFTPLUS_DIR')) die('No access.');
  */
 class UpdraftPlus_Backup_History {
 
+	private static $backup_history_on_restore = null;
+
 	/**
 	 * Get the backup history for an indicated timestamp, or the complete set of all backup histories
 	 *
@@ -176,8 +178,8 @@ class UpdraftPlus_Backup_History {
 
 					if (preg_match('/^backup_([\-0-9]{15})_.*_([0-9a-f]{12})-[\-a-z]+([0-9]+)?+(\.(zip|gz|gz\.crypt))?$/i', $filename, $matches)) {
 
-						$timestamp = strtotime($matches[1]);
-						
+						$timestamp = strtotime(get_gmt_from_date(date_format(DateTime::createFromFormat('Y-m-d-Hi', $matches[1]), 'Y-m-d H:i')));
+
 						if (!isset($incremental_sets[$timestamp])) $incremental_sets[$timestamp] = array();
 
 						if (!isset($incremental_sets[$timestamp][$entity])) $incremental_sets[$timestamp][$entity] = array();
@@ -304,7 +306,7 @@ class UpdraftPlus_Backup_History {
 	 * @param Array|String $only_add_this_file - if set to an array (with keys 'file' and (optionally) 'label'), then a file will only be taken notice of if the filename matches the 'file' key (and the label will be associated with the backup set)
 	 * @param Boolean	   $debug			   - include debugging messages. These will be keyed with keys beginning 'debug-' so that they can be distinguished.
 	 *
-	 * @return Array - an array of messages which the caller may wish to display to the user. N.B. Messages are not necessarily just strings.
+	 * @return Array - an array of messages which the caller may wish to display to the user. N.B. Messages are not necessarily just strings, but may be.
 	 */
 	public static function rebuild($remote_scan = false, $only_add_this_file = false, $debug = false) {
 
@@ -580,7 +582,7 @@ class UpdraftPlus_Backup_History {
 				$backup_times_by_nonce[$nonce] = $btime;
 			}
 			if ($btime <= 100) continue;
-			$file_size = @filesize($updraft_dir.'/'.$entry);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+			$file_size = @filesize($updraft_dir.'/'.$entry);// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
 
 			if (!isset($backup_nonces_by_filename[$entry])) {
 				$changes = true;
@@ -590,7 +592,7 @@ class UpdraftPlus_Backup_History {
 					$backup_history[$btime]['native'] = false;
 				} elseif ('db' == $type && !$accepted_foreign) {
 					// we now that multiple databases will add its index number after the 'db' (e.g. 'db1'), however, the $type == 'db' here has nothing to do with our multiple databases addon because this block of code inside the 'if (!isset($backup_nonces_by_filename[$entry]))' will never be executed if multiple databases is found to be in the backup history and that our backup file pattern matches with them, so this is not the place where we should check for our multiple databases backup file, this is instead the place for handling foreign databases (e.g. Backup Buddy and our other competitors). The $type were previously set to 'db' when its file was found to be a foreign database
-					list ($mess, $warn, $err, $info) = $updraftplus->analyse_db_file(false, array(), $updraft_dir.'/'.$entry, true);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+					list ($mess, $warn, $err, $info) = $updraftplus->analyse_db_file(false, array(), $updraft_dir.'/'.$entry, true);// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- Unused parameter is present because the method returns an array.
 					if (!empty($info['label'])) {
 						$backup_history[$btime]['label'] = $info['label'];
 					}
@@ -865,5 +867,49 @@ class UpdraftPlus_Backup_History {
 		$backup_history[$backup_time] = isset($backup_history[$backup_time]) ? apply_filters('updraftplus_merge_backup_history', $backup_array, $backup_history[$backup_time]) : $backup_array;
 		
 		self::save_history($backup_history, false);
+	}
+
+	/**
+	 * Save backup history into a file
+	 *
+	 * @return void
+	 */
+	public static function preserve_backup_history() {
+		self::$backup_history_on_restore = self::get_backup_history_option();
+	}
+
+	/**
+	 * Update backup history label based on backup-history.txt
+	 *
+	 * @return void
+	 */
+	public static function restore_backup_history_label() {
+		$backup_history = self::get_backup_history_option();
+		$saved_backup_history = self::$backup_history_on_restore;
+		$is_backup_history_changed = false;
+
+		if (empty($saved_backup_history)) return;
+
+		foreach ($saved_backup_history as $backup) {
+			if (!isset($backup['label'])) continue;
+
+			foreach ($backup_history as $key => $value) {
+				if ($backup['nonce'] === $value['nonce'] && !empty($backup_history[$key]['label']) && $backup_history[$key]['label'] !== $backup['label']) {
+					$is_backup_history_changed = true;
+					$backup_history[$key]['label'] = $backup['label'];
+				}
+			}
+		}
+
+		if ($is_backup_history_changed) self::save_history($backup_history, false);
+	}
+
+	/**
+	 * Get backup history by checking for existence of the Multisite addon
+	 *
+	 * @return Array - the array of backup histories.
+	 */
+	private static function get_backup_history_option() {
+		return UpdraftPlus_Options::get_updraft_option('updraft_backup_history');
 	}
 }

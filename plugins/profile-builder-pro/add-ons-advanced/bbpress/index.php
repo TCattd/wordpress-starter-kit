@@ -88,8 +88,16 @@ function wppb_in_bbp_plugin_init() {
                 $wppb_bbpress_settings = get_option( 'wppb_bbpress_settings', 'not_found');
 
                 // If Hobbyist or Free version, update option to no Userlisting & default Edit Profile form
-                if ( !defined('PROFILE_BUILDER') || !in_array( PROFILE_BUILDER, array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' ) ) )
-                    update_option( 'wppb_bbpress_settings', array( 'UserListing' => '', 'EditProfileForm' => 'wppb-default-edit-profile' ) );
+                if ( !defined('PROFILE_BUILDER') || !in_array( PROFILE_BUILDER, array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' ) ) ){
+                    
+                    $to_update = array( 'UserListing' => '', 'EditProfileForm' => 'wppb-default-edit-profile' );
+
+                    if( !empty( $wppb_bbpress_settings ) )
+                        $to_update = array_merge( $wppb_bbpress_settings );
+                    
+                    update_option( 'wppb_bbpress_settings', $to_update );
+
+                }
 
                 if ($wppb_bbpress_settings != 'not_found') {
 

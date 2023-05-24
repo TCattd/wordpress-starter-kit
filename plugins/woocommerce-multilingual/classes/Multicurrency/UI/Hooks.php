@@ -5,7 +5,12 @@ namespace WCML\Multicurrency\UI;
 use WCML\MultiCurrency\Settings;
 use WCML\StandAlone\IStandAloneAction;
 use WCML\Utilities\Resources;
+use WCML_Multi_Currency;
+use WCML_Currencies_Payment_Gateways;
 use WPML\Collect\Support\Collection;
+use WPML\Core\ISitePress;
+use WCML\StandAlone\NullSitePress;
+use SitePress;
 use WPML\FP\Fns;
 use WPML\FP\Obj;
 use function WCML\functions\isStandAlone;
@@ -15,22 +20,28 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 
 	const HANDLE = 'wcml-multicurrency-options';
 
-	/** @var \WCML_Multi_Currency $multiCurrency */
+	/** @var WCML_Multi_Currency $multiCurrency */
 	private $multiCurrency;
 
-	/** @var \WCML_Currencies_Payment_Gateways $currenciesPaymentGateways */
+	/** @var WCML_Currencies_Payment_Gateways $currenciesPaymentGateways */
 	private $currenciesPaymentGateways;
 
-	/** @var \SitePress $sitepress */
+	/** @var SitePress|NullSitePress $sitepress */
 	private $sitepress;
 
 	/** @var array $wcmlSettings */
 	private $wcmlSettings;
 
+	/**
+	 * @param WCML_Multi_Currency              $multiCurrency
+	 * @param WCML_Currencies_Payment_Gateways $currenciesPaymentGateways
+	 * @param SitePress|NullSitePress          $sitepress
+	 * @param array                            $wcmlSettings
+	 */
 	public function __construct(
-		\WCML_Multi_Currency $multiCurrency,
-		\WCML_Currencies_Payment_Gateways $currenciesPaymentGateways,
-		\WPML\Core\ISitePress $sitepress,
+		WCML_Multi_Currency $multiCurrency,
+		WCML_Currencies_Payment_Gateways $currenciesPaymentGateways,
+		ISitePress $sitepress,
 		array $wcmlSettings
 	) {
 		$this->multiCurrency             = $multiCurrency;
@@ -90,19 +101,20 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 				return [ $gateway['id'] => Obj::pathOr( [], [ 'settings', $code ], $gateway ) ];
 			} );
 
-			return [ 'gatewaysSettings' => $gateways->mapWithKeys( $addSettingsForGateway( $currency['code'] ) )->toArray()  ];
+			return [ 'gatewaysSettings' => $gateways->mapWithKeys( $addSettingsForGateway( $currency['code'] ) )->toArray() ];
 		};
-
 
 		$addFormattedLastRateUpdate = function( $currency ) {
 			return [
 				'formattedLastRateUpdate' => isset( $currency['updated'] )
 					? self::formatLastRateUpdate( $currency['updated'] )
-					: null
+					: null,
 			];
 		};
 
-		$merge = function( $fn ) { return Fns::converge( 'array_merge', [ $fn, Fns::identity() ]  ); };
+		$merge = function( $fn ) {
+			return Fns::converge( 'array_merge', [ $fn, Fns::identity() ] );
+		};
 
 		return wpml_collect( $this->multiCurrency->get_currencies( true ) )
 			->map( $addCode )
@@ -180,8 +192,8 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 			'labelRate'                      => __( 'Rate', 'woocommerce-multilingual' ),
 			'labelDefault'                   => __( 'default', 'woocommerce-multilingual' ),
 			'labelEdit'                      => __( 'Edit', 'woocommerce-multilingual' ),
-			'labelDefaultCurrency'           => __( 'Default currency', 'woocommerce-multilingual' ),
-			'tooltipDefaultCurrency'         => __( 'Switch to this currency when switching language in the front-end', 'woocommerce-multilingual' ),
+			'labelDefaultCurrency'           => __( 'Currency displayed first', 'woocommerce-multilingual' ),
+			'tooltipDefaultCurrency'         => __( 'Choose which currency to display when a client switches languages', 'woocommerce-multilingual' ),
 			'labelKeep'                      => __( 'Keep', 'woocommerce-multilingual' ),
 			'labelDelete'                    => __( 'Delete', 'woocommerce-multilingual' ),
 			'labelCurrenciesToDisplay'       => __( 'Currencies to display for each language', 'woocommerce-multilingual' ),
@@ -216,13 +228,13 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 			'labelIncrement'                 => __( 'Increment for nearest integer', 'woocommerce-multilingual' ),
 			/* translators: %s is an HTML break line */
 			'tooltipIncrement'               => sprintf( __( 'The resulting price will be an increment of this value after initial rounding.%se.g.:', 'woocommerce-multilingual' ), '<br>' ) . '<br />' .
-			                                    __( '1454.07 &raquo; 1454 when set to 1', 'woocommerce-multilingual' ) . '<br />' .
-			                                    __( '1454.07 &raquo; 1450 when set to 10', 'woocommerce-multilingual' ) . '<br />' .
-			                                    __( '1454.07 &raquo; 1500 when set to 100', 'woocommerce-multilingual' ) . '<br />',
+												__( '1454.07 &raquo; 1454 when set to 1', 'woocommerce-multilingual' ) . '<br />' .
+												__( '1454.07 &raquo; 1450 when set to 10', 'woocommerce-multilingual' ) . '<br />' .
+												__( '1454.07 &raquo; 1500 when set to 100', 'woocommerce-multilingual' ) . '<br />',
 			/* translators: %s is an HTML break line */
 			'tooltipRounding'                => sprintf( __( 'Round the converted price to the closest integer. %se.g. 15.78 becomes 16.00', 'woocommerce-multilingual' ), '<br />' ),
 			'tooltipAutosubtract'            => __( 'The value to be subtracted from the amount obtained previously.', 'woocommerce-multilingual' ) . '<br /><br />' .
-			                                    __( 'For 1454.07, when the increment for the nearest integer is 100 and the auto-subtract amount is 1, the resulting amount is 1499.', 'woocommerce-multilingual' ),
+												__( 'For 1454.07, when the increment for the nearest integer is 100 and the auto-subtract amount is 1, the resulting amount is 1499.', 'woocommerce-multilingual' ),
 			'labelAutosubtract'              => __( 'Autosubtract amount', 'woocommerce-multilingual' ),
 			'labelPaymentGateways'           => __( 'Payment Gateways', 'woocommerce-multilingual' ),
 			/* translators: %s is a currency code */
@@ -239,7 +251,7 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 			'labelSpecificCountries'         => __( 'Specific countries', 'woocommerce-multilingual' ),
 			'labelModeSelect'                => __( 'Show currencies based on', 'woocommerce-multilingual' ),
 			'labelSiteLanguageTooltip'       => esc_html__( "You need the WPML plugin to make your store multilingual and display currencies based on site language. Don't have it yet?", 'woocommerce-multilingual' ) . '<br />' .
-			                                    '<a href="' . \WCML_Tracking_Link::getWpmlPurchase( true ) . '" class="wpml-external-link" target="_blank">' . esc_html__( 'Purchase WPML now', 'woocommerce-multilingual' ) . '</a>',
+												'<a href="' . \WCML_Tracking_Link::getWpmlPurchase( true ) . '" class="wpml-external-link" target="_blank">' . esc_html__( 'Purchase WPML now', 'woocommerce-multilingual' ) . '</a>',
 			'labelSiteLanguage'              => __( 'Site Language', 'woocommerce-multilingual' ),
 			'labelClientLocation'            => __( 'Client Location', 'woocommerce-multilingual' ),
 			'labelLocationBased'             => __( 'Location based', 'woocommerce-multilingual' ),
@@ -262,8 +274,8 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 
 		$buildCountry = function( $label, $code ) {
 			return (object) [
-				'code'   => $code,
-				'label'  => html_entity_decode( $label ),
+				'code'  => $code,
+				'label' => html_entity_decode( $label ),
 			];
 		};
 
@@ -273,10 +285,10 @@ class Hooks implements \IWPML_Action, IStandAloneAction {
 	/**
 	 * @return bool
 	 */
-	private function checkMaxMindKeyExist(){
+	private function checkMaxMindKeyExist() {
 		$integrations = WC()->integrations->get_integrations();
 
-		return isset( $integrations['maxmind_geolocation'] ) ? (bool)$integrations['maxmind_geolocation']->get_option( 'license_key' ) : false ;
+		return isset( $integrations['maxmind_geolocation'] ) ? (bool) $integrations['maxmind_geolocation']->get_option( 'license_key' ) : false;
 	}
 
 	/**

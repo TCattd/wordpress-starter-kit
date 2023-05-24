@@ -151,7 +151,7 @@ class WPPB_IN_Social_Connect {
 		/* add headings in Social Connect settings page */
 		add_action( 'wck_before_add_form_wppb_social_connect_settings_element_0', array( $this, 'wppb_sc_settings_page_heading_general_settings' ) );
 		add_action( 'wck_before_add_form_wppb_social_connect_settings_element_2', array( $this, 'wppb_sc_settings_page_heading_application_settings' ) );
-		add_action( 'wck_before_add_form_wppb_social_connect_settings_element_12', array( $this, 'wppb_sc_settings_page_heading_appearance_settings' ) );
+		add_action( 'wck_before_add_form_wppb_social_connect_settings_element_13', array( $this, 'wppb_sc_settings_page_heading_appearance_settings' ) );
 
 		/* add Social Connect buttons to WordPress default forms */
 		if( isset( $this->wppb_social_connect_settings[0]['display-on-the-following-forms'] ) && ( strpos( $this->wppb_social_connect_settings[0]['display-on-the-following-forms'], 'default-login' ) !== false ) ) {
@@ -228,12 +228,13 @@ class WPPB_IN_Social_Connect {
 			array( 'type' => 'checkbox', 'slug' => 'facebook-login', 'title' => __( 'Facebook Login', 'profile-builder' ), 'options' => array( '%Enable%yes' ) ),
 			array( 'type' => 'text', 'slug' => 'facebook-app-id', 'title' => __( 'Facebook App ID', 'profile-builder' ), 'description' => 'Documentation: <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/social-connect/create-facebook-app-social-connect" target="_blank">how to create and use a Facebook app</a>' ),
 			array( 'type' => 'checkbox', 'slug' => 'google-login', 'title' => __( 'Google Login', 'profile-builder' ), 'options' => array( '%Enable%yes' ) ),
-			array( 'type' => 'text', 'slug' => 'google-client-id', 'title' => __( 'Google Client ID', 'profile-builder' ), 'description' => 'Documentation: <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/social-connect/create-google-app-social-connect" target="_blank">how to create and use a Google app</a>' ),
+			array( 'type' => 'text', 'slug' => 'google-client-id', 'title' => __( 'Google Client ID', 'profile-builder' ) ),
+			array( 'type' => 'text', 'slug' => 'google-client-name', 'title' => __( 'Google Client Name', 'profile-builder' ), 'description' => 'Documentation: <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/social-connect/create-google-app-social-connect" target="_blank">how to create and use a Google app</a>' ),
 			array( 'type' => 'checkbox', 'slug' => 'twitter-login', 'title' => __( 'Twitter Login', 'profile-builder' ), 'options' => array( '%Enable%yes' ) ),
 			array( 'type' => 'text', 'slug' => 'twitter-api-key', 'title' => __( 'Twitter API Key', 'profile-builder' ) ),
 			array( 'type' => 'text', 'slug' => 'twitter-api-secret', 'title' => __( 'Twitter API Secret', 'profile-builder' ), 'description' => 'Documentation: <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/social-connect/create-twitter-app-social-connect" target="_blank">how to create and use a Twitter app</a>' ),
 			array( 'type' => 'checkbox', 'slug' => 'linkedin-login', 'title' => __( 'LinkedIn Login', 'profile-builder' ), 'options' => array( '%Enable%yes' ) ),
-			array( 'type' => 'text', 'slug' => 'linkedin-client-id', 'title' => __( 'LinkedIn Client ID', 'profile-builder' ), 'description' => 'Documentation: <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/social-connect/create-linkedin-app-social-connect/" target="_blank">how to create and use a LinkedIn app</a>' ),
+			array( 'type' => 'text', 'slug' => 'linkedin-client-id', 'title' => __( 'LinkedIn Client ID', 'profile-builder' ) ),
             array( 'type' => 'text', 'slug' => 'linkedin-client-secret', 'title' => __( 'LinkedIn Client Secret', 'profile-builder' ), 'description' => 'Documentation: <a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/social-connect/create-linkedin-app-social-connect/" target="_blank">how to create and use a LinkedIn app</a>' ),
             array( 'type' => 'checkbox', 'slug' => 'buttons-order', 'title' => __( 'Buttons Order', 'profile-builder' ), 'options' => $platform_order, 'description' => __( "Drag and drop the dots to re-order.", 'profile-builder' ) ),
 			array( 'type' => 'text', 'slug' => 'buttons-re-order', 'title' => __( 'Buttons Re-Order', 'profile-builder' ), 'description' => __( "Save the buttons order from the buttons order checkboxes", 'profile-builder' ) ),
@@ -410,9 +411,9 @@ class WPPB_IN_Social_Connect {
 				'edit_profile_success_linked' 	=> __( "You have successfully linked your account to %%.", 'profile-builder' ),
 				'error_message' 	            => __( "Something went wrong. Please try again later!", 'profile-builder' ),
 				'email_confirmation_on'			=> __( "Before you can access your account you need to confirm your email address. Please check your inbox and click the activation link.", 'profile-builder' ),
-				'email_confirmation_error' 		=> __( "<strong>ERROR</strong>: You need to confirm your email address before you can log in.", 'profile-builder' ),
+				'email_confirmation_error' 		=> __( "<strong>ERROR:</strong> You need to confirm your email address before you can log in.", 'profile-builder' ),
 				'admin_approval_on' 			=> __( "Before you can access your account an administrator has to approve it. You will be notified via email.", 'profile-builder' ),
-				'admin_approval_error'			=> __( "<strong>ERROR</strong>: Your account has to be confirmed by an administrator before you can log in.", 'profile-builder' ),
+				'admin_approval_error'			=> __( "<strong>ERROR:</strong> Your account has to be confirmed by an administrator before you can log in.", 'profile-builder' ),
 				'redirect_message'				=> __( "You will be redirected in 5 seconds. If not, click %%.", 'profile-builder' ),
 				'here_string'					=> __( 'here', 'profile-builder' ),
 				'only_login_error'				=> __( '<strong>You can only login with social accounts, not register!</strong><br>Please link your social account to an existing user account first.', 'profile-builder' ),
@@ -444,8 +445,9 @@ class WPPB_IN_Social_Connect {
 			}
 
 			if( $platform == 'google' ) {
-				if( ! empty( $this->wppb_social_connect_settings[0]['google-client-id'] ) ) {
+				if( ! empty( $this->wppb_social_connect_settings[0]['google-client-id'] ) && ! empty( $this->wppb_social_connect_settings[0]['google-client-name'] ) ) {
 					$vars_array['client_id'] = esc_attr( trim( $this->wppb_social_connect_settings[0]['google-client-id'] ) );
+					$vars_array['plugin_name'] = esc_attr( trim( $this->wppb_social_connect_settings[0]['google-client-name'] ) );
 				}
 			}
 
@@ -657,7 +659,7 @@ class WPPB_IN_Social_Connect {
 					$redirect_to = 'no_redirect';
 
 					// check if Custom Redirects is enabled and take custom redirect link from db
-					$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+					$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 					if( in_array( PROFILE_BUILDER, $versions ) ) {
 						$wppb_module_settings = get_option( 'wppb_module_settings' );
@@ -851,7 +853,7 @@ class WPPB_IN_Social_Connect {
 		}
 
 		// check if Custom Redirects is enabled and take custom redirect link from db
-		$versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Dev' );
+		$versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Dev' );
 
 		if( in_array( PROFILE_BUILDER, $versions ) ) {
 			$wppb_module_settings = get_option( 'wppb_module_settings' );

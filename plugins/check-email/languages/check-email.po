@@ -1,0 +1,444 @@
+# Copyright (C) 2021 WPChill
+# This file is distributed under the GPLv3 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Check & Log Email 1.0.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/check-email\n"
+"POT-Creation-Date: 2021-07-07 09:28:35+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2021-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: check-email.php:44
+msgid ""
+"Check & Log Email requires at least PHP 5.6 to function properly. Please "
+"upgrade PHP."
+msgstr ""
+
+#: include/Core/Check_Email_Review.php:18
+msgid ""
+"Hi there! Stoked to see you're using Check & Log Email for a few days now - "
+"hope you like it! And if you do, please consider rating it. It would mean "
+"the world to us.  Keep on rocking!"
+msgstr ""
+
+#: include/Core/Check_Email_Review.php:19
+msgid "Rate the plugin"
+msgstr ""
+
+#: include/Core/Check_Email_Review.php:20
+msgid "Remind me later"
+msgstr ""
+
+#: include/Core/Check_Email_Review.php:21
+msgid "Don't show again"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:49
+#: include/Util/helper.php:142 include/class-check-email-log-list-table.php:18
+msgid "Sent at"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:53
+#: include/Util/helper.php:137 include/class-check-email-log-list-table.php:19
+msgid "To"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:57
+#: include/Util/helper.php:139 include/class-check-email-log-list-table.php:21
+msgid "Subject"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:61
+msgid "Headers"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:73
+msgid "Raw Email Content"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:74
+msgid "Preview Content as HTML"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:87
+msgid "Close"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:138
+msgid "There was some problem in deleting the email logs"
+msgstr ""
+
+#: include/Core/Request/Check_Email_Log_List_Action.php:142
+msgid "1 email log deleted."
+msgid_plural "%s email logs deleted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: include/Core/UI/Component/Check_Email_Dashboard_Widget.php:15
+msgid "Check Email Summary"
+msgstr ""
+
+#: include/Core/UI/Component/Check_Email_Dashboard_Widget.php:29
+msgid "Total number of emails logged"
+msgstr ""
+
+#: include/Core/UI/Component/Check_Email_Dashboard_Widget.php:37
+msgid "<a href=\"%s\">Status</a>"
+msgstr ""
+
+#: include/Core/UI/Component/Check_Email_Dashboard_Widget.php:38
+msgid "<a href=\"%s\">Email Logs</a>"
+msgstr ""
+
+#: include/Core/UI/Component/Check_Email_Dashboard_Widget.php:39
+msgid "<a href=\"%s\">Settings</a>"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Log_List_Page.php:33
+#: include/Core/UI/Page/Check_Email_Log_List_Page.php:34
+msgid "View Logs"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Log_List_Page.php:57
+msgid "Email Logs"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Log_List_Page.php:62
+msgid "Search Logs"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Log_List_Page.php:81
+msgid "Entries per page"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Settings_Page.php:59
+#: include/Core/UI/Page/Check_Email_Settings_Page.php:60
+msgid "Settings"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Settings_Page.php:71
+msgid "Email Log Settings"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Settings_Page.php:79
+msgid "Save"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Check & Log Email"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Status_Page.php:42
+#: include/Core/UI/Page/Check_Email_Status_Page.php:43
+#: include/Core/UI/Page/Check_Email_Status_Page.php:54
+msgid "Status"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Status_Page.php:72
+msgid "Suggest a new feature!"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Status_Page.php:75
+msgid ""
+"Help us build the next set of features for Check & Log Email. Tell us what "
+"you think and we will make it happen!"
+msgstr ""
+
+#: include/Core/UI/Page/Check_Email_Status_Page.php:76
+msgid "Click here"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:5
+msgid ""
+"The test email has been sent by WordPress. Please note this does NOT mean "
+"it has been delivered. See <a "
+"href=\"http://codex.wordpress.org/Function_Reference/wp_mail\">wp_mail in "
+"the Codex</a> for more information. The headers sent were:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:8
+msgid "Security check failed"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:13
+msgid "Current mail settings"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:16
+msgid "Mailer:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:19
+msgid "SendMail path:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:22
+msgid "Host:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:25
+msgid "Port:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:28
+msgid "CharSet:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:31
+msgid "Content-Type:"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:35
+msgid "Send a test email"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:38
+msgid "Send test email to"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:42
+msgid "Use standard headers"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:46
+msgid "MIME-Version: %s"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:47
+msgid "From: %s"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:48
+msgid "Content-Type: %s"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:51
+msgid "Use custom headers"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:55
+msgid "Set your custom headers below"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:57
+msgid "MIME Version"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:61
+msgid "Content type"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:65
+#: include/Util/helper.php:138 include/Util/helper.php:143
+#: include/class-check-email-log-list-table.php:20
+msgid "From"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:69
+#: include/Util/helper.php:144
+msgid "CC"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:77
+msgid "Header line break type"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:78
+msgid "\\n"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:79
+msgid "\\r\\n"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:83
+msgid "Send"
+msgstr ""
+
+#: include/Core/UI/Page/partials/check-email-admin-status-display.php:84
+msgid "Send test email"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:12
+msgid "Core Check Email Log Settings"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:16
+msgid "Allowed User Roles"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:17
+msgid "Enable Logs"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:18
+msgid "Enable Dashboard Widget"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:19
+msgid "Database Size Notification"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:20
+msgid "Remove Data on Uninstall?"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:62
+msgid "Administrator"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:76
+msgid ""
+"<strong>Note:</strong> Users with the above User Roles can view Status and "
+"Logs Page."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:77
+msgid "Administrator always has access and cannot be disabled."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:99
+msgid "Check this box if you would like to log your emails."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:115
+msgid ""
+"Check this box if you would like to completely remove all of its data when "
+"the plugin is deleted."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:156
+msgid "Check this box if you would like to enable dashboard widget."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:199
+msgid "Notify %1$s if there are more than %2$s logs."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:208
+msgid "%1$s There are %2$s email logs currently logged in the database."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:209
+msgid "Note"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:219
+msgid ""
+"Last notification email was sent on %1$s. Click %2$s button to reset "
+"sending the notification."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:333
+msgid "Check & Log Email: Your log threshold of %s has been met"
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:360
+msgid ""
+"Currently there are %1$s logged, which is more than the threshold. You can "
+"delete some logs or increase the threshold."
+msgstr ""
+
+#: include/Core/UI/Setting/Check_Email_Core_Setting.php:361
+msgid " email log"
+msgid_plural " email logs"
+msgstr[0] ""
+msgstr[1] ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:59
+#: include/class-check-email-log-list-table.php:43
+msgid "%s @ %s"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:77
+#: include/class-check-email-log-list-table.php:62
+msgid "Email Content"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:78
+#: include/class-check-email-log-list-table.php:63
+msgid "View Content"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:92
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:169
+#: include/class-check-email-log-list-table.php:77
+#: include/class-check-email-log-list-table.php:107
+msgid "Delete"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:170
+#: include/class-check-email-log-list-table.php:108
+msgid "Delete All Logs"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:197
+#: include/class-check-email-log-list-table.php:206
+msgid "Your email log is empty"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:216
+msgid "Search by date"
+msgstr ""
+
+#: include/Core/UI/list_table/Check_Email_Log_List_Table.php:217
+msgid "Search by term"
+msgstr ""
+
+#: include/Util/helper.php:136
+msgid "ID"
+msgstr ""
+
+#: include/Util/helper.php:140
+msgid "Message"
+msgstr ""
+
+#: include/Util/helper.php:141
+msgid "Attachment"
+msgstr ""
+
+#: include/Util/helper.php:145
+msgid "BCC"
+msgstr ""
+
+#: include/Util/helper.php:146
+msgid "Reply To"
+msgstr ""
+
+#: include/Util/helper.php:147
+msgid "IP Address"
+msgstr ""
+
+#: include/Util/helper.php:148
+msgid "Sent Status"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Check & Log email allows you to test if your WordPress installation is "
+"sending emails correctly and logs every email."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WPChill"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://wpchill.com/"
+msgstr ""

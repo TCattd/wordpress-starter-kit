@@ -168,8 +168,9 @@ function wppb_email_customizer_email_confirmation_filter_handler( $default_strin
 
 function wppb_email_customizer_password_reset_content_filter_handler( $default_string, $user_id, $user_login, $user_email ) {
 	$email_customizer_option = get_option( 'wppb_user_emailc_reset_email_content', 'not_found' );
-	$key = wppb_retrieve_activation_key( $user_login );
-	$url = add_query_arg( array( 'key' => $key ), wppb_curpageurl() );
+	$user = new WP_User( $user_id );
+	$key = get_password_reset_key( $user );
+	$url = add_query_arg( array( 'key' => $key, 'login' => $user->user_login ), wppb_curpageurl() );
 
 	if( $email_customizer_option != 'not_found' ) {
 		wppb_change_email_from_headers();
@@ -403,11 +404,6 @@ add_filter ( 'email_change_email', 'wppb_email_customizer_change_email_address_c
 add_filter ( 'email_change_email', 'wppb_email_customizer_change_email_address_title_filter_handler', 10, 3);
 add_filter ( 'email_change_email', 'wppb_email_customizer_change_email_address_header_filter_handler', 10, 3);
 
-if( function_exists( 'wppb_in_init_edit_profile_approval' ) ) {
-	add_filter('wppb_epaa_user_email_content', 'wppb_email_customizer_epaa_content_filter_handler', 10, 4);
-	add_filter('wppb_epaa_user_email_subject', 'wppb_email_customizer_epaa_title_filter_handler', 10, 4);
-}
-
 // using filters, we overwrite the old content with the new one from the email customizer (for the admin)
 add_filter ( 'wppb_register_admin_email_subject_without_admin_approval', 'wppb_email_customizer_admin_approval_new_user_signup_filter_handler', 10, 5 );
 add_filter ( 'wppb_register_admin_email_message_without_admin_approval', 'wppb_email_customizer_admin_approval_new_user_signup_filter_handler', 10, 5 );
@@ -417,12 +413,6 @@ add_filter ( 'wppb_register_admin_email_message_with_admin_approval', 'wppb_emai
 
 add_filter ( 'wppb_recover_password_message_content_sent_to_admin', 'wppb_admin_email_customizer_password_reset_content_filter_handler', 10, 4 );
 add_filter ( 'wppb_recover_password_message_title_sent_to_admin', 'wppb_admin_email_customizer_password_reset_title_filter_handler', 10, 2 );
-
-if( function_exists( 'wppb_in_init_edit_profile_approval' ) ) {
-	add_filter('wppb_epaa_admin_email_content', 'wppb_admin_email_customizer_epaa_content_filter_handler', 10, 4);
-	add_filter('wppb_epaa_admin_email_subject', 'wppb_admin_email_customizer_epaa_title_filter_handler', 10, 4);
-}
-
 
 // Mustache variables
 
@@ -1204,31 +1194,29 @@ add_filter( 'mustache_variable_ec_user_meta_labels', 'wppb_ec_replace_user_meta_
 
 // function that filters the From email address
 function wppb_website_email($sender_email){
-    $wppb_addonOptions = get_option( 'wppb_module_settings' );
 
-    if ( ( $wppb_addonOptions['wppb_emailCustomizer'] == 'show' ) || ( isset( $wppb_addonOptions['wppb_emailCustomizerAdmin'] ) && $wppb_addonOptions['wppb_emailCustomizerAdmin'] == 'show' ) ){
-        $reply_to_email = get_option( 'wppb_emailc_common_settings_from_reply_to_email', 'not_found' );
-        if ( $reply_to_email != 'not_found' ) {
-            $reply_to_email = str_replace('{{reply_to}}', get_bloginfo('admin_email'), $reply_to_email );
-            if( is_email( $reply_to_email ) )
-                $sender_email = $reply_to_email;
-        }
-    }
+    $reply_to_email = get_option( 'wppb_emailc_common_settings_from_reply_to_email', 'not_found' );
 
-    return $sender_email;
+	if ( $reply_to_email != 'not_found' ) {
+		$reply_to_email = str_replace('{{reply_to}}', get_bloginfo('admin_email'), $reply_to_email );
+		
+		if( is_email( $reply_to_email ) )
+			$sender_email = $reply_to_email;
+	}
+
+	return apply_filters( 'wppb_from_website_email', $sender_email );
+	
 }
 
 // function that filters the From name
 function wppb_website_name($site_name){
-    $wppb_addonOptions = get_option( 'wppb_module_settings' );
-
-    if ( ( $wppb_addonOptions['wppb_emailCustomizer'] == 'show' ) || ( isset( $wppb_addonOptions['wppb_emailCustomizerAdmin'] ) && $wppb_addonOptions['wppb_emailCustomizerAdmin'] == 'show' ) ){
-        $email_from_name = get_option( 'wppb_emailc_common_settings_from_name', 'not_found' );
-        if ( $email_from_name != 'not_found' ) {
-            $email_from_name = str_replace('{{site_name}}', get_bloginfo('name'), $email_from_name );
-            $site_name = $email_from_name;
-        }
-    }
+    
+	$email_from_name = get_option( 'wppb_emailc_common_settings_from_name', 'not_found' );
+	
+	if ( $email_from_name != 'not_found' ) {
+		$email_from_name = str_replace('{{site_name}}', get_bloginfo('name'), $email_from_name );
+		$site_name = $email_from_name;
+	}
 
     return html_entity_decode( htmlspecialchars_decode( $site_name, ENT_QUOTES ), ENT_QUOTES );
 }

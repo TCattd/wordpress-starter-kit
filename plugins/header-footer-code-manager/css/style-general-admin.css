@@ -1,0 +1,99 @@
+.hfcm-review-stars{
+  text-decoration: none;
+}
+.hfcm-review-stars span{
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  margin-top: 2px;
+}
+.hfcm-dismiss-alert{
+  position: static !important;
+  float: right;
+  top: 0 !important;
+  right: 0 !important;
+  padding: 0 15px 10px 28px !important;
+  margin-top: -10px !important;
+  font-size: 13px;
+  line-height: 1.23076923;
+  text-decoration: none;
+}
+.hfcm-dismiss-alert:before{
+  position: relative;
+  top: 18px;
+  left: -20px;
+}
+#hfcm-message{
+  position: relative;
+}
+.hfcm-meta-box-wrap.hfcm-grid .postbox {
+  float: left;
+  clear: left;
+  width: 50%;
+  margin: 0 0 16px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .postbox:nth-child(even) {
+  float: right;
+  clear: right;
+  margin-right: -8px;
+}
+.hfcm-meta-box-wrap.hfcm-grid {
+  margin-left: 8px;
+  margin-right: 8px;
+}
+.hfcm-meta-box-wrap .postbox {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.hfcm-meta-box-wrap .postbox .hndle {
+  font-size: 14px;
+  padding: 8px 12px;
+  margin: 0;
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+  cursor: default;
+}
+.hfcm-meta-box-wrap.hfcm-grid .postbox:nth-child(odd) {
+  margin-left: -8px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-notice {
+  margin: 5px 0 15px;
+  background: #fff;
+  border: 1px solid #c3c4c7;
+  border-left-width: 4px;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
+  padding: 1px 12px;
+  border-left-color: #dba617;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-fields {
+  border: #ebebeb solid 1px;
+  background: #fafafa;
+  border-radius: 3px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-fields>.hfcm-field {
+  position: relative;
+  margin: 0;
+  padding: 15px 12px;
+  border-top: #EEEEEE solid 1px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-checkbox-list {
+  column-width: 200px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-label {
+  vertical-align: top;
+  margin: 0 0 10px;
+}
+.hfcm-meta-box-wrap.hfcm-grid .hfcm-label label {
+  font-weight: bold;
+}
+.hfcm-warning-notice {
+  padding: 10px;
+}
+.dashicons-hfcm {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 20px auto;
+  background-image: url("../images/99robots-logo-avatar.svg");
+}

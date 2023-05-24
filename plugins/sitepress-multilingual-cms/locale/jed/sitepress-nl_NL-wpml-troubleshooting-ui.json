@@ -1,0 +1,33 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "en"
+         },
+         "Preparing...": [
+            "Voorbereiden..."
+         ],
+         "All jobs have been cancelled": [
+            "Alle opdrachten zijn geannuleerd"
+         ],
+         "There is no more jobs to cancel": [
+            "Er zijn geen opdrachten meer om te annuleren"
+         ],
+         "The jobs cancellation has failed": [
+            "Het annuleren van opdrachten is mislukt"
+         ],
+         "Cancel in-progress automatic jobs": [
+            "Annuleer lopende automatische opdrachten"
+         ],
+         "Refresh license data to recognise license update": [
+            "Licentiegegevens verversen om licentie-update te herkennen"
+         ],
+         "WPML License has been refreshed": [
+            "WPML licentie is geüpdatet"
+         ]
+      }
+   }
+}

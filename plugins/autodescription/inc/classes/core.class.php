@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -479,7 +479,7 @@ class Core {
 
 		$ret = [];
 
-		foreach ( $array as $key => $value ) {
+		foreach ( $array as $value ) {
 			// We can later use `array_is_list()`.
 			if ( \is_array( $value ) && [] !== $value && array_values( $value ) === $value ) {
 				$ret = array_merge( $ret, $this->array_flatten_list( $value ) );

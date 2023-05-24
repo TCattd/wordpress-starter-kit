@@ -5,7 +5,7 @@ class WCML_WC_Shipping {
 	const STRINGS_CONTEXT = 'admin_texts_woocommerce_shipping';
 
 	private $current_language;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 	/** @var WCML_WC_Strings */
 	private $wcmlStrings;
@@ -43,7 +43,7 @@ class WCML_WC_Shipping {
 
 	public function shipping_methods_filters() {
 
-		$shipping_methods = WC()->shipping->get_shipping_methods();
+		$shipping_methods = WC()->shipping()->get_shipping_methods();
 
 		foreach ( $shipping_methods as $shipping_method ) {
 
@@ -151,10 +151,10 @@ class WCML_WC_Shipping {
 		 *
 		 * @since 4.11.0
 		 *
-		 * @param bool True if we should translate shipping method title.
-		 * @param string $title Shipping title.
+		 * @param bool   $true        If we should translate shipping method title.
+		 * @param string $title       Shipping title.
 		 * @param string $shipping_id Shipping id.
-		 * @param string $language Language.
+		 * @param string $language    Language.
 		 */
 		$translate_title = apply_filters( 'wcml_should_translate_shipping_method_title', ! is_admin() || $is_edit_order, $title, $shipping_id, $language );
 

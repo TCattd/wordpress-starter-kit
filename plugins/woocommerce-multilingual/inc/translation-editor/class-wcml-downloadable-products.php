@@ -4,14 +4,14 @@ class WCML_Downloadable_Products {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 
 	/**
 	 * WCML_Downloadable_Products constructor.
 	 *
 	 * @param woocommerce_wpml $woocommerce_wpml
-	 * @param Sitepress        $sitepress
+	 * @param SitePress        $sitepress
 	 */
 	public function __construct( woocommerce_wpml $woocommerce_wpml, \WPML\Core\ISitePress $sitepress ) {
 		$this->woocommerce_wpml = $woocommerce_wpml;
@@ -27,7 +27,7 @@ class WCML_Downloadable_Products {
 	/**
 	 * @param bool         $loop
 	 * @param bool         $variation_data
-	 * @param bool|WP_post $variation
+	 * @param bool|WP_Post $variation
 	 */
 	public function product_options_downloads_custom_option( $loop = false, $variation_data = false, $variation = false ) {
 		global $pagenow;

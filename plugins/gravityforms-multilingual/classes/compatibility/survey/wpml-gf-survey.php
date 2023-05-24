@@ -5,7 +5,7 @@
  *
  * Compatibility class for Gravity Forms Survey Add-On
  */
-class WPML_GF_Survey {
+class WPML_GF_Survey implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
 	const FIELD_TYPE              = 'survey';
 	const LIKERT_ROWS_KEY         = 'gsurveyLikertRows';

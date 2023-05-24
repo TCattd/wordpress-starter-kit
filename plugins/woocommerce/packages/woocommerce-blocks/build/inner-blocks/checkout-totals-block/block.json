@@ -9,7 +9,8 @@
 		"html": false,
 		"multiple": false,
 		"reusable": false,
-		"inserter": false
+		"inserter": false,
+		"lock": false
 	},
 	"attributes": {
 		"className": {
@@ -26,7 +27,7 @@
 		}
 	},
 	"parent": [ "woocommerce/checkout" ],
-	"textdomain": "woo-gutenberg-products-block",
+	"textdomain": "woocommerce",
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2
 }

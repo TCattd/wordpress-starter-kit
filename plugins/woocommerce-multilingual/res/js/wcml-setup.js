@@ -11,7 +11,11 @@ jQuery( function($){
 
                 var form = $(this).closest('form');
                 form.attr('action', $(this).attr('href') );
-                form.submit();
+                if (form.get(0).checkValidity()) {
+                    form.submit();
+                } else {
+                    form.get(0).reportValidity();
+                }
                 return false;
 
             });
@@ -23,9 +27,3 @@ jQuery( function($){
     WCML_Setup.init();
 
 });
-
-
-
-
-
-

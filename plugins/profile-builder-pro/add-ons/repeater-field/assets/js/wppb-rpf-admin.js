@@ -13,7 +13,7 @@ function WPPB_Manage_Repeater_Field() {
 
     this.init = function () {
         _this.set_role_list();
-        _this.wppb_rpf_add_field();
+        //_this.wppb_rpf_add_field();
 
         _this.add_event_handlers();
     };
@@ -37,7 +37,8 @@ function WPPB_Manage_Repeater_Field() {
                 '.row-field',
                 '.row-rpf-button',
                 '.row-rpf-enable-limit',
-                '.row-conditional-logic-enabled'
+                '.row-conditional-logic-enabled',
+                //'.row-woocommerce-checkout-field'
             ],
             'properties': {
                 'meta_name_value': ''
@@ -564,9 +565,25 @@ function WPPB_RPF_Role_Limit_Option( field_id, role_list ){
 }
 
 
-jQuery( function() {
+jQuery(window).on('load', function() {
 
     wppb_manage_repeater_field.init();
+
+    if (typeof fields !== "undefined") {
+        fields["Repeater"] = {
+            'show_rows': [
+                '.row-field-title',
+                '.row-field',
+                '.row-rpf-button',
+                '.row-rpf-enable-limit',
+                '.row-conditional-logic-enabled',
+                '.row-woocommerce-checkout-field'
+            ],
+            'properties': {
+                'meta_name_value': ''
+            }
+        };
+    }
 
     // we need run this again after adding the Email Confirmation field to the global fields object
     wppb_hide_properties_for_already_added_fields( '#container_wppb_manage_fields' );

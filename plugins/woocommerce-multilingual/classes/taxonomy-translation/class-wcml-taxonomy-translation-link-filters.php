@@ -17,8 +17,8 @@ class WCML_Taxonomy_Translation_Link_Filters {
 	}
 
 	/**
-	 * @param string text
-	 * @param array       $notice
+	 * @param string $text
+	 * @param array  $notice
 	 *
 	 * @return string
 	 */

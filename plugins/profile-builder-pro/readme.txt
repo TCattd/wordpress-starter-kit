@@ -6,8 +6,8 @@ Tags: registration, profile, user registration, custom field registration, custo
 custom registration, custom registration form, custom registration page, extra user fields, registration page, user custom fields, user listing, user login, user registration form, front-end login,
 front-end register, front-end registration, frontend edit profile, edit profileregistration, customize profile, user fields, builder, profile builder, custom fields, avatar
 Requires at least: 3.1
-Tested up to: 6.1
-Stable tag: 3.8.4
+Tested up to: 6.2
+Stable tag: 3.9.2
 
 
 Login, registration and edit profile shortcodes for the front-end. Also you can choose what fields should be displayed or add custom ones.
@@ -101,6 +101,44 @@ This plugin only adds/removes fields in the front-end. The default information-f
 
 
 == Changelog ==
+= 3.9.2 =
+* Fix: issue between PMS pay what you want functionality and new Form Designs
+* Fix: issue between 2FA functionality and new form designs
+
+= 3.9.1 =
+* Fix: issue between new form styles and Paid Member Subscriptions Billing Fields
+* Fix: issue with Select2 Multiple occurring when field data was saved as serialized
+* Misc: minor changes to Social Connect Settings page
+
+= 3.9.0 =
+* Fix: Issue with Userlisting not showing anything when the language is switched on a front-end page
+* Fix: Some compatibility issues between Edit Profile Approve by Admin and the new Form Styles functionality
+* Fix: Add labels functionality info to Form Designs
+* Fix: Don't display multiple infoview windows on a map
+* Fix: Fixed issue that caused the Display on WooCommerce Checkout option to be hidden for Repeater Fields
+* Misc: Properly remove orphaned pending status when users are deleted
+
+= 3.8.9 =
+* Fix: Compatibility for Timepicker field with EPAA add-on
+* Misc: Correctly set default active form style on initial installation
+
+= 3.8.8 =
+* Feature: You can now enable different Form Designs for all of your front-end forms. Go to Profile Builder -> General Settings to select your style.
+
+= 3.8.7 =
+* Fix: Issue where you had to press twice on the login button in order for it to work when 2FA was enabled
+* Fix: Hide repeater fields with empty groups from front-end
+* Fix: Issue with Upload field losing track of target file in some cases
+
+= 3.8.6 =
+* Fix: issue with EPAA emails edited from the back-end not applying when the message was sent
+
+= 3.8.5 =
+* Fix: Social Connect Google login. This requires you to add the Google Client Name on the Profile Builder -> Social Connect page
+* Fix: Disable WooCommerce auto login if Admin Approval is enabled
+* Misc: Update WooCommerce templates versions
+* Misc: Added a filter that can be used to change the required capability to view the Mailchimp settings page: wppb_mailchimp_page_capability
+
 = 3.8.4 =
 * Fix: Issue with Select2 Multiple not loading correctly
 * Fix: Role Faceted Menus will now only display the roles selected in Userlisting Settings

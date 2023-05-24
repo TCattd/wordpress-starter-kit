@@ -11,15 +11,17 @@ if( !defined( 'ABSPATH' ) ) exit();
     </span>
 </div>
 
-<div class="llar-table-scroll-wrap llar-app-lockouts-infinity-scroll">
-    <table class="form-table llar-table-app-lockouts">
-        <tr>
-            <th scope="col"><?php _e( "IP", 'limit-login-attempts-reloaded' ); ?></th>
-            <th scope="col"><?php _e( "Login", 'limit-login-attempts-reloaded' ); ?></th>
-            <th scope="col"><?php _e( "Count", 'limit-login-attempts-reloaded' ); ?></th>
-            <th scope="col"><?php _e( "Expires in (minutes)", 'limit-login-attempts-reloaded' ); ?></th>
-        </tr>
-    </table>
+<div class="llar-preloader-wrap">
+    <div class="llar-table-scroll-wrap llar-app-lockouts-infinity-scroll">
+        <table class="form-table llar-table-app-lockouts">
+            <tr>
+                <th scope="col"><?php _e( "IP", 'limit-login-attempts-reloaded' ); ?></th>
+                <th scope="col"><?php _e( "Login", 'limit-login-attempts-reloaded' ); ?></th>
+                <th scope="col"><?php _e( "Count", 'limit-login-attempts-reloaded' ); ?></th>
+                <th scope="col"><?php _e( "Expires in (minutes)", 'limit-login-attempts-reloaded' ); ?></th>
+            </tr>
+        </table>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -28,6 +30,7 @@ if( !defined( 'ABSPATH' ) ) exit();
 		$(document).ready(function () {
 
 			var $log_table = $('.llar-table-app-lockouts'),
+                $preloader_wrap = $log_table.closest('.llar-preloader-wrap'),
                 $log_table_empty = $log_table.html();
                 $infinity_box = $('.llar-app-lockouts-infinity-scroll'),
                 loading_data = false,
@@ -62,7 +65,7 @@ if( !defined( 'ABSPATH' ) ) exit();
 
                 loading_data = true;
 
-				llar.progressbar.start();
+                $preloader_wrap.addClass('loading');
 
 				$.post(ajaxurl, {
 					action: 'app_load_lockouts',
@@ -71,7 +74,7 @@ if( !defined( 'ABSPATH' ) ) exit();
 					sec: '<?php echo wp_create_nonce( "llar-action" ); ?>'
 				}, function(response){
 
-					llar.progressbar.stop();
+                    $preloader_wrap.removeClass('loading');
 
 					if(response.success) {
 

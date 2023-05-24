@@ -166,40 +166,4 @@ function wppb_admin_email_customizer_add_mustache_in_backend(){
 
 	new PB_Mustache_Generate_Admin_Box( 'aec_user_password_reset', __( 'Admin Notification for User Password Reset', 'profile-builder' ), 'profile-builder_page_admin-email-customizer', 'core', $mustache_vars, '', $fields );
 
-
-    /*
-    * Admin Notification for Edit Profile Approved by Admin
-    */
-
-    // check if the Edit Profile Approved by Admin add-on is active to see if the email should be displayed
-    if( function_exists( 'wppb_in_init_edit_profile_approval' ) ) {
-		// we format the var like this for proper line breaks.
-		$aec_epaa_notification = __("<p>The user {{username}} has updated their profile and some of the fields require admin approval:</p>\n<br>\n{{modified_fields}}\n<br>\n<p>Access this link to approve changes: {{approval_url}}</p>\n", 'profile-builder');
-		$mustache_vars = wppb_email_customizer_generate_merge_tags('epaa_notification_admin');
-		$fields = array(
-			array(
-				'label' => __('Email Subject', 'profile-builder'), // <label>
-				'desc' => '', // description
-				'id' => 'wppb_admin_emailc_epaa_notification_subject', // field id and name
-				'type' => 'text', // type of field
-				'default' => __('[{{site_name}}] A user has updated their profile. Some fields need approval', 'profile-builder'), // type of field
-			),
-			array(
-				'label' => __('Enable email', 'profile-builder'), // <label>
-				'desc' => '', // description
-				'id' => 'wppb_admin_emailc_epaa_notification_enabled', // field id and name
-				'type' => 'checkbox', // type of field
-				'default' => 'on',
-			),
-			array( // Textarea
-				'label' => '', // <label>
-				'desc' => '', // description
-				'id' => 'wppb_admin_emailc_epaa_notification_content', // field id and name
-				'type' => 'textarea', // type of field
-				'default' => $aec_epaa_notification, // type of field
-			)
-		);
-
-		new PB_Mustache_Generate_Admin_Box('aec_epaa_notification', __('Admin Notification for Edit Profile Approved by Admin', 'profile-builder'), 'profile-builder_page_admin-email-customizer', 'core', $mustache_vars, '', $fields);
-    }
 }

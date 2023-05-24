@@ -1,6 +1,6 @@
 <?php
 
-class WPML_ACF_Attachments {
+class WPML_ACF_Attachments implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 	/**
 	 * @var array Pairs of original - translation for already processed attachments during custom field copying.
 	 */
@@ -9,7 +9,7 @@ class WPML_ACF_Attachments {
 	/**
 	 * Registers hooks related to attachments.
 	 */
-	public function register_hooks() {
+	public function add_hooks() {
 		add_filter( 'acf/load_value/type=gallery', array( $this, 'load_translated_attachment' ) );
 		add_filter( 'acf/load_value/type=image', array( $this, 'load_translated_attachment' ) );
 		add_filter( 'acf/load_value/type=file', array( $this, 'load_translated_attachment' ) );

@@ -32,7 +32,7 @@ class FrontEndHooks implements IWPML_Action {
 	}
 
 	/**
-	 * @param \WP_Comment $comment
+	 * @param \WP_Comment|\stdClass $comment
 	 */
 	public function translateReview( $comment ) {
 		if ( self::isNonEmptyReview( $comment ) ) {

@@ -129,6 +129,31 @@ class Piotnetforms_Woocommerce_Checkout extends Base_Widget_Piotnetforms {
 			]
 		);
 
+        $this->add_control(
+			'woocommerce_quantity_option',
+			[
+				'label' => __( 'Quantity', 'piotnetforms' ),
+				'type' => 'switch',
+				'default' => '',
+				'label_on' => 'Yes',
+				'label_off' => 'No',
+				'return_value' => 'yes',
+			]
+		);
+
+        $this->add_control(
+			'woocommerce_quantity',
+			[
+				'label' => __( 'Quantity Shortcode', 'piotnetforms' ),
+				'type'        => 'select',
+				'get_fields'  => true,
+				'placeholder' => __( 'Field Shortcode. E.g [field id="total"]', 'piotnetforms' ),
+                'condition' => [
+                    'woocommerce_quantity_option' => 'yes'
+                ]
+			]
+		);
+
 		$this->add_control(
 			'piotnetforms_woocommerce_checkout_redirect',
 			[

@@ -318,9 +318,11 @@
 			if ( !empty( $form['settings']['remove_empty_form_input_fields'] ) ) {
 				$fields_new = [];
 				foreach ( $fields as $field ) {
-					if ( !empty( $field['value'] ) ) {
+					if ( !empty( $field['value'] )  && $field['type'] != 'file') {
 						$fields_new[] = $field;
-					}
+					}elseif($field['type'] == 'file' && !empty($field['file_name'])){
+                        $fields_new[] = $field;
+                    }
 				}
 				$fields = $fields_new;
 			}
@@ -328,6 +330,53 @@
 			// Filter Hook
 
 			$fields = apply_filters( 'piotnetforms/form_builder/fields', $fields );
+
+            $attachment = [];
+
+			$not_allowed_extensions = [ 'php', 'phpt', 'php5', 'php7', 'exe' ];
+            
+			if ( !empty( $_FILES ) ) {
+				foreach ( $_FILES as $key=>$file ) {
+					for ( $i=0; $i < count( $file['name'] ); $i++ ) {
+						$file_extension = pathinfo( $file['name'][$i], PATHINFO_EXTENSION );
+
+						if ( in_array( strtolower( $file_extension ), $not_allowed_extensions ) ) {
+							wp_die();
+						}
+
+                        $upload = wp_upload_dir();
+                        $upload_dir = $upload['basedir'];
+                        $upload_dir = $upload_dir . '/piotnetforms/files';
+						$filename_goc = str_replace( '.' . $file_extension, '', $file['name'][$i] );
+						$filename = $filename_goc . '-' . uniqid() . '.' . $file_extension;
+						$filename = wp_unique_filename( $upload_dir, $filename );
+						$filename = apply_filters( 'piotnetforms/form_builder/upload_dir/file_name', $filename );
+						$new_file = trailingslashit( $upload_dir ) . $filename;
+
+						if ( is_dir( $upload_dir ) && is_writable( $upload_dir ) ) {
+							$move_new_file = @ move_uploaded_file( $file['tmp_name'][$i], $new_file );
+							if ( false !== $move_new_file ) {
+								// Set correct file permissions.
+								$perms = 0644;
+								@ chmod( $new_file, $perms );
+
+								$file_url = $upload['baseurl'] . '/piotnetforms/files/' . $filename;
+								foreach ( $fields as $key_field=>$field ) {
+									if ( $key == $field['name'] ) {
+										if ( $fields[$key_field]['attach-files'] == 1 ) {
+											$attachment[] = WP_CONTENT_DIR . '/uploads/piotnetforms/files/' . $filename;
+                                            $fields = piotnetforms_set_file_upload_field($fields, $key_field, $file, $i, $field, $file_url);
+										} else {
+                                            $fields = piotnetforms_set_file_upload_field($fields, $key_field, $file, $i, $field, $file_url);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
 			if ( !empty( $form['settings']['woocommerce_add_to_cart_price'] ) ) {
 				if ( strpos( $_POST['product_id'], 'field id' ) !== false ) {
 					$product_id = intval( piotnetforms_get_field_value_woocommerce_checkout( str_replace( '\"', '"', $_POST['product_id'] ), $fields ) );
@@ -358,10 +407,10 @@
 								} else {
 									if ( $fields[$key_field]['name'] == get_field_name_shortcode_woocommerce_checkout_piotnetforms( $item['woocommerce_add_to_cart_custom_order_item_field_shortcode'] ) ) {
 										if ( empty( $item['woocommerce_add_to_cart_custom_order_item_remove_if_field_empty'] ) ) {
-											$fields_cart[] = $field;
+                                            $fields_cart[] = piotnetforms_get_order_item_meta($field);
 										} else {
 											if ( !empty( $field['value'] ) ) {
-												$fields_cart[] = $field;
+                                                $fields_cart[] = piotnetforms_get_order_item_meta($field);
 											}
 										}
 									}
@@ -391,7 +440,7 @@
 
 					if ( strpos( $fields_cart[$key_field]['name'], 'piotnetforms-end-repeater' ) === false ) {
 						$cart_item_data['fields'][] = [
-							'label' => $fields_cart[$key_field]['label'],
+							'label' => !empty($fields_cart[$key_field]['label']) ? $fields_cart[$key_field]['label'] : $fields_cart[$key_field]['name'],
 							'name' => $fields_cart[$key_field]['name'],
 							'value' => $field_value,
 						];
@@ -453,7 +502,13 @@
 					}
 				}
 
-				$woocommerce->cart->add_to_cart( $product_id, 1, 0, [], $cart_item_data );
+                if(!empty($form['settings']['woocommerce_quantity_option']) && !empty($form['settings']['woocommerce_quantity'])){
+                    $quantity =  piotnetforms_get_field_value_woocommerce_checkout($form['settings']['woocommerce_quantity'], $fields);
+                    $quantity = is_numeric($quantity) ? $quantity : 1;
+                }else{
+                    $quantity = 1;
+                }
+				$woocommerce->cart->add_to_cart( $product_id, $quantity, 0, [], $cart_item_data );
 
 				echo '1';
 			}
@@ -461,3 +516,36 @@
 
 		wp_die();
 	}
+    function piotnetforms_get_order_item_meta($field){
+        if(!empty($field['type']) && $field['type'] == 'file'){
+            $value = '';
+            foreach($field['file_name'] as $key => $name){
+                $value .= '<a rel="nofollow" href="' . $field['new_name'][$key] . '">'.$name.'</a>,&nbsp;';
+            }
+            $field['value'] = rtrim($value, ',&nbsp;');
+        }else{
+            if(!empty($field['value'])){
+                $values = explode(',', $field['value']);
+                if(wp_http_validate_url($values[0]) && file_is_valid_image($values[0])){
+                    $url = '';
+                    foreach($values as $image_url){
+                        $url .= '<a rel="nofollow" target="_blank" href="' . $image_url . '">'.basename($image_url).'</a>,&nbsp;';
+                    };
+                    $field['value'] = rtrim($url, ',&nbsp;');
+                }
+            }
+        }
+        return $field;
+    }
+    function piotnetforms_set_file_upload_field($fields, $key_field, $file, $i, $field, $file_url){
+        if ( $fields[$key_field]['value'] == '' && in_array( $file['name'][$i], $field['file_name'] ) ) {
+            $fields[$key_field]['value'] = $file_url;
+            $fields[$key_field]['new_name'] = [$file_url];
+        } else {
+            if ( in_array( $file['name'][$i], $field['file_name'] ) && $i != ( count( $file['name'] ) - 1 ) ) {
+                $fields[$key_field]['value'] .= ', ' . $file_url;
+            }
+            array_push($fields[$key_field]['new_name'], $file_url);
+        }
+        return $fields;
+    }

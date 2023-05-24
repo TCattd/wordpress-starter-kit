@@ -42,6 +42,15 @@
     margin: 20px 0 0
 }
 
+.plugins tr.acfe-plugin-tr.acfe-plugin-tr-update td {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important
+}
+
+.plugins tr.acfe-plugin-tr.acfe-plugin-tr-update .update-message {
+    margin-bottom: 0
+}
+
 .acf-admin-toolbar i.acf-icon,
 .acf-btn i.acf-icon {
     display: -webkit-inline-box;
@@ -219,9 +228,10 @@ html[dir=rtl] .acf-columns-2 .acf-column-2 {
 .misc-pub-acfe-object-data::before,
 .misc-pub-acfe-object-id::before,
 .misc-pub-acfe-object-meta::before,
+.misc-pub-acfe-object-performance::before,
 .misc-pub-acfe-object-role::before,
-.misc-pub-acfe-object-single-meta::before,
-.misc-pub-acfe-object-type::before {
+.misc-pub-acfe-object-type::before,
+.misc-pub-acfe-object::before {
     font: normal 19px/1 dashicons;
     speak: never;
     display: inline-block;
@@ -259,8 +269,53 @@ html[dir=rtl] .acf-columns-2 .acf-column-2 {
     content: "\f17e"
 }
 
-.misc-pub-acfe-object-single-meta::before {
-    content: "\f106"
+.misc-pub-acfe-object-performance::before {
+    content: "\f226"
+}
+
+.misc-pub-acfe-yes::before {
+    content: "\f147";
+    font-size: 24px;
+    line-height: 20px;
+    width: 18px;
+    margin-left: -3px
+}
+
+.misc-pub-acfe-no::before {
+    content: "\f335";
+    font-size: 22px;
+    width: 15px
+}
+
+.misc-pub-acfe-import::before {
+    content: "\f17b";
+    font-size: 19px;
+    width: 15px;
+    margin-left: 1px
+}
+
+.misc-pub-acfe-info::before {
+    content: "\f14c";
+    font-size: 17px;
+    line-height: 19px;
+    width: 13px;
+    margin-left: 2px
+}
+
+.misc-pub-acfe-dashboard::before {
+    content: "\f226";
+    font-size: 18px;
+    line-height: 19px;
+    width: 14px;
+    margin-left: 1px
+}
+
+.misc-pub-acfe-warning::before {
+    content: "\f534";
+    font-size: 18px;
+    line-height: 19px;
+    width: 14px;
+    margin-left: 1px
 }
 
 .acfe-list-postboxes .postbox>.postbox-header>h2.hndle {
@@ -324,6 +379,23 @@ html[dir=rtl] .acf-columns-2 .acf-column-2 {
 .postbox#acfe-acf-custom-fields>.inside .wp-list-table .col-autoload,
 .postbox#acfe-wp-custom-fields>.inside .wp-list-table .col-autoload {
     width: 65px
+}
+
+.postbox#acfe-acf-custom-fields>.inside .wp-list-table tbody tr,
+.postbox#acfe-wp-custom-fields>.inside .wp-list-table tbody tr {
+    -webkit-transition: background-color .5s linear;
+    -o-transition: background-color .5s linear;
+    transition: background-color .5s linear
+}
+
+.postbox#acfe-acf-custom-fields>.inside .wp-list-table tbody tr.updated,
+.postbox#acfe-wp-custom-fields>.inside .wp-list-table tbody tr.updated {
+    background: rgba(34, 113, 177, .2)
+}
+
+.postbox#acfe-acf-custom-fields>.inside .wp-list-table tbody tr.deleted,
+.postbox#acfe-wp-custom-fields>.inside .wp-list-table tbody tr.deleted {
+    background: #faafaa
 }
 
 .postbox#acfe-acf-custom-fields+.acfe-dev-bulk,
@@ -495,6 +567,23 @@ html[dir=rtl] .acf-columns-2 .acf-column-2 {
 
 .acfe-module.acfe-module-posts .column-acfe-post-id {
     width: 200px
+}
+
+.acfe-module.acfe-module-posts .column-acfe-name {
+    width: 15%
+}
+
+.acfe-module.acfe-module-posts .column-acfe-load {
+    width: 70px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
+}
+
+.acfe-module.acfe-module-posts .column-acfe-autosync-json,
+.acfe-module.acfe-module-posts .column-acfe-autosync-php {
+    width: 90px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box
 }
 
 ul.acfe-module-export-choices {

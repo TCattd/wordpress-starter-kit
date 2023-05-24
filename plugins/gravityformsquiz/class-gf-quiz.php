@@ -293,38 +293,67 @@ class GFQuiz extends GFAddOn {
 	 * @return array
 	 */
 	public function styles() {
-		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+		$min  = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+		$base = $this->get_base_url();
 
-		$styles = array(
-			array(
-				'handle'  => 'gquiz_form_editor_css',
-				'src'     => $this->get_enqueue_src( "gquiz_form_editor{$min}.css" ),
-				'version' => $this->_version,
-				'enqueue' => array(
-					array( 'admin_page' => array( 'form_editor' ) ),
-				),
-			),
-			array(
-				'handle'  => 'gquiz_form_settings_css',
-				'src'     => $this->get_enqueue_src( "gquiz_form_settings{$min}.css" ),
-				'version' => $this->_version,
-				'enqueue' => array(
-					array(
-						'admin_page' => array( 'form_settings' ),
-						'tab'        => array( 'gravityformsquiz' ),
+		if ( ! $this->is_gravityforms_supported( self::LATEST_UI_VERSION ) ) {
+			$styles = array(
+				array(
+					'handle'  => 'gquiz_form_editor_css',
+					'src'     => $base . "/legacy/css/gquiz_form_editor{$min}.css",
+					'version' => $this->_version,
+					'enqueue' => array(
+						array( 'admin_page' => array( 'form_editor' ) ),
 					),
 				),
-			),
-			array(
-				'handle'  => 'gquiz_css',
-				'src'     => $this->get_enqueue_src( "gquiz{$min}.css" ),
-				'version' => $this->_version,
-				'enqueue' => array(
-					array( 'field_types' => array( 'quiz' ) ),
-					array( 'admin_page' => array( 'form_editor', 'results', 'entry_view', 'entry_detail' ) ),
+				array(
+					'handle'  => 'gquiz_form_settings_css',
+					'src'     => $base . "/legacy/css/gquiz_form_settings{$min}.css",
+					'version' => $this->_version,
+					'enqueue' => array(
+						array(
+							'admin_page' => array( 'form_settings' ),
+							'tab'        => array( 'gravityformsquiz' ),
+						),
+					),
 				),
-			),
-		);
+				array(
+					'handle'  => 'gquiz_css',
+					'src'     => $base . "/legacy/css/gquiz{$min}.css",
+					'version' => $this->_version,
+					'enqueue' => array(
+						array( 'field_types' => array( 'quiz' ) ),
+						array( 'admin_page' => array( 'form_editor', 'results', 'entry_view', 'entry_detail' ) ),
+					),
+				),
+			);
+		} else {
+			$styles = array(
+				array(
+					'handle'  => 'gquiz_form_editor_css',
+					'src'     => $base . "/assets/css/dist/admin{$min}.css",
+					'version' => $this->_version,
+					'enqueue' => array(
+						array( 'admin_page' => array( 'form_editor' ) ),
+						array(
+							'admin_page' => array( 'form_settings' ),
+							'tab'        => array( 'gravityformsquiz' ),
+						),
+					),
+				),
+				array(
+					'handle'  => 'gquiz_css',
+					'src'     => $base . "/assets/css/dist/theme{$min}.css",
+					'version' => $this->_version,
+					'enqueue' => array(
+						array( 'field_types' => array( 'quiz' ) ),
+						array( 'admin_page' => array( 'form_editor', 'results', 'entry_view', 'entry_detail' ) ),
+					),
+				),
+			);
+		}
+
+
 
 		return array_merge( parent::styles(), $styles );
 	}
@@ -1355,12 +1384,13 @@ class GFQuiz extends GFAddOn {
 		// Clean content from new line characters.
 		$content = str_replace( '&#13;', ' ', $content );
 		$content = trim( preg_replace( '/\s\s+/', ' ', $content ) );
-		$loader  = libxml_disable_entity_loader( true );
+		if (\LIBXML_VERSION < 20900) {
+			libxml_disable_entity_loader(true);
+		}
 		$errors  = libxml_use_internal_errors( true );
 		$dom->loadHTML( $content );
 		libxml_clear_errors();
 		libxml_use_internal_errors( $errors );
-		libxml_disable_entity_loader( $loader );
 
 		$content = $dom->saveXML( $dom->documentElement );
 
@@ -1518,7 +1548,7 @@ class GFQuiz extends GFAddOn {
 				$confirmation = substr( $confirmation, 0, strlen( $confirmation ) - 6 );
 			} //remove the closing div of the message
 			else {
-				$confirmation .= "<div id='gforms_confirmation_message' class='gform_confirmation_message_{$form_id}'>";
+				$confirmation .= "<div id='gforms_confirmation_message' class='gform_confirmation_message_{$form_id} gform_confirmation_message gform_confirmation_message--quiz'>";
 			}
 
 			$results           = $this->get_quiz_results( $form, $lead );
@@ -2592,7 +2622,7 @@ class GFQuiz extends GFAddOn {
 
 			$field_markup = '<div class="gquiz-field">' . PHP_EOL;
 			if ( $show_question ) {
-				$field_markup .= '    <div class="gquiz-field-label">';
+				$field_markup .= '    <div class="gquiz-field-label gfield-label">';
 				$field_markup .= GFCommon::get_label( $field );
 				$field_markup .= '    </div>' . PHP_EOL;
 			}
@@ -2673,7 +2703,7 @@ class GFQuiz extends GFAddOn {
 			$field_markup .= '    </div>' . PHP_EOL;
 
 			if ( $field->gquizShowAnswerExplanation ) {
-				$field_markup .= '<div class="gquiz-answer-explanation">' . PHP_EOL;
+				$field_markup .= '<div class="gquiz-answer-explanation gfield_description">' . PHP_EOL;
 				$field_markup .= $field->gquizAnswerExplanation . PHP_EOL;
 				$field_markup .= '</div><br>' . PHP_EOL;
 			}

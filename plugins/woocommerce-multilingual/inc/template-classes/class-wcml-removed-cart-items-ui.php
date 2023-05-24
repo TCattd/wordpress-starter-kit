@@ -11,11 +11,11 @@ class WCML_Removed_Cart_Items_UI extends WCML_Templates_Factory {
      */
     private $args;
     /**
-     * @var sitepress
+     * @var SitePress
      */
     private $sitepress;
     /**
-     * @var woocommerce
+     * @var WooCommerce
      */
     private $woocommerce;
 

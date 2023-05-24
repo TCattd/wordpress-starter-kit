@@ -152,7 +152,7 @@ class WCML_Admin_Currency_Selector {
 		global $pagenow;
 
 		remove_filter( 'woocommerce_currency_symbol', [ $this, 'filter_dashboard_currency_symbol' ] );
-		if ( 'index.php' === $pagenow && isset( $_COOKIE ['_wcml_dashboard_currency'] ) ) {
+		if ( 'index.php' === $pagenow && empty( $_REQUEST['action'] ) && isset( $_COOKIE ['_wcml_dashboard_currency'] ) ) {
 			$currency = get_woocommerce_currency_symbol( $_COOKIE ['_wcml_dashboard_currency'] );
 		}
 		add_filter( 'woocommerce_currency_symbol', [ $this, 'filter_dashboard_currency_symbol' ] );

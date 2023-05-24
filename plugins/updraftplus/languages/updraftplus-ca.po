@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2014-09-08 16:59:11+0000\n"
+"PO-Revision-Date: 2023-04-06 07:34:54+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,35 +13,35 @@ msgstr ""
 
 #: src/admin.php:3632
 msgid "file %d of %d"
-msgstr ""
+msgstr "arxiu %d de %d"
 
 #: src/addons/googlecloud.php:621
 msgid "Have not yet obtained an access token from Google - you need to authorise or re-authorise your connection to Google Cloud."
-msgstr ""
+msgstr "Encara no s'ha obtingut la cadena d'accés des de Google - necessites autoritzar o re-autoritzar la teva connexió a Google Cloud"
 
 #: src/addons/googlecloud.php:1337, src/methods/googledrive.php:1571
 msgid "Sign in with %s"
-msgstr ""
+msgstr "Signa amb %s"
 
 #: src/admin.php:3712
 msgid "(after %ss)"
-msgstr ""
+msgstr "(després de %s)"
 
 #: src/admin.php:3712
 msgid "next resumption: %d"
-msgstr ""
+msgstr "següent reanudació: %d"
 
 #: src/templates/wp-admin/advanced/site-info.php:109
 msgid "Install debugging plugins:"
-msgstr ""
+msgstr "Instal·lar connectors de depuració:"
 
 #: src/restorer.php:2918
 msgid "Old ABSPATH:"
-msgstr ""
+msgstr "Antic ABSPATH:"
 
 #: src/admin.php:2780
 msgid "Enjoyed %s? Please leave us a %s rating. We really appreciate your support!"
-msgstr ""
+msgstr "T'ha agradat %s? Si us plau, deixeu una valoració a %s. Apreciem el teu suport!"
 
 #: src/udaddons/options.php:98
 msgid "An update is available for UpdraftPlus - please connect here to gain access to it."

@@ -13,7 +13,7 @@ function wppb_upload_handler( $output, $form_location, $field, $user_id, $field_
         add_action( 'get_footer', 'wppb_dequeue_script' );
          */
         $upload_script_vars = array(
-            'nonce'            => wp_create_nonce( 'wppb_woo_simple_upload' ),
+            'nonce'            => wp_create_nonce( 'wppb_ajax_simple_upload' ),
             'ajaxUrl'          => admin_url( 'admin-ajax.php' ),
             'remove_link_text' => __( 'Remove', 'profile-builder' )
         );
@@ -172,15 +172,15 @@ function wppb_add_upload_for_user_signup( $field_value, $field, $request_data ){
 add_filter( 'wppb_add_to_user_signup_form_field_upload', 'wppb_add_upload_for_user_signup', 10, 3 );
 
 /* handle simple upload at the WooCommerce Checkout */
-function wppb_woo_simple_upload(){
-    check_ajax_referer( 'wppb_woo_simple_upload', 'nonce' );
+function wppb_ajax_simple_upload(){
+    check_ajax_referer( 'wppb_ajax_simple_upload', 'nonce' );
     if ( isset($_POST["name"]) ) {
         echo json_encode( wppb_save_simple_upload_file( sanitize_text_field( $_POST["name"] ) ) );
     }
     wp_die();
 }
-add_action( 'wp_ajax_nopriv_wppb_woo_simple_upload', 'wppb_woo_simple_upload' );
-add_action( 'wp_ajax_wppb_woo_simple_upload', 'wppb_woo_simple_upload' );
+add_action( 'wp_ajax_nopriv_wppb_ajax_simple_upload', 'wppb_ajax_simple_upload' );
+add_action( 'wp_ajax_wppb_ajax_simple_upload', 'wppb_ajax_simple_upload' );
 
 /* handle field validation */
 function wppb_check_upload_value( $message, $field, $request_data, $form_location ){

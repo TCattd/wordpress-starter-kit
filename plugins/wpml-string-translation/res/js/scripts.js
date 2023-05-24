@@ -373,7 +373,7 @@ function icl_st_pop_download(){
     var file = jQuery(this).data('file');
     var domain = jQuery(this).data('domain');
 
-    location.href = WPML_core.sanitize( ajaxurl + "?action=icl_st_pop_download&file=" + file + "&domain=" + domain );
+    location.href = WPML_core.sanitize( ajaxurl + "?action=icl_st_pop_download&wpnonce=" + wpml_scripts_data.nonce_icl_st_pop_download_nonce + "&file=" + file + "&domain=" + domain );
 
     return false;
 }

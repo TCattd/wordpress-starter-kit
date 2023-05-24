@@ -3,25 +3,20 @@
 /**
  * @author OnTheGo Systems
  */
-class GFML_Hooks {
+class GFML_Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 	/**
-	 * @var \Gravity_Forms_Multilingual
+	 * @var \GFML_TM_API
 	 */
 	private $gfml;
 
-	/**
-	 * GFML_Hooks constructor.
-	 *
-	 * @param \Gravity_Forms_Multilingual $gfml
-	 */
-	public function __construct( Gravity_Forms_Multilingual $gfml ) {
+	public function __construct( GFML_TM_API $gfml ) {
 		$this->gfml = $gfml;
 	}
 
 	/**
 	 * Gravity Forms actions and filters hooks.
 	 */
-	public function init() {
+	public function add_hooks() {
 		add_action( 'gform_post_form_duplicated', [ $this, 'gform_post_form_duplicated' ], 10, 2 );
 		add_action( 'gform_forms_post_import', [ $this, 'gform_forms_post_import' ] );
 		add_filter( 'wpml_tm_dashboard_date', [ $this, 'set_gfml_date_on_tm_dashboard' ], 10, 3 );

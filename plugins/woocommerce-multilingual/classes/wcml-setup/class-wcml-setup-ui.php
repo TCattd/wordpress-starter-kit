@@ -35,8 +35,7 @@ class WCML_Setup_UI {
 
 		$allowed_pages = [ 'index.php', 'plugins.php' ];
 
-		return in_array( $pagenow, $allowed_pages, true )
-			   || ( isset( $_GET['page'] ) && 'wpml-wcml' === $_GET['page'] );
+		return in_array( $pagenow, $allowed_pages, true );
 	}
 
 

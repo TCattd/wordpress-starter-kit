@@ -2,12 +2,19 @@
 
 namespace WCML\RewriteRules;
 
+use WPML\Core\ISitePress;
+use WCML\StandAlone\NullSitePress;
+use SitePress;
+
 class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 
-	/** @var \SitePress $sitepress */
+	/** @var SitePress|NullSitePress $sitepress */
 	private $sitepress;
 
-	public function __construct( \WPML\Core\ISitePress $sitepress ) {
+	/**
+	 * @param SitePress|NullSitePress $sitepress
+	 */
+	public function __construct( ISitePress $sitepress ) {
 		$this->sitepress = $sitepress;
 	}
 

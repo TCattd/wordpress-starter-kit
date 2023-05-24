@@ -279,7 +279,7 @@ function wppb_generate_mustache_array_for_single_user_list(){
 
 	$mustache_vars = array(
 						array(
-							'group-title' => 'User Fields Tags',
+                            'group-title' => __( 'User Fields Tags', 'profile-builder' ),
 							'variables' => $meta_tags
 						),
 						array(
@@ -430,7 +430,7 @@ function wppb_user_listing_shortcode( $atts ){
 
 	$userlisting_posts = get_posts( array( 'posts_per_page' => -1, 'post_status' =>'publish', 'post_type' => 'wppb-ul-cpt', 'orderby' => 'post_date', 'order' => 'ASC' ) );
 	foreach ( $userlisting_posts as $key => $value ){
-		if ( trim( Wordpress_Creation_Kit_PB::wck_generate_slug( $value->post_title ) ) == $name ){
+		if ( trim( Wordpress_Creation_Kit_PB::wck_generate_slug( $value->post_title ) ) == $name || $value->post_name == $name ){
 
             /* check here the visibility and roles for which to display the userlisting */
             $userlisting_args = get_post_meta( $value->ID, 'wppb_ul_page_settings', true );
@@ -3407,28 +3407,6 @@ function wppb_handle_userlisting_theme_templates( $post_id ) {
 }
 add_action( 'save_post', 'wppb_handle_userlisting_theme_templates' );
 
-
-/**
- * Function that adds an admin notification about the UL Themes feature
- *
- */
-function wppb_ul_themes_new_feature_notification() {
-    /* initiate the plugin notifications class */
-    $notifications = WPPB_Plugin_Notifications::get_instance();
-    /* this must be unique */
-    $notification_id = 'wppb_ul_themes_new_feature';
-
-    $ul_icon_url = ( file_exists( WPPB_PLUGIN_DIR . 'assets/images/pro_user_listing.png' )) ? WPPB_PLUGIN_URL . 'assets/images/pro_user_listing.png' : '';
-    $ul_icon = ( !empty($ul_icon_url)) ? '<img src="'. $ul_icon_url .'" width="64" height="64" style="float: left; margin: 10px 12px 10px 0; max-width: 100px;" alt="User Listing">' : '';
-
-    $message = $ul_icon;
-    $message .= '<h3 style="margin-bottom: 0px;">Profile Builder PRO - User Listing</h3>';
-    $message .= '<p style="font-size: 15px;margin-top:4px;">' . sprintf( __( 'You can now add beautifully pre-designed templates to showcase the user base on your website using one of the <strong>user listing templates</strong> available in the %sUser Listing add-on%s.', 'profile-builder' ), '<a href="https://www.cozmoslabs.com/docs/profile-builder-2/modules/user-listing/" target="_blank">', '</a>') . '</p>';
-    $message .= '<a href="' . add_query_arg( array( 'wppb_dismiss_admin_notification' => $notification_id ) ) . '" type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'profile-builder' ) . '</span></a>';
-
-    $notifications->add_notification( $notification_id, $message, 'wppb-notice notice notice-info', false );
-}
-add_action( 'admin_init', 'wppb_ul_themes_new_feature_notification' );
 
 /* hook to filter to exclude fields from the search field */
 add_filter('wppb_exclude_search_fields', 'wppb_ul_exclude_fields_from_search',10, 2 );

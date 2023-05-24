@@ -115,7 +115,7 @@ class WPML_Media_Image_Translate {
 		$meta_data = wp_get_attachment_metadata( $attachment_id );
 		$image_url_parts = array( $uploads_dir['baseurl'] );
 
-		if ( array_key_exists( 'file', $meta_data ) ) {
+		if ( is_array( $meta_data ) && array_key_exists( 'file', $meta_data ) ) {
 			$file_subdirectory       = $meta_data['file'];
 			$file_subdirectory_parts = explode( '/', $file_subdirectory );
 

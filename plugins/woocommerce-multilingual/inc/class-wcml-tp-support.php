@@ -1,5 +1,8 @@
 <?php
 
+use WPML\FP\Obj;
+use WPML\LIB\WP\Hooks;
+
 class WCML_TP_Support {
 
 	const CUSTOM_FIELD_NAME = 'wc_variation_field:';
@@ -46,7 +49,7 @@ class WCML_TP_Support {
 		), 20, 3 ); //after WCML_Products
 
 		add_filter( 'wpml_tm_translation_job_data', array( $this, 'append_slug_to_translation_package' ), 10, 2 );
-		add_action( 'wpml_translation_job_saved', array( $this, 'save_slug_translations' ), 10, 2 );
+		add_action( 'wpml_translation_job_saved', array( $this, 'save_slug_translations' ), 10, 3 );
 
 		if ( ! defined( 'WPML_MEDIA_VERSION' ) ) {
 			add_filter( 'wpml_tm_translation_job_data', array( $this, 'append_images_to_translation_package' ), 10, 2 );
@@ -73,7 +76,7 @@ class WCML_TP_Support {
 
 					$package['contents'][ 'wc_attribute_name:' . $attribute_key ] = array(
 						'translate' => 1,
-						'data'      => $this->tp->encode_field_data( $attribute['name'], 'base64' ),
+						'data'      => $this->tp->encode_field_data( $attribute['name'] ),
 						'format'    => 'base64'
 					);
 					$values                                                       = explode( '|', $attribute['value'] );
@@ -82,7 +85,7 @@ class WCML_TP_Support {
 					foreach ( $values as $value_key => $value ) {
 						$package['contents'][ 'wc_attribute_value:' . $value_key . ':' . $attribute_key ] = array(
 							'translate' => 1,
-							'data'      => $this->tp->encode_field_data( $value, 'base64' ),
+							'data'      => $this->tp->encode_field_data( $value ),
 							'format'    => 'base64'
 						);
 					}
@@ -190,7 +193,7 @@ class WCML_TP_Support {
 						if ( $meta_value && !is_array( $meta_value ) ) {
 							$package['contents'][ self::CUSTOM_FIELD_NAME.$meta_key.':' . $variation->ID ] = array(
 								'translate' => 1,
-								'data'      => $this->tp->encode_field_data( $meta_value, 'base64' ),
+								'data'      => $this->tp->encode_field_data( $meta_value ),
 								'format'    => 'base64'
 							);
 						}
@@ -242,18 +245,27 @@ class WCML_TP_Support {
 		return $package;
 	}
 
-	public function save_slug_translations( $post_id, $data ) {
+	public function save_slug_translations( $post_id, $data, $job ) {
+		// $getTargetLanguage :: string -> string
+		$getTargetLanguage = function( $lang ) use ( $job ) {
+			return Obj::propOr( $lang, 'language_code', $job );
+		};
 
-		foreach ( $data as $data_key => $value ) {
-			if ( $value['finished'] && isset( $value['field_type'] ) && 'slug' === $value['field_type'] ) {
-				$product = get_post( $post_id );
-				if ( $product->post_type == 'product' ) {
-					$new_slug = wp_unique_post_slug( sanitize_title( $value['data'] ), $post_id, $product->post_status, $product->post_type, $product->post_parent );
-					$this->wpdb->update( $this->wpdb->posts, array( 'post_name' => $new_slug ), array( 'ID' => $post_id ) );
-					break;
+		// $saveSlug :: void -> void
+		$saveSlug = function() use ( $post_id, $data ) {
+			foreach ( $data as $value ) {
+				if ( $value['finished'] && isset( $value['field_type'] ) && 'slug' === $value['field_type'] ) {
+					$product = get_post( $post_id );
+					if ( $product->post_type === 'product' ) {
+						$new_slug = wp_unique_post_slug( sanitize_title( $value['data'] ), $post_id, $product->post_status, $product->post_type, $product->post_parent );
+						$this->wpdb->update( $this->wpdb->posts, array( 'post_name' => $new_slug ), array( 'ID' => $post_id ) );
+						break;
+					}
 				}
 			}
-		}
+		};
+
+		Hooks::callWithFilter( $saveSlug, 'wpml_save_post_lang', $getTargetLanguage );
 	}
 
 	public function append_images_to_translation_package( $package, $post ) {
@@ -262,6 +274,7 @@ class WCML_TP_Support {
 
 			$product_images = $this->woocommerce_wpml->media->product_images_ids( $post->ID );
 			foreach ( $product_images as $image_id ) {
+				/** @var stdClass */
 				$attachment_data = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT post_title,post_excerpt,post_content FROM {$this->wpdb->posts} WHERE ID = %d", $image_id ) );
 				if ( ! $attachment_data ) {
 					continue;
@@ -339,7 +352,7 @@ class WCML_TP_Support {
 	private function add_to_package( &$package, $key, $data ) {
 		$package['contents'][ $key ] = array(
 			'translate' => 1,
-			'data'      => $this->tp->encode_field_data( $data, 'base64' ),
+			'data'      => $this->tp->encode_field_data( $data ),
 			'format'    => 'base64'
 		);
 

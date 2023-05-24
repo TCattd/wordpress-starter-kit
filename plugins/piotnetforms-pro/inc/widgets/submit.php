@@ -1796,6 +1796,29 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 				'value'   => 'post_custom_field',
 			]
 		);
+        $this->add_control(
+			'piotnetforms_confirm_delete_post',
+			[
+				'label'        => __( 'Confirm delete post', 'piotnetforms' ),
+				'type'         => 'switch',
+				'default'      => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+			]
+		);
+        $this->add_control(
+			'piotnetforms_delete_post_msg',
+			[
+				'label'       => __( 'Message', 'piotnetforms' ),
+				'type'        => 'text',
+				'default' => 'Delete post {post_id}?',
+                'description' => '[post_id] will be replaced by the post id',
+                'condition' => [
+                    'piotnetforms_confirm_delete_post' => 'yes'
+                ]
+			]
+		);
 		//repeater
 		$this->new_group_controls();
 		$this->add_control(
@@ -3027,7 +3050,21 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 					'label_on'     => 'Yes',
 					'label_off'    => 'No',
 					'return_value' => 'yes',
-					'description'  => 'This feature only works on the frontend'
+					'description'  => 'This feature only works on the frontend',
+				]
+			);
+            $this->add_control(
+				'mollie_send_email',
+				[
+					'label'        => __( 'Not sending to email when payment failed.', 'piotnetforms' ),
+					'type'         => 'switch',
+					'default'      => '',
+					'label_on'     => 'Yes',
+					'label_off'    => 'No',
+					'return_value' => 'yes',
+                    'condition' => [
+						'mollie_enable' => 'yes',
+					],
 				]
 			);
 			$this->add_control(
@@ -3234,8 +3271,54 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 				'label_on'     => 'Yes',
 				'label_off'    => 'No',
 				'return_value' => 'yes',
+                'condition' => [
+                    'piotnetforms_recaptcha_enable' => 'yes'
+                ]
 			]
 		);
+        $this->add_control(
+			'piotnetforms_recaptcha_score',
+			[
+				'label'        => __( 'Custom reCaptcha score?', 'piotnetforms' ),
+				'type'         => 'switch',
+				'default'      => '',
+				'label_on'     => 'Yes',
+				'label_off'    => 'No',
+				'return_value' => 'yes',
+                'condition' => [
+                    'piotnetforms_recaptcha_enable' => 'yes'
+                ]
+			]
+		);
+        $this->add_control(
+			'piotnetforms_recaptcha_score_value',
+			[
+				'label'       => __( 'Score', 'piotnetforms' ),
+				'type'        => 'number',
+				'value'       => 0.5,
+                'min'          => 0,
+                'max' => 1,
+                'step' => 0.1,
+                'condition' => [
+                    'piotnetforms_recaptcha_enable' => 'yes',
+                    'piotnetforms_recaptcha_score' => 'yes'
+                ]
+			]
+		);
+        $this->add_control(
+			'piotnetforms_recaptcha_msg_error',
+			[
+				'label'       => __( 'Custom messages', 'piotnetforms' ),
+				'type'        => 'text',
+				'value'       => 'Cannot verify recaptcha identity.',
+				'render_type' => 'none',
+                'condition' => [
+                    'piotnetforms_recaptcha_enable' => 'yes',
+                    'piotnetforms_recaptcha_score' => 'yes'
+                ]
+			]
+		);
+
 	}
 	private function add_email_setting_controls() {
 		$this->add_control(
@@ -5600,12 +5683,30 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 				'placeholder' => __( 'Enter your title here', 'piotnetforms' ),
 				'description' => 'Go to WP Dashboard > Media > Library > Upload PDF Template File > Get File URL',
 				'conditions'  => [
-					[
-						'name' => 'pdfgenerator_set_custom',
-						'operator' => '!=',
-						'value' => ''
-					],
+                    'terms' => [
+                        [
+                            'name' => 'pdfgenerator_set_custom',
+                            'operator' => '!=',
+                            'value' => ''
+                        ],
+                        [
+                            'name' => 'pdfgenerator_import_template',
+                            'operator' => '!=',
+                            'value' => ''
+                        ]
+                    ]
 				],
+			]
+		);
+        $this->add_control(
+			'pdfgenerator_html_warning',
+			[
+				'type' => 'html',
+				  'label_block' => true,
+				'raw' => __( '<div style="font-style: italic;">Custom Layoust just works for A4 size format.</div>', 'piotnetforms' ),
+                'condition' => [
+                    'pdfgenerator_set_custom' => 'yes'
+                ]
 			]
 		);
 		$this->add_control(
@@ -5620,6 +5721,13 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 					'a5' => __( 'A5 (148*210)', 'piotnetforms' ),
 					'letter' => __( 'Letter (215.9*279.4)', 'piotnetforms' ),
 					'legal' => __( 'Legal (215.9*355.6)', 'piotnetforms' ),
+				],
+                'conditions'   => [
+					[
+						'name' => 'pdfgenerator_import_template',
+						'operator' => '!=',
+						'value' => 'yes'
+					]
 				],
 			]
 		);
@@ -5923,7 +6031,7 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 				'options' => [
 					'default'      => __( 'Default', 'piotnetforms' ),
 					'image'        => __( 'Image', 'piotnetforms' ),
-					'image-upload' => __( 'Image upload', 'piotnetforms' ),
+					'image-upload' => __( 'Upload Your Image', 'piotnetforms' ),
 				],
 			]
 		);
@@ -5943,7 +6051,20 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 				],
 			]
 		);
-
+        $this->add_control(
+            'pdf_text_align',
+            [
+                'label'        => __( 'Alignment', 'piotnetforms' ),
+                'type'         => 'select',
+                'value'        => 'left',
+                'options'      => [
+                    'J'   => __( 'Default', 'piotnetforms' ),
+                    'L' => __( 'Left', 'piotnetforms' ),
+                    'C' => __( 'Center', 'piotnetforms' ),
+                    'R' => __( 'Right', 'piotnetforms' ),
+                ],
+            ]
+        );
 		$this->add_control(
 			'custom_font',
 			[
@@ -5953,24 +6074,6 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 				'label_off'    => __( 'No', 'piotnetforms' ),
 				'return_value' => 'yes',
 				'default'      => 'no',
-				'conditions'    => [
-					[
-						'name' => 'pdfgenerator_field_type',
-						'operator' => '==',
-						'value' => 'default'
-					]
-				],
-			]
-		);
-		$this->add_control(
-			'auto_position',
-			[
-				'label'        => __( 'Auto Position?', 'piotnetforms' ),
-				'type'         => 'switch',
-				'label_on'     => __( 'Yes', 'piotnetforms' ),
-				'label_off'    => __( 'No', 'piotnetforms' ),
-				'return_value' => 'yes',
-				'default'      => '',
 				'conditions'    => [
 					[
 						'name' => 'pdfgenerator_field_type',
@@ -6148,7 +6251,7 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'pdfgenerator_set_x',
 			[
-				'label'       => __( 'Set X (mm)', 'piotnetforms' ),
+				'label'       => __( 'Set X', 'piotnetforms' ),
 				'label_block' => true,
 				'type'        => 'slider',
 				'size_units'  => [
@@ -6170,7 +6273,12 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 						'name' => 'pdfgenerator_field_type',
 						'operator' => '==',
 						'value' => 'default'
-					]
+                    ],
+                    [
+                        'name' => 'pdf_text_align',
+						'operator' => '==',
+						'value' => 'J'
+                    ]
 				]
 			]
 		);
@@ -6178,7 +6286,7 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'pdfgenerator_set_y',
 			[
-				'label'       => __( 'Set Y (mm)', 'piotnetforms' ),
+				'label'       => __( 'Set Y', 'piotnetforms' ),
 				'label_block' => true,
 				'type'        => 'slider',
 				'size_units'  => [
@@ -8156,11 +8264,11 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 		<button <?php echo $this->get_render_attribute_string( 'button' ); ?>>
 			<?php $this->render_text(); ?>
 		</button>
-
 		<?php if ( in_array( 'submit_post', $settings['submit_actions'] ) ) : ?>
 			<?php if ( $editor ) :
+                $confirm_delete = !empty($settings['piotnetforms_confirm_delete_post']) ? $settings['piotnetforms_delete_post_msg'] : 'false'; 
 				echo '<div style="margin-top: 20px;">' . __( 'Edit Post URL Shortcode', 'piotnetforms' ) . '</div><input class="piotnetforms-field-shortcode" style="min-width: 300px; padding: 10px;" value="[piotnetforms_edit_post edit_text='. "'Edit Post'" . ' sm=' . "'" . $this->get_id() . "'" . ' smpid=' . "'" . get_the_ID() . "'" .']' . get_the_permalink() . '[/piotnetforms_edit_post]" readonly /><div class="piotnetforms-control-field-description">' . __( 'Add this shortcode to your single template.', 'piotnetforms' ) . ' The shortcode will be changed if you edit this form so you have to refresh piotnetforms Editor Page and then copy the shortcode. ' . __( 'Replace', 'piotnetforms' ) . ' "' . get_the_permalink() . '" ' . __( 'by your Page URL contains your Submit Post Form.', 'piotnetforms' ) . '</div>';
-				echo '<div style="margin-top: 20px;">' . __( 'Delete Post URL Shortcode', 'piotnetforms' ) . '</div><input class="piotnetforms-field-shortcode" style="min-width: 300px; padding: 10px;" value="[piotnetforms_delete_post force_delete='. "'0'". ' delete_text='. "'Delete Post'" . ' sm=' . "'" . $this->get_id() . "'" . ' smpid=' . "'" . get_the_ID() . "'" . ' redirect='."'http://YOUR-DOMAIN'".']'.'[/piotnetforms_delete_post]" readonly /><div class="piotnetforms-control-field-description">' . __( 'Add this shortcode to your single template.', 'piotnetforms' ) . ' The shortcode will be changed if you edit this form so you have to refresh piotnetforms Editor Page and then copy the shortcode. ' . __( 'Replace', 'piotnetforms' ) . ' "http://YOUR-DOMAIN" ' . __( 'by your Page URL', 'piotnetforms' ) . '</div>'; ?>
+				echo '<div style="margin-top: 20px;">' . __( 'Delete Post URL Shortcode', 'piotnetforms' ) . '</div><input class="piotnetforms-field-shortcode" style="min-width: 300px; padding: 10px;" value="[piotnetforms_delete_post confirm_delete=' . "'" . $confirm_delete . "'" . ' force_delete='. "'0'". ' delete_text='. "'Delete Post'" . ' sm=' . "'" . $this->get_id() . "'" . ' smpid=' . "'" . get_the_ID() . "'" . ' redirect='."'http://YOUR-DOMAIN'".']'.'[/piotnetforms_delete_post]" readonly /><div class="piotnetforms-control-field-description">' . __( 'Add this shortcode to your single template.', 'piotnetforms' ) . ' The shortcode will be changed if you edit this form so you have to refresh piotnetforms Editor Page and then copy the shortcode. ' . __( 'Replace', 'piotnetforms' ) . ' "http://YOUR-DOMAIN" ' . __( 'by your Page URL', 'piotnetforms' ) . '</div>'; ?>
 			<?php endif; ?>
 		<?php endif; ?>
 
@@ -8331,7 +8439,8 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 		                return actions.order.capture().then(function(details) {
 		                    // Show a success message to the buyer
 		                    // alert('Transaction completed by ' + details.payer.name.given_name + '!');
-		                    var $submit = jQuery(document).find('[data-piotnetforms-submit-form-id="<?php echo str_replace( ' ', '', $form_id ); ?>"]'),
+                            var paypalElement = jQuery('#piotnetforms-paypal-button-container-<?php echo str_replace( ' ', '', $this->get_id() ); ?>');
+		                    var $submit = paypalElement.closest('.piotnetforms-button-wrapper').find('[data-piotnetforms-submit-form-id="<?php echo str_replace( ' ', '', $form_id ); ?>"]'),
 		                    	$parent = $submit.closest('.piotnetforms-submit');
 
 		                    $submit.attr('data-piotnetforms-paypal-submit-transaction-id', details.id);
@@ -8510,12 +8619,12 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 							<?php echo $item['pdfgenerator_field_shortcode']; ?>
 						</div>
 					<?php } else { ?>
-						<div class="piotnetforms-pdf-generator-preview__item <?php echo $pdf_font_weight; ?> piotnetforms-repeater-item-<?php echo esc_attr( $item['repeater_id'] ); ?>" style="position: absolute; background: #dedede;line-height: 1;">
+						<div class="piotnetforms-pdf-generator-preview__item <?php echo $item['pdf_text_align']; ?> <?php echo $pdf_font_weight; ?> piotnetforms-repeater-item-<?php echo esc_attr( $item['repeater_id'] ); ?>" style="position: absolute; background: #dedede;line-height: 1;">
 							<?php echo $item['pdfgenerator_field_shortcode']; ?>
 						</div>
 					<?php } ?>
 				<?php } elseif ( $item['pdfgenerator_field_type'] == 'image' ) { ?>
-				<div class="piotnetforms-pdf-generator-preview__item-image  piotnetforms-repeater-item-<?php echo esc_attr( $item['repeater_id'] ); ?>">
+				<div class="piotnetforms-pdf-generator-preview__item-image <?php echo $item['pdf_text_align']; ?> piotnetforms-repeater-item-<?php echo esc_attr( $item['repeater_id'] ); ?>">
 					<img src="<?php echo plugins_url().'/piotnetforms-pro/assets/images/signature.png'; ?>" style="position: absolute;">
 					<?php //echo 'Type image in form';?>
 				</div>
@@ -8547,6 +8656,7 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 		<%	
 			var s = data.widget_settings;
 			var formId = s.form_id ? s.form_id : '';
+            var confirmDelete = s.piotnetforms_confirm_delete_post ? s.piotnetforms_delete_post_msg : 'false'
 
 			view.add_attribute( 'wrapper', 'class', 'piotnetforms-submit' );
 			view.add_attribute( 'wrapper', 'class', 'piotnetforms-button-wrapper' );
@@ -8598,7 +8708,7 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 			    <div style="margin-top: 20px;">
 					<?php echo __( 'Delete Post URL Shortcode', 'piotnetforms' ) ?>
 				</div>
-				<input class="piotnetforms-field-shortcode" style="min-width: 300px; padding: 10px;" value="[piotnetforms_delete_post force_delete='0' delete_text='Delete Post' sm='<%= data.widget_id %>' smpid='<%= view.post_id %>' redirect='http://YOUR-DOMAIN.piotnet.com' ][/piotnetforms_delete_post]" readonly /><div class="piotnetforms-control-field-description">Add this shortcode to your single template. The shortcode will be changed if you edit this form so you have to refresh piotnetforms Editor Page and then copy the shortcode. Replace "http://YOUR-DOMAIN.piotnet.com" by your Page URL.</div>
+				<input class="piotnetforms-field-shortcode" style="min-width: 300px; padding: 10px;" value="[piotnetforms_delete_post confirm_delete='<%= confirmDelete %>' force_delete='0' delete_text='Delete Post' sm='<%= data.widget_id %>' smpid='<%= view.post_id %>' redirect='http://YOUR-DOMAIN.piotnet.com' ][/piotnetforms_delete_post]" readonly /><div class="piotnetforms-control-field-description">Add this shortcode to your single template. The shortcode will be changed if you edit this form so you have to refresh piotnetforms Editor Page and then copy the shortcode. Replace "http://YOUR-DOMAIN.piotnet.com" by your Page URL.</div>
 			<% } %>
 			<% } %>
 			<!-- PDF generator -->
@@ -8636,18 +8746,19 @@ class Piotnetforms_Submit extends Base_Widget_Piotnetforms {
 					<% if(item.pdfgenerator_field_type == 'default'){ %>
 						<%
 							var pdf_font_weight = item.font_weight ? item.font_weight : '';
+                            var pdf_text_align = item.pdf_text_align ? item.pdf_text_align : '';
 						%>
 						<% if(item.auto_position == 'yes'){ %>
 							<div class="piotnetforms-pdf-generator-preview__item <%= pdf_font_weight %> piotnetforms-repeater-item-<%= item.repeater_id %>" style="background: #dedede;line-height: 1; margin-left:15px;margin-top:15px;">
 								<%= item.pdfgenerator_field_shortcode %>
 							</div>
 						<% }else{ %>
-							<div class="piotnetforms-pdf-generator-preview__item <%= pdf_font_weight %> piotnetforms-repeater-item-<%= item.repeater_id %>" style="position: absolute; background: #dedede;line-height: 1;">
+							<div class="piotnetforms-pdf-generator-preview__item <%= pdf_text_align %> <%= pdf_font_weight %> piotnetforms-repeater-item-<%= item.repeater_id %>" style="position: absolute; background: #dedede;line-height: 1;">
 								<%= item.pdfgenerator_field_shortcode %>
 							</div>
 						<% } %>
 					<% }else if(item.pdfgenerator_field_type == 'image'){ %>
-					<div class="piotnetforms-pdf-generator-preview__item-image  piotnetforms-repeater-item-<%= item.repeater_id %>">
+					<div class="piotnetforms-pdf-generator-preview__item-image <%= pdf_text_align %> piotnetforms-repeater-item-<%= item.repeater_id %>">
 						<img src="<?php echo plugins_url().'/piotnetforms-pro/assets/images/signature.png'; ?>" style="position: absolute;">
 					</div>
 					<!-- <div class="piotnetforms-pdf-generator-preview__item-image  piotnetforms-repeater-item-<%= item.repeater_id %>">

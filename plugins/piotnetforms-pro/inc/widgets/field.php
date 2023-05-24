@@ -434,7 +434,8 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'country',
 			[
 				'label'       => __( 'Country', 'piotnetforms' ),
-				'type'        => 'select',
+				'type'        => 'select2',
+				'multiple'    => true,
 				'description' => __( 'Choose your country.', 'piotnetforms' ),
 				'default'     => 'All',
 				'options'     => [
@@ -1510,7 +1511,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$this->add_control(
 			'stripe_custom_style',
 			[
-				'label'     	=> __( 'Custon:', 'piotnetforms' ),
+				'label'     	=> __( 'Custom:', 'piotnetforms' ),
 				'type'      	=> 'textarea',
 				'default'      	=> '{"base":{"color":"#303238","fontSize":"16px","fontFamily":"\"Open Sans\", sans-serif","fontSmoothing":"antialiased","::placeholder":{"color":"#CFD7DF"}},"invalid":{"color":"#e5424d",":focus":{"color":"#303238"}}}',
 				'description'	=> __( 'View options at <a target="_blank" href="https://stripe.com/docs/js/appendix/style">stripe style</a>', 'piotnetforms' ),
@@ -1555,6 +1556,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'options'     => [
 					'select'   => __( 'Select', 'piotnetforms' ),
 					'select2'  => __( 'Select 2', 'piotnetforms' ),
+					'autocomplete' => __('Select Autocomplete'),
 					'checkbox' => __( 'Checkbox', 'piotnetforms' ),
 					'radio'    => __( 'Radio', 'piotnetforms' ),
 				],
@@ -1735,7 +1737,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'     => __( 'Max Files', 'piotnetforms' ),
 				'type'      => 'number',
 				'condition' => [
-					'field_type'            => 'image_upload',
+					'field_type'            => ['image_upload', 'upload'],
 					'allow_multiple_upload' => 'true',
 				],
 			]
@@ -1992,6 +1994,25 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			'field_max',
 			[
 				'label'      => __( 'Max. Value', 'piotnetforms' ),
+				'type'       => 'number',
+				'conditions' => [
+					'terms' => [
+						[
+							'name'     => 'field_type',
+							'operator' => 'in',
+							'value'    => [
+								'number',
+							],
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'field_step',
+			[
+				'label'      => __( 'Step. Value', 'piotnetforms' ),
 				'type'       => 'number',
 				'conditions' => [
 					'terms' => [
@@ -2948,7 +2969,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				'label'      => __( 'Pattern', 'piotnetforms' ),
 				'label_block' => true,
 				'type'       => 'text',
-				'default'    => '[0-9()#&+*-=.]+',
+				'default'    => '[0-9()#&+*-=.\s]+',
 				'conditions' => [
 					'terms' => [
 						[
@@ -4523,7 +4544,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$this->add_responsive_control(
 			'piotnetforms_image_select_field_image_padding',
 			[
-				'label'      => __( 'Input Padding', 'piotnetforms' ),
+				'label'      => __( 'Image Padding', 'piotnetforms' ),
 				'type'       => 'dimensions',
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -4535,7 +4556,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$this->add_responsive_control(
 			'piotnetforms_image_select_field_label_padding',
 			[
-				'label'      => __( 'Input Padding', 'piotnetforms' ),
+				'label'      => __( 'Caption Padding', 'piotnetforms' ),
 				'type'       => 'dimensions',
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors'  => [
@@ -5803,14 +5824,14 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 			$this->add_required_attribute( 'select' . $i );
 		}
 
-		if ( $item['allow_multiple'] ) {
+		if ( ! empty($item['allow_multiple']) ) {
 			$this->add_render_attribute( 'select' . $i, 'multiple' );
 			if ( ! empty( $item['select_size'] ) ) {
 				$this->add_render_attribute( 'select' . $i, 'size', $item['select_size'] );
 			}
 		}
 
-		if ( $item['send_data_by_label'] ) {
+		if ( ! empty ($item['send_data_by_label']) ) {
 			$this->add_render_attribute( 'select' . $i, 'data-piotnetforms-send-data-by-label' );
 		}
 
@@ -5920,7 +5941,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				}
 			}
 
-			if ( $item['send_data_by_label'] ) {
+			if ( ! empty ($item['send_data_by_label']) ) {
 				$this->add_render_attribute( $option_id, 'data-piotnetforms-send-data-by-label', $option_label );
 			}
 
@@ -6067,7 +6088,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					}
 				}
 
-				if ( $item['send_data_by_label'] ) {
+				if ( ! empty( $item['send_data_by_label'] ) ) {
 					$this->add_render_attribute( $element_id, 'data-piotnetforms-send-data-by-label', $option_label );
 				}
 
@@ -6349,6 +6370,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		}
 
 		if ( ! empty( $value ) || $value == 0 ) {
+            $value = $item['field_type'] == 'number' ? str_replace(',', '.', $value) : $value;
 			$this->add_render_attribute( 'input' . $i, 'value', $value );
 			$this->add_render_attribute( 'range_slider' . $i, 'value', $value );
 			$this->add_render_attribute( 'input' . $i, 'data-piotnetforms-value', $value );
@@ -6762,7 +6784,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 		$form_post_id = $this->post_id;
 		$form_version = empty( get_post_meta( $form_post_id, '_piotnetforms_version', true ) ) ? 1 : get_post_meta( $form_post_id, '_piotnetforms_version', true );
 		$form_id = $form_version == 1 ? $settings['form_id'] : $form_post_id;
-		$country = !( empty( $settings['country'] ) ) ? $settings['country'] : '';
+		$country = !( empty( $settings['country'] ) ) ? json_encode($settings['country']) : '["All"]';
 		$latitude = !( empty( $settings['google_maps_lat'] ) ) ? $settings['google_maps_lat'] : '';
 		$longitude = !( empty( $settings['google_maps_lng'] ) ) ? $settings['google_maps_lng'] : '';
 		$zoom = !( empty( $settings['google_maps_zoom'] ) ) ? $settings['google_maps_zoom']['size'] : '';
@@ -6903,6 +6925,11 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					wp_enqueue_script( $this->slug . '-advanced2-script' );
 					wp_enqueue_style( $this->slug . '-select2-style' );
 					echo $this->make_select_field( $item, $item_index, $form_id, false, true, false, true );
+				} elseif ( $item['terms_select_type'] == 'autocomplete' ) {
+					wp_enqueue_script( $this->slug . '-selectize-script' );
+				    wp_enqueue_style( $this->slug . '-selectize-style' );
+				    wp_enqueue_script( $this->slug . '-advanced2-script' );
+					echo $this->make_select_field( $item, $item_index, $form_id, false, true, true, false );
 				} else {
 					echo $this->make_radio_checkbox_field( $item, $item_index, $item['terms_select_type'], $form_id, true );
 				}
@@ -7045,6 +7072,14 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 					$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-hidden' );
 				}
 
+                if ( ! empty( $item['max_files'] ) ) {
+                    $max_files = !empty($item['max_files']) ? $item['max_files'] : '99';
+                    $this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-upload-max-files',  $max_files);
+				}
+
+                $notification_max_file = !empty($item['max_files_notification']) ? $item['max_files_notification'] : 'Please do not exceed [max_files] files.';
+                $this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-upload-msg',  $notification_max_file);
+
 				if ( !empty( $item['modern_upload_field_style'] ) ) {
 					$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-upload-field-modern-style' );
 					echo '<div class="piotnetforms-upload-field-modern-text"><i class="fa fa-upload" aria-hidden="true"></i>'.'<span style="padding-left: 8px;">'. $item['modern_upload_field_text'].'</span>' .'</div>';
@@ -7175,7 +7210,7 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 				}
 				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-id', $form_id );
 				$this->add_render_attribute( 'input' . $item_index, 'class', 'piotnetforms-field-textual' );
-				$this->add_render_attribute( 'input' . $item_index, 'step', 'any' );
+				//$this->add_render_attribute( 'input' . $item_index, 'step', 'any' );
 				$this->add_render_attribute( 'input' . $item_index, 'data-piotnetforms-remove-value', $remove_value );
 
 				if ( ( !empty( $item['field_min'] ) || $item['field_min'] == 0 ) && ( $item['field_min'] != '' ) ) {
@@ -7184,6 +7219,12 @@ class Piotnetforms_Field extends Base_Widget_Piotnetforms {
 
 				if ( ( !empty( $item['field_max'] ) || $item['field_max'] == 0 ) && ( $item['field_max'] != '' ) ) {
 					$this->add_render_attribute( 'input' . $item_index, 'max', esc_attr( $item['field_max'] ) );
+				}
+
+				if ( ( !empty( $item['field_step'] ) )) {
+					$this->add_render_attribute( 'input' . $item_index, 'step', esc_attr( $item['field_step'] ) );
+				} else {
+					$this->add_render_attribute( 'input' . $item_index, 'step', 'any' );
 				}
 
 				echo '<input ' . $this->get_render_attribute_string( 'input' . $item_index ) . '>';

@@ -6,7 +6,7 @@ namespace WCML\User\Store;
 class Cookie implements Strategy {
 
 	/**
-	 * @var WPML_Cookie
+	 * @var \WPML_Cookie
 	 */
 	public $cookieHandler;
 
@@ -43,8 +43,8 @@ class Cookie implements Strategy {
 			 *
 			 * @since 4.11.0
 			 *
-			 * @param int    'expiration' Expiration cookie time.
-			 * @param string $key         The key operating the storage.
+			 * @param int    $expiration Expiration cookie time.
+			 * @param string $key        The key operating the storage.
 			 */
 			$expiration = time() + (int) apply_filters( 'wcml_cookie_expiration', 48 * HOUR_IN_SECONDS, $key );
 

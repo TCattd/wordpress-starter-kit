@@ -13,7 +13,7 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 	 */
 	private $tm_instance;
 	/**
-	 * @var WPDB
+	 * @var wpdb
 	 */
 	private $wpdb;
 	private $job_details;
@@ -366,7 +366,7 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 
 		foreach ( $custom_fields as $custom_field ) {
 
-			if ( '_variation_description' === $custom_field || $this->get_custom_field_values( $variation_id, $custom_field ) ) {
+			if ( $this->get_custom_field_values( $variation_id, $custom_field ) ) {
 
 				$custom_field_id = $custom_field . $variation_id;
 
@@ -434,7 +434,8 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 
 		$product_images = $this->woocommerce_wpml->media->product_images_ids( $this->product_id );
 		foreach ( $product_images as $image_id ) {
-			$attachment_data = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT post_title,post_excerpt,post_content FROM {$this->wpdb->posts} WHERE ID = %d", $image_id ) );
+			/** @var stdClass */
+			$attachment_data = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT post_title, post_excerpt, post_content FROM {$this->wpdb->posts} WHERE ID = %d", $image_id ) );
 			if ( ! $attachment_data ) {
 				continue;
 			}
@@ -447,6 +448,7 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 
 			$trnsl_prod_image = apply_filters( 'translate_object_id', $image_id, 'attachment', false, $this->get_target_language() );
 			if ( null !== $trnsl_prod_image ) {
+				/** @var stdClass */
 				$trnsl_attachment_data = $this->wpdb->get_row( $this->wpdb->prepare( "SELECT post_title,post_excerpt,post_content FROM {$this->wpdb->posts} WHERE ID = %d", $trnsl_prod_image ) );
 				$alt_text              = get_post_meta( $trnsl_prod_image, '_wp_attachment_image_alt', true );
 				$alt_text              = $alt_text ? $alt_text : '';
@@ -880,12 +882,19 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 		return $attributes;
 	}
 
-	// get product content labels.
+	/**
+	 * Get product content labels.
+	 *
+	 * @param string    $field
+	 * @param int|false $variation_id
+	 *
+	 * @return string|false
+	 */
 	public function get_product_custom_field_label( $field, $variation_id = false ) {
 		global $sitepress;
 		$settings = $sitepress->get_settings();
 		$label    = '';
-		if ( isset( $settings['translation-management']['custom_fields_translation'][ $field ] ) && $settings['translation-management']['custom_fields_translation'][ $field ] == WPML_TRANSLATE_CUSTOM_FIELD ) {
+		if ( isset( $settings['translation-management']['custom_fields_translation'][ $field ] ) && WPML_TRANSLATE_CUSTOM_FIELD === (int) $settings['translation-management']['custom_fields_translation'][ $field ] ) {
 			if ( in_array( $field, apply_filters( 'wcml_not_display_single_fields_to_translate', $this->not_display_fields_for_variables_product ), true ) ) {
 				return false;
 			}
@@ -934,13 +943,19 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 
 	}
 
-	// get product content.
+	/**
+	 * Get product content.
+	 *
+	 * @param int $product_id
+	 *
+	 * @return array
+	 */
 	public function get_product_custom_fields_to_translate( $product_id ) {
 		$settings = $this->sitepress->get_settings();
 		$contents = [];
 
 		foreach ( get_post_custom_keys( $product_id ) as $meta_key ) {
-			if ( isset( $settings['translation-management']['custom_fields_translation'][ $meta_key ] ) && $settings['translation-management']['custom_fields_translation'][ $meta_key ] == WPML_TRANSLATE_CUSTOM_FIELD ) {
+			if ( isset( $settings['translation-management']['custom_fields_translation'][ $meta_key ] ) && WPML_TRANSLATE_CUSTOM_FIELD === (int) $settings['translation-management']['custom_fields_translation'][ $meta_key ] ) {
 				if ( $this->check_custom_field_is_single_value( $product_id, $meta_key ) ) {
 					if ( in_array( $meta_key, apply_filters( 'wcml_not_display_single_fields_to_translate', $this->not_display_fields_for_variables_product ), true ) ) {
 						continue;
@@ -980,7 +995,7 @@ class WCML_Editor_UI_Product_Job extends WPML_Editor_UI_Job {
 	}
 
 	/**
-	 * @param int $product_id
+	 * @param int    $product_id
 	 * @param string $field_key
 	 *
 	 * @return array|string

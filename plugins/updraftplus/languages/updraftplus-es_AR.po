@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the UpdraftPlus package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-05-27 05:33:19+0000\n"
+"PO-Revision-Date: 2023-04-26 22:46:24+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1857,7 +1857,7 @@ msgstr "Para crear un clon temporal necesitás: 1) crédito en tu cuenta. 2) con
 
 #: src/templates/wp-admin/settings/temporary-clone.php:32
 msgid "If you want, test upgrading to a different PHP or WP version."
-msgstr "Si querés, prueba a actualizar a una versión diferente de PHP o de WordPress."
+msgstr "Si querés, probá actualizar a una versión diferente de PHP o de WordPress."
 
 #: src/templates/wp-admin/settings/temporary-clone.php:32
 msgid "Flexible"
@@ -2459,7 +2459,7 @@ msgstr "Solo respaldo de la base de datos por correo electrónico."
 
 #: src/addons/reporting.php:540
 msgid "Be aware that mail servers tend to have size limits; typically around %s MB; backups larger than any limits will likely not arrive as a result UpdraftPlus will only send Database backups to email."
-msgstr "Tené en cuenta que los servidores de correo tienden a tener límites de tamaño; normalmente alrededor de los %s Mb; Es probable que los respaldos que superen los límites no lleguen, como resultado, UpdraftPlus solo enviará al correo electrónico respaldos de la base de datos."
+msgstr "Tené en cuenta que los servidores de correo tienden a tener límites de tamaño; normalmente alrededor de los %s MB; Es muy probable que los respaldos que superen los límites no lleguen. Como resultado, UpdraftPlus solo enviará al correo electrónico  el respaldo de la base de datos."
 
 #: src/addons/reporting.php:540
 msgid "Use this option to only send database backups when sending to email, and skip other components."
@@ -2876,7 +2876,7 @@ msgstr "Noreste de Asia"
 
 #: src/udaddons/options.php:129
 msgid "Your web server's version of PHP is too old (%s) - UpdraftPlus expects at least %s. You can try it, but don't be surprised if it does not work. To fix this problem, contact your web hosting company"
-msgstr "La versión de PHP de tu servidor web es vieja (%s) - UpdraftPlus espera como mínimo %s. Podés probarlo, pero te sorprendas si no funciona. Para solucionar este problema contactate con tu proveedor de hosting."
+msgstr "La versión de PHP de tu servidor web es vieja (%s) - UpdraftPlus espera como mínimo la versión %s. Podés probarlo, pero no te sorprendas si no funciona. Para solucionar este problema contactate con tu empresa de hosting."
 
 #: src/templates/wp-admin/settings/take-backup.php:84
 msgid "Remote storage authentication"

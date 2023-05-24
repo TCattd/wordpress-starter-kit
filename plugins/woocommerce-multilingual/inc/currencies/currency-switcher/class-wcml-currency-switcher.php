@@ -1,8 +1,9 @@
 <?php
 
 use WCML\MultiCurrency\Settings;
-use WPML\FP\Obj;
 use WCML\MultiCurrency\Geolocation;
+use WPML\Core\ISitePress;
+use WCML\StandAlone\NullSitePress;
 
 /**
  * Class WCML_Currency_Switcher
@@ -11,16 +12,18 @@ use WCML\MultiCurrency\Geolocation;
  */
 class WCML_Currency_Switcher {
 
-	/** @var woocommerce_wpml */
+	/** @var woocommerce_wpml $woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress */
+	/** @var SitePress|NullSitePress $sitepress */
 	private $sitepress;
 
-	public function __construct( woocommerce_wpml $woocommerce_wpml, \WPML\Core\ISitePress $sitepress ) {
-
+	/**
+	 * @param woocommerce_wpml        $woocommerce_wpml
+	 * @param SitePress|NullSitePress $sitepress
+	 */
+	public function __construct( woocommerce_wpml $woocommerce_wpml, ISitePress $sitepress ) {
 		$this->woocommerce_wpml = $woocommerce_wpml;
 		$this->sitepress        = $sitepress;
-
 	}
 
 	public function add_hooks() {

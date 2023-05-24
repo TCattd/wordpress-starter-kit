@@ -35,7 +35,7 @@ class ShippingClasses {
 	/**
 	 * Returns source language of the shipping class which was created originally.
 	 *
-	 * @param WP_Term $shippingClass
+	 * @param \WP_Term $shippingClass
 	 *
 	 * @return string|null
 	 */
@@ -50,9 +50,9 @@ class ShippingClasses {
 	/**
 	 * Adds field to the GUI which explains user should switch to the other language to provide the data.
 	 *
-	 * @param array   $field
-	 * @param WP_Tern $shippingClass
-	 * @param string  $classSourceLanguageCode
+	 * @param array    $field
+	 * @param \WP_Term $shippingClass
+	 * @param string   $classSourceLanguageCode
 	 *
 	 * @return array
 	 */

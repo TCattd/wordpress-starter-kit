@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -602,10 +602,8 @@ window.tsfTitle = function() {
 						prefixMaxWidth   += additionsMaxWidth;
 						additionsMaxWidth = 0;
 					}
-					additionsMaxWidth = additionsMaxWidth < additionsWidth ? additionsMaxWidth : additionsWidth;
-
-					if ( additionsMaxWidth < 0 )
-						additionsMaxWidth = 0;
+					// At least 0
+					additionsMaxWidth = Math.max( 0, Math.min( additionsMaxWidth, additionsWidth ) );
 
 					totalIndent     += additionsMaxWidth;
 					prefixOffset    += additionsMaxWidth;
@@ -620,17 +618,16 @@ window.tsfTitle = function() {
 						prefixMaxWidth   += additionsMaxWidth;
 						additionsMaxWidth = 0;
 					}
-					additionsMaxWidth = additionsMaxWidth < additionsWidth ? additionsMaxWidth : additionsWidth;
-
-					if ( additionsMaxWidth < 0 )
-						additionsMaxWidth = 0;
+					// At least 0
+					additionsMaxWidth = Math.max( 0, Math.min( additionsMaxWidth, additionsWidth ) );
 
 					// "We" write to the right, so we take the leftoffset. TODO RTL?
 					additionsOffset += leftOffset + textWidth + prefixMaxWidth;
 					break;
 			}
 		}
-		prefixMaxWidth = prefixMaxWidth < 0 ? 0 : prefixMaxWidth;
+		// At least 0
+		prefixMaxWidth = Math.max( 0, prefixMaxWidth );
 
 		if ( hasPrefixValue ) {
 			Object.assign(
@@ -683,8 +680,8 @@ window.tsfTitle = function() {
 	const _updateCounter = event => {
 		if ( ! ( 'tsfC' in window ) ) return;
 
-		let counter   = document.getElementById( `${event.target.id}_chars` ),
-			reference = _getTitleReferences( event.target.id )[0];
+		const counter   = document.getElementById( `${event.target.id}_chars` ),
+			  reference = _getTitleReferences( event.target.id )[0];
 
 		if ( ! counter ) return;
 
@@ -708,8 +705,8 @@ window.tsfTitle = function() {
 	const _updatePixels = event => {
 		if ( ! ( 'tsfC' in window ) ) return;
 
-		let pixels    = document.getElementById( `${event.target.id}_pixels` ),
-			reference = _getTitleReferences( event.target.id )[0];
+		const pixels    = document.getElementById( `${event.target.id}_pixels` ),
+			  reference = _getTitleReferences( event.target.id )[0];
 
 		if ( ! pixels ) return;
 
@@ -884,8 +881,8 @@ window.tsfTitle = function() {
 			case 2:
 				let start, end;
 				if (
-					'additions' === type && 'after' === getStateOf( input.id, 'additionPlacement' )
-				||  'prefix' === type && window.isRtl
+					   'additions' === type && 'after' === getStateOf( input.id, 'additionPlacement' )
+					|| 'prefix' === type && window.isRtl
 				) {
 					start = inputValue.replace( /(\w+|\s+)$/u, '' ).length;
 					end   = inputValue.length;

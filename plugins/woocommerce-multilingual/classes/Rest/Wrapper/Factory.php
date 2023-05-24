@@ -11,6 +11,8 @@ use WCML\Rest\Wrapper\Reports\ProductsCount;
 use WCML\Rest\Wrapper\Reports\ProductsSales;
 use WCML\Rest\Wrapper\Reports\TopSeller;
 
+use function WCML\functions\isStandAlone;
+
 class Factory {
 
 	/**
@@ -41,20 +43,35 @@ class Factory {
 				return new Composite( $objects );
 			case 'product_variation':
 			case 'product':
-				return new Products(
-					$sitepress,
-					$wpml_post_translations,
-					$wpml_query_filter,
-					new ProductSaveActions( $sitepress->get_settings(), $wpdb, $sitepress, $woocommerce_wpml->sync_product_data )
-				);
+				if ( ! isStandAlone() ) {
+					return new Products(
+						$sitepress,
+						$wpml_post_translations,
+						$wpml_query_filter,
+						new ProductSaveActions( $sitepress->get_settings(), $wpdb, $sitepress, $woocommerce_wpml->sync_product_data )
+					);
+				}
+				break;
 			case 'term':
-				return new ProductTerms( $sitepress, $wpml_term_translations, $woocommerce_wpml->terms );
+				if ( ! isStandAlone() ) {
+					return new ProductTerms( $sitepress, $wpml_term_translations, $woocommerce_wpml->terms );
+				}
+				break;
 			case 'reports_top_seller':
-				return new TopSeller( $sitepress );
+				if ( ! isStandAlone() ) {
+					return new TopSeller( $sitepress );
+				}
+				break;
 			case 'reports_products_count':
-				return new ProductsCount( $sitepress, $wpdb );
+				if ( ! isStandAlone() ) {
+					return new ProductsCount( $sitepress, $wpdb );
+				}
+				break;
 			case 'reports_products_sales':
-				return new ProductsSales();
+				if ( $isMultiCurrencyOn ) {
+					return new ProductsSales();
+				}
+				break;
 		}
 
 		return new Handler();

@@ -7,7 +7,7 @@ class WCML_Attributes {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 	/** @var WPML_Post_Translation */
 	private $post_translations;
@@ -746,7 +746,7 @@ class WCML_Attributes {
 	 * @param string $meta_key
 	 * @param bool   $single
 	 *
-	 * @return array
+	 * @return array|null
 	 */
 	public function filter_product_variation_post_meta_attribute_values_in_current_language( $value, $object_id, $meta_key, $single ) {
 

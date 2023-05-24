@@ -40,7 +40,7 @@ use Aws\S3\S3MultiRegionClient;
 
 global $updraftplus;
 $updraftplus->potentially_remove_composer_autoloaders(array('GuzzleHttp\\', 'Aws\\'));
-include(UPDRAFTPLUS_DIR.'/vendor/autoload.php');
+updraft_try_include_file('vendor/autoload.php', 'include');
 $updraftplus->mitigate_guzzle_autoloader_conflicts();
 
 /**
@@ -92,6 +92,8 @@ class UpdraftPlus_S3_Compat {
 	public $ssl_cert = null;
 
 	public $ssl_ca_cert = null;
+
+	public $iam = null;
 	
 	// Added at request of a user using a non-default port.
 	public static $port = false;
@@ -109,6 +111,7 @@ class UpdraftPlus_S3_Compat {
 	 * @return void
 	 */
 	public function __construct($access_key = null, $secret_key = null, $use_ssl = true, $ssl_ca_cert = true, $endpoint = null, $session_token = null, $region = null) {// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable -- $region is unused
+		do_action('updraftplus_load_aws_sdk');
 		
 		global $updraftplus;
 		$updraftplus->mitigate_guzzle_autoloader_conflicts();
@@ -285,7 +288,7 @@ class UpdraftPlus_S3_Compat {
 	 * @param string $ssl_ca_cert SSL CA cert (only required if you are having problems with your system CA cert)
 	 * @return void
 	 */
-	public function setSSLAuth($ssl_cert = null, $ssl_key = null, $ssl_ca_cert = null) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function setSSLAuth($ssl_cert = null, $ssl_key = null, $ssl_ca_cert = null) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Unused parameters are for future use.
 
 		if (!$this->use_ssl) return;
 
@@ -539,7 +542,7 @@ class UpdraftPlus_S3_Compat {
 	 * @param constant $storage_class   Storage class constant
 	 * @return string | false
 	 */
-	public function initiateMultipartUpload($bucket, $uri, $acl = self::ACL_PRIVATE, $meta_headers = array(), $request_headers = array(), $storage_class = self::STORAGE_CLASS_STANDARD) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	public function initiateMultipartUpload($bucket, $uri, $acl = self::ACL_PRIVATE, $meta_headers = array(), $request_headers = array(), $storage_class = self::STORAGE_CLASS_STANDARD) {// phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Unused parameter is present because the caller from UpdraftPlus_BackupModule_s3 class uses 6 arguments.
 		$vars = array(
 			'ACL' => $acl,
 			'Bucket' => $bucket,
@@ -760,13 +763,13 @@ class UpdraftPlus_S3_Compat {
 				$fp = $save_to;
 				if (!is_bool($resume)) $range_header = $resume;
 			} elseif (file_exists($save_to)) {
-				if ($resume && ($fp = @fopen($save_to, 'ab')) !== false) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				if ($resume && ($fp = @fopen($save_to, 'ab')) !== false) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
 					$range_header = "bytes=".filesize($save_to).'-';
 				} else {
 					throw new Exception('Unable to open save file for writing: '.$save_to);
 				}
 			} else {
-				if (($fp = @fopen($save_to, 'wb')) !== false) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged
+				if (($fp = @fopen($save_to, 'wb')) !== false) {// phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Silenced to suppress errors that may arise because of the function.
 					$range_header = false;
 				} else {
 					throw new Exception('Unable to open save file for writing: '.$save_to);
@@ -872,5 +875,99 @@ class UpdraftPlus_S3_Compat {
 		}
 		return false;
 		
+	}
+
+	/**
+	 * Get or create IAM instance
+	 *
+	 * @return object $this->iam
+	 */
+	private function getIAM() {
+		if (!$this->iam) {
+			$opts = array(
+				'credentials' => array(
+					'key' => $this->__access_key,
+					'secret'  => $this->__secret_key
+				),
+				'version' => '2010-05-08',
+				'region' => $this->region
+			);
+			$this->iam = new Aws\Iam\IamClient($opts);
+		}
+
+		return $this->iam;
+	}
+
+	/**
+	 * Create IAM user
+	 *
+	 * @param array $options
+	 *
+	 * @return array $response
+	 */
+	public function createUser($options) {
+		$iam = $this->getIAM();
+
+		try {
+			$response = $iam->createUser(array(
+				'Path' => $options['Path'],
+				'UserName' => $options['UserName']
+			));
+		} catch (Guzzle\Http\Exception\ClientErrorResponseException $e) {
+			$response = $e->getResponse();
+			$code = $response->getStatusCode();
+			return array(
+				'code' => $code,
+				'error' => $e->getMessage()
+			);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Create access key for IAM user
+	 *
+	 * @param string $username
+	 *
+	 * @return array $response
+	 */
+	public function createAccessKey($username) {
+		$iam = $this->getIAM();
+
+		try {
+			$response = $iam->createAccessKey(array('UserName' => $username));
+		} catch (Guzzle\Http\Exception\ClientErrorResponseException $e) {
+			return array(
+				'error' => $e->getMessage()
+			);
+		}
+
+		return $response;
+	}
+
+	/**
+	 * Put user policy IAM user
+	 *
+	 * @param array $options
+	 *
+	 * @return array $response
+	 */
+	public function putUserPolicy($options) {
+		$iam = $this->getIAM();
+
+		try {
+			$response = $iam->putUserPolicy(array(
+				'UserName' => $options['UserName'],
+				'PolicyName' => $options['PolicyName'],
+				'PolicyDocument' => $options['PolicyDocument']
+			));
+		} catch (Guzzle\Http\Exception\ClientErrorResponseException $e) {
+			return array(
+				'error' => $e->getMessage()
+			);
+		}
+
+		return $response;
 	}
 }

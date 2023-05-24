@@ -69,8 +69,9 @@ add_filter( 'relevanssi_pre_excerpt_content', 'relevanssi_remove_page_builder_sh
 add_filter( 'relevanssi_post_content', 'relevanssi_remove_page_builder_shortcodes', 9 );
 
 // Permalink handling.
-add_filter( 'the_permalink', 'relevanssi_permalink', 10, 2 );
 add_filter( 'post_link', 'relevanssi_permalink', 10, 2 );
+add_filter( 'post_type_link', 'relevanssi_permalink', 10, 2 );
+add_filter( 'attachment_link', 'relevanssi_permalink', 10, 2 );
 add_filter( 'page_link', 'relevanssi_permalink', 10, 2 );
 add_filter( 'relevanssi_permalink', 'relevanssi_permalink' );
 
@@ -395,6 +396,7 @@ function relevanssi_create_database_tables( $relevanssi_db_version ) {
 	time timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	user_id bigint(20) NOT NULL DEFAULT '0',
 	ip varchar(40) NOT NULL DEFAULT '',
+	session_id varchar(32) NOT NULL DEFAULT '',
 	PRIMARY KEY id (id)) $charset_collate;";
 
 	dbDelta( $sql );
@@ -438,7 +440,7 @@ function relevanssi_create_database_tables( $relevanssi_db_version ) {
 
 	$stopwords = relevanssi_fetch_stopwords();
 	if ( empty( $stopwords ) ) {
-		relevanssi_populate_stopwords();
+		relevanssi_populate_stopwords( false, $relevanssi_stopword_table );
 	}
 }
 

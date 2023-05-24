@@ -57,7 +57,7 @@
 
 
             // If the key is invalid or missing display an error message to the admins
-            if( ( !$wppb_mci_api_key_validated || empty( $wppb_mci_api_key ) ) && current_user_can( 'manage_options' ) ) {
+            if( ( !$wppb_mci_api_key_validated || empty( $wppb_mci_api_key ) ) && current_user_can( apply_filters( 'wppb_mailchimp_page_capability', 'manage_options' ) ) ) {
 
                 echo $args['before_widget']; //phpcs:ignore
 

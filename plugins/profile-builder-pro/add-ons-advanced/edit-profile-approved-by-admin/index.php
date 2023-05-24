@@ -85,6 +85,84 @@ function wppb_in_init_edit_profile_approval() {
         }
     }
 
+    // Email Customizer hooks
+    // user
+    add_filter('wppb_epaa_user_email_content', 'wppb_email_customizer_epaa_content_filter_handler', 10, 4);
+	add_filter('wppb_epaa_user_email_subject', 'wppb_email_customizer_epaa_title_filter_handler', 10, 4);
+
+    // admin
+    add_filter('wppb_epaa_admin_email_content', 'wppb_admin_email_customizer_epaa_content_filter_handler', 10, 4);
+	add_filter('wppb_epaa_admin_email_subject', 'wppb_admin_email_customizer_epaa_title_filter_handler', 10, 4);
+
+}
+
+// Email Customizer metabox
+add_action( 'init', 'wppb_in_epaa_init_email_customizer_metabox', 12 );
+function wppb_in_epaa_init_email_customizer_metabox(){
+
+	if( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+		require_once( WPPB_PAID_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+	elseif( file_exists( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' ) )
+		require_once( WPPB_PLUGIN_DIR . '/assets/lib/class-mustache-templates/class-mustache-templates.php' );
+
+    // we format the var like this for proper line breaks.
+    $uec_epaa_notification = __("<p>Your profile has been reviewed by an administrator:</p>\n<br>\n<p>Approved Fields: {{approved_fields}}</p>\n<p>Unapproved Fields: {{unapproved_fields}}</p>\n", 'profile-builder');
+    $mustache_vars = wppb_email_customizer_generate_merge_tags('epaa_notification');
+    $fields = array(
+        array(
+            'label' => __('Email Subject', 'profile-builder'), // <label>
+            'desc' => '', // description
+            'id' => 'wppb_user_emailc_epaa_notification_subject', // field id and name
+            'type' => 'text', // type of field
+            'default' => __('[{{site_name}}] Your profile has been reviewed by an administrator', 'profile-builder'), // type of field
+        ),
+        array(
+            'label' => __('Enable email', 'profile-builder'), // <label>
+            'desc' => '', // description
+            'id' => 'wppb_user_emailc_epaa_notification_enabled', // field id and name
+            'type' => 'checkbox', // type of field
+            'default' => 'on',
+        ),
+        array( // Textarea
+            'label' => '', // <label>
+            'desc' => '', // description
+            'id' => 'wppb_user_emailc_epaa_notification_content', // field id and name
+            'type' => 'textarea', // type of field
+            'default' => $uec_epaa_notification, // type of field
+        )
+    );
+
+    new PB_Mustache_Generate_Admin_Box('uec_epaa_notification', __('User Notification for Edit Profile Approved by Admin', 'profile-builder'), 'profile-builder_page_user-email-customizer', 'core', $mustache_vars, '', $fields);
+
+    // we format the var like this for proper line breaks.
+    $aec_epaa_notification = __("<p>The user {{username}} has updated their profile and some of the fields require admin approval:</p>\n<br>\n{{modified_fields}}\n<br>\n<p>Access this link to approve changes: {{approval_url}}</p>\n", 'profile-builder');
+    $mustache_vars = wppb_email_customizer_generate_merge_tags('epaa_notification_admin');
+    $fields = array(
+        array(
+            'label' => __('Email Subject', 'profile-builder'), // <label>
+            'desc' => '', // description
+            'id' => 'wppb_admin_emailc_epaa_notification_subject', // field id and name
+            'type' => 'text', // type of field
+            'default' => __('[{{site_name}}] A user has updated their profile. Some fields need approval', 'profile-builder'), // type of field
+        ),
+        array(
+            'label' => __('Enable email', 'profile-builder'), // <label>
+            'desc' => '', // description
+            'id' => 'wppb_admin_emailc_epaa_notification_enabled', // field id and name
+            'type' => 'checkbox', // type of field
+            'default' => 'on',
+        ),
+        array( // Textarea
+            'label' => '', // <label>
+            'desc' => '', // description
+            'id' => 'wppb_admin_emailc_epaa_notification_content', // field id and name
+            'type' => 'textarea', // type of field
+            'default' => $aec_epaa_notification, // type of field
+        )
+    );
+
+    new PB_Mustache_Generate_Admin_Box('aec_epaa_notification', __('Admin Notification for Edit Profile Approved by Admin', 'profile-builder'), 'profile-builder_page_admin-email-customizer', 'core', $mustache_vars, '', $fields);
+
 }
 
 //set up ajax hooks
@@ -573,10 +651,14 @@ function wppb_in_epaa_handle_fields_with_meta_save( $bool, $field, $user_id, $re
 
                     if (!empty($field['meta-name'])) {
 
-                        if( isset( $request_data[wppb_handle_meta_name($field['meta-name'])] ) )
-                            $new_value = ( is_array( $request_data[wppb_handle_meta_name($field['meta-name'])] ) ) ?
-                                implode (',', $request_data[wppb_handle_meta_name($field['meta-name'])] ) :
-                                $request_data[wppb_handle_meta_name($field['meta-name'])];
+                        if( isset( $request_data[wppb_handle_meta_name($field['meta-name'])] )) {
+                            if ( is_array( $request_data[wppb_handle_meta_name( $field['meta-name'] )] )) {
+                                if ( $field['field'] == 'Timepicker' )
+                                    $new_value = implode( ':', $request_data[wppb_handle_meta_name( $field['meta-name'] )] );
+                                else $new_value = implode( ',', $request_data[wppb_handle_meta_name( $field['meta-name'] )] );
+                            }
+                            else $new_value = $request_data[wppb_handle_meta_name( $field['meta-name'] )];
+                        }
 
                         //enable the admin approval feature for simple upload
                         if ( ( $field[ 'field' ] == 'Upload' || $field[ 'field' ] == 'Avatar' ) && isset( $field[ 'simple-upload' ] ) && $field[ 'simple-upload' ] == 'yes' ){
@@ -860,7 +942,7 @@ function wppb_in_epaa_determine_url_from_form_name( $form_name ){
         $all_edit_form_pages = get_posts( array( 'post_type' => 'page', 's' => '[wppb-edit-profile', 'posts_per_page' => -1, 'numberposts' => -1 ) );
         $specific_form_pages = get_posts( array( 'post_type' => 'page', 's' => '[wppb-edit-profile form_name=', 'posts_per_page' => -1, 'numberposts' => -1 ) );
 
-        $default_form_pages = array_udiff( $all_edit_form_pages, $specific_form_pages, 'wppb_in_epaa_compare_objects' );
+        $default_form_pages = array_values( array_udiff( $all_edit_form_pages, $specific_form_pages, 'wppb_in_epaa_compare_objects' ));
         if ( !empty( $default_form_pages ) ) {
             if( has_shortcode( $default_form_pages[0]->post_content, 'wppb-edit-profile' ) ) {
                 return get_permalink($default_form_pages[0]->ID);

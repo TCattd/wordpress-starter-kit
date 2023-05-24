@@ -17,7 +17,7 @@ class WCML_Currency_Switcher_Template extends WCML_Templates_Factory {
 	 */
 	private $woocommerce_wpml;
 
-	/** @var string|null $model */
+	/** @var array|null $model */
 	private $model;
 
 	/**

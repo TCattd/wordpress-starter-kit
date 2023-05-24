@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'IWPML_PB_Media_Nodes_Iterator' => $baseDir . '/classes/Shared/media/interface-iwpml-pb-media-nodes-iterator.php',
     'IWPML_PB_Media_Update' => $baseDir . '/classes/Shared/media/interface-iwpml-pb-media-update.php',
     'IWPML_PB_Media_Update_Factory' => $baseDir . '/classes/Shared/media/interface-iwpml-pb-media-update-factory.php',

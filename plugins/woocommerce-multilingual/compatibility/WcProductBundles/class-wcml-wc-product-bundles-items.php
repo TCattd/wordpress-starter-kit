@@ -3,7 +3,7 @@
 class WCML_WC_Product_Bundles_Items {
 
 	/**
-	 * @param int
+	 * @param int $product_id
 	 *
 	 * @return array
 	 */
@@ -19,7 +19,7 @@ class WCML_WC_Product_Bundles_Items {
 	}
 
 	/**
-	 * @param WC_Bundled_Item
+	 * @param WC_Bundled_Item $bundled_item
 	 *
 	 * @return array
 	 */
@@ -47,7 +47,7 @@ class WCML_WC_Product_Bundles_Items {
 	}
 
 	/**
-	 * @param int
+	 * @param int $item_id
 	 *
 	 * @return WC_Bundled_Item_Data
 	 */
@@ -56,16 +56,16 @@ class WCML_WC_Product_Bundles_Items {
 	}
 
 	/**
-	 * @param WC_Bundled_Item_Data
-	 * @param string
-	 * @param mixed
+	 * @param WC_Bundled_Item_Data $bundled_item_data
+	 * @param string               $key
+	 * @param mixed                $value
 	 */
 	public function update_item_meta( $bundled_item_data, $key, $value ) {
 		$bundled_item_data->update_meta( $key, $value );
 	}
 
 	/**
-	 * @param WC_Bundled_Item_Data
+	 * @param WC_Bundled_Item_Data $bundled_item_data
 	 */
 	public function save_item_meta( $bundled_item_data ) {
 		$bundled_item_data->save();

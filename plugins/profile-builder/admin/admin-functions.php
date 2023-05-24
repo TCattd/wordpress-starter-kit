@@ -131,7 +131,7 @@ function wppb_password_check_extra_conditions( $errors, $user ){
 
         if( !empty( $wppb_generalSettings['minimum_password_length'] ) ){
             if( strlen( $password ) < $wppb_generalSettings['minimum_password_length'] )
-                $errors->add( 'pass', sprintf( __( '<strong>ERROR</strong>: The password must have the minimum length of %s characters', 'profile-builder' ), $wppb_generalSettings['minimum_password_length'] ) );
+                $errors->add( 'pass', sprintf( __( '<strong>ERROR:</strong> The password must have the minimum length of %s characters', 'profile-builder' ), $wppb_generalSettings['minimum_password_length'] ) );
         }
 
         if( isset( $_POST['wppb_password_strength'] ) && !empty( $wppb_generalSettings['minimum_password_strength'] ) ){
@@ -147,7 +147,7 @@ function wppb_password_check_extra_conditions( $errors, $user ){
 
             if( !empty( $password_strength_result_slug ) ){
                 if( $password_strength_array[$password_strength_result_slug] < $password_strength_array[$wppb_generalSettings['minimum_password_strength']] )
-                    $errors->add( 'pass', sprintf( __( '<strong>ERROR</strong>: The password must have a minimum strength of %s', 'profile-builder' ), $password_strength_text[$wppb_generalSettings['minimum_password_strength']] ) );
+                    $errors->add( 'pass', sprintf( __( '<strong>ERROR:</strong> The password must have a minimum strength of %s', 'profile-builder' ), $password_strength_text[$wppb_generalSettings['minimum_password_strength']] ) );
             }
         }
     }
@@ -359,3 +359,32 @@ function wppb_get_reserved_meta_name_list( $all_fields, $posted_values ){
 
     return apply_filters ( 'wppb_unique_meta_name_list', $unique_meta_name_list );
 }
+
+
+/**
+ * Function that adds an admin notification about the PB Form Design Styles
+ *
+ */
+function wppb_form_design_new_styles_notification() {
+    /* initiate the plugin notifications class */
+    $notifications = WPPB_Plugin_Notifications::get_instance();
+    /* this must be unique */
+    $notification_id = 'wppb_form_design_new_styles';
+
+    if ( defined( 'WPPB_PAID_PLUGIN_DIR' ) && file_exists( WPPB_PAID_PLUGIN_DIR.'/features/form-designs/form-designs.php' ) )
+        $notification_message = '<p style="font-size: 15px; margin-top:4px;">' . sprintf( __( 'You can now beautify your Forms using new %1$sForm Styles%2$s by selecting and activating the one you like in %3$sProfile Builder -> Settings%4$s.', 'profile-builder' ), '<strong>', '</strong>', '<a href="'. get_site_url() .'/wp-admin/admin.php?page=profile-builder-general-settings#form_desings">', '</a>') . '</p>';
+    else 
+        $notification_message = '<p style="font-size: 15px; margin-top:4px;">' . sprintf( __( 'You can now beautify your Forms using %1$sForm Styles%2$s. Have a look at the new Styles in %3$sProfile Builder -> Settings%4$s.', 'profile-builder' ), '<strong>', '</strong>', '<a href="'. get_site_url() .'/wp-admin/admin.php?page=profile-builder-general-settings#form_desings_showcase">', '</a>') . '</p>';
+
+
+    $ul_icon_url = ( file_exists( WPPB_PLUGIN_DIR . 'assets/images/pb-logo-free.png' )) ? WPPB_PLUGIN_URL . 'assets/images/pb-logo-free.png' : '';
+    $ul_icon = ( !empty($ul_icon_url)) ? '<img src="'. $ul_icon_url .'" width="64" height="64" style="float: left; margin: 15px 12px 15px 0; max-width: 100px;" alt="Profile Builder - Form Designs">' : '';
+
+    $message = $ul_icon;
+    $message .= '<h3 style="margin-bottom: 0;">Profile Builder PRO - Form Designs</h3>';
+    $message .= $notification_message;
+    $message .= '<a href="' . add_query_arg( array( 'wppb_dismiss_admin_notification' => $notification_id ) ) . '" type="button" class="notice-dismiss"><span class="screen-reader-text">' . __( 'Dismiss this notice.', 'profile-builder' ) . '</span></a>';
+
+    $notifications->add_notification( $notification_id, $message, 'wppb-notice notice notice-info', false );
+}
+add_action( 'admin_init', 'wppb_form_design_new_styles_notification' );

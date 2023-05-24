@@ -1,0 +1,27 @@
+{
+   "domain": "messages",
+   "locale_data": {
+      "messages": {
+         "": {
+            "domain": "messages",
+            "plural_forms": "nplurals=2; plural=(n != 1);",
+            "lang": "en"
+         },
+         "Choose the image file type for flags": [
+            "Выберите тип файла изображения для флагов"
+         ],
+         "This option affects only the built-in WPML flags, not the custom uploaded ones.": [
+            "Этот параметр влияет только на встроенные флаги WPML, а не на загруженные пользователем."
+         ],
+         "Save": [
+            "Сохранить"
+         ],
+         "The new format has been saved.": [
+            "Новый формат сохранен."
+         ],
+         "Failed to save the new format": [
+            "Не удалось сохранить новый формат"
+         ]
+      }
+   }
+}

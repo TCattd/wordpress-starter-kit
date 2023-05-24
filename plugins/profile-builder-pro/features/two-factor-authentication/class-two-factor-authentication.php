@@ -240,12 +240,12 @@ class WPPB_Two_Factor_Authenticator {
                                         <input name="wppb_auth_relaxedmode" id="wppb_auth_relaxedmode" type="checkbox" ' . checked( $relaxedmode, 'enabled', false ) . '/>
                                         <span class="wppb-description-delimiter">' . esc_html__( "Allow for more time drift on your phone clock ( &#177;4 min ).", "profile-builder" ) . '</span>
                                     </li>
-                                    <li class="wppb-form-field wppb_auth_description">
+                                    <li class="wppb-form-field wppb_auth_description'. apply_filters( 'wppb_2fa_field_extra_css_class', '', 'wppb_auth_description') .'">
                                         <label for="wppb_auth_description">' . esc_html__( 'Description', 'profile-builder' ) . '</label>
                                         <input name="wppb_auth_description" id="wppb_auth_description" type="text" value="' . $description . '"/>
                                         <span class="wppb-description-delimiter">' . esc_html__( 'Description that you\'ll see in the Authenticator app.', 'profile-builder' ) . '</span>
                                     </li>
-                                    <li class="wppb-form-field wppb_auth_secret">
+                                    <li class="wppb-form-field wppb_auth_secret'. apply_filters( 'wppb_2fa_field_extra_css_class', '', 'wppb_auth_secret') .'">
                                         <label for="wppb_auth_secret">' . esc_html__( 'Secret', 'profile-builder' ) . '</label>
                                         <input name="wppb_auth_secret" id="wppb_auth_secret" type="text" readonly="readonly" size="25" value="' . $secret . '"/>
                                     </li>
@@ -257,7 +257,7 @@ class WPPB_Two_Factor_Authenticator {
                                         <span class="wppb-description-delimiter">' . esc_html__( 'Scan this with the Authenticator app:', 'profile-builder' ) . '</span>
                                         <div id="wppb_auth_QRCODE"></div>
                                     </li>
-                                    <li class="wppb-form-field wppb_auth_verify">
+                                    <li class="wppb-form-field wppb_auth_verify'. apply_filters( 'wppb_2fa_field_extra_css_class', '', 'wppb_auth_passw') .'">
                                         <label for="wppb_auth_passw">' . esc_html__( 'Verify TOTP', 'profile-builder' ) . '</label>
                                         <input name="wppb_auth_passw" id="wppb_auth_passw" type="text"/>
                                     <li id="wppb_auth_verify_buttons" style="">
@@ -574,7 +574,7 @@ class WPPB_Two_Factor_Authenticator {
                     return new WP_Error( 'wppb_login_auth', $errorMessage );
                 }
                 if ( !$this->check_otp( $userdata, $userdata->data->user_login, $password ) ) {
-                    $errorMessage = '<strong>' . __( 'ERROR', 'profile-builder' ) . '</strong>: ' . __( 'Your Authenticator code was incorrect. Please try again.', 'profile-builder' );
+                    $errorMessage = '<strong>' . __( 'ERROR:', 'profile-builder' ) . '</strong> ' . __( 'Your Authenticator code was incorrect. Please try again.', 'profile-builder' );
                     return new WP_Error( 'wppb_login_auth', $errorMessage );
                 }
             }
@@ -620,9 +620,11 @@ class WPPB_Two_Factor_Authenticator {
                             data["location"]= "frontend";
                             data["user"]	= jQuery("#user_login.input").val();
                             jQuery.post(ajaxurl, data, function(response) {
-                                if ( response && !jQuery(".login-auth").length ){
+                                if ( response && !jQuery(".login-auth").length ) {
                                     jQuery("#wppb-login-wrap").before(response["notice"]);
                                     jQuery(".login-password").after(response["field"]);
+                                } else {
+                                    jQuery("#wppb-loginform").unbind( "submit" ).submit();
                                 }
                             });
                         });
@@ -633,7 +635,7 @@ class WPPB_Two_Factor_Authenticator {
     }
 
 	/**
-	 * Add script that dynamically adds field to frontend Login form
+	 * Add script that dynamically adds field to backend Login form
 	 */
 	function add_field_to_backend_login_form( ) {
 		if( !wp_script_is('jquery', 'done') && !is_admin() ){

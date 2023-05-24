@@ -7,15 +7,13 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 
 	public function __construct() {
 		parent::__construct();
-		add_action( 'wpml_register_string_packages', [ $this, 'register_missing_packages' ], 10, 2 );
-		add_action( 'gform_post_update_form_meta', [ $this, 'gform_post_update_form_meta_action' ], 10, 3 );
+		add_action( 'wpml_register_string_packages', [ $this, 'register_missing_packages' ] );
+		add_action( 'gform_post_update_form_meta', [ $this, 'gform_post_update_form_meta_action' ] );
 
 		$migrated = get_option( 'gfml_pt_migr_comp' );
 		if ( ! $migrated ) {
 			if ( $this->gravity_form_table_exists() && $this->has_post_gravity_from_translations() ) {
-				require dirname( __FILE__ ) . '/gfml-migration.class.php';
-				$migration_object = new GFML_Migration( $this );
-				$migration_object->migrate();
+				( new GFML_Migration( $this ) )->migrate();
 			}
 			update_option( 'gfml_pt_migr_comp', true );
 		}
@@ -82,17 +80,6 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 
 	public function get_st_context( $form_id ) {
 		return sanitize_title_with_dashes( ICL_GRAVITY_FORM_ELEMENT_TYPE . '-' . $form_id );
-	}
-
-	public function get_form_package( $form ) {
-		$form_package            = new stdClass();
-		$form_package->kind      = __( 'Gravity Form', 'gravity-forms-ml' );
-		$form_package->kind_slug = ICL_GRAVITY_FORM_ELEMENT_TYPE;
-		$form_package->name      = $form['id'];
-		$form_package->title     = $form['title'];
-		$form_package->edit_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&id=%d', $form['id'] ) );
-
-		return $form_package;
 	}
 
 	public function register_gf_string( $string_value, $string_name, $package, $string_title, $string_kind = 'LINE' ) {
@@ -300,6 +287,8 @@ class GFML_TM_API extends Gravity_Forms_Multilingual {
 				case 'product':
 				case 'option':
 				case 'shipping':
+				case 'poll':
+				case 'quantity':
 					$this->register_strings_field_option( $form_package, $form_field );
 					break;
 				case 'post_custom_field':

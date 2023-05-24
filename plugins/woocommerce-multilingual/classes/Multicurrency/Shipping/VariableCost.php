@@ -193,9 +193,9 @@ trait VariableCost {
 
 
 	/**
-	 * wrapper for getShippingClassTermId to avail testing private method.
+	 * Wrapper for getShippingClassTermId to avail testing private method.
 	 *
-	 * @param $key
+	 * @param string $key
 	 *
 	 * @return bool|false|string
 	 */

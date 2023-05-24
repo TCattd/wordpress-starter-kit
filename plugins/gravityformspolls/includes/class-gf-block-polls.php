@@ -107,12 +107,14 @@ class GF_Block_Polls extends GF_Block {
 
 		$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
 
+		$assets_path = '/assets/js/dist/';
+
 		return array(
 			array(
 				'handle'    => $this->script_handle,
-				'src'       => gf_polls()->get_base_url() . "/js/blocks{$min}.js",
+				'src'       => gf_polls()->get_base_url() . $assets_path . "blocks{$min}.js",
 				'deps'      => array( 'wp-blocks', 'wp-element', 'wp-components', 'wp-i18n', 'wp-editor' ),
-				'version'   => $min ? gf_polls()->get_version() : filemtime( gf_polls()->get_base_path() . '/js/blocks.js' ),
+				'version'   => $min ? gf_polls()->get_version() : filemtime( gf_polls()->get_base_path() . $assets_path . 'blocks.js' ),
 				'callback'  => array( $this, 'localize_script' ),
 				'in_footer' => true,
 			),
@@ -159,15 +161,15 @@ class GF_Block_Polls extends GF_Block {
 		return array(
 			array(
 				'handle'  => 'gpoll_css',
-				'src'     => gf_polls()->get_base_url() . '/css/gpoll.css',
+				'src'     => gf_polls()->get_base_url() . '/assets/css/dist/theme.css',
 				'deps'    => $deps,
 				'version' => gf_polls()->_version,
 			),
 			array(
-				'handle'  => 'gform_editor_block_poll',
-				'src'     => gf_polls()->get_base_url() . '/css/blocks.min.css',
-				'deps'    => array( 'gpoll_css' ),
-				'version' => defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? filemtime( gf_polls()->get_base_path() . '/css/blocks.min.css' ) : gf_polls()->_version,
+				'handle'  => 'gpoll_css',
+				'src'     => gf_polls()->get_base_url() . '/assets/css/dist/theme-foundation.css',
+				'deps'    => $deps,
+				'version' => gf_polls()->_version,
 			),
 		);
 

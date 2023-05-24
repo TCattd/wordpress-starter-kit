@@ -56,7 +56,7 @@ if( !class_exists('WPPB_toolbox') ){
 
                 <?php
                     if ( file_exists( $this->advanced_settings_dir . 'includes/views/view-' . $this->active_tab . '.php' ) ) {
-                        include_once 'includes/views/view-' . $this->active_tab . '.php';
+                        include_once $this->advanced_settings_dir . 'includes/views/view-' . $this->active_tab . '.php';
                     }
                 ?>
             </div>
@@ -196,7 +196,12 @@ if( !class_exists('WPPB_toolbox') ){
             }
 
             if( isset( $settings['redirect-delay-timer'] ) ){
-                $settings['redirect-delay-timer'] = abs((int)$settings['redirect-delay-timer']);
+
+                if( $settings['redirect-delay-timer'] == '' )
+                    $settings['redirect-delay-timer'] = '';
+                else
+                    $settings['redirect-delay-timer'] = abs( (int)$settings['redirect-delay-timer'] );
+
             }
 
             if( isset( $settings['modify-permalinks-single'] ) )
@@ -219,7 +224,7 @@ if( !class_exists('WPPB_toolbox') ){
                             $path = 'includes/' . $slug . '/' . $key . '.php';
 
                             if ( file_exists( $this->advanced_settings_dir . $path ) )
-                                include_once $path;
+                                include_once $this->advanced_settings_dir . $path;
                         }
                     }
                 }
@@ -230,7 +235,7 @@ if( !class_exists('WPPB_toolbox') ){
 
     function wppb_advanced_settings_init() {
         if ( function_exists( 'wppb_return_bytes' ) ) {
-            include 'includes/functions.php';
+            include WPPB_PLUGIN_DIR . 'admin/advanced-settings/includes/functions.php';
 
             new WPPB_Advanced_Settings;
         }

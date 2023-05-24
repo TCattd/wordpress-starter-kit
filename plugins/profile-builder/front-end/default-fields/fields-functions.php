@@ -56,7 +56,7 @@ function wppb_validate_fields_in_admin( &$errors, $update, &$user ){
     $global_request = $_REQUEST;
     if ( is_array( $all_data ) ){
         foreach ( $all_data as $field ){
-            $error_for_field = apply_filters( 'wppb_check_form_field_'.Wordpress_Creation_Kit_PB::wck_generate_slug( $field['field'] ), '', $field, $global_request, 'back_end', '', get_current_user_id() );
+            $error_for_field = apply_filters( 'wppb_check_form_field_'.Wordpress_Creation_Kit_PB::wck_generate_slug( $field['field'] ), '', $field, $global_request, 'back_end', '', $user->ID );
 
             if( !empty( $error_for_field ) ){
                 $errors->add( $field['id'], '<strong>'. __( 'ERROR', 'profile-builder' ).'</strong> '.$field['field-title'].':'.$error_for_field);

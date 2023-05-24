@@ -30,7 +30,7 @@ class WCML_Order_Status_Manager implements \IWPML_Action {
 	/**
 	 * Adds post__not_in to the query arguments.
 	 *
-	 * @param null $q the parsed query.
+	 * @param WP_Query|null $q the parsed query.
 	 */
 	public function pre_get_posts( $q = null ) {
 		if ( isset( $q->query['post_type'] )
@@ -49,7 +49,7 @@ class WCML_Order_Status_Manager implements \IWPML_Action {
 		$this->wp_query->query(
 			[
 				'post_type'        => 'wc_order_status',
-				'posts_per_page'   => -1,
+				'posts_per_page'   => 100,
 				'suppress_filters' => false,
 
 			]
@@ -62,7 +62,7 @@ class WCML_Order_Status_Manager implements \IWPML_Action {
 	 * Filters out elements not in the current language from query results.
 	 *
 	 * @param WP_Query $q        The WordPress query.
-	 * @param void     $statuses Posts with post type wc_order_status
+	 * @param array    $statuses Posts with post type wc_order_status.
 	 *
 	 * @return array The post__not_in array.
 	 */

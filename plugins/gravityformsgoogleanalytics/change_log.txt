@@ -1,0 +1,26 @@
+### 1.3 | 2023-05-11
+- Added additional logging to help troubleshoot sending events.
+- Added warning message about upcoming end of life for Google Universal Analytics API.
+- Disabled automatic updates since the update from UA to GA4 will require user interaction.
+
+### 1.2 | 2022-12-22
+- Fixed an issue where the save settings button is disabled in languages other than English.
+- Added Gravity Forms license key to oAuth process.
+
+### 1.1 | 2022-10-18
+- Added fallback methods for entering account information manually.
+- Fixed an issue where the Google Analytics query limit prevents displaying all of a user's accounts.
+- Fixed an issue where forms embedded with ajax will not send events using the Google Analytics connection method without an event value.
+
+### 1.0 | 2022-06-15
+- Added an option to manually configure the Analytics account in Google Tag Manager so GA4 accounts can be used without an associated UA account.
+- Updated error messages to be more informative when API calls fail.
+- Fixed an issue where goals can't be created due to duplicate IDs.
+
+### 1.0-rc-1 | 2022-02-23
+- Updated error message styling to be compatible with Gravity Forms 2.6.
+- Updated error messages when API calls fail.
+- Fixed an issue where events are potentially duplicated when sending via ajax.
+
+### 1.0-beta-1 | 2022-01-12
+- All new!

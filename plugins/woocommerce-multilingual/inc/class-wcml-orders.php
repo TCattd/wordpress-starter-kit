@@ -12,7 +12,10 @@ class WCML_Orders {
 	const COOKIE_TTL            = 86400;
 	const KEY_LANGUAGE          = 'wpml_language';
 
+	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
+
+	/** @var SitePress */
 	private $sitepress;
 
 	public function __construct( $woocommerce_wpml, $sitepress ) {
@@ -75,7 +78,9 @@ class WCML_Orders {
 	 */
 	public function get_filtered_comments( $comments ) {
 		// $ifIdentifiedUser :: void -> bool
-		$ifIdentifiedUser = function () { return (bool) get_current_user_id(); };
+		$ifIdentifiedUser = function () {
+			return (bool) get_current_user_id();
+		};
 
 		// $translateInWoocommerce :: string -> string
 		$translateInWoocommerce = \WPML\FP\partialRight( 'translate', 'woocommerce' );
@@ -136,7 +141,7 @@ class WCML_Orders {
 			 *
 			 * @since 4.11.0
 			 *
-			 * @param bool          true                True if we should save adjusted order item.
+			 * @param bool          $true               True if we should save adjusted order item.
 			 * @param WC_Order_Item $item
 			 * @param string        $language_to_filter Language to filter.
 			 */
@@ -144,10 +149,11 @@ class WCML_Orders {
 
 			if ( $item instanceof WC_Order_Item_Product ) {
 				if ( 'line_item' === $item->get_type() ) {
-					$this->adjust_product_item_if_translated( $item, $language_to_filter );
-					$this->adjust_variation_item_if_translated( $item, $language_to_filter );
-
-					if ( $save_adjusted_item ) {
+					$item_was_adjusted = $this->adjust_product_item_if_translated( $item, $language_to_filter );
+					if ( $item->get_variation_id() ) {
+						$item_was_adjusted = $this->adjust_variation_item_if_translated( $item, $language_to_filter );
+					}
+					if ( $item_was_adjusted && $save_adjusted_item ) {
 						$item->save();
 					}
 				}
@@ -178,41 +184,40 @@ class WCML_Orders {
 	/**
 	 * @param WC_Order_Item_Product $item
 	 * @param string                $language_to_filter
+	 *
+	 * @return bool
 	 */
 	private function adjust_product_item_if_translated( $item, $language_to_filter ) {
 
-		$translated_product_id = apply_filters( 'translate_object_id', $this->get_item_product_id( $item ), 'product', false, $language_to_filter );
-		if ( ! is_null( $translated_product_id ) ) {
+		$product_id            = $item->get_product_id();
+		$translated_product_id = apply_filters( 'translate_object_id', $product_id, 'product', true, $language_to_filter );
+		if ( $product_id && $product_id !== $translated_product_id ) {
 			$item->set_product_id( $translated_product_id );
 			$item->set_name( get_post( $translated_product_id )->post_title );
-		}
-	}
-
-	/**
-	 * @param WC_Order_Item_Product $item
-	 *
-	 * @return false|int
-	 */
-	private function get_item_product_id( $item ) {
-		$item_product_id = $item->get_product_id();
-		if ( 'product_variation' === get_post_type( $item_product_id ) ) {
-			$item_product_id = wp_get_post_parent_id( $item_product_id );
+			return true;
 		}
 
-		return $item_product_id;
+		return false;
 	}
 
 	/**
 	 * @param WC_Order_Item_Product $item
 	 * @param string                $language_to_filter
+	 *
+	 * @return bool
 	 */
 	private function adjust_variation_item_if_translated( $item, $language_to_filter ) {
-		$translated_variation_id = apply_filters( 'translate_object_id', $item->get_variation_id(), 'product_variation', false, $language_to_filter );
-		if ( ! is_null( $translated_variation_id ) ) {
+
+		$variation_id            = $item->get_variation_id();
+		$translated_variation_id = apply_filters( 'translate_object_id', $variation_id, 'product_variation', true, $language_to_filter );
+		if ( $variation_id && $variation_id !== $translated_variation_id ) {
 			$item->set_variation_id( $translated_variation_id );
 			$item->set_name( wc_get_product( $translated_variation_id )->get_name() );
 			$this->update_attribute_item_meta_value( $item, $translated_variation_id );
+			return true;
 		}
+
+		return false;
 	}
 
 	/**
@@ -343,7 +348,7 @@ class WCML_Orders {
 	}
 
 	/**
-	 * @param \WC_Abstract_Legacy_Order $order
+	 * @param WC_Abstract_Order $order
 	 */
 	public function setOrderLanguageBeforeSave( $order ) {
 		if (

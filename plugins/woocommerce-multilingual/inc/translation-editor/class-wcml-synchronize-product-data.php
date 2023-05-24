@@ -1,6 +1,7 @@
 <?php
 
 use WPML\FP\Fns;
+use function WCML\functions\isCli;
 
 class WCML_Synchronize_Product_Data {
 
@@ -8,15 +9,12 @@ class WCML_Synchronize_Product_Data {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/**
-	 * @var SitePress
-	 */
+	/** @var SitePress */
 	private $sitepress;
 	/** @var WPML_Post_Translation */
 	private $post_translations;
 	/** @var wpdb */
 	private $wpdb;
-
 
 	/**
 	 * WCML_Synchronize_Product_Data constructor.
@@ -38,7 +36,7 @@ class WCML_Synchronize_Product_Data {
 			add_action( 'icl_pro_translation_completed', [ $this, 'icl_pro_translation_completed' ] );
 		}
 
-		if ( is_admin() ) {
+		if ( is_admin() || isCli() ) {
 			// filters to sync variable products.
 			add_action( 'save_post', [ $this, 'synchronize_products' ], PHP_INT_MAX, 2 ); // After WPML.
 
@@ -96,14 +94,16 @@ class WCML_Synchronize_Product_Data {
 		$api_call         = ! empty( $wp->query_vars['wc-api-version'] );
 		$auto_draft       = 'auto-draft' === $post->post_status;
 		$trashing         = isset( $_GET['action'] ) && 'trash' === $_GET['action'];
-		$is_valid_context = $force_valid_context
-		                    || $ajax_call
-		                    || $api_call
-		                    || in_array( $pagenow, [ 'post.php', 'post-new.php', 'admin.php' ], true );
+		$is_valid_context = isCli()
+							|| $force_valid_context
+							|| $ajax_call
+							|| $api_call
+							|| in_array( $pagenow, [ 'post.php', 'post-new.php', 'admin.php' ], true );
 
 		if (
-			$post_type !== 'product' ||
+			'product' !== $post_type ||
 			empty( $original_product_id ) ||
+			/* phpcs:ignore WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.CSRF.NonceVerification.NoNonceVerification */
 			isset( $_POST['autosave'] ) ||
 			! $is_valid_context ||
 			$trashing ||
@@ -259,25 +259,21 @@ class WCML_Synchronize_Product_Data {
 		$terms_to_insert = [];
 
 		foreach ( $tt_ids as $tt_id ) {
-
 			$tr_id = apply_filters( 'translate_object_id', $tt_id, $taxonomy, false, $language );
-
 			if ( ! is_null( $tr_id ) ) {
-				// not using get_term - unfiltered get_term
+				/**
+				 * Not using get_term - unfiltered get_term.
+				 *
+				 * @var stdClass
+				 */
 				$translated_term = $this->wpdb->get_row(
 					$this->wpdb->prepare(
-						"
-                            SELECT * FROM {$this->wpdb->terms} t JOIN {$this->wpdb->term_taxonomy} x ON x.term_id = t.term_id WHERE t.term_id = %d",
+						"SELECT * FROM {$this->wpdb->terms} t JOIN {$this->wpdb->term_taxonomy} x ON x.term_id = t.term_id WHERE t.term_id = %d",
 						$tr_id
 					)
 				);
-				if ( is_taxonomy_hierarchical( $taxonomy ) ) {
-					$terms_to_insert[] = (int) $translated_term->term_id;
-				} else {
-					$terms_to_insert[] = $translated_term->slug;
-				}
-
-				$terms_array[] = $translated_term->term_taxonomy_id;
+				$terms_to_insert[] = (int) $translated_term->term_id;
+				$terms_array[]     = $translated_term->term_taxonomy_id;
 			}
 		}
 
@@ -347,8 +343,8 @@ class WCML_Synchronize_Product_Data {
 	}
 
 	/**
-	 * @param WC_Product $product
-	 * @param WC_Product $translated_product
+	 * @param WC_Product       $product
+	 * @param WC_Product|false $translated_product
 	 */
 	public function sync_product_stock( $product, $translated_product = false ) {
 		$stock = $product->get_stock_quantity();
@@ -385,8 +381,11 @@ class WCML_Synchronize_Product_Data {
 	private function update_stock_value( $product, $stock_quantity ) {
 
 		$product_id_with_stock = $product->get_stock_managed_by_id();
+
+		/** @var WC_Product_Data_Store_CPT */
 		$data_store            = WC_Data_Store::load( 'product' );
 		$data_store->update_product_stock( $product_id_with_stock, $stock_quantity, 'set' );
+
 		delete_transient( 'wc_low_stock_count' );
 		delete_transient( 'wc_outofstock_count' );
 		delete_transient( 'wc_product_children_' . ( $product->is_type( 'variation' ) ? $product->get_parent_id() : $product->get_id() ) );
@@ -394,7 +393,7 @@ class WCML_Synchronize_Product_Data {
 	}
 
 	/**
-	 * @param $product
+	 * @param WC_Product $product
 	 */
 	public function sync_product_stock_hook( $product ) {
 		$is_posts_hook_removed                = remove_action(
@@ -437,8 +436,9 @@ class WCML_Synchronize_Product_Data {
 
 			$qty = apply_filters( 'wcml_order_item_quantity', $qty, $order, $item );
 
-			$translations = $this->post_translations->get_element_translations( $product_id );
+			/** @var WC_Product_Data_Store_CPT */
 			$data_store   = WC_Data_Store::load( 'product' );
+			$translations = $this->post_translations->get_element_translations( $product_id );
 			foreach ( $translations as $translation ) {
 				if ( $product_id !== (int) $translation ) {
 					$data_store->update_product_sales( (int) $translation, absint( $qty ), 'increase' );
@@ -791,9 +791,9 @@ class WCML_Synchronize_Product_Data {
 		}
 
 		$wcml_sync_hash = get_post_meta( $trnsl_post_id, 'wcml_sync_hash', true );
-		$post_md5       = $wcml_sync_hash === '' ? [] : maybe_unserialize( $wcml_sync_hash );
+		$post_md5       = '' === $wcml_sync_hash ? [] : maybe_unserialize( $wcml_sync_hash );
 
-		if ( isset( $post_md5[ $fields_group ] ) && $post_md5[ $fields_group ] == $hash ) {
+		if ( isset( $post_md5[ $fields_group ] ) && $post_md5[ $fields_group ] === $hash ) {
 			$is_sync_needed = false;
 		} else {
 			$post_md5[ $fields_group ] = $hash;
@@ -829,7 +829,7 @@ class WCML_Synchronize_Product_Data {
 			}
 
 			foreach ( $translations as $translation ) {
-				if ( $product_id !== (int)$translation ) {
+				if ( $product_id !== (int) $translation ) {
 					wp_set_post_terms( $translation, $terms, 'product_visibility', false );
 				}
 			}

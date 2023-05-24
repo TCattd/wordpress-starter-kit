@@ -1,13 +1,17 @@
 <?php
 
 use function WPML\Container\make;
+use WPML\API\Sanitize;
 
-class WCML_Cart_Switch_Lang_Functions {
+class WCML_Cart_Switch_Lang_Functions implements \IWPML_Frontend_Action, \IWPML_Backend_Action {
 
+	/** @var string $lang_from */
 	private $lang_from;
+
+	/** @var string $lang_to */
 	private $lang_to;
 
-	public function add_actions() {
+	public function add_hooks() {
 		add_action( 'wp_footer', [ $this, 'wcml_language_switch_dialog' ] );
 		add_action( 'wp_loaded', [ $this, 'wcml_language_force_switch' ] );
 		add_action( 'wcml_user_switch_language', [ $this, 'language_has_switched' ], 10, 2 );
@@ -26,9 +30,9 @@ class WCML_Cart_Switch_Lang_Functions {
 
 		if (
 			! isset( $_GET['force_switch'] ) &&
-			$lang_from != $lang_to &&
+			$lang_from !== $lang_to &&
 			! empty( $settings ) &&
-			$settings['cart_sync']['lang_switch'] == WCML_CART_CLEAR
+			WCML_CART_CLEAR === $settings['cart_sync']['lang_switch']
 		) {
 			$this->lang_from = $lang_from;
 			$this->lang_to   = $lang_to;
@@ -48,8 +52,7 @@ class WCML_Cart_Switch_Lang_Functions {
 		global $woocommerce_wpml, $sitepress, $wp, $post;
 
 		if ( make( WCML_Dependencies::class )->check() ) {
-
-			$current_url = home_url( add_query_arg( [], $wp->request ) );
+			$current_url = $this->get_current_url();
 
 			if ( is_shop() ) {
 				$requested_page_id = apply_filters( 'translate_object_id', wc_get_page_id( 'shop' ), 'post', true, $this->lang_from );
@@ -83,9 +86,9 @@ class WCML_Cart_Switch_Lang_Functions {
 					$active_languages[ $this->lang_to ]['translated_name']
 				);
 				/* translators: %s is a language name */
-				$stay_in              = sprintf( __( 'Keep %s', 'woocommerce-multilingual' ), $active_languages[ $this->lang_to ]['translated_name'] );
+				$stay_in = sprintf( __( 'Keep %s', 'woocommerce-multilingual' ), $active_languages[ $this->lang_to ]['translated_name'] );
 				/* translators: %s is a language name */
-				$switch_to            = sprintf( __( 'Switch back to %s', 'woocommerce-multilingual' ), $active_languages[ $this->lang_from ]['translated_name'] );
+				$switch_to = sprintf( __( 'Switch back to %s', 'woocommerce-multilingual' ), $active_languages[ $this->lang_from ]['translated_name'] );
 
 				$woocommerce_wpml->cart->cart_alert( $dialog_title, $confirmation_message, $stay_in, $switch_to, $force_cart_url, $request_url, true );
 			}
@@ -93,4 +96,19 @@ class WCML_Cart_Switch_Lang_Functions {
 
 	}
 
+	/**
+	 * Get current page url with query parameters.
+	 *
+	 * @return string
+	 */
+	public function get_current_url() {
+		/* phpcs:ignore WordPress.CSRF.NonceVerification.NoNonceVerification, WordPress.VIP.SuperGlobalInputUsage.AccessDetected, WordPress.VIP.ValidatedSanitizedInput.InputNotValidated, WordPress.VIP.ValidatedSanitizedInput.MissingUnslash */
+		$get_query = $_GET;
+
+		foreach ( $get_query as $index => $item ) {
+			$get_query[ $index ] = Sanitize::string( $item );
+		}
+
+		return home_url( add_query_arg( $get_query ) );
+	}
 }

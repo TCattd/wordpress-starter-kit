@@ -480,23 +480,7 @@ if( function_exists( 'wc_get_page_id' ) ) {
 
         return $template;
     }
-    add_filter('template_include', 'wppb_woo_restrict_shop_page', 40);
-
-
-    /* restrict products content  */
-    add_action( 'woocommerce_before_single_product', 'wppb_woo_product_restriction_start' );
-    function wppb_woo_product_restriction_start(){
-        ob_start();
-    }
-
-    add_action( 'woocommerce_after_single_product', 'wppb_woo_product_restriction_end' );
-    function wppb_woo_product_restriction_end(){
-        $product_content = ob_get_contents();
-        ob_end_clean();
-        remove_filter('the_content', 'wpautop');
-        echo apply_filters( 'the_content', $product_content );//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        add_filter('the_content', 'wpautop');
-    }
+    add_filter( 'template_include', 'wppb_woo_restrict_shop_page', 40 );
 
     /**
      * Function that restricts product viewing by hijacking WooCommerce product password protection (hide_content restriction mode)

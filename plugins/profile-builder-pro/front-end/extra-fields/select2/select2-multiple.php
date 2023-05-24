@@ -211,8 +211,8 @@ function wppb_select2_multiple_enable_tags_display($field_options, $form_locatio
         return $field_options;
     }
 
-    $user_values_array = explode(',', $user_values);
-    $existing_values_array = explode(',', $field_options);
+    $user_values_array = is_array( $user_values ) ? $user_values: explode(',', $user_values);
+    $existing_values_array = is_array( $field_options ) ? $field_options : explode(',', $field_options);
 
     $merged_arrays = array_merge(array_map('trim', $existing_values_array), $user_values_array);
     $new_values_array = array_unique($merged_arrays);

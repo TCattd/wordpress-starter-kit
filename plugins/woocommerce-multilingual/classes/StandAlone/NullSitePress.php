@@ -44,6 +44,14 @@ class NullSitePress implements ISitePress {
 		return preg_replace( '/_.+/', '', get_locale() );
 	}
 
+	/**
+	 * @param null|string $code
+	 * @param bool|string $cookie_lang
+	 */
+	public function switch_lang( $code = null, $cookie_lang = false ) {
+
+	}
+
 	/** @return string|false */
 	public function get_default_language() {
 		return $this->get_current_language();

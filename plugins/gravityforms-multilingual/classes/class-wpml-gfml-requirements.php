@@ -23,7 +23,7 @@ class WPML_GFML_Requirements {
 		$this->missing_one = false;
 
 		if ( ! defined( 'ICL_SITEPRESS_VERSION' )
-				 || ICL_PLUGIN_INACTIVE
+				 || ( defined( 'ICL_PLUGIN_INACTIVE' ) && ICL_PLUGIN_INACTIVE )
 				 || version_compare( ICL_SITEPRESS_VERSION, '2.0.5', '<' )
 		) {
 			$this->missing['WPML'] = [
@@ -54,7 +54,7 @@ class WPML_GFML_Requirements {
 
 		if ( ! defined( 'WPML_ST_VERSION' ) ) {
 			$this->missing['WPML String Translation'] = [
-				'url'  => 'http://wpml.org',
+				'url'  => 'https://wpml.org/faq/how-to-add-string-translation-to-your-site/?utm_source=plugin&utm_medium=gui&utm_campaign=gfml',
 				'slug' => 'wpml-string-stranslation',
 			];
 
@@ -89,7 +89,7 @@ class WPML_GFML_Requirements {
 				} else {
 					$sep = ', ';
 				}
-				$missing .= '<a href="' . $url . '">' . $title . '</a>' . $sep;
+				$missing .= '<a class="wpml-external-link" target="_blank" href="' . $url . '">' . $title . '</a>' . $sep;
 			}
 
 			$missing_slugs_classes = implode( ' ', $missing_slugs );

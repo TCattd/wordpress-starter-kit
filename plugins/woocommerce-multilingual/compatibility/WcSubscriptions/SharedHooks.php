@@ -34,6 +34,7 @@ class SharedHooks implements \IWPML_Action {
 	 */
 	public function maybe_restore_recurring_carts( $cart ) {
 		if ( ! empty( $this->recurring_carts ) ) {
+			/* @phpstan-ignore-next-line */
 			$cart->recurring_carts = $this->recurring_carts;
 			$this->recurring_carts = null;
 		}

@@ -6,7 +6,7 @@ use GFSignup;
 use SitePress;
 use WP_User;
 
-class Hooks {
+class Hooks implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 	/** @var SitePress */
 	private $sitepress;
 
@@ -14,7 +14,7 @@ class Hooks {
 		$this->sitepress = $sitepress;
 	}
 
-	public function addHooks() {
+	public function add_hooks() {
 		add_filter( 'gform_user_registration_signup_meta', [ $this, 'onSubmission' ] );
 		add_filter( 'insert_user_meta', [ $this, 'onActivation' ], 10, 3 );
 	}
@@ -49,6 +49,12 @@ class Hooks {
 				$meta['locale']             = $signup->meta['icl_admin_locale'];
 			}
 		}
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( is_admin() && isset( $_POST['action'] ) && 'gf_user_activate' === $_POST['action'] && true === $update ) {
+			do_action( 'wpml_switch_language_for_email', $user->user_email );
+		}
+
 		return $meta;
 	}
 }

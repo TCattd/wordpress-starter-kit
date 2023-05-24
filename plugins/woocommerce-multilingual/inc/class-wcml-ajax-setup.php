@@ -1,15 +1,11 @@
 <?php
 
-
 class WCML_Ajax_Setup {
 
-	/**
-	 * @var SitePress
-	 */
+	/** @var SitePress $sitepress */
 	private $sitepress;
 
-	public function __construct( \WPML\Core\ISitePress $sitepress ) {
-
+	public function __construct( SitePress $sitepress ) {
 		$this->sitepress = $sitepress;
 	}
 
@@ -37,9 +33,9 @@ class WCML_Ajax_Setup {
 	}
 
 	/**
-	 * @param $endpoint string
+	 * Adds a language parameter to the url when different domains for each language are used.
 	 *
-	 * Adds a language parameter to the url when different domains for each language are used
+	 * @param string $endpoint
 	 *
 	 * @return string
 	 */

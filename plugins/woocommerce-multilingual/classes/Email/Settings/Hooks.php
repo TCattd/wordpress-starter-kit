@@ -5,6 +5,8 @@ namespace WCML\Email\Settings;
 use IWPML_Backend_Action;
 use IWPML_DIC_Action;
 use WPML\Core\ISitePress;
+use WCML\StandAlone\NullSitePress;
+use SitePress;
 use WCML_WC_Strings;
 use WPML_Simple_Language_Selector;
 
@@ -12,12 +14,16 @@ class Hooks implements IWPML_Backend_Action, IWPML_DIC_Action {
 
 	const KEY_PREFIX = 'wcml_lang';
 
-	/** @var SitePress */
+	/** @var SitePress|NullSitePress */
 	private $sitepress;
 
 	/** @var WCML_WC_Strings */
 	private $wcmlStrings;
 
+	/**
+	 * @param SitePress|NullSitePress $sitepress
+	 * @param WCML_WC_Strings         $wcmlStrings
+	 */
 	public function __construct( ISitePress $sitepress, WCML_WC_Strings $wcmlStrings ) {
 		$this->sitepress   = $sitepress;
 		$this->wcmlStrings = $wcmlStrings;

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5d83f950b133d7d4ec4e876dc0120a4a
+class ComposerStaticInit42313b6a509aa9a9250509cade318646
 {
     public static $files = array (
         '5f5b8f7c1db2e892006e8805f0ed573c' => __DIR__ . '/..' . '/wpml/collect/src/Illuminate/Support/helpers.php',
@@ -34,6 +34,7 @@ class ComposerStaticInit5d83f950b133d7d4ec4e876dc0120a4a
     );
 
     public static $classMap = array (
+        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'ICL_AdminNotifier' => __DIR__ . '/../..' . '/lib/inc/icl-admin-notifier.php',
         'IWPML_AJAX_Action' => __DIR__ . '/..' . '/wpml/core-api/core/interfaces/actions/interface-iwpml-ajax-action.php',
         'IWPML_AJAX_Action_Loader' => __DIR__ . '/..' . '/wpml/core-api/core/interfaces/actions/interface-iwpml-ajax-action-loader.php',
@@ -543,9 +544,9 @@ class ComposerStaticInit5d83f950b133d7d4ec4e876dc0120a4a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5d83f950b133d7d4ec4e876dc0120a4a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5d83f950b133d7d4ec4e876dc0120a4a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit5d83f950b133d7d4ec4e876dc0120a4a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit42313b6a509aa9a9250509cade318646::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit42313b6a509aa9a9250509cade318646::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit42313b6a509aa9a9250509cade318646::$classMap;
 
         }, null, ClassLoader::class);
     }

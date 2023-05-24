@@ -1,0 +1,50 @@
+#search_id-search-date-input {
+	float: left;
+	height: 28px;
+	margin: 0 4px 0 0;
+}
+
+#tabs {
+	margin-top: 10px;
+}
+
+.tabs-text-pre {
+	height: 100%;
+	width: 100%;
+}
+
+#tabs-preview,
+#tabs-text {
+	height: 335px;
+	overflow: auto;
+}
+
+#thickbox-footer-close {
+	margin-top: 10px;
+}
+
+#thickbox-footer-close:hover {
+	background: #eee;
+	color: #666;
+}
+
+#TB_ajaxContent {
+	padding-bottom: 10px !important; /* Override the default Thickbox css values. */
+}
+
+#el-pro-msg {
+	display: inline-block;
+	margin: 7px 0;
+}
+
+.column-result .dashicons {
+	font-size: xx-large;
+}
+
+.column-result .dashicons-yes-alt {
+	color: #00C853;
+}
+
+.column-result .dashicons-dismiss {
+	color: #E53935;
+}

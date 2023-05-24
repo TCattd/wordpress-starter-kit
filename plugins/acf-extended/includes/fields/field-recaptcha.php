@@ -12,10 +12,12 @@ class acfe_field_recaptcha extends acf_field{
      * initialize
      */
     function initialize(){
+    
+        $category = acfe_is_acf_61() ? 'advanced' : 'jquery';
         
         $this->name = 'acfe_recaptcha';
         $this->label = __('Google reCaptcha', 'acfe');
-        $this->category = 'jquery';
+        $this->category = $category;
         $this->defaults = array(
             'required'      => 0,
             'disabled'      => 0,
@@ -179,7 +181,7 @@ class acfe_field_recaptcha extends acf_field{
             );
             
             ?>
-            <div <?php echo acf_esc_attrs($wrapper); ?>>
+            <div <?php echo acf_esc_atts($wrapper); ?>>
                 
                 <div></div>
                 <?php acf_hidden_input($hidden_input); ?>
@@ -208,7 +210,7 @@ class acfe_field_recaptcha extends acf_field{
             );
             
             ?>
-            <div <?php echo acf_esc_attrs($wrapper); ?>>
+            <div <?php echo acf_esc_atts($wrapper); ?>>
                 
                 <div></div>
                 <?php acf_hidden_input($hidden_input); ?>

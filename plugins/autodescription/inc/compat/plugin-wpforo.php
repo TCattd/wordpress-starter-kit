@@ -8,43 +8,37 @@ namespace The_SEO_Framework;
 
 \defined( 'THE_SEO_FRAMEWORK_PRESENT' ) and \tsf()->_verify_include_secret( $_secret ) or die;
 
-\add_action( 'the_seo_framework_init', __NAMESPACE__ . '\\_wpforo_fix_page' );
+\add_action( 'wpforo_before_init', __NAMESPACE__ . '\\_wpforo_fix_page' );
 /**
  * Initializes wpForo page fixes.
  *
  * @since 2.9.2
  * @since 3.1.2 1. Now disables HTML output when wpForo SEO is enabled.
  *              2. Now disables title override when wpForo Title SEO is enabled.
+ * @since 4.2.8 1. Now supports wpForo 2.0+.
+ *              2. Now disables TSF's output by default; for if their API disappears again.
+ *              3. Now uses action `wpforo_before_init` instead of `the_seo_framework_init`.
  */
 function _wpforo_fix_page() {
 
-	$override = [
-		'title' => true,
-		'meta'  => true,
-	];
+	if ( \is_admin() || ! \function_exists( '\\is_wpforo_page' ) || ! \is_wpforo_page() ) return;
 
-	if ( \function_exists( '\\wpforo_feature' ) ) {
-		if ( \wpforo_feature( 'seo-meta' ) ) {
-			// This also disables titles... It's OK, they handle that too.
-			$override['meta'] = false;
-		}
-		if ( \wpforo_feature( 'seo-titles' ) ) {
-			$override['title'] = false;
-		}
+	if ( _wpforo_seo_title_enabled() ) { // phpcs:ignore, TSF.Performance.Opcodes -- is local.
+		\add_filter( 'the_seo_framework_title_from_generation', __NAMESPACE__ . '\\_wpforo_filter_pre_title', 10, 2 );
+		\add_filter( 'the_seo_framework_use_title_branding', '__return_false' );
 	}
-	if ( \function_exists( '\\is_wpforo_page' ) && \is_wpforo_page() ) {
 
-		if ( $override['title'] )
-			\add_filter( 'the_seo_framework_title_from_generation', __NAMESPACE__ . '\\_wpforo_filter_pre_title', 10, 2 );
+	if ( _wpforo_seo_meta_enabled() ) { // phpcs:ignore, TSF.Performance.Opcodes -- is local.
+		// Remove TSF's output: Twofold, may they change the order of operation in a future upate.
+		_wpforo_disable_tsf_html_output(); // phpcs:ignore, TSF.Performance.Opcodes -- is local.
 
-		if ( $override['meta'] ) {
-			\add_filter( 'get_canonical_url', __NAMESPACE__ . '\\_wpforo_filter_canonical_url', 10, 2 );
-
-			// Remove TSF's SEO meta output.
-			\remove_action( 'wp_head', 'wpforo_add_meta_tags', 1 );
-		} else {
-			\add_action( 'the_seo_framework_after_init', __NAMESPACE__ . '\\_wpforo_disable_html_output', 1 );
-		}
+		// This won't run on wpForo at the time of writing (2.1.6), because action the_seo_framework_after_init already happened.
+		\add_action( 'the_seo_framework_after_init', __NAMESPACE__ . '\\_wpforo_disable_tsf_html_output', 1 );
+	} else {
+		// Remove WPForo's SEO meta output.
+		\remove_action( 'wp_head', 'wpforo_add_meta_tags', 1 );
+		// Fix Canonical URL.
+		\add_filter( 'get_canonical_url', __NAMESPACE__ . '\\_wpforo_filter_canonical_url', 10, 2 );
 	}
 }
 
@@ -55,7 +49,7 @@ function _wpforo_fix_page() {
  * @since 4.0.5 Introduced as function.
  * @access private
  */
-function _wpforo_disable_html_output() {
+function _wpforo_disable_tsf_html_output() {
 	\remove_action( 'wp_head', [ \tsf(), 'html_output' ], 1 );
 }
 
@@ -82,6 +76,7 @@ function _wpforo_filter_canonical_url( $canonical_url, $post ) { // phpcs:ignore
  *              2. Updated to support new title generation.
  * @since 4.0.0 No longer overrules external queries.
  * @access private
+ * @todo this may cause issues when the forum is on the homepage... Tell users to set the "additions".
  *
  * @param string     $title The filter title.
  * @param array|null $args  The query arguments. Contains 'id' and 'taxonomy'.
@@ -91,9 +86,97 @@ function _wpforo_filter_canonical_url( $canonical_url, $post ) { // phpcs:ignore
 function _wpforo_filter_pre_title( $title = '', $args = null ) {
 
 	if ( null === $args ) {
-		$wpforo_title = \wpforo_meta_title( '' ); // This is either &$title or [ $title, ... ];
-		$title        = \is_array( $wpforo_title ) && ! empty( $wpforo_title[0] ) ? $wpforo_title[0] : $title;
+		$sep          = \tsf()->get_separator();
+		$wpforo_title = implode(
+			" $sep ",
+			array_filter( (array) \wpforo_meta_title( '' ), 'strlen' )
+		);
 	}
 
-	return $title;
+	return ( $wpforo_title ?? '' ) ?: $title;
+}
+
+\add_action( 'the_seo_framework_seo_bar', __NAMESPACE__ . '\\_assert_wpforo_page_seo_bar' );
+/**
+ * Appends noindex default checks to the noindex item of the SEO Bar for pages.
+ *
+ * @since 4.2.8
+ * @access private
+ *
+ * @param string $interpreter The interpreter class name.
+ */
+function _assert_wpforo_page_seo_bar( $interpreter ) {
+
+	if ( $interpreter::$query['taxonomy'] ) return;
+
+	$meta_enabled  = _wpforo_seo_meta_enabled();   // phpcs:ignore, TSF.Performance.Opcodes -- is local.
+	$title_enabled = _wpforo_seo_title_enabled(); // phpcs:ignore, TSF.Performance.Opcodes -- is local.
+
+	if ( ! $meta_enabled && ! $title_enabled ) return;
+
+	$items = &$interpreter::collect_seo_bar_items();
+
+	// Don't do anything if there's a blocking redirect.
+	if ( ! empty( $items['redirect']['meta']['blocking'] ) ) return;
+
+	// Skip if we're not dealing with the wpForo page.
+	if ( ! \has_shortcode( \tsf()->get_post_content( $interpreter::$query['id'] ), 'wpforo' ) ) return;
+
+	foreach ( $items as $id => &$item ) {
+		switch ( $id ) {
+			case 'redirect':
+				// Preserve redirect, for TSF still manages that.
+				continue 2;
+			case 'title':
+				if ( ! $title_enabled ) continue 2;
+				break;
+			default:
+				if ( ! $meta_enabled ) continue 2;
+				break;
+		}
+
+		$item['status'] = $interpreter::STATE_UNDEFINED;
+		$item['reason'] = \__( 'Cannot assert.', 'autodescription' );
+
+		// Clear all assessments.
+		$item['assess'] = [];
+
+		$item['assess']['base'] = sprintf(
+			// translators: %s = Plugin name.
+			\__( 'This is managed by plugin "%s."', 'autodescription' ),
+			'wpForo Forum'
+		);
+	}
+}
+
+/**
+ * Tests whether wpForo SEO Meta is enabled.
+ *
+ * @since 4.2.8
+ * @access private
+ *
+ * @return bool
+ */
+function _wpforo_seo_meta_enabled() {
+	return memo() ?? memo(
+		// Unreliable in WPForo 2.0.0~2.1.6 (latest version at time of recording). Therefore, assume "true" if null.
+		// See https://wordpress.org/support/topic/wpforo_setting-seo-doesnt-work/.
+		\function_exists( '\\wpforo_setting' ) && ( \wpforo_setting( 'seo', 'seo_meta' ) ?? true )
+	);
+}
+
+/**
+ * Tests whether wpForo SEO Title is enabled.
+ *
+ * @since 4.2.8
+ * @access private
+ *
+ * @return bool
+ */
+function _wpforo_seo_title_enabled() {
+	return memo() ?? memo(
+		// Unreliable in WPForo 2.0.0~2.1.6 (latest version at time of recording). Therefore, assume "true" if null.
+		// See https://wordpress.org/support/topic/wpforo_setting-seo-doesnt-work/.
+		\function_exists( '\\wpforo_setting' ) && ( \wpforo_setting( 'seo', 'seo_title' ) ?? true )
+	);
 }

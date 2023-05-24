@@ -12,7 +12,7 @@ class WCML_WC_Strings {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var  Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 	/** @var wpdb */
 	private $wpdb;
@@ -527,13 +527,13 @@ class WCML_WC_Strings {
 	 * @return array
 	 */
 	public function translate_attribute_labels( $args, $attribute_label ) {
-		$singular_label = $this->get_translated_string_by_name_and_context( 'WordPress', 'taxonomy singular name: ' . $attribute_label );
+		$singular_label = $this->get_translated_string_by_name_and_context( 'WordPress', 'taxonomy singular name: ' . $attribute_label, null, $attribute_label );
 		if ( $singular_label ) {
 			$args['labels']['singular_name'] = $singular_label;
 		}
 
 		$label = sprintf( 'Product %s', $attribute_label );
-		$label = $this->get_translated_string_by_name_and_context( 'WordPress', 'taxonomy general name: ' . $label );
+		$label = $this->get_translated_string_by_name_and_context( 'WordPress', 'taxonomy general name: ' . $label, null, $label );
 		if ( $label ) {
 			$args['labels']['name'] = $label;
 		}
@@ -548,8 +548,8 @@ class WCML_WC_Strings {
 	 *
 	 * @return string|false
 	 */
-	public function get_translated_string_by_name_and_context( $context, $name, $language = null ) {
-		return apply_filters( 'wpml_translate_single_string', false, $context, $name, $language );
+	public function get_translated_string_by_name_and_context( $context, $name, $language = null, $value = false ) {
+		return apply_filters( 'wpml_translate_single_string', $value, $context, $name, $language );
 	}
 
 	/**

@@ -1,8 +1,11 @@
 <?php
+
+use ACFML\Notice\Links;
+
 /**
  * @author OnTheGo Systems
  */
-class WPML_ACF_Translatable_Groups_Checker {
+class WPML_ACF_Translatable_Groups_Checker implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 	const TRANSIENT_KEY = 'acfml_untranslated_groups';
 	const POST_TYPE     = 'acf-field-group';
 
@@ -11,7 +14,7 @@ class WPML_ACF_Translatable_Groups_Checker {
 	 */
 	private $untranslated_groups;
 
-	public function register_hooks() {
+	public function add_hooks() {
 		if ( is_admin() && $this->is_field_groups_translatable() ) {
 			add_action( 'admin_init', [ $this, 'check_untranslated_groups' ] );
 		}
@@ -35,21 +38,19 @@ class WPML_ACF_Translatable_Groups_Checker {
 	public function report_untranslated_groups() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<h2><?php esc_html__( 'Warning: Setting field groups to be translatable is not recommended and may cause issues.', 'acfml' ); ?></h2>
+			<h2><?php esc_html_e( 'Change the field group translation setting', 'acfml' ); ?></h2>
 			<p>
 				<?php
-				echo sprintf(
-					esc_html__( 'Need to translate field labels or labels for choices? Please %1$ssee our documentation%2$s for more information. ', 'acfml' ), // phpcs:ignore
-					'<a href="https://wpml.org/documentation/related-projects/translate-sites-built-with-acf/translating-acf-field-labels-and-labels-for-choices-with-wpml/" target="_blank">',
+				printf(
+					/* translators: %1$s and %4$s are placeholders for <a> link tags and %2$s and %3$s are for <b> tags. */
+					esc_html__( 'You can translate field labels and labels for Choices using String Translation. To do this, %1$sset the field group post type to %2$sNot Translatable%3$s%4$s.', 'acfml' ),
+					'<a href="' . esc_url( Links::getAcfmlExpertDoc( [ 'anchor' => 'field-group-translation-settings' ] ) ) . '" class="wpml-external-link" target="_blank">',
+					'<b>',
+					'</b>',
 					'</a>'
 				);
 				?>
 			</p>
-			<ul>
-				<?php foreach ( $this->untranslated_groups as $group ) { ?>
-					<li><a href="<?php echo esc_url( get_edit_post_link( $group ) ); ?>"><?php echo esc_html( $group->post_title ); ?></a></li>
-				<?php } ?>
-			</ul>
 		</div>
 		<?php
 	}

@@ -8,7 +8,7 @@ namespace The_SEO_Framework\Interpreters;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -24,8 +24,6 @@ namespace The_SEO_Framework\Interpreters;
  */
 
 \defined( 'THE_SEO_FRAMEWORK_PRESENT' ) or die;
-
-use function \The_SEO_Framework\umemo;
 
 /**
  * Interprets the SEO Bar into an HTML item.
@@ -208,12 +206,12 @@ final class SEOBar {
 		 */
 		static $_void = [];
 
-		if ( isset( static::$items[ $key ] ) ) :
+		if ( isset( static::$items[ $key ] ) ) { // Do not write to referenced var before this is tested!
 			$_item = &static::$items[ $key ];
-		else :
+		} else {
 			$_void = [];
 			$_item = &$_void;
-		endif;
+		}
 
 		return $_item;
 	}
@@ -262,6 +260,8 @@ final class SEOBar {
 	 * Converts registered items to a full HTML SEO Bar.
 	 *
 	 * @since 4.0.0
+	 * @since 4.2.8 1. Now returns a div wrap instead of a span, so we can bypass lack of display-inside browser support.
+	 *              2. Added tsf-tooltip-super-wrap said div wrap.
 	 *
 	 * @param iterable $items The SEO Bar items.
 	 * @return string The SEO Bar
@@ -275,7 +275,7 @@ final class SEOBar {
 
 		// Always return the wrap, may it be filled in via JS in the future.
 		return sprintf(
-			'<span class="tsf-seo-bar clearfix"><span class="tsf-seo-bar-inner-wrap">%s</span></span>',
+			'<div class="tsf-seo-bar tsf-tooltip-super-wrap"><span class=tsf-seo-bar-inner-wrap>%s</span></div>',
 			implode( $blocks )
 		);
 	}
@@ -337,7 +337,7 @@ final class SEOBar {
 		} else {
 			$assess = '<ol>';
 			foreach ( $item['assess'] as $_a ) {
-				$assess .= sprintf( '<li>%s</li>', $_a );
+				$assess .= "<li>$_a</li>";
 			}
 			$assess .= '</ol>';
 
@@ -364,6 +364,7 @@ final class SEOBar {
 		$assessments = [];
 
 		static $gettext = null;
+
 		if ( null === $gettext ) {
 			$gettext = [
 				/* translators: 1 = Assessment number (mind the %d (D)), 2 = Assessment explanation */
@@ -379,7 +380,7 @@ final class SEOBar {
 			$assessments[] = reset( $item['assess'] );
 		} else {
 			$i = 0;
-			foreach ( $item['assess'] as $key => $text ) {
+			foreach ( $item['assess'] as $text ) {
 				$assessments[] = sprintf( $gettext['enum'], ++$i, $text );
 			}
 		}
@@ -444,10 +445,11 @@ final class SEOBar {
 	 */
 	private function interpret_status_to_symbol( $item ) {
 
-		$symbols = umemo( __METHOD__ . '/use_symbols' )
-				?? umemo( __METHOD__ . '/use_symbols', (bool) \tsf()->get_option( 'seo_bar_symbols' ) );
+		static $use_symbols;
 
-		if ( $symbols && $item['status'] ^ static::STATE_GOOD ) {
+		$use_symbols = $use_symbols ?? (bool) \tsf()->get_option( 'seo_bar_symbols' );
+
+		if ( $use_symbols && $item['status'] ^ static::STATE_GOOD ) {
 			switch ( $item['status'] ) :
 				case static::STATE_OKAY:
 					$symbol = '!?';

@@ -19,12 +19,16 @@ $sanitized_key = sanitize_key( $key );
 $this->init_admin_scripts();
 The_SEO_Framework\Builders\Scripts::footer_enqueue();
 
-if ( in_array( $args['type'], [ 'warning', 'info' ], true ) )
-	$args['type'] = "notice-{$args['type']}";
+switch ( $args['type'] ) {
+	case 'warning':
+	case 'info':
+		$args['type'] = "notice-{$args['type']}";
+		break;
+}
 
 $dismiss_title = __( 'Dismiss this notice', 'default' );
 
-$button_js   = sprintf(
+$button_js = sprintf(
 	'<a class="hide-if-no-tsf-js tsf-dismiss" href="javascript:;" title="%s" %s></a>',
 	esc_attr( $dismiss_title ),
 	HTML::make_data_attributes( [
@@ -33,6 +37,7 @@ $button_js   = sprintf(
 		'nonce' => wp_create_nonce( $this->_get_dismiss_notice_nonce_action( $sanitized_key ) ),
 	] )
 );
+// TODO should we display this if the notice is shown one last time?
 $button_nojs = vsprintf(
 	'<form action="%s" method=post id="tsf-dismiss-notice[%s]" class=hide-if-tsf-js>%s</form>',
 	[

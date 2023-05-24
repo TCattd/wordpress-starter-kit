@@ -4,7 +4,7 @@ namespace WCML\Rest\Wrapper;
 
 class Composite extends Handler {
 
-	/** @var $restHandlers [] */
+	/** @var Handler[] $restHandlers */
 	private $restHandlers;
 
 	public function __construct( array $restHandlers ) {
@@ -12,8 +12,8 @@ class Composite extends Handler {
 	}
 
 	/**
-	 * @param array $args
-	 * @param WP_REST_Request $request Request object.
+	 * @param array           $args
+	 * @param \WP_REST_Request $request Request object.
 	 *
 	 * @return array
 	 */
@@ -28,11 +28,11 @@ class Composite extends Handler {
 	/**
 	 * Appends the language and translation information to the get_product response
 	 *
-	 * @param WP_REST_Response $response
+	 * @param \WP_REST_Response $response
 	 * @param object $object
-	 * @param WP_REST_Request $request
+	 * @param \WP_REST_Request $request
 	 *
-	 * @return WP_REST_Response
+	 * @return \WP_REST_Response
 	 */
 	public function prepare( $response, $object, $request ) {
 		foreach ( $this->restHandlers as $restHandler ) {
@@ -46,7 +46,7 @@ class Composite extends Handler {
 	 * Sets the product information according to the provided language
 	 *
 	 * @param object $object
-	 * @param WP_REST_Request $request
+	 * @param \WP_REST_Request $request
 	 * @param bool $creating
 	 */
 	public function insert( $object, $request, $creating ) {

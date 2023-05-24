@@ -430,13 +430,13 @@ class WCML_Multi_Currency_Orders {
 
 	/**
 	 * @param string                $meta
-	 * @param string                $item_price
+	 * @param float                 $item_price
 	 * @param bool                  $is_custom_price
 	 * @param WC_Order_Item_Product $item
 	 * @param string                $order_currency
 	 * @param array                 $coupons
 	 *
-	 * @return int
+	 * @return float
 	 */
 	private function get_converted_item_meta( $meta, $item_price, $is_custom_price, $item, $order_currency, $coupons ) {
 
@@ -458,9 +458,7 @@ class WCML_Multi_Currency_Orders {
 			$item_price = $item_price - $discount_amount;
 		}
 
-		$converted_meta = $item->get_quantity() * wc_get_price_excluding_tax( $item->get_product(), [ 'price' => $item_price ] );
-
-		return $converted_meta;
+		return $item->get_quantity() * wc_get_price_excluding_tax( $item->get_product(), [ 'price' => $item_price ] );
 	}
 
 	public function get_order_currency_cookie() {

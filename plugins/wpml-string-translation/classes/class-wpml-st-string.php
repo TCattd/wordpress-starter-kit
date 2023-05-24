@@ -294,6 +294,9 @@ class WPML_ST_String {
 	 */
 	protected function set_property( $property, $value ) {
 		$this->wpdb->update( $this->wpdb->prefix . 'icl_strings', array( $property => $value ), array( 'id' => $this->string_id ) );
+
+		// Action called after string is updated.
+		do_action( 'wpml_st_string_updated' );
 	}
 
 	/**

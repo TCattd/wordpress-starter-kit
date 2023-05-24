@@ -4,7 +4,7 @@ class WCML_Url_Translation {
 
 	/** @var woocommerce_wpml */
 	private $woocommerce_wpml;
-	/** @var Sitepress */
+	/** @var SitePress */
 	private $sitepress;
 	/** @var wpdb */
 	private $wpdb;
@@ -290,7 +290,7 @@ class WCML_Url_Translation {
 	}
 
 	/**
-	 * @param string $permalinks
+	 * @param mixed $permalinks
 	 *
 	 * @return mixed
 	 */
@@ -861,11 +861,6 @@ class WCML_Url_Translation {
 				$string_id = icl_get_string_id( $original_base_value, $this->get_endpoint_string_context(), $original_base );
 				if ( ! $string_id && function_exists( 'icl_register_string' ) ) {
 					$string_id = icl_register_string( $this->get_endpoint_string_context(), $original_base, $original_base_value );
-				}
-
-				if ( method_exists( $this->woocommerce_wpml->endpoints, 'add_endpoints' ) ) {
-					$this->woocommerce_wpml->endpoints->add_endpoints();
-					$this->woocommerce_wpml->endpoints->flush_rules_for_endpoints_translations();
 				}
 			}
 

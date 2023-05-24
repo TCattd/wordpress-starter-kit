@@ -22,7 +22,7 @@ function wppb_update_patch(){
 	do_action( 'wppb_before_default_changes', PROFILE_BUILDER_VERSION, $wppb_version );
 	
 	if ( version_compare( PROFILE_BUILDER_VERSION, $wppb_version, '>' ) ) {
-        $paid_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Basic' );
+        $paid_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Basic' );
 
 		if ( in_array( PROFILE_BUILDER, $paid_versions ) ){
 
@@ -39,7 +39,7 @@ function wppb_update_patch(){
 			wppb_pro_hobbyist_v1_3_13();
 		}
     
-        $pro_versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+        $pro_versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited' );
 
 		if ( in_array( PROFILE_BUILDER, $pro_versions ) ){
 			wppb_pro_v1_3_15();
@@ -50,13 +50,13 @@ function wppb_update_patch(){
 
 	//this should run only once, mainly if the old version is < 2.0 (can be anything)
 	if ( version_compare( $wppb_version, 2.0, '<' ) ) {
-        $all_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Elite', 'Profile Builder Unlimited', 'Profile Builder Basic', 'Profile Builder Free' );
+        $all_versions = array( 'Profile Builder Pro', 'Profile Builder Hobbyist', 'Profile Builder Agency', 'Profile Builder Unlimited', 'Profile Builder Basic', 'Profile Builder Free' );
 
 		if ( in_array( PROFILE_BUILDER, $all_versions ) ){
 			wppb_pro_hobbyist_free_v2_0();
 		}
 		
-        $pro_versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+        $pro_versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited' );
 
 		if ( in_array( PROFILE_BUILDER, $pro_versions ) ){
 			wppb_pro_userlisting_compatibility_upgrade();
@@ -66,7 +66,7 @@ function wppb_update_patch(){
 
 	// this should run only once, mainly if the old version is < 2.2.5 (can be anything)
 	if ( version_compare( $wppb_version, '2.2.5', '<' ) ) {
-        $pro_versions = array( 'Profile Builder Pro', 'Profile Builder Elite', 'Profile Builder Unlimited' );
+        $pro_versions = array( 'Profile Builder Pro', 'Profile Builder Agency', 'Profile Builder Unlimited' );
 
 		if ( in_array( PROFILE_BUILDER, $pro_versions ) ){
 			wppb_new_custom_redirects_compatibility();

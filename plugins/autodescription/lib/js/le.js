@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -86,7 +86,7 @@ window.tsfLe = function() {
 				tsf.selectByValue( element, data[ option ].value );
 
 				// Do `sprintf( 'Default (%s)', x.default )`.
-				let _default = element.querySelector( '[value="0"]' );
+				const _default = element.querySelector( '[value="0"]' );
 				if ( _default )
 					_default.innerHTML = _default.innerHTML.replace( '%s', tsf.escapeString( tsf.decodeEntities( data[ option ].default ) ) );
 			} else {

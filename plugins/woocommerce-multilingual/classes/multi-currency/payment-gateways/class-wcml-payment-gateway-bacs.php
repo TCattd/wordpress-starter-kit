@@ -11,6 +11,7 @@ class WCML_Payment_Gateway_Bacs extends WCML_Payment_Gateway {
 			'title'       => $this->get_title(),
 			'isSupported' => true,
 			'settings'    => $this->get_settings(),
+			'accounts'    => wp_list_pluck( $this->get_gateway()->account_details, 'account_name' ),
 			'tooltip'     => __( 'Set the currency in which your customer will see the final price when they checkout. Choose which accounts they will see in their payment message.', 'woocommerce-multilingual' ),
 			'strings'     => [
 				'labelCurrency'    => __( 'Currency', 'woocommerce-multilingual' ),

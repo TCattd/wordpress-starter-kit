@@ -193,7 +193,7 @@ function wppb_register_user_status_taxonomy() {
 function wppb_unapproved_user_admin_error_message_handler($userdata, $password){
 
 	if (wp_get_object_terms( $userdata->ID, 'user_status' )){
-		$errorMessage = __('<strong>ERROR</strong>: Your account has to be confirmed by an administrator before you can log in.', 'profile-builder');
+		$errorMessage = __('<strong>ERROR:</strong> Your account has to be confirmed by an administrator before you can log in.', 'profile-builder');
 
 		return new WP_Error('wppb_unapproved_user_admin_error_message', $errorMessage);
 	}else
@@ -295,12 +295,14 @@ function wppb_approve_user_from_email_url_listener(){
                 $form_style = apply_filters('wppb_approval_confirmation_form_style', '
                     <style>
                         #wppb-confirm-admin-approval{
-                            padding: 0px 15px 0px px;
+                            /* padding: 0px 15px 0px px; */
+                            padding: 0 15px;
                             overflow: auto;
                             text-align: center;
                         }
                         #wppb-approval-confirmation-button{
-                            margin: 0% 5%;
+                            /* margin: 0% 5%; */
+                            margin: 0 5%;
                             width: 10%;
                         }
                     </style>');
@@ -439,6 +441,7 @@ if( $wppb_generalSettings != 'not_found' )
 		add_action( 'deleted_user', 'wppb_remove_unapproved_term_from_db_when_deleting_user' );
 		function wppb_remove_unapproved_term_from_db_when_deleting_user( $id )
 		{
+            wp_remove_object_terms( $id, 'pending', 'user_status' );
 			wp_remove_object_terms( $id, 'unapproved', 'user_status' );
 		}
 

@@ -32,14 +32,17 @@ function piotnetforms_twilio_sendgrid_get_list() {
 
 		$response = json_decode( $response );
 		$result = $response->result;
-		foreach ( $result as $value ) {
-			$name = $value->name;
-			$id = $value->id;
-			echo '<div class="piotnetforms-twilio-sendgrid-list__item" style="padding-top:5px;"><label> <strong>'.$name.'</strong> ('.$value->contact_count.')</label><div class="piotnetforms-twilio-sendgrid-list__item-value" style="padding-bottom:3px;"><input type="text" value="'.$id.'" readonly></div></div>';
-		}
-		wp_die();
+        if(!empty($result)){
+            foreach ( $result as $value ) {
+                $name = $value->name;
+                $id = $value->id;
+                echo '<div class="piotnetforms-twilio-sendgrid-list__item" style="padding-top:5px;"><label> <strong>'.$name.'</strong> ('.$value->contact_count.')</label><div class="piotnetforms-twilio-sendgrid-list__item-value" style="padding-bottom:3px;"><input type="text" value="'.$id.'" readonly></div></div>';
+            }
+        }else{
+            echo '<div style="margin-top: 5px;">List does not exist. The contacts will be saved to the "All Contacts".</div>';
+        }
 	} else {
 		echo 'Please enter the API key.';
-		wp_die();
 	}
+    wp_die();
 }

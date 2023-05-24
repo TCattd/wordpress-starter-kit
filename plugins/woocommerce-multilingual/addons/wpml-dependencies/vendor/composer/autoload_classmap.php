@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'ICL_AdminNotifier' => $baseDir . '/lib/inc/icl-admin-notifier.php',
     'IWPML_AJAX_Action' => $vendorDir . '/wpml/core-api/core/interfaces/actions/interface-iwpml-ajax-action.php',
     'IWPML_AJAX_Action_Loader' => $vendorDir . '/wpml/core-api/core/interfaces/actions/interface-iwpml-ajax-action-loader.php',

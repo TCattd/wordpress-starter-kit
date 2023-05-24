@@ -43,9 +43,11 @@ function wppb_wysiwyg_handler( $output, $form_location, $field, $user_id, $field
                 }
                 $output .= "<script type='text/javascript'>
                                jQuery(document).ready(function(){";
-
-                foreach ($extra_attr as $key => $value) {
-                    $output .= "    jQuery('.custom_field_wysiwyg') . attr('" . $key . "', '" . $value . "');";
+                
+                if( is_array( $extra_attr ) ) {
+                    foreach ($extra_attr as $key => $value) {
+                        $output .= "    jQuery('.custom_field_wysiwyg') . attr('" . $key . "', '" . $value . "');";
+                    }
                 }
 
                 $output .= "    });

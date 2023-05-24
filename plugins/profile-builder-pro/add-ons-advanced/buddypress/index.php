@@ -35,7 +35,7 @@ function wppb_in_bdp_remove_pb_settings_from_subsites(){
     }
 
     $pb_is_network_active = false;
-    $pb_plugins = apply_filters( 'wppb_bdp_pb_plugin_files', array( 'profile-builder-pro/index.php', 'profile-builder-hobbyist/index.php', 'profile-builder/index.php', 'profile-builder-2.0/index.php', 'profile-builder-basic/index.php', 'profile-builder-elite/index.php', 'profile-builder-unlimited/index.php' ) );
+    $pb_plugins = apply_filters( 'wppb_bdp_pb_plugin_files', array( 'profile-builder-pro/index.php', 'profile-builder-hobbyist/index.php', 'profile-builder/index.php', 'profile-builder-2.0/index.php', 'profile-builder-basic/index.php', 'profile-builder-agency/index.php', 'profile-builder-unlimited/index.php' ) );
     foreach ( $pb_plugins as $pb_plugin ){
         if ( is_plugin_active_for_network( $pb_plugin ) ){
             $pb_is_network_active = true;

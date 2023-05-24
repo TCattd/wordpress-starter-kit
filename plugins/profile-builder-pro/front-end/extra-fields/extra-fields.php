@@ -24,33 +24,6 @@ function wppb_include_extra_fields_files() {
 		include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/select2/select2-multiple.php' );
 		include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/language/language.php' );
 		include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/honeypot/honeypot.php' );
-
-		// These fields were added in the free version starting with version 3.8.1
-		// load them for backwards compatibility if they don't exist in the base plugin
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/avatar/avatar.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/avatar/avatar.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/heading/heading.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/heading/heading.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/input/input.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/input/input.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/checkbox/checkbox.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/checkbox/checkbox.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/radio/radio.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/radio/radio.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/select/select.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/select/select.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/textarea/textarea.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/textarea/textarea.php' );
-
-		if( !file_exists( WPPB_PLUGIN_DIR.'/front-end/default-fields/select2/select2.php' ) )
-			include_once( WPPB_PAID_PLUGIN_DIR.'/front-end/extra-fields/select2/select2.php' );
-
 	}
 }
 wppb_include_extra_fields_files();

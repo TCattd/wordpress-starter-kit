@@ -11,19 +11,25 @@ abstract class WCML_Payment_Gateway {
 	 * @var string
 	 */
 	protected $current_currency;
+
 	/**
 	 * @var string
 	 */
 	protected $default_currency;
+
 	/**
 	 * @var array
 	 */
 	protected $active_currencies;
+
 	/**
 	 * @var WC_Payment_Gateway
 	 */
 	protected $gateway;
 
+	/**
+	 * @var array
+	 */
 	private $settings = [];
 
 	/**
@@ -32,8 +38,8 @@ abstract class WCML_Payment_Gateway {
 	protected $woocommerce_wpml;
 
 	/**
-	 * @param WC_Payment_Gateway      $gateway
-	 * @param woocommerce_wpml        $woocommerce_wpml
+	 * @param WC_Payment_Gateway $gateway
+	 * @param woocommerce_wpml   $woocommerce_wpml
 	 */
 	public function __construct( WC_Payment_Gateway $gateway, woocommerce_wpml $woocommerce_wpml ) {
 		$this->gateway          = $gateway;
@@ -42,6 +48,11 @@ abstract class WCML_Payment_Gateway {
 	}
 
 	/**
+	 * @param string $current_currency
+	 * @param array  $active_currencies
+	 *
+	 * @return string
+	 *
 	 * @deprecated since 4.9.0, use React component instead.
 	 */
 	public function get_settings_output( $current_currency, $active_currencies ) {
@@ -96,12 +107,32 @@ abstract class WCML_Payment_Gateway {
 	}
 
 	/**
-	 * @param string $key
+	 * @param string $currency
 	 *
-	 * @return mixed|null
+	 * @return array|null
 	 */
-	public function get_setting( $key ) {
-		return isset( $this->settings[ $key ] ) ? $this->settings[ $key ] : null;
+	public function get_setting( $currency ) {
+		$setting = isset( $this->settings[ $currency ] )
+			? $this->settings[ $currency ]
+			: null;
+
+		return $this->set_currency( $setting, $currency );
+	}
+
+	/**
+	 * Make sure settings include the currency key.
+	 *
+	 * @param array|null $setting
+	 * @param string     $currency
+	 *
+	 * @return array|null
+	 */
+	private function set_currency( $setting, $currency ) {
+		if ( is_array( $setting ) && empty( $setting['currency'] ) ) {
+			$setting['currency'] = $currency;
+		}
+
+		return $setting;
 	}
 
 	/**
@@ -117,7 +148,7 @@ abstract class WCML_Payment_Gateway {
 
 		$active_currencies = $this->active_currencies;
 
-		if ( ! in_array( $this->current_currency, array_keys( $active_currencies ) ) ) {
+		if ( ! in_array( $this->current_currency, array_keys( $active_currencies ), true ) ) {
 			$active_currencies[ $this->current_currency ] = [];
 		}
 

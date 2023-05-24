@@ -30,7 +30,7 @@ class WPML_Cookie {
 					false
 				);
 			} else {
-				setcookie( $name, $value, $expires, $path, $domain, $this->is_secure_connection(), $HTTPOnly );
+				setcookie( $name, (string) $value, $expires, $path, $domain, $this->is_secure_connection(), $HTTPOnly );
 			}
 
 			wp_cache_set( $name, $entryHash, __CLASS__ );

@@ -1,6 +1,6 @@
 <?php
 
-class WPML_GF_Quiz {
+class WPML_GF_Quiz implements \IWPML_Frontend_Action, \IWPML_Backend_Action, \IWPML_DIC_Action {
 
 	/**
 	 * Quiz main messages
@@ -18,13 +18,8 @@ class WPML_GF_Quiz {
 	 */
 	private $gfml_tm_api;
 
-	/**
-	 * WPML_GF_Quiz constructor.
-	 *
-	 * @param GFML_TM_API $gfml_tm_api
-	 */
-	public function __construct( &$gfml_tm_api ) {
-		$this->gfml_tm_api = &$gfml_tm_api;
+	public function __construct( GFML_TM_API $gfml_tm_api ) {
+		$this->gfml_tm_api = $gfml_tm_api;
 	}
 
 	public function add_hooks() {

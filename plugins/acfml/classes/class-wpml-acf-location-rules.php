@@ -8,7 +8,7 @@ use WPML\LIB\WP\Hooks;
 use function WPML\FP\pipe;
 use function WPML\FP\spreadArgs;
 
-class WPML_ACF_Location_Rules {
+class WPML_ACF_Location_Rules implements \IWPML_Backend_Action, \IWPML_Frontend_Action, \IWPML_DIC_Action {
 	/**
 	 * @var SitePress
 	 */
@@ -25,7 +25,7 @@ class WPML_ACF_Location_Rules {
 	/**
 	 * Registers hooks.
 	 */
-	public function register_hooks() {
+	public function add_hooks() {
 		Hooks::onFilter( 'acf/location/rule_match', 11, 3 )->then( spreadArgs( [ $this, 'rule_match' ] ) );
 		Hooks::onFilter( 'acf/load_field_group' )->then( spreadArgs( [ $this, 'adjust_post_id_on_edit_screen' ] ) );
 	}

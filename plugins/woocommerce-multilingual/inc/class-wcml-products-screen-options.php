@@ -16,8 +16,8 @@ class WCML_Products_Screen_Options {
 	/**
 	 * Hide management column by default for products.
 	 *
-	 * @param $is_visible
-	 * @param $post_type
+	 * @param bool   $is_visible
+	 * @param string $post_type
 	 *
 	 * @return bool
 	 */
@@ -32,10 +32,10 @@ class WCML_Products_Screen_Options {
 	/**
 	 * Set default option for translations management column.
 	 *
-	 * @param $hidden
-	 * @param $screen
+	 * @param string[]  $hidden
+	 * @param WP_Screen $screen
 	 *
-	 * @return array
+	 * @return string[]
 	 */
 	public function filter_screen_options( $hidden, $screen ) {
 		if ( 'edit-product' === $screen->id ) {

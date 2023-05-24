@@ -89,7 +89,7 @@ class WCML_WC_Shortcode_Product_Category {
 	}
 
 	/**
-	 * @param $args array
+	 * @param array $args
 	 *
 	 * @return array
 	 */

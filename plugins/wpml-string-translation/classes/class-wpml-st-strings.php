@@ -63,7 +63,7 @@ class WPML_ST_Strings {
 		}
 
 		if ( isset( $context ) ) {
-			$extra_cond .= " AND s.context = '" . esc_sql( $context ) . "'";
+			$extra_cond .= " AND s.context = '" . html_entity_decode ($context,ENT_QUOTES) . "'";
 		}
 
 		if ( $this->must_show_all_results() ) {

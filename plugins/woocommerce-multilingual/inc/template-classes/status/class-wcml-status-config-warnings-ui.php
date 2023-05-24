@@ -26,7 +26,10 @@ class WCML_Status_Config_Warnings_UI extends WCML_Templates_Factory {
 
 	public function init_twig_functions() {
 		$function = new Twig_SimpleFunction( 'get_flag_url', [ $this, 'get_flag_url' ] );
-		$this->get_twig()->addFunction( $function );
+
+		/** @var WPML\Core\Twig\Environment */
+		$twig = $this->get_twig();
+		$twig->addFunction( $function );
 	}
 
 	public function get_model() {

@@ -35,7 +35,7 @@ function relevanssi_searching_tab() {
 	$cat                 = get_option( 'relevanssi_cat' );
 	$excat               = get_option( 'relevanssi_excat' );
 	$exclude_posts       = get_option( 'relevanssi_exclude_posts' );
-	$index_post_types    = get_option( 'relevanssi_index_post_types' );
+	$index_post_types    = get_option( 'relevanssi_index_post_types', array() );
 	$index_users         = get_option( 'relevanssi_index_users' );
 	$index_terms         = get_option( 'relevanssi_index_taxonomies' );
 
@@ -116,7 +116,7 @@ function relevanssi_searching_tab() {
 			<?php // Translators: name of the query variable. ?>
 			<p class="description"><?php printf( esc_html__( 'If you want to override this or use multi-layered ordering (eg. first order by relevance, but sort ties by post title), you can use the %s query variable. See Help for more information.', 'relevanssi' ), '<code>orderby</code>' ); ?></p>
 			<?php if ( RELEVANSSI_PREMIUM ) { ?>
-			<p class="description"><?php esc_html_e( ' If you want date-based results, see the recent post bonus in the Weights section.', 'relevanssi' ); ?></p>
+			<p class="description"><?php esc_html_e( 'If you want date-based results, see the recent post bonus in the Weights section.', 'relevanssi' ); ?></p>
 			<?php } // End if ( RELEVANSSI_PREMIUM ). ?>
 		</td>
 	</tr>

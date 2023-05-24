@@ -376,6 +376,16 @@
 				$customer_email = replace_email_stripe_piotnetforms( $form['settings']['piotnetforms_stripe_customer_field_email'], $fields );
 				if ( !empty( $customer_email ) ) {
 					$customer_array['email'] = $customer_email;
+                    if(in_array( 'register', $form['settings']['submit_actions'] ) && email_exists($customer_email)){
+                        $user_name = replace_email_stripe_piotnetforms($form['settings']['register_username'], $fields );
+                        $register = wp_create_user( $user_name , '11111111', $customer_email );
+                        $register_error = [
+                            'status' => 'user_exists',
+                            'msg' => !empty( $register->errors['existing_user_login'] ) ? $register->errors['existing_user_login'][0] : $register->errors['existing_user_email'][0]
+                        ];
+                        echo wp_json_encode( $register_error );
+                        wp_die();
+                    }
 				}
 			}
 

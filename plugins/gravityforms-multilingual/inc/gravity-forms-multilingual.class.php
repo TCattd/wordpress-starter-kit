@@ -1,5 +1,7 @@
 <?php
 
+use WPML\FP\Obj;
+
 define( 'ICL_GRAVITY_FORM_ELEMENT_TYPE', 'gravity_form' );
 
 /**
@@ -113,6 +115,9 @@ abstract class Gravity_Forms_Multilingual {
 		'zu'     => 1,
 	];
 
+	/** @var array */
+	private $form_keys;
+
 	/**
 	 * Registers filters and hooks.
 	 * Called on 'init' hook at default priority.
@@ -122,37 +127,39 @@ abstract class Gravity_Forms_Multilingual {
 		$this->form_fields   = [];
 
 		/* WPML translation job hooks */
-		add_filter( 'WPML_get_link', [ $this, 'get_link' ], 10, 4 );
+		add_filter( 'WPML_get_link', [ $this, 'get_link' ], 10, 3 );
 		add_filter( 'wpml_document_view_item_link', [ $this, 'get_document_view_link' ], 10, 5 );
 		add_filter( 'wpml_document_edit_item_link', [ $this, 'get_document_edit_link' ], 10, 5 );
 		add_filter( 'wpml_document_edit_item_url', [ $this, 'get_document_edit_url' ], 10, 3 );
-		add_filter( 'page_link', [ $this, 'gform_redirect' ], 10, 3 );
+		add_filter( 'page_link', [ $this, 'gform_redirect' ], 10, 1 );
 
 		/* GF frontend hooks: form rendering and submission */
 		if ( version_compare( GFForms::$version, '1.9', '<' ) ) {
-			add_filter( 'gform_pre_render', [ $this, 'gform_pre_render_deprecated' ], 10, 2 );
+			add_filter( 'gform_pre_render', [ $this, 'gform_pre_render_deprecated' ] );
 		} else {
-			add_filter( 'gform_pre_render', [ $this, 'gform_pre_render' ], 10, 2 );
+			add_filter( 'gform_pre_render', [ $this, 'gform_pre_render' ] );
 		}
-		add_filter( 'gform_pre_process', [ $this, 'translate_conditional_logic' ], 10, 2 );
+		add_filter( 'gform_pre_validation', [ $this, 'gform_pre_render' ] );
+		add_filter( 'gform_pre_process', [ $this, 'translate_conditional_logic' ] );
 		add_filter( 'gform_pre_submission_filter', [ $this, 'gform_pre_submission_filter' ] );
 		add_filter( 'gform_notification', [ $this, 'gform_notification' ], 10, 2 );
+		add_action( 'gform_after_email', [ $this, 'restoreSwitchedEmailLanguage' ] );
 		add_filter( 'gform_field_validation', [ $this, 'gform_field_validation' ], 10, 4 );
 		add_filter( 'gform_merge_tag_filter', [ $this, 'gform_merge_tag_filter' ], 10, 5 );
 		add_filter( 'gform_pre_replace_merge_tags', [ $this, 'gform_pre_replace_merge_tags' ], 100, 2 );
 
 		/* GF admin hooks for updating WPML translation jobs */
 		add_action( 'gform_after_save_form', [ $this, 'update_form_translations' ], 10, 2 );
-		add_action( 'gform_pre_confirmation_save', [ $this, 'update_confirmation_translations' ], 10, 2 );
-		add_action( 'gform_pre_notification_save', [ $this, 'update_notifications_translations' ], 10, 2 );
+		add_filter( 'gform_pre_confirmation_save', [ $this, 'update_confirmation_translations' ], 10, 2 );
+		add_filter( 'gform_pre_notification_save', [ $this, 'update_notifications_translations' ], 10, 2 );
 		add_action( 'gform_pre_enqueue_scripts', [ $this, 'set_enqueued_captcha_language' ] );
 		add_action( 'gform_after_delete_form', [ $this, 'after_delete_form' ] );
-		add_action( 'gform_after_delete_field', [ $this, 'after_delete_field' ], 10, 2 );
+		add_action( 'gform_after_delete_field', [ $this, 'after_delete_field' ] );
 		add_action( 'shutdown', [ $this, 'update_form_translations_on_shutdown' ] );
 
 		/**
 		 * An action to clear the $current_forms cached forms e.g.
-		 * 
+		 *
 		 * ```
 		 * do_action( 'wpml_gf_clear_current_forms' );
 		 * ```
@@ -161,22 +168,18 @@ abstract class Gravity_Forms_Multilingual {
 		 */
 		add_action( 'wpml_gf_clear_current_forms', [ $this, 'clear_current_forms' ] );
 
-		global $pagenow;
+		add_action( 'init', [ $this, 'show_package_language_admin_bar' ] );
+	}
 
-		// todo: Add nonce verification.
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if (
-			'admin.php' === $pagenow && isset( $_GET['page'] ) &&
-			'gf_edit_forms' === $_GET['page'] && isset( $_GET['id'] )
-		) {
-			$form_id = filter_input( INPUT_GET, 'id', FILTER_VALIDATE_INT );
-			$form    = RGFormsModel::get_form_meta( $form_id );
-			$package = $this->get_form_package( $form );
+	public function get_form_package( $form ) {
+		$form_package            = new stdClass();
+		$form_package->kind      = __( 'Gravity Form', 'gravity-forms-ml' );
+		$form_package->kind_slug = ICL_GRAVITY_FORM_ELEMENT_TYPE;
+		$form_package->name      = $form['id'];
+		$form_package->title     = $form['title'];
+		$form_package->edit_link = admin_url( sprintf( 'admin.php?page=gf_edit_forms&id=%d', $form['id'] ) );
 
-			do_action( 'wpml_show_package_language_admin_bar', $package );
-		}
-		// phpcs:enable WordPress.Security.NonceVerification.Recommended
-
+		return $form_package;
 	}
 
 	abstract public function get_type();
@@ -190,6 +193,27 @@ abstract class Gravity_Forms_Multilingual {
 	abstract protected function register_strings( $form );
 
 	abstract protected function gform_id( $id );
+
+	/**
+	 * @return void
+	 */
+	public function show_package_language_admin_bar() {
+
+		global $pagenow;
+
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended
+		if (
+			'admin.php' === $pagenow && isset( $_GET['page'] ) &&
+			'gf_edit_forms' === $_GET['page'] && isset( $_GET['id'] )
+		) {
+			$form_id = filter_input( INPUT_GET, 'id', FILTER_VALIDATE_INT );
+			$form    = RGFormsModel::get_form_meta( $form_id );
+			$package = $this->get_form_package( $form );
+
+			do_action( 'wpml_show_package_language_admin_bar', $package );
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
+	}
 
 	/**
 	 * Filters the link to the edit page of the Gravity Form
@@ -220,9 +244,24 @@ abstract class Gravity_Forms_Multilingual {
 		return $id ? $item : '';
 	}
 
+	/**
+	 * @param string                            $post_view_link
+	 * @param string                            $label
+	 * @param stdClass|\WPML_TM_Post_Job_Entity $current_document See https://onthegosystems.myjetbrains.com/youtrack/issue/wpmldev-1435/.
+	 * @param string                            $element_type
+	 * @param string                            $content_type
+	 *
+	 * @return string
+	 */
 	public function get_document_view_link( $post_view_link, $label, $current_document, $element_type, $content_type ) {
 		if ( 'package' === $element_type && 'gravity_form' === $content_type ) {
-			$element_id = apply_filters( 'wpml_element_id_from_package', null, isset( $current_document->ID ) ? $current_document->ID : $current_document->original_doc_id );
+			if ( $current_document instanceof \WPML_TM_Post_Job_Entity ) {
+				$original_doc_id = $current_document->get_original_element_id();
+			} else {
+				$original_doc_id = Obj::prop( 'ID', $current_document ) ?: Obj::prop( 'original_doc_id', $current_document );
+			}
+
+			$element_id = apply_filters( 'wpml_element_id_from_package', null, $original_doc_id );
 			if ( $element_id ) {
 				$form_id = $this->gform_id( $element_id );
 				if ( $form_id ) {
@@ -284,8 +323,8 @@ abstract class Gravity_Forms_Multilingual {
 	 * @return array
 	 */
 	protected function get_form_keys() {
-		if ( ! isset( $this->_form_keys ) ) {
-			$this->_form_keys = [
+		if ( ! isset( $this->form_keys ) ) {
+			$this->form_keys = [
 				'limitEntriesMessage',
 				'scheduleMessage',
 				'requireLoginMessage',
@@ -298,7 +337,7 @@ abstract class Gravity_Forms_Multilingual {
 			];
 		}
 
-		return apply_filters( 'gform_multilingual_form_keys', $this->_form_keys );
+		return apply_filters( 'gform_multilingual_form_keys', $this->form_keys );
 	}
 
 	/**
@@ -1090,6 +1129,10 @@ abstract class Gravity_Forms_Multilingual {
 			$snh->notification = $notification;
 			$st_context        = $this->get_st_context( $form['id'] );
 
+			if ( email_exists( $notification['to'] ) ) {
+				do_action( 'wpml_switch_language_for_email', $notification['to'] );
+			}
+
 			if ( isset( $notification['subject'] ) ) {
 				$notification['subject'] = apply_filters( 'wpml_translate_single_string', $notification['subject'], $st_context, $snh->get_form_notification_subject() );
 			}
@@ -1115,10 +1158,10 @@ abstract class Gravity_Forms_Multilingual {
 	/**
 	 * Translate validation messages.
 	 *
-	 * @param array $result
-	 * @param mixed $value
-	 * @param array $form
-	 * @param array $field
+	 * @param array    $result
+	 * @param mixed    $value
+	 * @param array    $form
+	 * @param GF_Field $field
 	 *
 	 * @return array
 	 */
@@ -1252,7 +1295,7 @@ abstract class Gravity_Forms_Multilingual {
 			return $this->forms_table_name;
 		}
 
-		$this->forms_table_name = false;
+		$this->forms_table_name = '';
 
 		$name = self::LEGACY_FORMS_TABLE;
 		if ( version_compare( GFFormsModel::get_database_version(), '2.3-dev-1', '>' ) ) {
@@ -1287,7 +1330,7 @@ abstract class Gravity_Forms_Multilingual {
 			$resume_token         = filter_input( INPUT_POST, 'gform_resume_token', FILTER_SANITIZE_STRING );
 			$resume_email         = filter_input( INPUT_POST, 'gform_resume_email', FILTER_SANITIZE_EMAIL );
 			$confirmation_message = GFFormDisplay::replace_save_variables( rgar( $form['confirmation'], 'message' ), $form, $resume_token, $resume_email );
-			$confirmation_message = '<div class="form_saved_message_sent"><span>' . $confirmation_message . '</span></div>';
+			$confirmation_message = '<div class="form_saved_message_sent" role="alert"><span>' . $confirmation_message . '</span></div>';
 
 			if ( $text === $confirmation_message ) {
 				foreach ( $form['confirmations'] as $resume_token => $confirmation ) {
@@ -1338,7 +1381,7 @@ abstract class Gravity_Forms_Multilingual {
 
 	/**
 	 * Set correct language for all reCAPTCHA fields in form.
-	 * 
+	 *
 	 * @param array $form
 	 */
 	public function set_enqueued_captcha_language( $form ) {
@@ -1347,5 +1390,12 @@ abstract class Gravity_Forms_Multilingual {
 				$field->captchaLanguage = $this->get_captcha_language();
 			}
 		}
+	}
+
+	/**
+	 * @return void
+	 */
+	public function restoreSwitchedEmailLanguage() {
+		do_action( 'wpml_restore_language_from_email' );
 	}
 }

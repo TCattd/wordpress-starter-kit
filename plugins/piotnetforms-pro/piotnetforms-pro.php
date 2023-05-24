@@ -3,7 +3,7 @@
  * Plugin Name: Piotnetforms Pro
  * Description: Piotnet Forms Pro
  * Plugin URI:  https://piotnetforms.com/
- * Version:     2.0.21
+ * Version:     2.1.3
  * Author:      Piotnet
  * Author URI:  https://piotnet.com/
  * Text Domain: piotnetforms
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/inc/variables.php';
 require_once __DIR__ . '/inc/license.php';
 
-define( 'PIOTNETFORMS_PRO_VERSION', '2.0.21' );
+define( 'PIOTNETFORMS_PRO_VERSION', '2.1.3' );
 define( 'PIOTNETFORMS_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 class Piotnetforms_pro extends Piotnetforms_Variables_Pro {
@@ -56,10 +56,9 @@ class Piotnetforms_pro extends Piotnetforms_Variables_Pro {
 
 		require_once __DIR__ . '/inc/shortcode/shortcode-widget.php';
 
-		add_action( 'wp_enqueue_scripts', [ $this, 'load_jquery' ] );
-
-		add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue' ] );
-
+        if($this->check_admin_enqueue()){
+            add_action( 'admin_enqueue_scripts', [ $this, 'admin_enqueue' ], 10);
+        }
 		add_action( 'admin_enqueue_scripts', [ $this, 'add_admin_scripts' ], 10, 1 );
 
 		add_action( 'admin_footer', [ $this, 'admin_footer' ], 10, 1 );
@@ -180,6 +179,9 @@ class Piotnetforms_pro extends Piotnetforms_Variables_Pro {
 
 		// Custom Price Woocommerce
 		add_action( 'woocommerce_before_calculate_totals', [ $this, 'piotnetforms_apply_custom_price_to_cart_item'], 30, 1 );
+
+		// Custom Cart Item Quantity
+		add_filter( 'woocommerce_widget_cart_item_quantity', [ $this, 'piotnetforms_filter_woo_cart_quantity'], 10, 3 );
 
 		// Booking Woocommerce
 		add_action( 'woocommerce_checkout_order_processed', [ $this, 'piotnetforms_woocommerce_checkout_order_processed'], 10, 1 );
@@ -573,14 +575,6 @@ class Piotnetforms_pro extends Piotnetforms_Variables_Pro {
 		}
 
 		return $content;
-	}
-
-	public function load_jquery() {
-		if ( ! wp_script_is( 'jquery', 'enqueued' ) ) {
-
-			//Enqueue
-			wp_enqueue_script( 'jquery' );
-		}
 	}
 
 	public function add_body_class( $classes ) {
@@ -1797,6 +1791,18 @@ class Piotnetforms_pro extends Piotnetforms_Variables_Pro {
 		}
 	}
 
+	public function piotnetforms_filter_woo_cart_quantity( $html, $cart_item, $cart_item_key ) {
+		if ( class_exists( 'WooCommerce' ) ) {
+			if ( isset( $cart_item['piotnetforms_custom_price'] ) ) {
+				$piotnetforms_price = !empty( $cart_item['piotnetforms_custom_price'] ) ? $cart_item['piotnetforms_custom_price'] : 0;
+				$product_price = wc_price( $piotnetforms_price );
+				echo '<span class="quantity">' . sprintf( '<span class="product-quantity">%s &times;</span> %s', $cart_item['quantity'], $product_price ) . '</span>';
+			} else {
+				return $html;
+			}
+		}
+	}
+
 	public function admin_notice_missing_main_plugin() {
 		if ( isset( $_GET['activate'] ) ) {
 			unset( $_GET['activate'] );
@@ -1866,6 +1872,15 @@ class Piotnetforms_pro extends Piotnetforms_Variables_Pro {
 		//$existing_mimes['woff'] = 'application/x-font-woff';
 		return $existing_mimes;
 	}
+    public function check_admin_enqueue(){
+        $post_type = isset($_GET['post_type']) ? $_GET['post_type'] : false;
+        $page = isset($_GET['page']) ? $_GET['page'] : false;
+        if(in_array($post_type, ['piotnetforms', 'piotnetforms-data', 'piotnetforms-aban', 'piotnetforms-book', 'piotnetforms-fonts']) || $page == 'piotnetforms'){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 
 $piotnetforms_pro = new Piotnetforms_Pro();

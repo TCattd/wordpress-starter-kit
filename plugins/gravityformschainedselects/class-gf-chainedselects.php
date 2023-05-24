@@ -5,7 +5,7 @@ defined( 'ABSPATH' ) || die();
 GFForms::include_feed_addon_framework();
 
 class GFChainedSelects extends GFAddOn {
-	
+
 	protected $_version = GF_CHAINEDSELECTS_VERSION;
 	protected $_min_gravityforms_version = '2.2.2';
 	protected $_slug = 'gravityformschainedselects';
@@ -24,15 +24,18 @@ class GFChainedSelects extends GFAddOn {
 	/* Members plugin integration */
 	protected $_capabilities = array( 'gravityforms_chainedselects', 'gravityforms_chainedselects_uninstall' );
 
+	/* Theme framework */
+	protected $_enable_theme_layer = true;
+
 	/**
 	 * Get instance of this class.
-	 * 
+	 *
 	 * @access public
 	 * @static
 	 * @return object $_instance
 	 */
 	public static function get_instance() {
-		
+
 		if ( self::$_instance == null ) {
 			self::$_instance = new self;
 		}
@@ -56,7 +59,7 @@ class GFChainedSelects extends GFAddOn {
 
 	/**
 	 * Enqueue scripts.
-	 * 
+	 *
 	 * @access public
 	 * @return array $scripts
 	 */
@@ -121,18 +124,21 @@ class GFChainedSelects extends GFAddOn {
 	 */
 	public function styles() {
 
+		$base_url = $this->get_base_url();
+		$min      = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG || isset( $_GET['gform_debug'] ) ? '' : '.min';
+
 		$styles = array(
 			array(
 				'handle'  => 'gform_chained_selects_admin',
-				'src'     => $this->get_base_url() . '/css/admin.css',
+				'src'     => $base_url . "/assets/css/dist/admin{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array(
 					array( 'admin_page' => array( 'form_editor', 'entry_view' ) ),
 				),
 			),
 			array(
-				'handle'  => 'gform_chained_selects',
-				'src'     => $this->get_base_url() . '/css/frontend.css',
+				'handle'  => 'gform_chained_selects_theme',
+				'src'     => $base_url . "/assets/css/dist/theme{$min}.css",
 				'version' => $this->_version,
 				'enqueue' => array(
 					array( $this, 'should_enqueue_frontend_script' )
@@ -141,6 +147,34 @@ class GFChainedSelects extends GFAddOn {
 		);
 
 		return array_merge( parent::styles(), $styles );
+	}
+
+	/**
+	 * An array of styles to enqueue.
+	 *
+	 * @since 1.6
+	 *
+	 * @param $form
+	 * @param $ajax
+	 * @param $settings
+	 * @param $block_settings
+	 *
+	 * @return array|\string[][]
+	 */
+	public function theme_layer_styles( $form, $ajax, $settings, $block_settings = array() ) {
+		$theme_slug = \GFFormDisplay::get_form_theme_slug( $form );
+
+		if ( $theme_slug !== 'orbital' ) {
+			return array();
+		}
+
+		$base_url = plugins_url( '', __FILE__ );
+
+		return array(
+			'framework' => array(
+				array( 'gravity_forms_chainedselects_theme_framework', "$base_url/assets/css/dist/theme-framework.css" ),
+			),
+		);
 	}
 
 	public function localize_scripts() {
@@ -163,13 +197,24 @@ class GFChainedSelects extends GFAddOn {
 		wp_localize_script( 'gform_chained_selects', 'gformChainedSelectData', array(
 			'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
 			'nonce'       => wp_create_nonce( 'gform_get_next_chained_select_choices' ),
-			'spinner'     => GFCommon::get_base_url() . '/images/spinner.gif',
+			'spinner'     => $this->get_spinner_url(),
 			'strings'     => array(
 				'loading'   => wp_strip_all_tags( __( 'Loading', 'gravityformschainedselects' ) ),
 				'noOptions' => wp_strip_all_tags( __( 'No options', 'gravityformschainedselects' ) ),
 			),
 		) );
 
+	}
+
+	/**
+	 * Returns the URL of the file containing the spinner.
+	 *
+	 * @since 1.6
+	 *
+	 * @return string
+	 */
+	public function get_spinner_url() {
+		return GFCommon::get_base_url() . '/images/spinner' . ( $this->is_gravityforms_supported( '2.5' ) ? '.svg' : '.gif' );
 	}
 
 	public function get_default_choices() {

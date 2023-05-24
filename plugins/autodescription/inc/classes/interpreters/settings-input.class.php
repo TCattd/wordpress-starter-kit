@@ -8,7 +8,7 @@ namespace The_SEO_Framework\Interpreters;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2021 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2021 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -160,15 +160,15 @@ final class Settings_Input {
 			array_push( $cb_classes, ...static::get_conditional_checked_classes( $args['id'] ) );
 		}
 
-		$output = sprintf(
-			'<span class="tsf-toblock">%s</span>',
+		return sprintf(
+			'<span class=tsf-toblock>%s</span>%s',
 			vsprintf(
 				'<label for="%s"%s>%s</label>',
 				[
 					$tsf->s_field_id( $field_id ),
-					( $args['disabled'] ? ' class="tsf-disabled"' : '' ),
+					( $args['disabled'] ? ' class=tsf-disabled' : '' ),
 					vsprintf(
-						'<input type=checkbox class="%s" name="%s" id="%s" value="1" %s%s %s /> %s',
+						'<input type=checkbox class="%s" name="%s" id="%s" value=1 %s%s %s /> %s',
 						[
 							\esc_attr( implode( ' ', array_filter( $cb_classes ) ) ),
 							$tsf->s_field_id( $field_name ),
@@ -180,10 +180,7 @@ final class Settings_Input {
 						]
 					),
 				]
-			)
-		);
-
-		return $output .= (
+			),
 			$args['description']
 				? sprintf( '<p class="description tsf-option-spacer">%s</p>', $args['description'] )
 				: ''

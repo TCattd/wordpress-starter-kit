@@ -10,7 +10,7 @@ namespace The_SEO_Framework;
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2015 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2015 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -145,7 +145,7 @@ class Generate extends User_Data {
 		 *    0 = 0b000: Ignore nothing. Collect nothing. (Default front-end.)
 		 *    1 = 0b001: Ignore protection. (\The_SEO_Framework\ROBOTS_IGNORE_PROTECTION)
 		 *    2 = 0b010: Ignore post/term setting. (\The_SEO_Framework\ROBOTS_IGNORE_SETTINGS)
-		 *    4 = 0b100: Collect assertions.
+		 *    4 = 0b100: Collect assertions. (\The_SEO_Framework\ROBOTS_ASSERT)
 		 * }
 		 */
 		return array_filter(
@@ -528,27 +528,25 @@ class Generate extends User_Data {
 	 */
 	public function get_redirect_url( $args = null ) {
 
-		$url = '';
-
 		if ( null === $args ) {
 			if ( $this->is_singular() ) {
-				$url = $this->get_post_meta_item( 'redirect' ) ?: '';
+				$url = $this->get_post_meta_item( 'redirect' );
 			} elseif ( $this->is_term_meta_capable() ) {
-				$url = $this->get_term_meta_item( 'redirect' ) ?: '';
+				$url = $this->get_term_meta_item( 'redirect' );
 			} elseif ( \is_post_type_archive() ) {
-				$url = $this->get_post_type_archive_meta_item( 'redirect' ) ?: '';
+				$url = $this->get_post_type_archive_meta_item( 'redirect' );
 			}
 		} else {
 			$this->fix_generation_args( $args );
 			if ( $args['taxonomy'] ) {
-				$url = $this->get_term_meta_item( 'redirect', $args['id'] ) ?: '';
+				$url = $this->get_term_meta_item( 'redirect', $args['id'] );
 			} elseif ( $args['pta'] ) {
-				$url = $this->get_post_type_archive_meta_item( 'redirect', $args['pta'] ) ?: '';
+				$url = $this->get_post_type_archive_meta_item( 'redirect', $args['pta'] );
 			} else {
-				$url = $this->get_post_meta_item( 'redirect', $args['id'] ) ?: '';
+				$url = $this->get_post_meta_item( 'redirect', $args['id'] );
 			}
 		}
 
-		return $url;
+		return $url ?? '' ?: '';
 	}
 }

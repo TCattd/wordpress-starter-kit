@@ -1,17 +1,17 @@
-# Copyright (C) 2021 Gravity Forms
+# Copyright (C) 2023 Gravity Forms
 # This file is distributed under the GPL-3.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: Gravity Forms reCAPTCHA Add-On 1.1\n"
+"Project-Id-Version: Gravity Forms reCAPTCHA Add-On 1.1.2\n"
 "Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
 "Last-Translator: Gravity Forms <support@gravityforms.com>\n"
 "Language-Team: Gravity Forms <support@gravityforms.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-21T17:39:37+00:00\n"
+"POT-Creation-Date: 2023-03-08T09:32:05+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.4.0\n"
+"X-Generator: WP-CLI 2.7.1\n"
 "X-Domain: gravityformsrecaptcha\n"
 
 #. Plugin Name of the plugin
@@ -31,23 +31,23 @@ msgstr ""
 msgid "Gravity Forms"
 msgstr ""
 
-#: class-gf-recaptcha.php:479
+#: class-gf-recaptcha.php:489
 msgid "Disable reCAPTCHA v3 for this form."
 msgstr ""
 
-#: class-gf-recaptcha.php:628
+#: class-gf-recaptcha.php:660
 msgid "reCAPTCHA Score"
 msgstr ""
 
-#: class-gf-recaptcha.php:689
+#: class-gf-recaptcha.php:721
 msgid "reCAPTCHA"
 msgstr ""
 
-#: class-gf-recaptcha.php:710
+#: class-gf-recaptcha.php:742
 msgid "Score"
 msgstr ""
 
-#: class-gf-recaptcha.php:713
+#: class-gf-recaptcha.php:745
 msgid "Click here to learn more about reCAPTCHA."
 msgstr ""
 

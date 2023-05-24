@@ -407,7 +407,7 @@ function wppb_signup_user_notification( $user, $user_email, $activation_key, $me
 	//we don't use this anymore do we ?
 	/*$message_headers = apply_filters ( 'wppb_signup_user_notification_from', "From: \"{$from_name}\" <{$admin_email}>\n" . "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\n" );*/
 
-	if( isset( $wppb_general_settings['activationLandingPage'] ) && ( trim( $wppb_general_settings['activationLandingPage'] ) != '' ) ) {
+	if( isset( $wppb_general_settings['activationLandingPage'] ) && !empty( $wppb_general_settings['activationLandingPage'] ) )  {
 		$registration_page_url = add_query_arg( array('activation_key' => $activation_key), get_permalink( $wppb_general_settings['activationLandingPage'] ) );
 	} else {
 		$registration_page_url = 'not_set';

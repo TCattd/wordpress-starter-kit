@@ -30,7 +30,7 @@ class WPML_ST_Taxonomy_Strings {
 	 * @param string $domain
 	 */
 	public function add_to_translated_with_gettext_context( $text, $domain ) {
-		if ( ! in_array( $text, $this->translated_with_gettext_context ) ) {
+		if ( ! in_array( $text, $this->translated_with_gettext_context, true ) ) {
 			$this->translated_with_gettext_context[ $text ] = $domain;
 		}
 	}
@@ -123,7 +123,7 @@ class WPML_ST_Taxonomy_Strings {
 		$string_id = $this->slug_translation_records->get_slug_id( $taxonomy->name );
 
 		if ( ! $string_id ) {
-			$slug      = isset( $taxonomy->rewrite['slug'] ) ? $taxonomy->rewrite['slug'] : $taxonomy->name;
+			$slug      = isset( $taxonomy->rewrite['slug'] ) ? trim( $taxonomy->rewrite['slug'], '/' ) : $taxonomy->name;
 			$string_id = $this->slug_translation_records->register_slug( $taxonomy->name, $slug );
 		}
 

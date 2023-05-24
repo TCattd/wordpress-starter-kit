@@ -307,3 +307,107 @@ jQuery(document).ready( function () {
     // labels edit
     jQuery('.wp-admin.profile-builder_page_pb-labels-edit .wrap > h2').append('<a href="https://www.cozmoslabs.com/docs/profile-builder-2/add-ons/labels-edit/?utm_source=wpbackend&utm_medium=pb-documentation&utm_campaign=PBDocs" target="_blank" data-code="f223" class="wppb-docs-link dashicons dashicons-editor-help" style="margin-left: 5px"></a>');
 });
+
+
+/**
+ * Form Designs Feature --> Admin UI
+ *
+ *  - Activate new Design
+ *  - Preview Modal
+ *  - Modal Image Slider controls
+ *
+ * */
+
+jQuery( document ).ready(function(){
+
+    // Activate Design
+    jQuery('.wppb-forms-design-activate button.activate').click(function ( element ) {
+        let themeID, i, allDesigns;
+
+        themeID = jQuery(element.target).data('theme-id');
+
+        jQuery('#wppb-active-form-design').val(themeID);
+
+        allDesigns = jQuery('.wppb-forms-design');
+        for (i = 0; i < allDesigns.length; i++) {
+            if ( jQuery(allDesigns[i]).hasClass('active')) {
+                jQuery('.wppb-forms-design-title strong', allDesigns[i] ).hide();
+                jQuery(allDesigns[i]).removeClass('active');
+            }
+        }
+        jQuery('#wppb-forms-design-browser .wppb-forms-design#'+themeID).addClass('active');
+
+    });
+
+    jQuery('.wppb-forms-design-preview').click(function (e) {
+        let themeID = e.target.id.replace('-info', '');
+        displayDesignPreviewModal(themeID);
+    });
+
+    jQuery('.wppb-slideshow-button').click(function (e) {
+        let themeID = jQuery(e.target).data('theme-id'),
+            direction = jQuery(e.target).data('slideshow-direction'),
+            currentSlide = jQuery('#modal-' + themeID + ' .wppb-forms-design-preview-image.active'),
+            changeSlideshowImage = window[direction+'SlideshowImage'];
+
+        changeSlideshowImage(currentSlide,themeID);
+    });
+
+});
+
+function displayDesignPreviewModal( themeID ) {
+    jQuery('#modal-' + themeID).dialog({
+        resizable: false,
+        height: 'auto',
+        width: 1200,
+        modal: true,
+        closeOnEscape: true,
+        open: function () {
+            jQuery('.ui-widget-overlay').bind('click',function () {
+                jQuery('#modal-' + themeID).dialog('close');
+            })
+        },
+        close: function () {
+            let allImages = jQuery('.wppb-forms-design-preview-image');
+
+            allImages.each( function() {
+                if ( jQuery(this).is(':first-child') && !jQuery(this).hasClass('active') ) {
+                    jQuery(this).addClass('active');
+                }
+                else if ( !jQuery(this).is(':first-child') ) {
+                    jQuery(this).removeClass('active');
+                }
+            });
+
+            jQuery('.wppb-forms-design-sildeshow-previous').addClass('disabled');
+            jQuery('.wppb-forms-design-sildeshow-next').removeClass('disabled');
+        }
+    });
+    return false;
+}
+
+function nextSlideshowImage( currentSlide, themeID ){
+    if ( currentSlide.next().length > 0 ) {
+        currentSlide.removeClass('active');
+        currentSlide.next().addClass('active');
+
+        jQuery('#modal-' + themeID + ' .wppb-forms-design-sildeshow-previous').removeClass('disabled');
+
+        if ( currentSlide.next().next().length <= 0 )
+            jQuery('#modal-' + themeID + ' .wppb-forms-design-sildeshow-next').addClass('disabled');
+
+    }
+}
+
+function previousSlideshowImage( currentSlide, themeID ){
+    if ( currentSlide.prev().length > 0 ) {
+        currentSlide.removeClass('active');
+        currentSlide.prev().addClass('active');
+
+        jQuery('#modal-' + themeID + ' .wppb-forms-design-sildeshow-next').removeClass('disabled');
+
+        if ( currentSlide.prev().prev().length <= 0 )
+            jQuery('#modal-' + themeID + ' .wppb-forms-design-sildeshow-previous').addClass('disabled');
+
+    }
+}

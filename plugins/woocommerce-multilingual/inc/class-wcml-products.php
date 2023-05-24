@@ -1,6 +1,7 @@
 <?php
 
 use WCML\StandAlone\NullSitePress;
+use WCML\Utilities\DB;
 use WPML\Core\ISitePress;
 use WPML\FP\Fns;
 use WPML\FP\Obj;
@@ -114,7 +115,7 @@ class WCML_Products {
 		$get_variation_term_taxonomy_ids = $this->wpdb->get_col( "SELECT tt.term_taxonomy_id FROM {$this->wpdb->terms} AS t LEFT JOIN {$this->wpdb->term_taxonomy} AS tt ON t.term_id = tt.term_id WHERE t.name = 'variable' AND tt.taxonomy = 'product_type'" );
 		$get_variation_term_taxonomy_ids = apply_filters( 'wcml_variation_term_taxonomy_ids', (array) $get_variation_term_taxonomy_ids );
 
-		$is_variable_product = $this->wpdb->get_var( $this->wpdb->prepare( "SELECT count(object_id) FROM {$this->wpdb->term_relationships} WHERE object_id = %d AND term_taxonomy_id IN (" . join( ',', $get_variation_term_taxonomy_ids ) . ')', $product_id ) );
+		$is_variable_product = $this->wpdb->get_var( $this->wpdb->prepare( "SELECT count(object_id) FROM {$this->wpdb->term_relationships} WHERE object_id = %d AND term_taxonomy_id IN (" . DB::prepareIn( $get_variation_term_taxonomy_ids, '%d' ) . ')', $product_id ) );
 		$is_variable_product = apply_filters( 'wcml_is_variable_product', $is_variable_product, $product_id );
 
 		wp_cache_set( $cache_key, $is_variable_product, $cache_group );
@@ -213,6 +214,7 @@ class WCML_Products {
 				}
 
 				if ( ! current_user_can( 'wpml_manage_woocommerce_multilingual' ) && isset( $product_translations[ $language['code'] ] ) ) {
+					/** @var stdClass */
 					$tr_status = $this->wpdb->get_row(
 						$this->wpdb->prepare(
 							"SELECT status,translator_id FROM {$this->wpdb->prefix}icl_translation_status
@@ -713,8 +715,9 @@ class WCML_Products {
 
 				if ( ! is_admin() && ! isStandAlone() ) {
 					if ( 'product' === $post_type ) {
-						$meta_keys_to_filter[] = '_wc_review_count';
-						$meta_keys_to_filter[] = '_wc_average_rating';
+						$meta_keys_to_filter[] = WCML_Comments::WC_RATING_COUNT_KEY;
+						$meta_keys_to_filter[] = WCML_Comments::WC_REVIEW_COUNT_KEY;
+						$meta_keys_to_filter[] = WCML_Comments::WC_AVERAGE_RATING_KEY;
 					}
 
 					$is_original_product = $this->woocommerce_wpml->products->is_original_product( $product_id );

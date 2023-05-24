@@ -49,7 +49,10 @@ class WCML_Mix_And_Match_Products implements \IWPML_Action {
 			$translated_child_items = [];
 			$lang                   = $this->sitepress->get_language_for_element( $translated_container_id, 'post_product' );
 
+			/** @var WC_Product_Mix_and_Match */
 			$original_product   = wc_get_product( $container_id );
+
+			/** @var WC_Product_Mix_and_Match */
 			$translated_product = wc_get_product( $translated_container_id );
 
 			if ( $original_product ) {

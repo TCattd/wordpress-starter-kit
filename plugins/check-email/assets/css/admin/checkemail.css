@@ -1,0 +1,53 @@
+#checkemail {
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    max-width: 50%;
+    padding: 30px;
+    float: left;
+}
+
+#CKE_banner {
+    float: right;
+    max-width: 30%;
+    padding: 25px;
+    background: #f5fbff;
+    border: 1px solid #CCC;
+    min-height: 150px;
+    margin-right: 5%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#checkemail label {
+        display: inline-block;
+        width: 150px;
+}
+
+#checkemail .text {
+        width: 30em;
+}
+
+#checkemail ul { 
+    padding-left: 30px; 
+    list-style: square;
+
+}
+#autoheaders { 
+    background-color: #FAFAFA; 
+    border: 1px solid #CCC; 
+    padding: 10px 15px; 
+}
+
+.tab-content.ce_tab_general .check_email_enable_logs,
+.tab-content.ce_tab_general .check_email_enable_dashboard_widget,
+.tab-content.ce_tab_general .check_email_db_size_notification {
+    display: none;
+}
+
+.tab-content.ce_tab_logging .check_email_allowed_user_roles,
+.tab-content.ce_tab_logging .check_email_remove_on_uninstall,
+.tab-content.ce_tab_logging .check_email_override_emails_from,
+.tab-content.ce_tab_logging .check_email_email_from_name,
+.tab-content.ce_tab_logging .check_email_email_from_email  {
+    display: none;
+}

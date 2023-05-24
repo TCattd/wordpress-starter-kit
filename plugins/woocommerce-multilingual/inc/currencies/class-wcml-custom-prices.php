@@ -1,7 +1,11 @@
 <?php
 
+use WCML\Utilities\DB;
+use WPML\FP\Fns;
+use WPML\FP\Maybe;
 use WPML\FP\Obj;
 use function WCML\functions\isStandAlone;
+use function WPML\FP\invoke;
 
 class WCML_Custom_Prices {
 
@@ -26,6 +30,7 @@ class WCML_Custom_Prices {
 				// In the full mode, this is done in the product sync logic.
 				add_action( 'save_post_product', [ $this, 'save_custom_prices' ] );
 				add_action( 'save_post_product_variation', [ $this, 'sync_product_variations_custom_prices' ] );
+				add_action( 'woocommerce_ajax_save_product_variations', [ $this, 'sync_product_variations_custom_prices_on_ajax' ] );
 			}
 
 			add_action( 'woocommerce_variation_options', [ $this, 'add_individual_variation_nonce' ], 10, 3 );
@@ -77,14 +82,10 @@ class WCML_Custom_Prices {
 		}
 
 		$product_meta  = get_post_custom( $this->woocommerce_wpml->products->get_original_product_id( $product_id ) );
-		$custom_prices = false;
+		$custom_prices = [];
 
 		if ( ! empty( $product_meta['_wcml_custom_prices_status'][0] ) ) {
-
-			$prices_keys = wcml_price_custom_fields( $product_id );
-
-			foreach ( $prices_keys as $key ) {
-
+			foreach ( wcml_price_custom_fields( $product_id ) as $key ) {
 				if ( isset( $product_meta[ $key . '_' . $currency ][0] ) ) {
 					$custom_prices[ $key ] = $product_meta[ $key . '_' . $currency ][0];
 				}
@@ -102,7 +103,7 @@ class WCML_Custom_Prices {
 			$custom_prices['_price']      = $custom_prices['_regular_price'];
 		}
 
-		if ( $custom_prices['_price'] != $current__price_value ) {
+		if ( $custom_prices['_price'] !== $current__price_value ) {
 			update_post_meta( $product_id, '_price_' . $currency, $custom_prices['_price'] );
 		}
 
@@ -111,76 +112,38 @@ class WCML_Custom_Prices {
 
 			static $product_min_max_prices = [];
 
-			if ( empty( $product_min_max_prices[ $product_id ] ) ) {
+			if ( ! isset( $product_min_max_prices[ $product_id ] ) && 'product' === get_post_type( $product_id ) ) {
+
+				$product_min_max_prices[ $product_id ] = [];
 
 				// get variation ids.
 				$variation_ids = $this->wpdb->get_col( $this->wpdb->prepare( "SELECT ID FROM {$this->wpdb->posts} WHERE post_parent = %d", $product_id ) );
 
-				// variations with custom prices.
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key='_wcml_custom_prices_status'", join( ',', $variation_ids ) ) );
-				foreach ( $res as $row ) {
-					$custom_prices_enabled[ $row->post_id ] = $row->meta_value;
-				}
+				// get all prices for the above variations.
+				$rows = $this->wpdb->get_results(
+					"SELECT post_id, meta_key, meta_value FROM {$this->wpdb->postmeta}
+					WHERE meta_key IN ('_price', '_regular_price', '_sale_price', '_price_$currency', '_regular_price_$currency', '_sale_price_$currency')
+						AND post_id IN (" . DB::prepareIn( $variation_ids, '%d' ) . ')'
+				);
 
-				// REGULAR PRICES.
-				// get custom prices.
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key='_regular_price_" . $currency . "'", join( ',', $variation_ids ) ) );
-				foreach ( $res as $row ) {
-					$regular_prices[ $row->post_id ] = $row->meta_value;
-				}
+				// $extractPricesByType :: array, string => array
+				$extractPricesByType = function( $rows, $key ) use ( $currency, $variation_ids ) {
+					$prices   = wp_list_pluck( wp_list_filter( $rows, [ 'meta_key' => $key . '_' . $currency ] ), $key . '_' . $currency, 'post_id' );
+					$defaults = wp_list_pluck( wp_list_filter( $rows, [ 'meta_key' => $key ] ), $key, 'post_id' );
 
-				// get default prices (default currency).
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key='_regular_price'", join( ',', $variation_ids ) ) );
-				foreach ( $res as $row ) {
-					$default_regular_prices[ $row->post_id ] = $row->meta_value;
-				}
-
-				// include the dynamic prices.
-				foreach ( $variation_ids as $vid ) {
-					if ( empty( $regular_prices[ $vid ] ) && isset( $default_regular_prices[ $vid ] ) ) {
-						$regular_prices[ $vid ] = apply_filters( 'wcml_raw_price_amount', $default_regular_prices[ $vid ] );
+					// calculate missing prices automatically.
+					foreach ( $variation_ids as $id ) {
+						if ( empty( $prices[ $id ] ) && isset( $defaults[ $id ] ) ) {
+							$prices[ $id ] = apply_filters( 'wcml_raw_price_amount', $defaults[ $id ] );
+						}
 					}
-				}
 
-				// SALE PRICES.
-				// get custom prices.
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key=%s", join( ',', $variation_ids ), '_sale_price_' . $currency ) );
-				foreach ( $res as $row ) {
-					$custom_sale_prices[ $row->post_id ] = $row->meta_value;
-				}
+					return $prices;
+				};
 
-				// get default prices (default currency).
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key='_sale_price' AND meta_value <> ''", join( ',', $variation_ids ) ) );
-				foreach ( $res as $row ) {
-					$default_sale_prices[ $row->post_id ] = $row->meta_value;
-				}
-
-				// include the dynamic prices.
-				foreach ( $variation_ids as $vid ) {
-					if ( empty( $sale_prices[ $vid ] ) && isset( $default_sale_prices[ $vid ] ) ) {
-						$sale_prices[ $vid ] = apply_filters( 'wcml_raw_price_amount', $default_sale_prices[ $vid ] );
-					}
-				}
-
-				// PRICES.
-				// get custom prices.
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key=%s", join( ',', $variation_ids ), '_price_' . $currency ) );
-				foreach ( $res as $row ) {
-					$custom_prices_prices[ $row->post_id ] = $row->meta_value;
-				}
-
-				// get default prices (default currency).
-				$res = $this->wpdb->get_results( $this->wpdb->prepare( "SELECT post_id, meta_value FROM {$this->wpdb->postmeta} WHERE post_id IN(%s) AND meta_key='_price'", join( ',', $variation_ids ) ) );
-				foreach ( $res as $row ) {
-					$default_prices[ $row->post_id ] = $row->meta_value;
-				}
-
-				// include the dynamic prices.
-				foreach ( $variation_ids as $vid ) {
-					if ( empty( $custom_prices_prices[ $vid ] ) && isset( $default_prices[ $vid ] ) ) {
-						$prices[ $vid ] = apply_filters( 'wcml_raw_price_amount', $default_prices[ $vid ] );
-					}
-				}
+				$regular_prices = $extractPricesByType( $rows, '_regular_price' );
+				$sale_prices    = $extractPricesByType( $rows, '_sale_price' );
+				$prices         = $extractPricesByType( $rows, '_price' );
 
 				if ( ! empty( $regular_prices ) ) {
 					$product_min_max_prices[ $product_id ]['_min_variation_regular_price'] = min( $regular_prices );
@@ -201,6 +164,7 @@ class WCML_Custom_Prices {
 			if ( isset( $product_min_max_prices[ $product_id ]['_min_variation_regular_price'] ) ) {
 				$custom_prices['_min_variation_regular_price'] = $product_min_max_prices[ $product_id ]['_min_variation_regular_price'];
 			}
+
 			if ( isset( $product_min_max_prices[ $product_id ]['_max_variation_regular_price'] ) ) {
 				$custom_prices['_max_variation_regular_price'] = $product_min_max_prices[ $product_id ]['_max_variation_regular_price'];
 			}
@@ -507,6 +471,18 @@ class WCML_Custom_Prices {
 		return $custom_prices['_sale_price'] !== '' && ( $not_depend_on_date || $valid_sale_date );
 	}
 
+	/**
+	 * @param int $product_id
+	 */
+	public function sync_product_variations_custom_prices_on_ajax( $product_id ) {
+		Maybe::fromNullable( wc_get_product( $product_id ) )
+			->map( invoke( 'get_children' ) )
+			->map( Fns::map( [ $this, 'sync_product_variations_custom_prices' ] ) );
+	}
+
+	/**
+	 * @param int $product_id
+	 */
 	public function sync_product_variations_custom_prices( $product_id ) {
 
 		if ( isset( $_POST['_wcml_custom_prices'][ $product_id ] ) ) {
@@ -578,14 +554,14 @@ class WCML_Custom_Prices {
 	}
 
 	/**
-	 * @param $product_id
+	 * @param int $product_id
 	 *
 	 * @return mixed
 	 */
-	private function is_custom_prices_set_for_product( $product_id ){
+	private function is_custom_prices_set_for_product( $product_id ) {
 		return get_post_meta( $product_id, '_wcml_custom_prices_status', true );
 	}
-	
+
 	/**
 	 * WC when starts the sale copies price from _sale_price into _price field
 	 * we should do the same for _sale_price_{currency} and _price_{currency}

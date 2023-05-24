@@ -7,7 +7,7 @@ class WCML_Cart_Sync_Warnings {
 	 */
 	private $woocommerce_wpml;
 	/**
-	 * @var Sitepress
+	 * @var SitePress
 	 */
 	private $sitepress;
 	/**

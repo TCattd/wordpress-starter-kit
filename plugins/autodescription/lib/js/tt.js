@@ -8,7 +8,7 @@
 
 /**
  * The SEO Framework plugin
- * Copyright (C) 2019 - 2022 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
+ * Copyright (C) 2019 - 2023 Sybre Waaijer, CyberWire B.V. (https://cyberwire.nl/)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as published
@@ -36,15 +36,16 @@ window.tsfTT = function() {
 
 	const _ttBase = 'tsf-tooltip';
 	const ttNames = {
-		base:     _ttBase,
-		item:     `${_ttBase}-item`,
-		wrap:     `${_ttBase}-wrap`,
-		text:     `${_ttBase}-text`,
-		textWrap: `${_ttBase}-text-wrap`,
-		boundary: `${_ttBase}-boundary`,
-		arrow:    `${_ttBase}-arrow`,
+		base:      _ttBase,
+		item:      `${_ttBase}-item`,
+		wrap:      `${_ttBase}-wrap`,
+		superWrap: `${_ttBase}-super-wrap`,
+		text:      `${_ttBase}-text`,
+		textWrap:  `${_ttBase}-text-wrap`,
+		boundary:  `${_ttBase}-boundary`,
+		arrow:     `${_ttBase}-arrow`,
 	}
-	// Yes, I'm too lazy to copy/paste whatever's above again, so I spent half an hour figuring this.
+	// Yes, I'm too lazy to copy/paste whatever's above again to prepend a dot, so I spent half an hour figuring this.
 	const ttSelectors = Object.fromEntries( Object.entries( ttNames ).map( ( [ i, v ] ) => [ i, `.${v}` ] ) );
 
 	const _activeToolTipHandles = {
@@ -167,9 +168,10 @@ window.tsfTT = function() {
 
 			_pointer.lastPos.x = _pointer.currPos.x;
 
-			const event = _pointer.lastMoveEvent;
+			const event   = _pointer.lastMoveEvent,
+				  element = event.target;
 
-			let	tooltip = _activeTooltipElements.tooltip || ( event && event.target.querySelector( ttSelectors.base ) );
+			let	tooltip = _activeTooltipElements.tooltip || ( element.querySelector( ttSelectors.base ) );
 
 			// Browser lagged, no tooltip exists (yet). Bail.
 			if ( ! tooltip ) {
@@ -179,27 +181,27 @@ window.tsfTT = function() {
 
 			_activeTooltipElements.tooltip ||= tooltip;
 			_activeTooltipElements.arrow   ||= tooltip.querySelector( ttSelectors.arrow );
-			_activeTooltipElements.wrap    ||= event.target.closest( ttSelectors.wrap ) || event.target.parentNode;
+			_activeTooltipElements.wrap    ||= element.closest( ttSelectors.wrap ) || element.parentNode;
 
-			let pagex         = _pointer.currPos.x,
-				arrowBoundary = 7,
-				arrowWidth    = 16;
+			let pagex = _pointer.currPos.x;
 
 			if ( 'focus' === event.type ) {
 				// Grab the middle of the item on focus.
-				pagex = event.target.getBoundingClientRect().left + ( event.target.offsetWidth / 2 );
+				pagex = element.getBoundingClientRect().left + ( element.offsetWidth / 2 );
 			} else if ( isNaN( pagex ) ) {
 				// Get the last known tooltip position on manual tooltip alteration.
-				pagex = _activeTooltipElements.tooltip.dataset.lastPagex || event.target.getBoundingClientRect().left;
+				pagex = _activeTooltipElements.tooltip.dataset.lastPagex || element.getBoundingClientRect().left;
 			}
 			// Keep separate record of pagex, so updateDesc() can utilize this via isNaN hereabove.
 			_activeTooltipElements.tooltip.dataset.lastPagex = pagex;
 
+			const textWrap      = _activeTooltipElements.tooltip.querySelector( ttSelectors.textWrap ),
+				  arrowBoundary = 7,
+				  arrowWidth    = 16;
+
 			let mousex        = pagex - _activeTooltipElements.wrap.getBoundingClientRect().left - ( arrowWidth / 2 ),
-				textWrap      = _activeTooltipElements.tooltip.querySelector( ttSelectors.textWrap ),
-				textWrapWidth = textWrap.offsetWidth,
 				adjust        = _activeTooltipElements.tooltip.dataset.adjust,
-				boundaryRight = textWrapWidth - arrowWidth - arrowBoundary;
+				boundaryRight = textWrap.offsetWidth - arrowWidth - arrowBoundary;
 
 			// mousex is skewed, adjust.
 			adjust = parseInt( adjust, 10 );
@@ -325,7 +327,7 @@ window.tsfTT = function() {
 		 * @function
 		 * @param {Event} event
 		 */
-		const loadToolTip = async ( event ) => {
+		const loadToolTip = async event => {
 
 			if ( event.target.dataset.hasTooltip ) return;
 
@@ -406,7 +408,6 @@ window.tsfTT = function() {
 			instigatingTooltip = false;
 		}
 
-		let initTimeout = void 0;
 		const options = passiveSupported && captureSupported ? { capture: true, passive: true } : true;
 		/**
 		 * Initializes tooltips.
@@ -452,7 +453,7 @@ window.tsfTT = function() {
 
 		element.dataset.hasTooltip = 1;
 
-		let tooltip = document.createElement( 'div' );
+		const tooltip = document.createElement( 'div' );
 
 		tooltip.classList.add( ttNames.base );
 		tooltip.insertAdjacentHTML(
@@ -462,47 +463,61 @@ window.tsfTT = function() {
 
 		element.prepend( tooltip );
 
-		let boundary      = element.closest( ttSelectors.boundary ) || document.body,
-			boundaryRect  = boundary.getBoundingClientRect(),
-			boundaryTop   = boundaryRect.top - ( boundary.scrollTop || 0 ),
-			boundaryWidth = boundary.offsetWidth,
-			maxWidth      = 250, // Gutenberg is 262. The tooltip has 24px padding (12*2)...
-			appeal        = 12;
+		const boundary = element.closest( ttSelectors.boundary )
+			|| element.closest( '.edit-post-sidebar' ) // Gutenberg Sidebar
+			// || element.closest( '.postbox-container' ) // Gutenberg Bottom (doesn't seem necessary)
+			|| document.getElementById( 'wpcontent' )
+			|| document.body;
 
-		let hoverItemWrap      = element.closest( ttSelectors.wrap ) || element.parentElement,
-			hoverItemWrapRect  = hoverItemWrap.getBoundingClientRect(),
-			textWrap           = tooltip.querySelector( ttSelectors.textWrap ),
-			textWrapRect       = textWrap.getBoundingClientRect(),
-			hoverItemWrapWidth = hoverItemWrapRect.width;
+		const boundaryRect  = boundary.getBoundingClientRect(),
+			  boundaryTop   = boundaryRect.top - ( boundary.scrollTop || 0 ),
+			  boundaryWidth = boundaryRect.width,
+			  maxWidth      = 250; // Gutenberg is 262. The tooltip has 24px padding (12*2)...
 
-		if ( textWrapRect.width > maxWidth && hoverItemWrapWidth < maxWidth && hoverItemWrapWidth > 150 ) {
-			// The hoveritemwrap is of an acceptable size. Format it to that.
-			textWrap.style.flexBasis = `${hoverItemWrapWidth}px`;
-		}
+		const hoverItemSuperWrap = element.closest( ttSelectors.superWrap ),
+			  hoverItemWrap      = element.closest( ttSelectors.wrap ) || element.parentElement,
+			  textWrap           = tooltip.querySelector( ttSelectors.textWrap );
+
+		const superWrapRect     = hoverItemSuperWrap?.getBoundingClientRect(),
+			  hoverItemWrapRect = hoverItemWrap.getBoundingClientRect();
+
+		let textWrapRect;
+		const resetTextRects = () => {
+			textWrapRect = textWrap.getBoundingClientRect();
+		};
+		resetTextRects();
+
+		let appeal    = 12, // equals parseInt( getComputedStyle( textWrap ).paddingRight ),
+		    horIndent = 0;
 
 		// Calculate the appeal with the spacing.
-		if ( textWrap.offsetWidth > ( boundaryWidth - ( appeal / 2 ) ) ) {
+		if ( textWrapRect.width > ( boundaryWidth - ( appeal / 2 ) ) ) {
 			// Overflown the boundary size. Squeeze the box. (thank you, Gutenberg.)
 
 			// Use the bounding box minus appeal. Don't double the appeal since that'll mess up the arrow.
 			// Maximum 250px.
 			textWrap.style.flexBasis = `${Math.min( maxWidth, boundaryWidth - appeal )}px`;
+			resetTextRects();
 
 			// Halve appeal from here. So each side gets a bit.
 			appeal /= 2;
 		} else if ( textWrapRect.width > maxWidth ) {
-			// Resize the text wrap if it exceeds 250px on auto-grow.
-			textWrap.style.flexBasis = `${maxWidth}px`;
+			textWrap.style.flexBasis = `${maxWidth}px`; // Is this redundant?
+			// Limit the text wrap if it exceeds 250px on auto-grow. Flex ignores box-sizing?
+			textWrap.style.maxWidth = `${maxWidth}px`;
+			resetTextRects();
+		} else {
+			// Text wrap is small. Halve the appeal.
+			appeal /= 2;
 		}
 
-		let boundaryLeft  = boundaryRect.left - ( boundary.scrollLeft || 0 ),
-			boundaryRight = boundaryLeft + boundaryWidth;
+		const boundaryLeft  = boundaryRect.left - ( boundary.scrollLeft || 0 ),
+			  boundaryRight = boundaryLeft + boundaryWidth;
 
-		let textWrapWidth   = textWrap.offsetWidth,
-			textBorderLeft  = textWrapRect.left,
-			textBorderRight = textBorderLeft + textWrapWidth;
-
-		let horIndent = 0;
+		const textWrapWidth   = textWrapRect.width,
+			  textBorderLeft  = textWrapRect.left,
+			  textBorderRight = textBorderLeft + textWrapWidth,
+			  wrapperWidth    = superWrapRect?.width || hoverItemWrapRect.width;
 
 		if ( textBorderLeft < boundaryLeft ) {
 			// Overflown over left boundary (likely window)
@@ -512,25 +527,26 @@ window.tsfTT = function() {
 			// Overflown over right boundary (likely window)
 			// Add indent relative to boundary minus text wrap width.
 			horIndent = boundaryRight - textBorderLeft - textWrapWidth - appeal;
-		} else if ( hoverItemWrapWidth < 42 ) {
+		} else if ( wrapperWidth < 42 ) {
 			// Small tooltip container. Add indent relative to the item to make it visually appealing.
-			horIndent = ( -hoverItemWrapWidth / 2 ) - appeal;
-		} else if ( hoverItemWrapWidth > textWrapWidth ) {
+			horIndent = ( -wrapperWidth / 2 ) - appeal;
+		} else if ( wrapperWidth > textWrapWidth ) {
 			// Wrap is larger than tooltip. Find middle of pointer (if any) and adjust accordingly.
-			let pagex = event && event.pageX || NaN;
+			let pagex = event?.pageX || NaN; // This will be NaN if 0 -- which could never happen anyway.
 
-			if ( event && 'focus' === event.type ) {
+			if ( 'focus' === event?.type ) {
 				// No pointer-event found. Set indent to the middle instead.
-				horIndent = ( hoverItemWrapWidth / 2 ) - ( textWrapWidth / 2 );
+				horIndent = ( wrapperWidth / 2 ) - ( textWrapWidth / 2 );
 			} else if ( isNaN( pagex ) ) {
 				horIndent = -appeal;
 			} else {
 				// Set to middle of pointer.
-				horIndent = pagex - hoverItemWrapRect.left - ( textWrapWidth / 2 );
+				horIndent = pagex - hoverItemWrapRect.left - ( textWrapWidth / 2 ) + appeal;
 			}
 
+			// We work from left=0, so to get to the right, we need the width.
 			let appealLeft  = -appeal,
-				appealRight = hoverItemWrapWidth - textWrapWidth + appeal;
+				appealRight = wrapperWidth - textWrapWidth + appeal;
 
 			if ( horIndent < appealLeft ) {
 				// Overflown left more than appeal, let's move it more over the hoverwrap.
@@ -540,17 +556,19 @@ window.tsfTT = function() {
 				// Overflown right more than appeal, let's move it more over the hoverwrap.
 				horIndent = appealRight;
 			}
+		} else {
+			// Shift it a bit.
+			horIndent = window.isRTL ? appeal : -appeal;
 		}
 
 		if ( ( horIndent + textBorderLeft ) < ( boundaryLeft + appeal ) ) {
-			// Overflows left boundary. Use half appeal to account for bordered tooltip items.
-			let _adjustLeft = ( horIndent + textBorderLeft ) - ( boundaryLeft + ( appeal / 2 ) );
-			horIndent = horIndent - _adjustLeft;
+			// Overflows left boundary's appeal. Use half appeal to shift it back a bit.
+			horIndent += appeal / 2;
 		}
 		if ( ( horIndent + textBorderRight ) > ( boundaryRight + appeal ) ) {
-			// Overflows right boundary. Use half appeal to account for bordered tooltip items.
-			let _adjustRight = ( horIndent + textBorderRight ) - ( boundaryRight + ( appeal / 2 ) );
-			horIndent = horIndent - _adjustRight;
+			// FIXME?: Remove? We were unable to reach this code in our testing; even RTL.
+			// Overflows right boundary's appeal. Use half appeal to shift it back a bit.
+			horIndent -= appeal / 2;
 		}
 		if ( ( horIndent + textBorderLeft ) < boundaryLeft ) {
 			// It failed again after alignment. Reset to 0.
@@ -565,24 +583,44 @@ window.tsfTT = function() {
 			 * causing a misplaced box; so, we replace that with the basis.
 			 * This can happen when no pointer event is assigned, like via updateDesc().
 			 */
-			if ( horIndent < -basis ) {
+			if ( horIndent < -basis )
 				horIndent = -basis;
-			}
 		}
 
-		tooltip.style.left     = `${horIndent}px`;
-		tooltip.dataset.adjust = horIndent;
+		let offsetTop     = 0,
+			offsetTopFlip = 0,
+			offsetLeft    = 0;
+
+		// If there's a super-wrap, make everything relative from the top-left corner to the superWrap, instead of the hoveritem.
+		if ( superWrapRect ) {
+			// This is basically hoverItemWrapRect.offsetTop/offsetLeft but then with subpixel calculations.
+			offsetTop  = hoverItemWrapRect.top - superWrapRect.top;
+			offsetLeft = hoverItemWrapRect.left - superWrapRect.left;
+
+			// If the text is smaller than the super wrap, center the textwrap over the hoveritem instead of the superwrap.
+			// This will prevent it being offset too far too the left relative to the hoveritem.
+			if ( textWrapWidth < superWrapRect.width )
+				horIndent += offsetLeft;
+
+			// If the tooltip is flipped, we need to find the relative bottom, which is what we already have.
+			offsetTopFlip = offsetTop;
+
+			// For regular tooltips, we need to find and subtract the relative bottom for accurate positioning.
+			offsetTop -= superWrapRect.height - hoverItemWrapRect.height;
+		}
+
+		tooltip.style.left     = `${horIndent}px`;       // This is calculated not to overflow.
+		tooltip.dataset.adjust = horIndent - offsetLeft; // This is relative to .left
 
 		// Finally, see if the tooltip overflows top or bottom. We need to do this last as the tooltip may be squashed upward.
 		// arrow is 8 high, add that to the total height.
-		let tooltipHeight = element.offsetHeight + 8,
-			tooltipTop    = tooltip.getBoundingClientRect().top - tooltipHeight;
+		const tooltipHeight = element.offsetHeight + 8;
 
-		if ( boundaryTop > tooltipTop ) {
+		if ( boundaryTop > ( tooltip.getBoundingClientRect().top - tooltipHeight ) ) {
 			tooltip.classList.add( 'tsf-tooltip-down' );
-			tooltip.style.top = `${tooltipHeight}px`;
+			tooltip.style.top = `${tooltipHeight + offsetTopFlip}px`;
 		} else {
-			tooltip.style.bottom = `${tooltipHeight}px`;
+			tooltip.style.bottom = `${tooltipHeight - offsetTop}px`;
 		}
 
 		return true;

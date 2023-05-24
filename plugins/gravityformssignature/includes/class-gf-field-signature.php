@@ -29,7 +29,7 @@ class GF_Field_Signature extends GF_Field {
 	 * @return string
 	 */
 	public function get_form_editor_field_icon() {
-		return gf_signature()->get_base_url() . '/images/menu-icon.svg';
+		return gf_signature()->is_gravityforms_supported( '2.5-beta-4' ) ? 'gform-icon--signature' : gf_signature()->get_base_url() . '/images/menu-icon.svg';
 	}
 
 	/**
@@ -159,10 +159,11 @@ class GF_Field_Signature extends GF_Field {
 	public function get_field_input( $form, $value = '', $entry = null ) {
 		$is_entry_detail = $this->is_entry_detail();
 		$is_form_editor  = $this->is_form_editor();
+		$is_block_editor = $this->is_block_editor();
 		$is_admin        = $is_entry_detail || $is_form_editor;
 
-		$form_id  = absint( $form['id'] );
-		$id       = $this->id;
+		$form_id = absint( $form['id'] );
+		$id      = $this->id;
 		$field_id = $form_id == 0 ? "input_$id" : 'input_' . $form_id . "_$id";
 
 		$init_options = $this->get_supersignature_init_options( $field_id, $form );
@@ -173,9 +174,9 @@ class GF_Field_Signature extends GF_Field {
 		$boxwidth    = rgar( $init_options, 'SignWidth', '300' );
 		$borderstyle = rgar( $init_options, 'BorderStyle', 'Dashed' );
 		$borderwidth = rgar( $init_options, 'BorderWidth', '2px' );
+		$pen_color   = rgar( $init_options, 'PenColor', '#000000' );
 
-		if ( $is_form_editor ) {
-
+		if ( $is_form_editor || $is_block_editor ) {
 			if ( gf_signature()->is_gravityforms_supported( '2.5-beta' ) ) {
 				$input = "<div style='zoom: 1;'><div class='gf_signature_container' style='height:180px; border: {$borderwidth} {$borderstyle} {$bordercolor}; background-color:{$bgcolor};'></div></div>";
 			} else {
@@ -186,19 +187,18 @@ class GF_Field_Signature extends GF_Field {
 				         '</style>' .
 				         "<div style='display:-moz-inline-stack; display: inline-block; zoom: 1; *display: inline;'><div class='gf_signature_container' style='height:180px; border: {$borderwidth} {$borderstyle} {$bordercolor}; background-color:{$bgcolor};'></div></div>";
 			}
-
-
 		} else {
 
 			$input = '';
 
 			$signature_filename = ! empty( $value ) ? $value : rgpost( "{$field_id}_signature_filename" );
+			$container_style = rgar( $form, 'labelPlacement', 'top_label' ) == 'top_label' ? '' : "style='display:-moz-inline-stack; display: inline-block; zoom: 1; *display: inline;'";
 
 			if ( ! empty( $signature_filename ) ) {
 
 				$signature_url = $this->get_value_url( $signature_filename );
 
-				$input .= sprintf( "<div id='%s_signature_image'><img src='%s' width='%spx'/><div>", $field_id, $signature_url, $boxwidth );
+				$input .= sprintf( "<div id='%s_signature_image' {$container_style}><div class='gfield_signature_image gform-theme__no-reset--el gform-theme__no-reset--children' style='width: %spx;'><img src='%s' width='%spx' style='border-style: %s; border-width: %s; border-color: %s;'/><div>", $field_id, $boxwidth, $signature_url, $boxwidth, $borderstyle, $borderwidth, $bordercolor );
 
 				if ( $is_entry_detail && $value ) {
 
@@ -223,11 +223,10 @@ class GF_Field_Signature extends GF_Field {
 
 				} else {
 
-					$input .= "<a href='#' onclick='jQuery(\"#{$field_id}_signature_image\").hide(); jQuery(\"#{$field_id}_Container\").show(); jQuery(\"#{$field_id}_resetbutton\").show(); return false;'>" . __( 'sign again', 'gravityformssignature' ) . '</a>';
-
+					$input .= "<a href='#' onclick='jQuery(\"#{$field_id}_signature_image\").hide(); jQuery(\"#{$field_id}_Container\").show(); jQuery(\"#{$field_id}_resetbutton\").show(); return false;'>" . __( 'Sign again.', 'gravityformssignature' ) . '</a>';
 				}
 
-				$input .= sprintf( "</div></div><input type='hidden' value='%s' name='%s_signature_filename' id='%s_signature_filename'/>", $signature_filename, $field_id, $field_id  );
+				$input .= sprintf( "</div></div></div><input type='hidden' value='%s' name='%s_signature_filename' id='%s_signature_filename'/>", $signature_filename, $field_id, $field_id );
 
 				$input .= "<style type='text/css'>#{$field_id}_resetbutton {display:none}</style>";
 
@@ -235,9 +234,7 @@ class GF_Field_Signature extends GF_Field {
 
 			$display = ! empty( $signature_filename ) ? 'display:none;' : '';
 
-			$container_style = rgar( $form, 'labelPlacement' ) == 'top_label' ? '' : "style='display:-moz-inline-stack; display: inline-block; zoom: 1; *display: inline;'";
-
-			$input .= "<div {$container_style}><div id='{$field_id}_Container' class='gfield_signature_container ginput_container' style='height:{$boxheight}px; width:{$boxwidth}px; {$display}' >" .
+			$input .= "<div class='gfield_signature_ui_container gform-theme__no-reset--children' {$container_style}><div id='{$field_id}_Container' class='gfield_signature_container ginput_container' style='height:{$boxheight}px; width:{$boxwidth}px; {$display}' >" .
 			          "<input type='hidden' class='gform_hidden' name='{$field_id}_valid' id='{$field_id}_valid' />";
 
 			$use_canvas = true;
@@ -259,12 +256,25 @@ class GF_Field_Signature extends GF_Field {
 			$input .= '</div></div>';
 
 			if ( $this->is_entry_detail_edit() ) {
-				$input .= "<script type='text/javascript'>jQuery(document).ready(function() {" . $this->get_form_inline_script_on_page_render( $form ) . '});</script>';
+				$input .= "<script type='text/javascript'>jQuery(document).ready(function() {" . $this->get_form_inline_script_on_page_render( $form ) . ' gformSignatureInit( jQuery( "#'. str_replace( "input_", "field_", $field_id ) .'" ) ); });</script>';
 			}
-
 		}
 
 		return $input;
+	}
+
+	/**
+	 * Determines if the current page has the block editor.
+	 *
+	 * @since 4.4
+	 *
+	 * @return bool Returns true if the current page is a post or page edit with block editor enabled. Returns false otherwise.
+	 */
+	public function is_block_editor() {
+		$is_rest_request = defined( 'REST_REQUEST' ) && REST_REQUEST;
+		$is_form_preview = rgget( 'context' ) == 'edit' && boolval( $_GET['attributes']['formPreview'] );
+
+		return $is_rest_request && $is_form_preview;
 	}
 
 	/**

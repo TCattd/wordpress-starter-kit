@@ -8,7 +8,7 @@
      * @return void
      */
     function wppb_in_mci_register_submenu_page() {
-        add_submenu_page( 'profile-builder', __( 'MailChimp', 'profile-builder' ), __( 'MailChimp', 'profile-builder' ), 'manage_options', 'profile-builder-mailchimp', 'wppb_in_mci_page_content' );
+        add_submenu_page( 'profile-builder', __( 'MailChimp', 'profile-builder' ), __( 'MailChimp', 'profile-builder' ), apply_filters( 'wppb_mailchimp_page_capability', 'manage_options' ), 'profile-builder-mailchimp', 'wppb_in_mci_page_content' );
     }
     add_action( 'admin_menu', 'wppb_in_mci_register_submenu_page', 20 );
 

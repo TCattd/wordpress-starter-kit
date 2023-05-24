@@ -88,6 +88,7 @@ if( !function_exists( 'wppb_upload_file_type' ) ) {
                                     return $file;
                                 }
                             }
+
                             //check if the type is allowed at all by WordPress
                             foreach (get_allowed_mime_types() as $key => $value) {
                                 if (strpos($key, $ext) !== false || $key == $ext)
