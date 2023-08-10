@@ -110,7 +110,7 @@ jQuery( function( $ ) {
 			}
 
 			// No items to display now! Replace all cart content.
-			var $cart_html = $( '.cart-empty', $html ).closest( '.woocommerce' );
+			var $cart_html = $( '.wc-empty-cart-message', $html ).closest( '.woocommerce' );
 			$( '.woocommerce-cart-form__contents' ).closest( '.woocommerce' ).replaceWith( $cart_html );
 
 			// Display errors
@@ -127,7 +127,7 @@ jQuery( function( $ ) {
 			}
 
 			$( '.woocommerce-cart-form' ).replaceWith( $new_form );
-			$( '.woocommerce-cart-form' ).find( ':input[name="update_cart"]' ).prop( 'disabled', true ).attr( 'aria-disabled', true );
+			$( '.woocommerce-cart-form' ).find( ':input[name="update_cart"]' ).prop( 'disabled', true );
 
 			if ( $notices.length > 0 ) {
 				show_notice( $notices );
@@ -157,7 +157,7 @@ jQuery( function( $ ) {
 	var show_notice = function( html_element, $target ) {
 		if ( ! $target ) {
 			$target = $( '.woocommerce-notices-wrapper:first' ) ||
-				$( '.cart-empty' ).closest( '.woocommerce' ) ||
+				$( '.wc-empty-cart-message' ).closest( '.woocommerce' ) ||
 				$( '.woocommerce-cart-form' );
 		}
 		$target.prepend( html_element );
@@ -327,14 +327,14 @@ jQuery( function( $ ) {
 				'.woocommerce-cart-form .cart_item :input',
 				this.input_changed );
 
-			$( '.woocommerce-cart-form :input[name="update_cart"]' ).prop( 'disabled', true ).attr( 'aria-disabled', true );
+			$( '.woocommerce-cart-form :input[name="update_cart"]' ).prop( 'disabled', true );
 		},
 
 		/**
 		 * After an input is changed, enable the update cart button.
 		 */
 		input_changed: function() {
-			$( '.woocommerce-cart-form :input[name="update_cart"]' ).prop( 'disabled', false ).attr( 'aria-disabled', false );
+			$( '.woocommerce-cart-form :input[name="update_cart"]' ).prop( 'disabled', false );
 		},
 
 		/**

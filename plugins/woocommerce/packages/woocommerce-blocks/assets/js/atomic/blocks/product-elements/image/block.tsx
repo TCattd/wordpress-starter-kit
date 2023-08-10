@@ -9,11 +9,7 @@ import {
 	useInnerBlockLayoutContext,
 	useProductDataContext,
 } from '@woocommerce/shared-context';
-import {
-	useBorderProps,
-	useSpacingProps,
-	useTypographyProps,
-} from '@woocommerce/base-hooks';
+import { useStyleProps } from '@woocommerce/base-hooks';
 import { withProductDataContext } from '@woocommerce/shared-hocs';
 import { useStoreEvents } from '@woocommerce/base-context/hooks';
 import type { HTMLAttributes } from 'react';
@@ -23,11 +19,12 @@ import type { HTMLAttributes } from 'react';
  */
 import ProductSaleBadge from '../sale-badge/block';
 import './style.scss';
-import type { BlockAttributes } from './types';
+import { BlockAttributes, ImageSizing } from './types';
 
-const ImagePlaceholder = (): JSX.Element => {
+const ImagePlaceholder = ( props ): JSX.Element => {
 	return (
 		<img
+			{ ...props }
 			src={ PLACEHOLDER_IMG_SRC }
 			alt=""
 			width={ undefined }
@@ -49,6 +46,9 @@ interface ImageProps {
 	loaded: boolean;
 	showFullSize: boolean;
 	fallbackAlt: string;
+	scale: string;
+	width?: string | undefined;
+	height?: string | undefined;
 }
 
 const Image = ( {
@@ -56,6 +56,9 @@ const Image = ( {
 	loaded,
 	showFullSize,
 	fallbackAlt,
+	width,
+	scale,
+	height,
 }: ImageProps ): JSX.Element => {
 	const { thumbnail, src, srcset, sizes, alt } = image || {};
 	const imageProps = {
@@ -65,13 +68,23 @@ const Image = ( {
 		...( showFullSize && { src, srcSet: srcset, sizes } ),
 	};
 
+	const imageStyles: Record< string, string | undefined > = {
+		height,
+		width,
+		objectFit: scale,
+	};
+
 	return (
 		<>
 			{ imageProps.src && (
 				/* eslint-disable-next-line jsx-a11y/alt-text */
-				<img data-testid="product-image" { ...imageProps } />
+				<img
+					style={ imageStyles }
+					data-testid="product-image"
+					{ ...imageProps }
+				/>
 			) }
-			{ ! image && <ImagePlaceholder /> }
+			{ ! image && <ImagePlaceholder style={ imageStyles } /> }
 		</>
 	);
 };
@@ -81,17 +94,19 @@ type Props = BlockAttributes & HTMLAttributes< HTMLDivElement >;
 export const Block = ( props: Props ): JSX.Element | null => {
 	const {
 		className,
-		imageSizing = 'full-size',
+		imageSizing = ImageSizing.SINGLE,
 		showProductLink = true,
 		showSaleBadge,
 		saleBadgeAlign = 'right',
+		height,
+		width,
+		scale,
+		...restProps
 	} = props;
+	const styleProps = useStyleProps( props );
 	const { parentClassName } = useInnerBlockLayoutContext();
 	const { product, isLoading } = useProductDataContext();
 	const { dispatchStoreEvent } = useStoreEvents();
-	const typographyProps = useTypographyProps( props );
-	const borderProps = useBorderProps( props );
-	const spacingProps = useSpacingProps( props );
 
 	if ( ! product.id ) {
 		return (
@@ -103,13 +118,8 @@ export const Block = ( props: Props ): JSX.Element | null => {
 						[ `${ parentClassName }__product-image` ]:
 							parentClassName,
 					},
-					borderProps.className
+					styleProps.className
 				) }
-				style={ {
-					...typographyProps.style,
-					...borderProps.style,
-					...spacingProps.style,
-				} }
 			>
 				<ImagePlaceholder />
 			</div>
@@ -141,26 +151,24 @@ export const Block = ( props: Props ): JSX.Element | null => {
 				{
 					[ `${ parentClassName }__product-image` ]: parentClassName,
 				},
-				borderProps.className
+				styleProps.className
 			) }
-			style={ {
-				...typographyProps.style,
-				...borderProps.style,
-				...spacingProps.style,
-			} }
 		>
 			<ParentComponent { ...( showProductLink && anchorProps ) }>
 				{ !! showSaleBadge && (
 					<ProductSaleBadge
 						align={ saleBadgeAlign }
-						product={ product }
+						{ ...restProps }
 					/>
 				) }
 				<Image
 					fallbackAlt={ product.name }
 					image={ image }
 					loaded={ ! isLoading }
-					showFullSize={ imageSizing !== 'cropped' }
+					showFullSize={ imageSizing !== ImageSizing.THUMBNAIL }
+					width={ width }
+					height={ height }
+					scale={ scale }
 				/>
 			</ParentComponent>
 		</div>

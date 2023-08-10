@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { useState, useEffect } from '@wordpress/element';
+import { useState, useEffect, useMemo } from '@wordpress/element';
 import Button from '@woocommerce/base-components/button';
 import { CHECKOUT_URL } from '@woocommerce/block-settings';
 import { usePositionRelativeToViewport } from '@woocommerce/base-hooks';
@@ -10,11 +10,12 @@ import { getSetting } from '@woocommerce/settings';
 import { useSelect } from '@wordpress/data';
 import { CART_STORE_KEY, CHECKOUT_STORE_KEY } from '@woocommerce/block-data';
 import { applyCheckoutFilter } from '@woocommerce/blocks-checkout';
+import { isErrorResponse } from '@woocommerce/base-context';
+import { useCartEventsContext } from '@woocommerce/base-context/providers';
 
 /**
  * Internal dependencies
  */
-import './style.scss';
 import { defaultButtonLabel } from './constants';
 
 /**
@@ -74,16 +75,32 @@ const Block = ( {
 		arg: { cart },
 	} );
 
+	const { dispatchOnProceedToCheckout } = useCartEventsContext();
+
 	const submitContainerContents = (
 		<Button
 			className="wc-block-cart__submit-button"
 			href={ filteredLink }
 			disabled={ isCalculating }
-			onClick={ () => setShowSpinner( true ) }
+			onClick={ ( e ) => {
+				dispatchOnProceedToCheckout().then( ( observerResponses ) => {
+					if ( observerResponses.some( isErrorResponse ) ) {
+						e.preventDefault();
+						return;
+					}
+					setShowSpinner( true );
+				} );
+			} }
 			showSpinner={ showSpinner }
 		>
 			{ label }
 		</Button>
+	);
+
+	// Get the body background color to use as the sticky container background color.
+	const backgroundColor = useMemo(
+		() => getComputedStyle( document.body ).backgroundColor,
+		[]
 	);
 
 	return (
@@ -95,7 +112,10 @@ const Block = ( {
 			</div>
 			{ /* If the positionReferenceElement is below the viewport, display the sticky container. */ }
 			{ positionRelativeToViewport === 'below' && (
-				<div className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky">
+				<div
+					className="wc-block-cart__submit-container wc-block-cart__submit-container--sticky"
+					style={ { backgroundColor } }
+				>
 					{ submitContainerContents }
 				</div>
 			) }

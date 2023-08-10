@@ -1,6 +1,7 @@
 /**
  * External dependencies
  */
+import classnames from 'classnames';
 import { useRef } from '@wordpress/element';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
@@ -93,23 +94,35 @@ export const Edit = ( {
 					) }
 			</InspectorControls>
 			<div className="wc-block-checkout__actions">
-				<Noninteractive>
-					{ showReturnToCart && (
-						<ReturnToCartButton
-							link={ getSetting( 'page-' + cartPageId, false ) }
-						/>
-					) }
-				</Noninteractive>
-				<EditableButton
-					className="wc-block-cart__submit-button wc-block-components-checkout-place-order-button"
-					value={ placeOrderButtonLabel }
-					placeholder={ defaultPlaceOrderButtonLabel }
-					onChange={ ( content ) => {
-						setAttributes( {
-							placeOrderButtonLabel: content,
-						} );
-					} }
-				/>
+				<div className="wc-block-checkout__actions_row">
+					<Noninteractive>
+						{ showReturnToCart && (
+							<ReturnToCartButton
+								link={ getSetting(
+									'page-' + cartPageId,
+									false
+								) }
+							/>
+						) }
+					</Noninteractive>
+					<EditableButton
+						className={ classnames(
+							'wc-block-cart__submit-button',
+							'wc-block-components-checkout-place-order-button',
+							{
+								'wc-block-components-checkout-place-order-button--full-width':
+									! showReturnToCart,
+							}
+						) }
+						value={ placeOrderButtonLabel }
+						placeholder={ defaultPlaceOrderButtonLabel }
+						onChange={ ( content ) => {
+							setAttributes( {
+								placeOrderButtonLabel: content,
+							} );
+						} }
+					/>
+				</div>
 			</div>
 		</div>
 	);

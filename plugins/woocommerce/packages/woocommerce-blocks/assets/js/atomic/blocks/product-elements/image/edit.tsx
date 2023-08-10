@@ -32,19 +32,26 @@ import {
 	BLOCK_ICON as icon,
 	BLOCK_DESCRIPTION as description,
 } from './constants';
-import type { BlockAttributes } from './types';
+import { BlockAttributes, ImageSizing } from './types';
+import { ImageSizeSettings } from './image-size-settings';
 
 type SaleBadgeAlignProps = 'left' | 'center' | 'right';
-type ImageSizingProps = 'full-size' | 'cropped';
 
 const Edit = ( {
 	attributes,
 	setAttributes,
 	context,
 }: BlockEditProps< BlockAttributes > & { context: Context } ): JSX.Element => {
-	const { showProductLink, imageSizing, showSaleBadge, saleBadgeAlign } =
-		attributes;
-	const blockProps = useBlockProps();
+	const {
+		showProductLink,
+		imageSizing,
+		showSaleBadge,
+		saleBadgeAlign,
+		width,
+		height,
+		scale,
+	} = attributes;
+	const blockProps = useBlockProps( { style: { width, height } } );
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
 	const isBlockThemeEnabled = getSettingWithCoercion(
 		'is_block_theme_enabled',
@@ -57,15 +64,15 @@ const Edit = ( {
 		[ setAttributes, isDescendentOfQueryLoop ]
 	);
 
-	useEffect( () => {
-		if ( isBlockThemeEnabled && attributes.imageSizing !== 'full-size' ) {
-			setAttributes( { imageSizing: 'full-size' } );
-		}
-	}, [ attributes.imageSizing, isBlockThemeEnabled, setAttributes ] );
-
 	return (
 		<div { ...blockProps }>
 			<InspectorControls>
+				<ImageSizeSettings
+					scale={ scale }
+					width={ width }
+					height={ height }
+					setAttributes={ setAttributes }
+				/>
 				<PanelBody
 					title={ __( 'Content', 'woo-gutenberg-products-block' ) }
 				>
@@ -160,19 +167,19 @@ const Edit = ( {
 								}
 							) }
 							value={ imageSizing }
-							onChange={ ( value: ImageSizingProps ) =>
+							onChange={ ( value: ImageSizing ) =>
 								setAttributes( { imageSizing: value } )
 							}
 						>
 							<ToggleGroupControlOption
-								value="full-size"
+								value={ ImageSizing.SINGLE }
 								label={ __(
 									'Full Size',
 									'woo-gutenberg-products-block'
 								) }
 							/>
 							<ToggleGroupControlOption
-								value="cropped"
+								value={ ImageSizing.THUMBNAIL }
 								label={ __(
 									'Cropped',
 									'woo-gutenberg-products-block'

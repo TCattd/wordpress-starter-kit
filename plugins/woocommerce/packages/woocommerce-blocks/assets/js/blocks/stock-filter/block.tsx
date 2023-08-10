@@ -4,11 +4,7 @@
 import { __, sprintf } from '@wordpress/i18n';
 import { speak } from '@wordpress/a11y';
 import { Icon, chevronDown } from '@wordpress/icons';
-import {
-	usePrevious,
-	useShallowEqual,
-	useBorderProps,
-} from '@woocommerce/base-hooks';
+import { usePrevious, useShallowEqual } from '@woocommerce/base-hooks';
 import {
 	useQueryStateByKey,
 	useQueryStateByContext,
@@ -37,7 +33,6 @@ import {
 	PREFIX_QUERY_ARG_FILTER_TYPE,
 	normalizeQueryParams,
 } from '@woocommerce/utils';
-import { difference } from 'lodash';
 import classnames from 'classnames';
 
 /**
@@ -81,10 +76,6 @@ const StockStatusFilterBlock = ( {
 		{}
 	);
 
-	const productIds = isEditor
-		? []
-		: getSettingWithCoercion( 'product_ids', [], Array.isArray );
-
 	const STOCK_STATUS_OPTIONS: { current: Current } = useRef(
 		getSetting( 'hideOutOfStockItems', false )
 			? otherStockStatusOptions
@@ -116,7 +107,6 @@ const StockStatusFilterBlock = ( {
 		useCollectionData( {
 			queryStock: true,
 			queryState,
-			productIds,
 			isEditor,
 		} );
 
@@ -145,8 +135,6 @@ const StockStatusFilterBlock = ( {
 		More info: https://github.com/woocommerce/woocommerce-blocks/pull/6920#issuecomment-1222402482
 	 */
 	const [ remountKey, setRemountKey ] = useState( generateUniqueId() );
-
-	const borderProps = useBorderProps( blockAttributes );
 
 	/**
 	 * Compare intersection of all stock statuses and filtered counts to get a list of options to display.
@@ -395,13 +383,17 @@ const StockStatusFilterBlock = ( {
 			return displayOption ? displayOption.value : token;
 		} );
 
-		const added = difference( tokens, checked );
+		const added = [ tokens, checked ].reduce( ( a, b ) =>
+			a.filter( ( c ) => ! b.includes( c ) )
+		);
 
 		if ( added.length === 1 ) {
 			return onChange( added[ 0 ] );
 		}
 
-		const removed = difference( checked, tokens );
+		const removed = [ checked, tokens ].reduce( ( a, b ) =>
+			a.filter( ( c ) => ! b.includes( c ) )
+		);
 		if ( removed.length === 1 ) {
 			onChange( removed[ 0 ] );
 		}
@@ -464,11 +456,10 @@ const StockStatusFilterBlock = ( {
 					<>
 						<FormTokenField
 							key={ remountKey }
-							className={ classnames( borderProps.className, {
+							className={ classnames( {
 								'single-selection': ! allowsMultipleOptions,
 								'is-loading': isLoading,
 							} ) }
-							style={ { ...borderProps.style } }
 							suggestions={ displayedOptions
 								.filter(
 									( option ) =>

@@ -21,10 +21,12 @@ defined( 'ABSPATH' ) || exit;
 use Automattic\WooCommerce\Database\Migrations\MigrationHelper;
 use Automattic\WooCommerce\Internal\Admin\Marketing\MarketingSpecs;
 use Automattic\WooCommerce\Internal\AssignDefaultCategory;
+use Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableDataStore;
 use Automattic\WooCommerce\Internal\ProductAttributesLookup\DataRegenerator;
 use Automattic\WooCommerce\Internal\ProductAttributesLookup\LookupDataStore;
 use Automattic\WooCommerce\Internal\ProductDownloads\ApprovedDirectories\Register as Download_Directories;
 use Automattic\WooCommerce\Internal\ProductDownloads\ApprovedDirectories\Synchronize as Download_Directories_Sync;
+use Automattic\WooCommerce\Utilities\StringUtil;
 
 /**
  * Update file paths for 2.0
@@ -1902,7 +1904,7 @@ function wc_update_350_db_version() {
 }
 
 /**
- * Drop the fk_wc_download_log_permission_id FK as we use a new one with the table and blog prefix for MS compatability.
+ * Drop the fk_wc_download_log_permission_id FK as we use a new one with the table and blog prefix for MS compatibility.
  *
  * @return void
  */

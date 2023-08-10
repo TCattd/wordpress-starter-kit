@@ -95,6 +95,8 @@ class Api {
 			);
 
 			if ( file_exists( $asset_path ) ) {
+				// The following require is safe because we are checking if the file exists and it is not a user input.
+				// nosemgrep audit.php.lang.security.file.inclusion-arg.
 				$asset        = require $asset_path;
 				$dependencies = isset( $asset['dependencies'] ) ? array_merge( $asset['dependencies'], $dependencies ) : $dependencies;
 				$version      = ! empty( $asset['version'] ) ? $asset['version'] : $this->get_file_version( $relative_src );
@@ -171,17 +173,22 @@ class Api {
 	 * @since 2.5.0
 	 * @since 2.6.0 Change src to be relative source.
 	 *
-	 * @param string $handle       Name of the stylesheet. Should be unique.
-	 * @param string $relative_src Relative source of the stylesheet to the plugin path.
-	 * @param array  $deps         Optional. An array of registered stylesheet handles this stylesheet depends on. Default empty array.
-	 * @param string $media        Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
-	 *                             'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 * @param string  $handle       Name of the stylesheet. Should be unique.
+	 * @param string  $relative_src Relative source of the stylesheet to the plugin path.
+	 * @param array   $deps         Optional. An array of registered stylesheet handles this stylesheet depends on. Default empty array.
+	 * @param string  $media        Optional. The media for which this stylesheet has been defined. Default 'all'. Accepts media types like
+	 *                              'all', 'print' and 'screen', or media queries like '(orientation: portrait)' and '(max-width: 640px)'.
+	 * @param boolean $rtl   Optional. Whether or not to register RTL styles.
 	 */
-	public function register_style( $handle, $relative_src, $deps = [], $media = 'all' ) {
+	public function register_style( $handle, $relative_src, $deps = [], $media = 'all', $rtl = false ) {
 		$filename = str_replace( plugins_url( '/', __DIR__ ), '', $relative_src );
 		$src      = $this->get_asset_url( $relative_src );
 		$ver      = $this->get_file_version( $filename );
 		wp_register_style( $handle, $src, $deps, $ver, $media );
+
+		if ( $rtl ) {
+			wp_style_add_data( $handle, 'rtl', 'replace' );
+		}
 	}
 
 	/**

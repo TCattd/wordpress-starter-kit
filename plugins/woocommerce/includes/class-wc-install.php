@@ -13,6 +13,7 @@ use Automattic\WooCommerce\Internal\ProductDownloads\ApprovedDirectories\Registe
 use Automattic\WooCommerce\Internal\ProductDownloads\ApprovedDirectories\Synchronize as Download_Directories_Sync;
 use Automattic\WooCommerce\Internal\Utilities\DatabaseUtil;
 use Automattic\WooCommerce\Internal\WCCom\ConnectionHelper as WCConnectionHelper;
+use Automattic\WooCommerce\Internal\Traits\AccessiblePrivateMethods;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -20,6 +21,7 @@ defined( 'ABSPATH' ) || exit;
  * WC_Install Class.
  */
 class WC_Install {
+	use AccessiblePrivateMethods;
 
 	/**
 	 * DB updates and callbacks that need to be run per version.
@@ -235,6 +237,13 @@ class WC_Install {
 	);
 
 	/**
+	 * Option name used to track new installations of WooCommerce.
+	 *
+	 * @var string
+	 */
+	const NEWLY_INSTALLED_OPTION = 'woocommerce_newly_installed';
+
+	/**
 	 * Hook in tabs.
 	 */
 	public static function init() {
@@ -250,6 +259,26 @@ class WC_Install {
 		add_filter( 'plugin_row_meta', array( __CLASS__, 'plugin_row_meta' ), 10, 2 );
 		add_filter( 'wpmu_drop_tables', array( __CLASS__, 'wpmu_drop_tables' ) );
 		add_filter( 'cron_schedules', array( __CLASS__, 'cron_schedules' ) );
+		self::add_action( 'admin_init', array( __CLASS__, 'newly_installed' ) );
+	}
+
+	/**
+	 * Trigger `woocommerce_newly_installed` action for new installations.
+	 *
+	 * @since 8.0.0
+	 */
+	private static function newly_installed() {
+		if ( 'yes' === get_option( self::NEWLY_INSTALLED_OPTION, false ) ) {
+			/**
+			 * Run when WooCommerce has been installed for the first time.
+			 *
+			 * @since 6.5.0
+			 */
+			do_action( 'woocommerce_newly_installed' );
+			do_action_deprecated( 'woocommerce_admin_newly_installed', array(), '6.5.0', 'woocommerce_newly_installed' );
+
+			update_option( self::NEWLY_INSTALLED_OPTION, 'no' );
+		}
 	}
 
 	/**
@@ -270,16 +299,6 @@ class WC_Install {
 			 */
 			do_action( 'woocommerce_updated' );
 			do_action_deprecated( 'woocommerce_admin_updated', array(), $wc_code_version, 'woocommerce_updated' );
-			// If there is no woocommerce_version option, consider it as a new install.
-			if ( ! $wc_version ) {
-				/**
-				 * Run when WooCommerce has been installed for the first time.
-				 *
-				 * @since 6.5.0
-				 */
-				do_action( 'woocommerce_newly_installed' );
-				do_action_deprecated( 'woocommerce_admin_newly_installed', array(), $wc_code_version, 'woocommerce_newly_installed' );
-			}
 		}
 	}
 
@@ -390,6 +409,10 @@ class WC_Install {
 		// If we made it till here nothing is running yet, lets set the transient now.
 		set_transient( 'wc_installing', 'yes', MINUTE_IN_SECONDS * 10 );
 		wc_maybe_define_constant( 'WC_INSTALLING', true );
+
+		if ( self::is_new_install() && ! get_option( self::NEWLY_INSTALLED_OPTION, false ) ) {
+			update_option( self::NEWLY_INSTALLED_OPTION, 'yes' );
+		}
 
 		WC()->wpdb_table_fix();
 		self::remove_admin_notices();
@@ -710,6 +733,9 @@ class WC_Install {
 	 * Create pages that the plugin relies on, storing page IDs in variables.
 	 */
 	public static function create_pages() {
+		// Set the locale to the store locale to ensure pages are created in the correct language.
+		wc_switch_to_site_locale();
+
 		include_once dirname( __FILE__ ) . '/admin/wc-admin-functions.php';
 
 		/**
@@ -780,6 +806,9 @@ class WC_Install {
 				! empty( $page['post_status'] ) ? $page['post_status'] : 'publish'
 			);
 		}
+
+		// Restore the locale to the default locale.
+		wc_restore_locale();
 	}
 
 	/**
@@ -885,10 +914,42 @@ class WC_Install {
 			);
 		}
 
-		foreach ( $obsolete_notes_names as $obsolete_notes_name ) {
-			$wpdb->delete( $wpdb->prefix . 'wc_admin_notes', array( 'name' => $obsolete_notes_name ) );
-			$wpdb->delete( $wpdb->prefix . 'wc_admin_note_actions', array( 'name' => $obsolete_notes_name ) );
+		$note_names_placeholder = substr( str_repeat( ',%s', count( $obsolete_notes_names ) ), 1 );
+
+		$note_ids = $wpdb->get_results(
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Ignored for allowing interpolation in the IN statement.
+			$wpdb->prepare(
+				"SELECT note_id FROM {$wpdb->prefix}wc_admin_notes WHERE name IN ( $note_names_placeholder )",
+				$obsolete_notes_names
+			),
+			ARRAY_N
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
+		);
+
+		if ( ! $note_ids ) {
+			return;
 		}
+
+		$note_ids             = array_column( $note_ids, 0 );
+		$note_ids_placeholder = substr( str_repeat( ',%d', count( $note_ids ) ), 1 );
+
+		$wpdb->query(
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Ignored for allowing interpolation in the IN statement.
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->prefix}wc_admin_notes WHERE note_id IN ( $note_ids_placeholder )",
+				$note_ids
+			)
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
+		);
+
+		$wpdb->query(
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- Ignored for allowing interpolation in the IN statement.
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->prefix}wc_admin_note_actions WHERE note_id IN ( $note_ids_placeholder )",
+				$note_ids
+			)
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare.
+		);
 	}
 
 	/**
@@ -1506,7 +1567,9 @@ CREATE TABLE {$wpdb->prefix}wc_category_lookup (
 		$tables = self::get_tables();
 
 		foreach ( $tables as $table ) {
-			$wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+			$wpdb->query( "DROP TABLE IF EXISTS {$table}" );
+			// phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 
@@ -1532,7 +1595,7 @@ CREATE TABLE {$wpdb->prefix}wc_category_lookup (
 		}
 
 		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles(); // @codingStandardsIgnoreLine
+			$wp_roles = new WP_Roles(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 
 		// Dummy gettext calls to get strings in the catalog.
@@ -1662,7 +1725,7 @@ CREATE TABLE {$wpdb->prefix}wc_category_lookup (
 		}
 
 		if ( ! isset( $wp_roles ) ) {
-			$wp_roles = new WP_Roles(); // @codingStandardsIgnoreLine
+			$wp_roles = new WP_Roles(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 
 		$capabilities = self::get_core_capabilities();

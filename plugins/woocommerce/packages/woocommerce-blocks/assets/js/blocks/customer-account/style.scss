@@ -1,4 +1,23 @@
+@mixin flex-justify-content($justification) {
+	float: none;
+	justify-content: $justification;
+}
+
+.is-layout-constrained > .wp-block-woocommerce-customer-account.alignright {
+	@include flex-justify-content(flex-end);
+}
+
+.is-layout-constrained > .wp-block-woocommerce-customer-account.alignleft {
+	@include flex-justify-content(flex-start);
+}
+
+.is-layout-constrained > .wp-block-woocommerce-customer-account.aligncenter {
+	@include flex-justify-content(center);
+}
+
 .wp-block-woocommerce-customer-account {
+	display: flex;
+
 	a {
 		text-decoration: none !important;
 		align-items: center;
@@ -9,11 +28,6 @@
 			text-decoration: underline !important;
 		}
 
-		.icon + .label,
-		.wc-block-customer-account__account-icon + .label {
-			margin-left: $gap-smaller;
-		}
-
 		.icon {
 			height: em(16px);
 			width: em(16px);
@@ -22,6 +36,7 @@
 		.wc-block-customer-account__account-icon {
 			height: em(23px);
 			width: em(23px);
+			padding: em($gap-smaller);
 		}
 	}
 }

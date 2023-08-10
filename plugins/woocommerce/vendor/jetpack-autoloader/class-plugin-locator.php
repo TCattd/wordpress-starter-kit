@@ -5,7 +5,7 @@
  * @package automattic/jetpack-autoloader
  */
 
-namespace Automattic\Jetpack\Autoloader\jp53b7d0bfd873df4bbb1d211a2c208330;
+namespace Automattic\Jetpack\Autoloader\jp74cad37f03b517f5f51a0956a403bde2;
 
  // phpcs:ignore
 
@@ -88,6 +88,7 @@ class Plugin_Locator {
 			return array();
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated just below.
 		$action = isset( $_REQUEST['action'] ) ? wp_unslash( $_REQUEST['action'] ) : false;
 		if ( ! in_array( $action, $allowed_actions, true ) ) {
 			return array();
@@ -101,6 +102,7 @@ class Plugin_Locator {
 					break;
 				}
 
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated by convert_plugins_to_paths.
 				$plugin_slugs[] = wp_unslash( $_REQUEST['plugin'] );
 				break;
 
@@ -110,6 +112,7 @@ class Plugin_Locator {
 					break;
 				}
 
+				// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validated by convert_plugins_to_paths.
 				$plugin_slugs = wp_unslash( $_REQUEST['checked'] );
 				break;
 		}

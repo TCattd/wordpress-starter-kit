@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Blocks
  * Plugin URI: https://github.com/woocommerce/woocommerce-gutenberg-products-block
  * Description: WooCommerce blocks for the Gutenberg editor.
- * Version: 10.0.4
+ * Version: 10.6.5
  * Author: Automattic
  * Author URI: https://woocommerce.com
  * Text Domain:  woo-gutenberg-products-block
- * Requires at least: 6.1
+ * Requires at least: 6.2
  * Requires PHP: 7.3
- * WC requires at least: 7.4
- * WC tested up to: 7.5
+ * WC requires at least: 7.7
+ * WC tested up to: 7.8
  *
  * @package WooCommerce\Blocks
  * @internal This file is only used when running as a feature plugin.
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$minimum_wp_version = '6.1';
+$minimum_wp_version = '6.2';
 
 if ( ! defined( 'WC_BLOCKS_IS_FEATURE_PLUGIN' ) ) {
 	define( 'WC_BLOCKS_IS_FEATURE_PLUGIN', true );
@@ -111,7 +111,6 @@ if ( woocommerce_blocks_is_development_version() && ( ! defined( 'JETPACK_AUTOLO
 		}
 	);
 }
-
 
 /**
  * Autoload packages.
@@ -304,7 +303,7 @@ add_filter(
 );
 
 /**
- * Load and setup the Interactivity API if enabled.
+ * Load and set up the Interactivity API if enabled.
  */
 function woocommerce_blocks_interactivity_setup() {
 	// phpcs:ignore WooCommerce.Commenting.CommentHooks.MissingHookComment
@@ -314,7 +313,7 @@ function woocommerce_blocks_interactivity_setup() {
 	);
 
 	if ( $is_enabled ) {
-		require_once __DIR__ . '/src/Interactivity/woo-directives.php';
+		require_once __DIR__ . '/src/Interactivity/load.php';
 	}
 }
 add_action( 'plugins_loaded', 'woocommerce_blocks_interactivity_setup' );

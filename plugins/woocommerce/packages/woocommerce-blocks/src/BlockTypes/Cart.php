@@ -1,9 +1,7 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use Automattic\WooCommerce\Blocks\Package;
-use Automattic\WooCommerce\Blocks\Assets;
-use Automattic\WooCommerce\Blocks\Assets\AssetDataRegistry;
+use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 
 /**
  * Cart class.
@@ -24,6 +22,52 @@ class Cart extends AbstractBlock {
 	 * @var string
 	 */
 	protected $chunks_folder = 'cart-blocks';
+
+	/**
+	 * Initialize this block type.
+	 *
+	 * - Hook into WP lifecycle.
+	 * - Register the block with WordPress.
+	 */
+	protected function initialize() {
+		parent::initialize();
+		add_action( 'wp_loaded', array( $this, 'register_patterns' ) );
+	}
+
+	/**
+	 * Register block pattern for Empty Cart Message to make it translatable.
+	 */
+	public function register_patterns() {
+		$shop_permalink = wc_get_page_id( 'shop' ) ? get_permalink( wc_get_page_id( 'shop' ) ) : '';
+
+		register_block_pattern(
+			'woocommerce/cart-cross-sells-message',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"fontSize":"large"} --><h2 class="wp-block-heading has-large-font-size">' . esc_html__( 'You may be interested in…', 'woocommerce' ) . '</h2><!-- /wp:heading -->',
+			)
+		);
+		register_block_pattern(
+			'woocommerce/cart-empty-message',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '
+					<!-- wp:heading {"textAlign":"center","className":"with-empty-cart-icon wc-block-cart__empty-cart__title"} --><h2 class="wp-block-heading has-text-align-center with-empty-cart-icon wc-block-cart__empty-cart__title">' . esc_html__( 'Your cart is currently empty!', 'woocommerce' ) . '</h2><!-- /wp:heading -->
+					<!-- wp:paragraph {"align":"center"} --><p class="has-text-align-center"><a href="' . esc_attr( esc_url( $shop_permalink ) ) . '">' . esc_html__( 'Browse store', 'woocommerce' ) . '</a></p><!-- /wp:paragraph -->
+				',
+			)
+		);
+		register_block_pattern(
+			'woocommerce/cart-new-in-store-message',
+			array(
+				'title'    => '',
+				'inserter' => false,
+				'content'  => '<!-- wp:heading {"textAlign":"center"} --><h2 class="wp-block-heading has-text-align-center">' . esc_html__( 'New in store', 'woocommerce' ) . '</h2><!-- /wp:heading -->',
+			)
+		);
+	}
 
 	/**
 	 * Get the editor script handle for this block type.
@@ -54,6 +98,15 @@ class Cart extends AbstractBlock {
 			'dependencies' => [],
 		];
 		return $key ? $script[ $key ] : $script;
+	}
+
+	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
 	}
 
 	/**
@@ -160,40 +213,8 @@ class Cart extends AbstractBlock {
 	 */
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
-		if ( wc_shipping_enabled() ) {
-			$this->asset_data_registry->add(
-				'shippingCountries',
-				function() {
-					return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
-				},
-				true
-			);
-			$this->asset_data_registry->add(
-				'shippingStates',
-				function() {
-					return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
-				},
-				true
-			);
-		}
 
-		$this->asset_data_registry->add(
-			'countryLocale',
-			function() {
-				// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
-				$country_locale = wc()->countries->get_country_locale();
-				$states         = wc()->countries->get_states();
-
-				foreach ( $states as $country => $states ) {
-					if ( empty( $states ) ) {
-						$country_locale[ $country ]['state']['required'] = false;
-						$country_locale[ $country ]['state']['hidden']   = true;
-					}
-				}
-				return $country_locale;
-			},
-			true
-		);
+		$this->asset_data_registry->add( 'countryData', CartCheckoutUtils::get_country_data(), true );
 		$this->asset_data_registry->add( 'baseLocation', wc_get_base_location(), true );
 		$this->asset_data_registry->add( 'isShippingCalculatorEnabled', filter_var( get_option( 'woocommerce_enable_shipping_calc' ), FILTER_VALIDATE_BOOLEAN ), true );
 		$this->asset_data_registry->add( 'displayItemizedTaxes', 'itemized' === get_option( 'woocommerce_tax_total_display' ), true );
@@ -203,6 +224,10 @@ class Cart extends AbstractBlock {
 		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
 		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
 		$this->asset_data_registry->register_page_id( isset( $attributes['checkoutPageId'] ) ? $attributes['checkoutPageId'] : 0 );
+		$this->asset_data_registry->add( 'isBlockTheme', wc_current_theme_is_fse_theme(), true );
+
+		$pickup_location_settings = get_option( 'woocommerce_pickup_location_settings', [] );
+		$this->asset_data_registry->add( 'localPickupEnabled', wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' ), true );
 
 		// Hydrate the following data depending on admin or frontend context.
 		if ( ! is_admin() && ! WC()->is_rest_api_request() ) {
@@ -218,34 +243,17 @@ class Cart extends AbstractBlock {
 	}
 
 	/**
-	 * Removes accents from an array of values, sorts by the values, then returns the original array values sorted.
-	 *
-	 * @param array $array Array of values to sort.
-	 * @return array Sorted array.
-	 */
-	protected function deep_sort_with_accents( $array ) {
-		if ( ! is_array( $array ) || empty( $array ) ) {
-			return $array;
-		}
-
-		$array_without_accents = array_map(
-			function( $value ) {
-				return is_array( $value )
-					? $this->deep_sort_with_accents( $value )
-					: remove_accents( wc_strtolower( html_entity_decode( $value ) ) );
-			},
-			$array
-		);
-
-		asort( $array_without_accents );
-		return array_replace( $array_without_accents, $array );
-	}
-
-	/**
 	 * Hydrate the cart block with data from the API.
 	 */
 	protected function hydrate_from_api() {
+		// Cache existing notices now, otherwise they are caught by the Cart Controller and converted to exceptions.
+		$old_notices = WC()->session->get( 'wc_notices', array() );
+		wc_clear_notices();
+
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
+
+		// Restore notices.
+		WC()->session->set( 'wc_notices', $old_notices );
 	}
 	/**
 	 * Register script and style assets for the block type before it is registered.

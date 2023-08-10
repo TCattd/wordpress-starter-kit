@@ -474,6 +474,7 @@ class Checkout extends AbstractCartRoute {
 	private function update_order_from_request( \WP_REST_Request $request ) {
 		$this->order->set_customer_note( $request['customer_note'] ?? '' );
 		$this->order->set_payment_method( $this->get_request_payment_method_id( $request ) );
+		$this->order->set_payment_method_title( $this->get_request_payment_method_title( $request ) );
 
 		wc_do_deprecated_action(
 			'__experimental_woocommerce_blocks_checkout_update_order_from_request',
@@ -581,6 +582,18 @@ class Checkout extends AbstractCartRoute {
 	}
 
 	/**
+	 * Gets the chosen payment method title from the request.
+	 *
+	 * @throws RouteException On error.
+	 * @param \WP_REST_Request $request Request object.
+	 * @return string
+	 */
+	private function get_request_payment_method_title( \WP_REST_Request $request ) {
+		$payment_method = $this->get_request_payment_method( $request );
+		return is_null( $payment_method ) ? '' : $payment_method->get_title();
+	}
+
+	/**
 	 * Gets the chosen payment method from the request.
 	 *
 	 * @throws RouteException On error.
@@ -604,12 +617,14 @@ class Checkout extends AbstractCartRoute {
 		}
 
 		if ( ! isset( $available_gateways[ $request_payment_method ] ) ) {
+			$all_payment_gateways = WC()->payment_gateways->payment_gateways();
+			$gateway_title        = isset( $all_payment_gateways[ $request_payment_method ] ) ? $all_payment_gateways[ $request_payment_method ]->get_title() : $request_payment_method;
 			throw new RouteException(
 				'woocommerce_rest_checkout_payment_method_disabled',
 				sprintf(
 					// Translators: %s Payment method ID.
-					__( 'The %s payment gateway is not available.', 'woocommerce' ),
-					esc_html( $request_payment_method )
+					__( '%s is not available for this order—please choose a different payment method', 'woocommerce' ),
+					esc_html( $gateway_title )
 				),
 				400
 			);

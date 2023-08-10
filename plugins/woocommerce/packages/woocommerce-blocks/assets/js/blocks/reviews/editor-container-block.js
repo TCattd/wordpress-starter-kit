@@ -3,7 +3,7 @@
  */
 import { __ } from '@wordpress/i18n';
 import PropTypes from 'prop-types';
-import { debounce } from 'lodash';
+import { debounce } from '@woocommerce/base-utils';
 import { Placeholder } from '@wordpress/components';
 import { useBlockProps } from '@wordpress/block-editor';
 
@@ -74,7 +74,7 @@ EditorContainerBlock.propTypes = {
 	attributes: PropTypes.object.isRequired,
 	icon: PropTypes.node.isRequired,
 	name: PropTypes.string.isRequired,
-	noReviewsPlaceholder: PropTypes.element.isRequired,
+	noReviewsPlaceholder: PropTypes.elementType.isRequired,
 	className: PropTypes.string,
 };
 

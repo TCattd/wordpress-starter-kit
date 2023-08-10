@@ -8,8 +8,12 @@ import { InnerBlockTemplate } from '@wordpress/blocks';
  * Internal dependencies
  */
 import './editor.scss';
+import { useIsDescendentOfSingleProductTemplate } from '../shared/use-is-descendent-of-single-product-template';
 
 const Edit = () => {
+	const isDescendentOfSingleProductTemplate =
+		useIsDescendentOfSingleProductTemplate();
+
 	const TEMPLATE: InnerBlockTemplate[] = [
 		[
 			'core/group',
@@ -18,7 +22,7 @@ const Edit = () => {
 				[
 					'woocommerce/product-sku',
 					{
-						isDescendentOfSingleProductTemplate: true,
+						isDescendentOfSingleProductTemplate,
 					},
 				],
 				[

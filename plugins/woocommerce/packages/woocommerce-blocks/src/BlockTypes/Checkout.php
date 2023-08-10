@@ -1,8 +1,8 @@
 <?php
 namespace Automattic\WooCommerce\Blocks\BlockTypes;
 
-use Automattic\WooCommerce\Blocks\Package;
 use Automattic\WooCommerce\StoreApi\Utilities\LocalPickupUtils;
+use Automattic\WooCommerce\Blocks\Utils\CartCheckoutUtils;
 
 /**
  * Checkout class.
@@ -56,6 +56,15 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
+	 * Get the frontend style handle for this block type.
+	 *
+	 * @return string[]
+	 */
+	protected function get_block_type_style() {
+		return array_merge( parent::get_block_type_style(), [ 'wc-blocks-packages-style' ] );
+	}
+
+	/**
 	 * Enqueue frontend assets for this block, just in time for rendering.
 	 *
 	 * @param array $attributes  Any attributes that currently are available from the block.
@@ -88,7 +97,7 @@ class Checkout extends AbstractBlock {
 		if ( $this->is_checkout_endpoint() ) {
 			// Note: Currently the block only takes care of the main checkout form -- if an endpoint is set, refer to the
 			// legacy shortcode instead and do not render block.
-			return '[woocommerce_checkout]';
+			return wc_current_theme_is_fse_theme() ? do_shortcode( '[woocommerce_checkout]' ) : '[woocommerce_checkout]';
 		}
 
 		// Deregister core checkout scripts and styles.
@@ -185,54 +194,7 @@ class Checkout extends AbstractBlock {
 	protected function enqueue_data( array $attributes = [] ) {
 		parent::enqueue_data( $attributes );
 
-		$this->asset_data_registry->add(
-			'allowedCountries',
-			function() {
-				return $this->deep_sort_with_accents( WC()->countries->get_allowed_countries() );
-			},
-			true
-		);
-		$this->asset_data_registry->add(
-			'allowedStates',
-			function() {
-				return $this->deep_sort_with_accents( WC()->countries->get_allowed_country_states() );
-			},
-			true
-		);
-		if ( wc_shipping_enabled() ) {
-			$this->asset_data_registry->add(
-				'shippingCountries',
-				function() {
-					return $this->deep_sort_with_accents( WC()->countries->get_shipping_countries() );
-				},
-				true
-			);
-			$this->asset_data_registry->add(
-				'shippingStates',
-				function() {
-					return $this->deep_sort_with_accents( WC()->countries->get_shipping_country_states() );
-				},
-				true
-			);
-		}
-
-		$this->asset_data_registry->add(
-			'countryLocale',
-			function() {
-				// Merge country and state data to work around https://github.com/woocommerce/woocommerce/issues/28944.
-				$country_locale = wc()->countries->get_country_locale();
-				$states         = wc()->countries->get_states();
-
-				foreach ( $states as $country => $states ) {
-					if ( empty( $states ) ) {
-						$country_locale[ $country ]['state']['required'] = false;
-						$country_locale[ $country ]['state']['hidden']   = true;
-					}
-				}
-				return $country_locale;
-			},
-			true
-		);
+		$this->asset_data_registry->add( 'countryData', CartCheckoutUtils::get_country_data(), true );
 		$this->asset_data_registry->add( 'baseLocation', wc_get_base_location(), true );
 		$this->asset_data_registry->add(
 			'checkoutAllowsGuest',
@@ -259,11 +221,10 @@ class Checkout extends AbstractBlock {
 		$this->asset_data_registry->add( 'shippingEnabled', wc_shipping_enabled(), true );
 		$this->asset_data_registry->add( 'hasDarkEditorStyleSupport', current_theme_supports( 'dark-editor-style' ), true );
 		$this->asset_data_registry->register_page_id( isset( $attributes['cartPageId'] ) ? $attributes['cartPageId'] : 0 );
+		$this->asset_data_registry->add( 'isBlockTheme', wc_current_theme_is_fse_theme(), true );
 
 		$pickup_location_settings = get_option( 'woocommerce_pickup_location_settings', [] );
-		$local_pickup_enabled     = wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' );
-
-		$this->asset_data_registry->add( 'localPickupEnabled', $local_pickup_enabled, true );
+		$this->asset_data_registry->add( 'localPickupEnabled', wc_string_to_bool( $pickup_location_settings['enabled'] ?? 'no' ), true );
 
 		$is_block_editor = $this->is_block_editor();
 
@@ -377,26 +338,6 @@ class Checkout extends AbstractBlock {
 	}
 
 	/**
-	 * Removes accents from an array of values, sorts by the values, then returns the original array values sorted.
-	 *
-	 * @param array $array Array of values to sort.
-	 * @return array Sorted array.
-	 */
-	protected function deep_sort_with_accents( $array ) {
-		if ( ! is_array( $array ) || empty( $array ) ) {
-			return $array;
-		}
-
-		if ( is_array( reset( $array ) ) ) {
-			return array_map( [ $this, 'deep_sort_with_accents' ], $array );
-		}
-
-		$array_without_accents = array_map( 'remove_accents', array_map( 'wc_strtolower', array_map( 'html_entity_decode', $array ) ) );
-		asort( $array_without_accents );
-		return array_replace( $array_without_accents, $array );
-	}
-
-	/**
 	 * Get saved customer payment methods for use in checkout.
 	 */
 	protected function hydrate_customer_payment_methods() {
@@ -429,17 +370,19 @@ class Checkout extends AbstractBlock {
 	 * Hydrate the checkout block with data from the API.
 	 */
 	protected function hydrate_from_api() {
+		// Cache existing notices now, otherwise they are caught by the Cart Controller and converted to exceptions.
+		$old_notices = WC()->session->get( 'wc_notices', array() );
+		wc_clear_notices();
+
 		$this->asset_data_registry->hydrate_api_request( '/wc/store/v1/cart' );
 
-		// Print existing notices now, otherwise they are caught by the Cart
-		// Controller and converted to exceptions.
-		wc_print_notices();
 		add_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
-
 		$rest_preload_api_requests = rest_preload_api_request( [], '/wc/store/v1/checkout' );
 		$this->asset_data_registry->add( 'checkoutData', $rest_preload_api_requests['/wc/store/v1/checkout']['body'] ?? [] );
-
 		remove_filter( 'woocommerce_store_api_disable_nonce_check', '__return_true' );
+
+		// Restore notices.
+		WC()->session->set( 'wc_notices', $old_notices );
 	}
 
 	/**

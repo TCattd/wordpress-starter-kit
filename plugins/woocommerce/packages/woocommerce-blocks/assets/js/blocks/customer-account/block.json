@@ -4,7 +4,7 @@
 	"title": "Customer account",
 	"description": "A block that allows your customers to log in and out of their accounts in your store.",
 	"category": "woocommerce",
-	"keywords": [ "WooCommerce" ],
+	"keywords": [ "WooCommerce", "My Account" ],
 	"supports": {
 		"align": true,
 		"color": {
@@ -13,6 +13,9 @@
 		"typography": {
 			"fontSize": true,
 			"__experimentalFontFamily": true
+		},
+		"spacing": {
+			"margin": true
 		}
 	},
 	"attributes": {

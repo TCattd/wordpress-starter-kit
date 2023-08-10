@@ -12,6 +12,8 @@ import { useEffect } from '@wordpress/element';
  */
 import Block from './block';
 import type { Attributes } from './types';
+import { useIsDescendentOfSingleProductBlock } from '../shared/use-is-descendent-of-single-product-block';
+import { useIsDescendentOfSingleProductTemplate } from '../shared/use-is-descendent-of-single-product-template';
 
 const Edit = ( {
 	attributes,
@@ -27,10 +29,29 @@ const Edit = ( {
 		...context,
 	};
 	const isDescendentOfQueryLoop = Number.isFinite( context.queryId );
+	const { isDescendentOfSingleProductBlock } =
+		useIsDescendentOfSingleProductBlock( { blockClientId: blockProps.id } );
+
+	let { isDescendentOfSingleProductTemplate } =
+		useIsDescendentOfSingleProductTemplate();
+
+	if ( isDescendentOfQueryLoop ) {
+		isDescendentOfSingleProductTemplate = false;
+	}
 
 	useEffect(
-		() => setAttributes( { isDescendentOfQueryLoop } ),
-		[ setAttributes, isDescendentOfQueryLoop ]
+		() =>
+			setAttributes( {
+				isDescendentOfQueryLoop,
+				isDescendentOfSingleProductTemplate,
+				isDescendentOfSingleProductBlock,
+			} ),
+		[
+			setAttributes,
+			isDescendentOfQueryLoop,
+			isDescendentOfSingleProductTemplate,
+			isDescendentOfSingleProductBlock,
+		]
 	);
 
 	return (

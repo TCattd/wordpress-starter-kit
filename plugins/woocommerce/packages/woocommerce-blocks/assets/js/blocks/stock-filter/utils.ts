@@ -23,9 +23,9 @@ export const getActiveFilters = (
 		? params.split( ',' )
 		: ( params as string[] );
 
-	return Object.keys( filters ).filter( ( filter ) =>
-		parsedParams.includes( filter )
-	);
+	const filterKeys = Object.keys( filters );
+
+	return parsedParams.filter( ( param ) => filterKeys.includes( param ) );
 };
 
 export function generateUniqueId() {
@@ -48,7 +48,7 @@ export const parseAttributes = ( data: Record< string, unknown > ) => {
 				parseInt( data.headingLevel, 10 ) ) ||
 			metadata.attributes.headingLevel.default,
 		showFilterButton: data?.showFilterButton === 'true',
-		showCounts: data?.showCounts !== 'false',
+		showCounts: data?.showCounts === 'true',
 		isPreview: false,
 		displayStyle:
 			( isString( data?.displayStyle ) && data.displayStyle ) ||
