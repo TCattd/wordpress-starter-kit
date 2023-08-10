@@ -1,0 +1,41 @@
+# Copyright (C) 2023 JSM Show Registered Shortcodes
+# This file is distributed under the same license as the JSM Show Registered Shortcodes package.
+msgid ""
+msgstr ""
+"Project-Id-Version: JSM Show Registered Shortcodes 2.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jsm-show-"
+"registered-shortcodes\n"
+"POT-Creation-Date: 2023-MO-DA HO:MI+ZONE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2023-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. translators: %d is the total shortcode count.
+#: jsm-show-registered-shortcodes.php:87
+msgid "Registered Shortcodes (%d)"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "JSM Show Registered Shortcodes"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://surniaulula.com/extend/plugins/jsm-show-registered-shortcodes/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Simple and lightweight plugin to show all registered shortcodes under a "
+"\"Registered Shortcodes\" toolbar menu item."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "JS Morisset"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://surniaulula.com/"
+msgstr ""

@@ -1,0 +1,247 @@
+# Copyright (C) 2023 Gravity Forms
+# This file is distributed under the GPL-3.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Gravity Forms Conversational Forms Add-On 1.0.0\n"
+"Report-Msgid-Bugs-To: https://gravityforms.com/support\n"
+"Last-Translator: Gravity Forms <support@gravityforms.com>\n"
+"Language-Team: Gravity Forms <support@gravityforms.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-07-27T17:57:37+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: gravityformsconversationalforms\n"
+
+#. Plugin Name of the plugin
+msgid "Gravity Forms Conversational Forms Add-On"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+msgid "https://gravityforms.com"
+msgstr ""
+
+#. Description of the plugin
+msgid "Create conversational-style forms from your Gravity Forms."
+msgstr ""
+
+#. Author of the plugin
+msgid "Gravity Forms"
+msgstr ""
+
+#. Translators: &#9166;: Symbol for enter key on keyboard.
+#: class-gf-conversational-forms.php:153
+#: includes/theme-layers/layers/views/class-conversational-field-markup.php:69
+msgid "Press Enter"
+msgstr ""
+
+#: class-gf-conversational-forms.php:334
+msgid "Unknown error. Please try again"
+msgstr ""
+
+#: class-gf-conversational-forms.php:335
+msgid "Use Shift + Enter to add line breaks"
+msgstr ""
+
+#: class-gf-conversational-forms.php:336
+msgid "There was a problem with your submission. At least one field must be filled out."
+msgstr ""
+
+#: class-gf-conversational-forms.php:690
+msgid "Conversational Forms"
+msgstr ""
+
+#: class-gf-conversational-forms.php:698
+msgid "Enable Conversational Page For Form"
+msgstr ""
+
+#: class-gf-conversational-forms.php:699
+msgid "This form will continue to display as normal when embedded anywhere on your site, but will display in distraction-free conversational mode at this URL."
+msgstr ""
+
+#: class-gf-conversational-forms.php:709
+msgid "Permalink"
+msgstr ""
+
+#: class-gf-conversational-forms.php:715
+msgid "View Form"
+msgstr ""
+
+#: class-gf-conversational-forms.php:732
+msgid "Form Design"
+msgstr ""
+
+#: class-gf-conversational-forms.php:738
+msgid "Layout"
+msgstr ""
+
+#: class-gf-conversational-forms.php:745
+msgid "Left Aligned"
+msgstr ""
+
+#: class-gf-conversational-forms.php:750
+msgid "Center"
+msgstr ""
+
+#: class-gf-conversational-forms.php:755
+msgid "Right Aligned"
+msgstr ""
+
+#: class-gf-conversational-forms.php:764
+msgid "Background Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:782
+msgid "Form Accent Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:783
+msgid "Used for various form elements, such as buttons and progress bars."
+msgstr ""
+
+#: class-gf-conversational-forms.php:800
+msgid "Input Accent Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:801
+msgid "Used for aspects of individual form inputs, such as checkmarks and dropdown choices."
+msgstr ""
+
+#: class-gf-conversational-forms.php:818
+msgid "Text Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:832
+msgid "Enable Logo"
+msgstr ""
+
+#: class-gf-conversational-forms.php:840
+msgid "Logo"
+msgstr ""
+
+#: class-gf-conversational-forms.php:859
+msgid "Logo Link"
+msgstr ""
+
+#: class-gf-conversational-forms.php:876
+msgid "Enable Background Image"
+msgstr ""
+
+#: class-gf-conversational-forms.php:884
+msgid "Background Image"
+msgstr ""
+
+#: class-gf-conversational-forms.php:904
+msgid "Background Image Brightness"
+msgstr ""
+
+#: class-gf-conversational-forms.php:905
+msgid "Adjust the brightness of your background image to ensure your form elements are legible when displayed against it. (Lower values result in a darker background)."
+msgstr ""
+
+#: class-gf-conversational-forms.php:937
+msgid "Welcome Screen"
+msgstr ""
+
+#: class-gf-conversational-forms.php:944
+msgid "Enable Welcome Screen"
+msgstr ""
+
+#: class-gf-conversational-forms.php:952
+msgid "Heading"
+msgstr ""
+
+#: class-gf-conversational-forms.php:968
+msgid "Description"
+msgstr ""
+
+#: class-gf-conversational-forms.php:984
+msgid "Start Button Text"
+msgstr ""
+
+#: class-gf-conversational-forms.php:987
+msgid "Start"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1002
+msgid "Image"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1021
+msgid "Image Alternate Text"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1047
+msgid "Buttons"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1051
+msgid "Continue Button Text"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1054
+msgid "Continue"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1069
+msgid "Footer"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1075
+msgid "Footer Background Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1076
+#: class-gf-conversational-forms.php:1124
+#: class-gf-conversational-forms.php:1144
+msgid "By default, this color is generated from the form accent color selected above. Use this setting if you want to override the automatically-generated color."
+msgstr ""
+
+#: class-gf-conversational-forms.php:1087
+msgid "Enable Progress Bar"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1095
+msgid "Progression Type"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1102
+msgid "Percentage"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1106
+msgid "Proportion"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1123
+msgid "Bar Background Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1143
+msgid "Bar Foreground Color"
+msgstr ""
+
+#: class-gf-conversational-forms.php:1184
+msgid "This form is using legacy markup, which is not supported in Conversational Forms.  Please turn off Legacy Markup in the form settings to enable a Conversational Page for this form."
+msgstr ""
+
+#: class-gf-conversational-forms.php:1436
+msgid "Please enter a valid value."
+msgstr ""
+
+#. Translators: %s: The percentage of the form being completed.
+#: includes/theme-layers/layers/views/class-full-screen-template.php:172
+msgid "%s Completed!"
+msgstr ""
+
+#: includes/theme-layers/layers/views/class-full-screen-template.php:207
+#: includes/theme-layers/layers/views/class-full-screen-template.php:211
+msgid "Previous"
+msgstr ""
+
+#: includes/theme-layers/layers/views/class-full-screen-template.php:223
+#: includes/theme-layers/layers/views/class-full-screen-template.php:227
+msgid "Next"
+msgstr ""

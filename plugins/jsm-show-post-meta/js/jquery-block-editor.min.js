@@ -1,0 +1,1 @@
+const jsmspmBlockEditor=function(){const t=wp.data.select("core/editor").getCurrentPostId,o=wp.data.select("core/edit-post").isSavingMetaBoxes;var e=!1;return{refreshPostbox:function(){var s=o();e&&!s&&sucomEditorPostbox("jsmspm","jsmspmAdminPageL10n",t),e=s}}}();wp.data.subscribe(jsmspmBlockEditor.refreshPostbox);

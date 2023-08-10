@@ -152,6 +152,17 @@ class Post_Update_Handler {
 			$this->update_media( $media_after, $post_ids );
 		}
 
+		/**
+		 * Allow custom actions to be performed after the post is updated.
+		 *
+		 * @since 1.3.3
+		 *
+		 * @param array $post  The post that was updated.
+		 * @param array $feed  The feed that was processed.
+		 * @param array $entry The entry used to update the post.
+		 */
+		do_action( 'gform_advancedpostcreation_post_update_post', $this->post, $this->feed, $this->entry );
+
 		return true;
 	}
 
@@ -296,7 +307,7 @@ class Post_Update_Handler {
 	 * @return array
 	 */
 	protected function get_current_files() {
-		$fields = GFAPI::get_fields_by_type( $this->form, array( 'fileupload' ) );
+		$fields = GFAPI::get_fields_by_type( $this->form, array( 'fileupload' ), true );
 		$files  = array();
 
 		if ( empty( $fields ) ) {

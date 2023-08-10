@@ -1,5 +1,8 @@
+### 1.3.3
+- Added the [gform_advancedpostcreation_post_update_post](https://docs.gravityforms.com/gform_advancedpostcreation_post_update_post/) action.
+
 ### 1.3.2
-- Fixed an issue to allow File Upload fields that have been extended by a developer to be processed. Credit: GravityPDF
+- Fixed an issue to allow File Upload fields that have been extended by a developer to be processed when creating posts. Credit: Gravity PDF
 
 ### 1.3.1
 - Added support for async (background) feed processing to improve form submission performance.

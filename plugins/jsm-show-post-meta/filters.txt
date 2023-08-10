@@ -1,0 +1,21 @@
+
+Filter the post meta shown in the metabox:
+
+'jsmspm_metabox_table_metadata' ( $metadata, $post_obj )
+
+An array of regular expressions to exclude meta keys:
+
+'jsmspm_metabox_table_skip_keys' ( $skip_keys, $post_obj )
+
+current_user_can() capability required to show post meta:
+
+'jsmspm_show_metabox_capability' ( 'manage_options', $post_obj )
+
+Show post meta for this post type (defaults to true):
+
+'jsmspm_show_metabox_post_type' ( true, $post_type )
+
+current_user_can() capability required to delete post meta:
+
+'jsmspm_delete_meta_capability' ( 'manage_options', $post_obj )
+

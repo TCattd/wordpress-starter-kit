@@ -1,0 +1,21 @@
+
+Filter the user meta shown in the metabox:
+
+'jsmsum_metabox_table_metadata' ( $metadata, $user_obj )
+
+An array of regular expressions to exclude meta keys:
+
+'jsmsum_metabox_table_skip_keys' ( $skip_keys, $user_obj )
+
+current_user_can() capability required to show user meta:
+
+'jsmsum_show_metabox_capability' ( 'manage_options', $user_obj )
+
+Show user meta for this screen base (defaults to true):
+
+'jsmsum_show_metabox_screen_base' ( true, $screen_base )
+
+current_user_can() capability required to delete user meta:
+
+'jsmsum_delete_meta_capability' ( 'manage_options', $user_obj )
+

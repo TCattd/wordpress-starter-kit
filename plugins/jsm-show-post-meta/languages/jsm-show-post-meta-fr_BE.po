@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: JSM's Show Post Metadata 3.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jsm-show-post-meta\n"
+"POT-Creation-Date: 2021-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2021-11-30 13:35-0800\n"
+"Last-Translator: JS Morisset <jsm@surniaulula.com>\n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/post.php:49
+msgid "Post Metadata"
+msgstr "Métadonnées d'article"
+
+#: lib/post.php:79
+msgid "Key"
+msgstr "Clé"
+
+#: lib/post.php:80
+msgid "Value"
+msgstr "Valeur"
+
+#: lib/script.php:91
+msgid "Unable to delete meta key '{1}' for post ID {0}."
+msgstr "Impossible de supprimer la clé méta '{1}' pour l'ID d'article {0}."
+
+#. Plugin Name of the plugin/theme
+msgid "JSM's Show Post Metadata"
+msgstr "Afficher métadonnées d'article de JSM"
+
+#. Plugin URI of the plugin/theme
+msgid "https://surniaulula.com/extend/plugins/jsm-show-post-meta/"
+msgstr "https://surniaulula.com/extend/plugins/jsm-show-post-meta/"
+
+#. Description of the plugin/theme
+msgid "Show post metadata (aka custom fields) in a metabox when editing posts / pages - a great tool for debugging issues with post metadata."
+msgstr "Afficher les métadonnées d'article dans une métabox lors de l'édition d'articles / pages - un excellent outil pour déboguer les problèmes avec les métadonnées d'articles."
+
+#. Author of the plugin/theme
+msgid "JS Morisset"
+msgstr "JS Morisset"
+
+#. Author URI of the plugin/theme
+msgid "https://surniaulula.com/"
+msgstr "https://surniaulula.com/"
