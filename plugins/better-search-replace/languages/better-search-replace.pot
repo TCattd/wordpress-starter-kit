@@ -1,0 +1,261 @@
+# Copyright (C) 2023 Delicious Brains
+# This file is distributed under the GPL-3.0.
+msgid ""
+msgstr ""
+"Project-Id-Version: Better Search Replace 1.4.2\n"
+"Report-Msgid-Bugs-To: "
+"http://wordpress.org/support/plugin/better-search-replace\n"
+"POT-Creation-Date: 2023-01-11 16:40:34+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2023-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Delicious Brains <mayday@bettersearchreplace.com>\n"
+"Language-Team: Delicious Brains <mayday@bettersearchreplace.com>\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
+
+#: includes/class-bsr-admin.php:72
+msgid "No search string was defined, please enter a URL or string to search for."
+msgstr ""
+
+#: includes/class-bsr-admin.php:73
+msgid "Please select the tables that you want to update."
+msgstr ""
+
+#: includes/class-bsr-admin.php:74
+msgid ""
+"An error occurred processing your request. Try decreasing the \"Max Page "
+"Size\", or contact support."
+msgstr ""
+
+#: includes/class-bsr-admin.php:75
+msgid "Processing..."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Better Search Replace"
+msgstr ""
+
+#: includes/class-bsr-admin.php:108
+msgid ""
+"<p><strong>DRY RUN:</strong> <strong>%d</strong> tables were searched, "
+"<strong>%d</strong> cells were found that need to be updated, and "
+"<strong>%d</strong> changes were made.</p><p><a href=\"%s\" "
+"class=\"thickbox\" title=\"Dry Run Details\">Click here</a> for more "
+"details, or use the form below to run the search/replace.</p>"
+msgstr ""
+
+#: includes/class-bsr-admin.php:115
+msgid ""
+"<p>During the search/replace, <strong>%d</strong> tables were searched, "
+"with <strong>%d</strong> cells changed in <strong>%d</strong> "
+"updates.</p><p><a href=\"%s\" class=\"thickbox\" title=\"Search/Replace "
+"Details\">Click here</a> for more details.</p>"
+msgstr ""
+
+#: includes/class-bsr-admin.php:213
+msgid "Table"
+msgstr ""
+
+#: includes/class-bsr-admin.php:213
+msgid "Changes Found"
+msgstr ""
+
+#: includes/class-bsr-admin.php:213
+msgid "Rows Updated"
+msgstr ""
+
+#: includes/class-bsr-admin.php:213
+msgid "Time"
+msgstr ""
+
+#: includes/class-bsr-admin.php:224
+msgid ""
+"<a href=\"%s\" target=\"_blank\">UPGRADE</a> to view details on the exact "
+"changes that will be made."
+msgstr ""
+
+#: includes/class-bsr-admin.php:235
+msgid " seconds"
+msgstr ""
+
+#: includes/class-bsr-admin.php:285
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/class-bsr-ajax.php:157
+msgid "Processing table %d of %d: %s"
+msgstr ""
+
+#: includes/class-bsr-db.php:85
+msgid "(%s MB)"
+msgstr ""
+
+#: includes/class-bsr-db.php:295
+msgid "Error updating row: %d."
+msgstr ""
+
+#: templates/bsr-dashboard.php:53
+msgid "Upgrade now and get 50% off"
+msgstr ""
+
+#: templates/bsr-dashboard.php:65 templates/bsr-search-replace.php:32
+msgid "Search/Replace"
+msgstr ""
+
+#: templates/bsr-dashboard.php:66 templates/bsr-settings.php:30
+msgid "Settings"
+msgstr ""
+
+#: templates/bsr-dashboard.php:67
+msgid "Help"
+msgstr ""
+
+#: templates/bsr-help.php:26
+msgid "Help & Troubleshooting"
+msgstr ""
+
+#: templates/bsr-help.php:35
+msgid "Free support is available on the <a href=\"%s\">plugin support forums</a>."
+msgstr ""
+
+#: templates/bsr-help.php:43
+msgid ""
+"<a href=\"%s\" style=\"font-weight:bold;\" target=\"_blank\">Upgrade</a> to "
+"gain access to premium features and priority email support."
+msgstr ""
+
+#: templates/bsr-help.php:51
+msgid ""
+"Found a bug or have a feature request? Please submit an issue on <a "
+"href=\"%s\">GitHub</a>!"
+msgstr ""
+
+#: templates/bsr-help.php:61
+msgid "System Info"
+msgstr ""
+
+#: templates/bsr-search-replace.php:37
+msgid ""
+"Search and replace text in the database, including serialized arrays and "
+"objects. Be sure to back up your database before running this process."
+msgstr ""
+
+#: templates/bsr-search-replace.php:46
+msgid "Search for"
+msgstr ""
+
+#: templates/bsr-search-replace.php:51
+msgid "Replace with"
+msgstr ""
+
+#: templates/bsr-search-replace.php:59
+msgid "Select tables"
+msgstr ""
+
+#: templates/bsr-search-replace.php:61
+msgid "Select multiple tables with Ctrl-Click for Windows or Cmd-Click for Mac."
+msgstr ""
+
+#: templates/bsr-search-replace.php:73
+msgid "Additional Settings"
+msgstr ""
+
+#: templates/bsr-search-replace.php:84
+msgid "Case-Insensitive"
+msgstr ""
+
+#: templates/bsr-search-replace.php:85
+msgid "Searches are case-sensitive by default."
+msgstr ""
+
+#: templates/bsr-search-replace.php:95
+msgid "Replace GUIDs"
+msgstr ""
+
+#: templates/bsr-search-replace.php:96
+msgid "If left unchecked, all database columns titled 'guid' will be skipped."
+msgstr ""
+
+#: templates/bsr-search-replace.php:106
+msgid "Run as dry run"
+msgstr ""
+
+#: templates/bsr-search-replace.php:107
+msgid ""
+"If checked, no changes will be made to the database, allowing you to check "
+"the results beforehand."
+msgstr ""
+
+#: templates/bsr-search-replace.php:118
+msgid "Run Search/Replace"
+msgstr ""
+
+#: templates/bsr-settings.php:39
+msgid "Max Page Size"
+msgstr ""
+
+#: templates/bsr-settings.php:43
+msgid ""
+"If you notice timeouts or are unable to backup/import the database, try "
+"decreasing this value."
+msgstr ""
+
+#: templates/sidebar.php:4
+msgid "Upgrade"
+msgstr ""
+
+#: templates/sidebar.php:5
+msgid "Gain access to more database and migration features"
+msgstr ""
+
+#: templates/sidebar.php:9
+msgid "Preview database changes before they are saved"
+msgstr ""
+
+#: templates/sidebar.php:12
+msgid "Use regular expressions for complex string replacements"
+msgstr ""
+
+#: templates/sidebar.php:15
+msgid "Migrate full sites including themes, plugins, media, and database"
+msgstr ""
+
+#: templates/sidebar.php:18
+msgid "Export and import WordPress databases"
+msgstr ""
+
+#: templates/sidebar.php:21
+msgid "Email support"
+msgstr ""
+
+#: templates/sidebar.php:25
+msgid "Get up to <span>50% off</span> your first year!"
+msgstr ""
+
+#: templates/sidebar.php:29
+msgid "Upgrade Now"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://bettersearchreplace.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "A small plugin for running a search/replace on your WordPress database."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Delicious Brains"
+msgstr ""

@@ -1,0 +1,262 @@
+/*
+ +=====================================================================+
+ |    ____          _        ____             __ _ _                   |
+ |   / ___|___   __| | ___  |  _ \ _ __ ___  / _(_) | ___ _ __         |
+ |  | |   / _ \ / _` |/ _ \ | |_) | '__/ _ \| |_| | |/ _ \ '__|        |
+ |  | |__| (_) | (_| |  __/ |  __/| | | (_) |  _| | |  __/ |           |
+ |   \____\___/ \__,_|\___| |_|   |_|  \___/|_| |_|_|\___|_|           |
+ |                                                                     |
+ |  (c) Jerome Bruandet ~ https://code-profiler.com/                   |
+ +=====================================================================+
+*/
+
+/* Percent bar in the list */
+.cp-list-pc {
+	position: relative;
+	z-index: 1;
+	background-color: #fff;
+	border-radius: 3px;
+	border: 1px #c3c4c7 solid;
+	padding: 2px;
+}
+.cp-list-pc-bar {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	background-color: rgba( 144, 238, 144, .6 );
+	z-index: -1;
+}
+
+/* Profiler's progress bar */
+.cp-progress-bar {
+	background-color: #eee;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+	height: 26px;
+	width: 100%;
+	border-radius: 5px;
+	border-bottom:solid 1px #fff;
+}
+.cp-progress-bar span {
+	display: inline-block;
+	float: left;
+	height: 100%;
+	border-radius: 5px;
+	background-color: #2271b1;
+	box-shadow: 0 1px 0 rgba(255, 255, 255, .5) inset;
+	transition: width .6s ease;
+}
+
+/* WP_List_Table */
+.wp-list-table .column-id { width: 5%; }
+.wp-list-table .column-profile { width: 25%; }
+.wp-list-table .column-date { width: 20%; }
+.wp-list-table .column-items { width: 9%; }
+.wp-list-table .column-time { width: 11%; }
+.wp-list-table .column-mem { width: 11%; }
+.wp-list-table .column-queries { width: 9%; }
+.wp-list-table .column-io { width: 10%; }
+
+
+form.scripts .wp-list-table .column-script { width: 60%; }
+form.scripts .wp-list-table .column-time { width: 20%; text-align:center }
+form.scripts .wp-list-table .column-name { width: 20%; }
+
+form.functions .wp-list-table .column-function { width: 30%; }
+form.functions .wp-list-table .column-time { width: 15%; text-align:center }
+form.functions .wp-list-table .column-calls { width: 10%; }
+form.functions .wp-list-table .column-script { width: 30%; }
+form.functions .wp-list-table .column-name { width: 15%; }
+
+form.iolist .wp-list-table .column-order { width: 10%; text-align: center; }
+form.iolist .wp-list-table .column-file { width: 75%; }
+form.iolist .wp-list-table .column-mode { width: 15%; }
+
+/* TipTip CSS - Version 1.2 */
+.code-profiler-tip{
+	color:#999;
+	display:inline-block;
+	font-size:1.3em;
+	font-style:normal;
+	position:relative;
+	vertical-align:middle;
+	height:19px;
+	line-height:19px;
+	width:19px;
+}
+.code-profiler-tip::after{
+	font-family:Dashicons;
+	font-weight:400;
+	font-variant:normal;
+	text-transform:none;
+	line-height:1;
+	-webkit-font-smoothing:antialiased;
+	margin:0;
+	text-indent:0;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	text-align:center;
+	content: "\f223";
+	cursor:help;
+}
+.code-profiler-tip-info{
+	color:#aaa;
+	font-size:1em;
+}
+.code-profiler-tip-info::after{
+	content: "\f534";
+}
+#cp_tiptip_holder {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 99999;
+}
+#cp_tiptip_holder.tip_top {
+	padding-bottom: 5px;
+}
+#cp_tiptip_holder.tip_bottom {
+	padding-top: 5px;
+}
+#cp_tiptip_holder.tip_right {
+	padding-left: 5px;
+}
+#cp_tiptip_holder.tip_left {
+	padding-right: 5px;
+}
+#cp_tiptip_content {
+	font-size: 14px;
+	color: #000;
+	padding: 4px 8px;
+	background-color:#F5F5B5;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border:1px #666 solid;
+}
+#cp_tiptip_holder.tip_bottom #cp_tiptip_arrow_inner {
+    margin-top: -5px;
+    margin-right: -6px;
+    border-bottom-color: #333;
+}
+#cp_tiptip_arrow, #cp_tiptip_arrow_inner {
+    position: absolute;
+    border-color: transparent;
+        border-bottom-color: transparent;
+    border-style: solid;
+    border-width: 6px;
+    height: 0;
+    width: 0;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	#cp_tiptip_content {
+		padding: 4px 8px 5px 8px;
+		background-color:#F5F5B5;
+	}
+	#cp_tiptip_holder.tip_bottom #cp_tiptip_arrow_inner {
+		border-bottom-color: rgba(45,45,45);
+	}
+	#cp_tiptip_holder.tip_top #cp_tiptip_arrow_inner {
+		border-top-color: rgba(20,20,20);
+	}
+}
+/* End TipTip */
+
+/* Notices */
+.cp-notice{
+	border: 1px solid #ccd0d4;
+	margin: 5px 0 15px;
+	background: #fff;
+	border-left: 4px solid #fff;
+	box-shadow: 0 1px 1px 0 rgba(0,0,0,.04);
+	padding: 1px 12px;
+}
+.cp-notice-orange{
+	border-left-color: #ffb900;
+}
+.cp-notice-red{
+	border-left-color: #dc3232;
+}
+.cp-notice-green{
+	border-left-color: #46b450;
+}
+.cp-notice-blue{
+	border-left-color: #00a0d2;
+}
+.cp-notice p {
+    margin: .5em 0;
+    padding: 2px;
+}
+/* File view */
+.cpview_body{
+	background:#F7F7F7;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:400;
+	color:#312A2A
+}
+.cpview_table{
+	height:100%;
+	width:100%;
+	border:1px solid #BFBFBF
+}
+.cpview{
+	width:100%;
+	border-collapse:collapse;
+	border-spacing:0;
+	empty-cells:show
+}
+.cpview thead th{
+	text-align:left;
+	border-bottom:1px solid #BFBFBF;
+	background:#ECECEC;
+	color:#7F7F7F;
+	padding:4px;
+	border-bottom:1px solid #BFBFBF
+}
+.cpview_h3 {
+	color:#7F7F7F;
+	text-align:center;
+}
+.CodeMirror-activeline-background {
+	background:#f7e4e1;
+}
+.CodeMirror {
+	border:1px solid #BFBFBF
+}
+.CodeMirror-lines {
+	cursor: default;
+}
+
+/* Pro page */
+.cppro {
+	border: 1px solid #ccc;
+	-moz-box-shadow:3px 5px 5px #999;
+	-webkit-box-shadow:3px 5px 5px #999;
+	box-shadow:3px 5px 5px #999;
+}
+.about-wrap .is-wide, .about-wrap.full-width-layout {
+	max-width: none;
+}
+#TB_window img#TB_Image {
+	border: 1px solid #ccc;
+}
+#TB_window, #TB_title {
+	background-color:#f0f0f1 !important;
+}
+
+/* Screen reader only */
+.visually-hidden {
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+}

@@ -1,0 +1,1597 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bestwebsoft\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-15 10:54+0200\n"
+"PO-Revision-Date: 2021-02-15 10:54+0200\n"
+"Last-Translator: bestwebsoft.com <plugins@bestwebsoft.com>\n"
+"Language-Team: bestwebsoft.com <https://support.bestwebsoft.com>\n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;esc_attr_e\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Generator: Poedit 2.4.2\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: bws_functions.php:73 bws_functions.php:239
+msgid "requires"
+msgstr "benodigd"
+
+#: bws_functions.php:75
+msgid ""
+"or higher, that is why it has been deactivated! Please upgrade WordPress and "
+"try again."
+msgstr ""
+"of hoger, daarom is deze gedeactiveerd! Upgrade WordPress en probeer het "
+"opnieuw."
+
+#: bws_functions.php:76
+msgid "Back to the WordPress"
+msgstr "Terug naar WordPress"
+
+#: bws_functions.php:78
+msgid "Plugins page"
+msgstr "Plugins pagina"
+
+#: bws_functions.php:92
+msgid "Like the plugin?"
+msgstr "Like de plugin?"
+
+#: bws_functions.php:93
+#, php-format
+msgid "%s reviews"
+msgstr ""
+
+#: bws_functions.php:94
+msgid "Rate it"
+msgstr "Rate it"
+
+#: bws_functions.php:103
+msgid "Need help?"
+msgstr "Hulp nodig?"
+
+#: bws_functions.php:104 bws_functions.php:949 class-bws-settings.php:1082
+msgid "Visit Help Center"
+msgstr "Bezoek het Helpcentrum"
+
+#: bws_functions.php:107
+msgid "Want to support the plugin?"
+msgstr "Geef ondersteuning aan de plug-in?"
+
+#: bws_functions.php:108 bws_menu.php:529
+msgid "Donate"
+msgstr "Doneer"
+
+#: bws_functions.php:128
+msgid "WARNING: Illegal use notification"
+msgstr "LET OP!: Onwettige gebruiksmelding"
+
+#: bws_functions.php:128
+msgid ""
+"You can use one license of the Pro plugin for one domain only. Please check "
+"and edit your license or domain if necessary using your personal Client "
+"Area. We strongly recommend you to solve the problem within 24 hours, "
+"otherwise the Pro plugin will be deactivated."
+msgstr ""
+
+#: bws_functions.php:128 bws_functions.php:208 bws_menu.php:600
+#: class-bws-settings.php:179
+msgid "Learn More"
+msgstr "Leer meer"
+
+#: bws_functions.php:145
+msgid ""
+"Notice: Your Pro Trial license has expired. To continue using the plugin, "
+"you should buy a Pro license"
+msgstr ""
+"Opmerking: Uw Pro Trial licentie is verlopen. Om de plugin verder te "
+"gebruiken, moet u een Pro-licentie kopen"
+
+#: bws_functions.php:147
+msgid ""
+"Your license has expired. To continue getting top-priority support and "
+"plugin updates, you should extend it."
+msgstr ""
+"Uw licentie is verlopen. Om voort te gaan met ondersteuning voor top-"
+"prioriteit en plugin-updates, moet u het uitbreiden."
+
+#: bws_functions.php:147 bws_functions.php:226
+msgid "Learn more"
+msgstr "Leer meer"
+
+#: bws_functions.php:165
+#, php-format
+msgid "Notice: You are using the Pro Trial license of %s plugin."
+msgstr "Opmerking: U maakt gebruikt van de Pro Trial licentie van %s plugin."
+
+#: bws_functions.php:167
+msgid "Notice: You are using the Pro Trial license of plugin."
+msgstr "Opmerking: U gebruikt de Pro Trial licentie van de plugin."
+
+#: bws_functions.php:170
+msgid "The Pro Trial license will expire on"
+msgstr "De Pro Trial licentie vervalt op"
+
+#: bws_functions.php:199 bws_functions.php:222 bws_functions.php:266
+#: bws_functions.php:276 bws_functions.php:475
+msgid "Close notice"
+msgstr "Opmerking sluiten"
+
+#: bws_functions.php:204
+msgid "It’s time to upgrade your"
+msgstr "Het is tijd om te upgraden, "
+
+#: bws_functions.php:204
+msgid "to"
+msgstr "aan"
+
+#: bws_functions.php:204
+msgid "version!"
+msgstr "versie!"
+
+#: bws_functions.php:205
+msgid "Extend standard plugin functionality with new great options."
+msgstr ""
+"Verleng de standaard plugin functionaliteit met nieuwe geweldige opties."
+
+#: bws_functions.php:226
+#, php-format
+msgid ""
+"Your license key for %s expires on %s and you won't be granted TOP-PRIORITY "
+"SUPPORT or UPDATES."
+msgstr ""
+"Uw licentiesleutel voor %s verloopt uit op %s en u krijgt geen TOP-"
+"PRIORITEIT SUPPORT of UPDATES."
+
+#: bws_functions.php:241
+msgid ""
+"or higher! We do not guarantee that our plugin will work correctly. Please "
+"upgrade to WordPress latest version."
+msgstr ""
+"of hoger! Wij garanderen niet dat onze plugin correct blijft werken. Upgrade "
+"nu naar de nieuwste versie van WordPress."
+
+#: bws_functions.php:256
+#, php-format
+msgid "Thank you for installing %s plugin!"
+msgstr "Dank u voor het installeren van %s plugin!"
+
+#: bws_functions.php:258
+msgid "Let's get started"
+msgstr "Laten we aan de slag gaan"
+
+#: bws_functions.php:259 bws_functions.php:292 bws_menu.php:533
+#: bws_menu.php:535
+msgid "Settings"
+msgstr "Settings"
+
+#: bws_functions.php:261 bws_menu.php:327 class-bws-settings.php:809
+#: class-bws-settings.php:1084 class-bws-settings.php:1094 deprecated.php:234
+msgid "or"
+msgstr "of"
+
+#: bws_functions.php:262 bws_functions.php:294
+msgid "Add New"
+msgstr "Nieuwe toevoegen"
+
+#: bws_functions.php:281
+msgid "Thank you for installing plugins by BestWebSoft!"
+msgstr "Dank u voor het installeren van een plugin van BestWebSoft!"
+
+#: bws_functions.php:283
+msgid "More Details"
+msgstr "Meer details"
+
+#: bws_functions.php:284
+msgid "Less Details"
+msgstr "Minder details"
+
+#: bws_functions.php:312
+msgid "Deprecated function(-s) is used on the site here:"
+msgstr "Deprecated functie(-s) word hier op de site gebruikt:"
+
+#: bws_functions.php:326
+msgid ""
+"This function(-s) will be removed over time. Please update the product(-s)."
+msgstr ""
+"Deze function(-s) zal mettertijd worden verwijderd. Update het product of "
+"producten."
+
+#: bws_functions.php:470
+#, php-format
+msgid "Thank you for choosing %s plugin!"
+msgstr "Bedankt voor het kiezen van %s plugin!"
+
+#: bws_functions.php:471
+msgid ""
+"If you have a feature, suggestion or idea you'd like to see in the plugin, "
+"we'd love to hear about it!"
+msgstr ""
+"Als u een feature, suggestie of idee hebt dat u graag wilt zien in de "
+"plugin, zouden we het graag willen horen!"
+
+#: bws_functions.php:472
+msgid "Suggest a Feature"
+msgstr "Deel een idee"
+
+#: bws_functions.php:488 class-bws-settings.php:580 class-bws-settings.php:583
+#: class-bws-settings.php:635 class-bws-settings.php:638
+msgid "Notice"
+msgstr "Opmerking"
+
+#: bws_functions.php:488
+msgid "The plugin's settings have been changed."
+msgstr "De instellingen van de plugin zijn gewijzigd."
+
+#: bws_functions.php:489 class-bws-settings.php:222 class-bws-settings.php:242
+msgid "Save Changes"
+msgstr "Bewerkingen opslaan"
+
+#: bws_functions.php:503
+msgid ""
+"You can always look at premium options by checking the \"Pro Options\" in "
+"the \"Misc\" tab."
+msgstr ""
+"U kunt altijd premium opties bekijken door de \"Pro Options\" in het tabblad "
+"\"Misc\" te controleren."
+
+#: bws_functions.php:679
+msgid "Add shortcode"
+msgstr "Shortcode toevoegen"
+
+#: bws_functions.php:679
+msgid "Add BestWebSoft plugins' shortcodes using this button."
+msgstr "Voeg BestWebSoft plugins shortcodes toe aan deze knop."
+
+#: bws_functions.php:765
+msgid "Close"
+msgstr "Sluiten"
+
+#: bws_functions.php:851
+msgid "Are you sure you want to restore default settings?"
+msgstr "Weet u zeker dat u de standaardinstellingen wilt herstellen?"
+
+#: bws_functions.php:854
+msgid "Yes, restore all settings"
+msgstr "Ja, herstel alle instellingen"
+
+#: bws_functions.php:855
+msgid "No, go back to the settings page"
+msgstr "Nee, ga terug naar de instellingen"
+
+#: bws_functions.php:897
+msgid "Plugin"
+msgstr "Plugin"
+
+#: bws_functions.php:906
+msgid "Shortcode settings"
+msgstr "Shortcode instellingen"
+
+#: bws_functions.php:911
+msgid "The shortcode will be inserted"
+msgstr "De shortcode wordt ingevoegd"
+
+#: bws_functions.php:954
+msgid "FAQ"
+msgstr "FAQ"
+
+#: bws_functions.php:960
+msgid "For more information:"
+msgstr "Voor meer informatie:"
+
+#: bws_functions.php:961 bws_menu.php:401 class-bws-settings.php:776
+msgid "Documentation"
+msgstr "Documentatie"
+
+#: bws_functions.php:962 bws_menu.php:403 class-bws-settings.php:778
+msgid "Video Instructions"
+msgstr "Video Instructies"
+
+#: bws_functions.php:963
+msgid "Submit a Request"
+msgstr "Verzend een verzoek"
+
+#: bws_menu.php:101 class-bws-settings.php:860
+msgid "Wrong license key"
+msgstr "Incorrecte licentiesleutel"
+
+#: bws_menu.php:122 class-bws-settings.php:887 class-bws-settings.php:966
+#: class-bws-settings.php:1004
+msgid ""
+"Something went wrong. Please try again later. If the error appears again, "
+"please contact us"
+msgstr ""
+"Er is iets fout gegaan. Probeer het later nogmaals. Als de fout zich blijft "
+"voordoen, neem dan contact met ons op"
+
+#: bws_menu.php:122 class-bws-settings.php:887 class-bws-settings.php:966
+#: class-bws-settings.php:1004
+msgid "We are sorry for inconvenience."
+msgstr "Het spijt ons voor het ongemak."
+
+#: bws_menu.php:129 class-bws-settings.php:893 class-bws-settings.php:1010
+msgid "Wrong license key."
+msgstr "Verkeerde licentiesleutel."
+
+#: bws_menu.php:131
+msgid ""
+"This license key is bound to another site. Change it via personal Client "
+"Area."
+msgstr ""
+"Deze licentiesleutel is gebonden aan een andere website. Verander het via je "
+"persoonlijke beheeromgeving."
+
+#: bws_menu.php:131
+msgid "Log in"
+msgstr "Log in"
+
+#: bws_menu.php:133 bws_menu.php:333 deprecated.php:157
+msgid "Unfortunately, you have exceeded the number of available tries per day."
+msgstr "Helaas heb je het aantal beschikbare pogingen per dag overschreden."
+
+#: bws_menu.php:135
+#, php-format
+msgid ""
+"Unfortunately, Your license has expired. To continue getting top-priority "
+"support and plugin updates, you should extend it in your %s"
+msgstr ""
+"Helaas is uw licentie verlopen. Om voort te gaan met ondersteuning voor top-"
+"prioriteit en plugin-updates, moet u deze uitbreiden in uw %s"
+
+#: bws_menu.php:137 class-bws-settings.php:1018
+msgid ""
+"Unfortunately, the Pro licence was already installed to this domain. The Pro "
+"Trial license can be installed only once."
+msgstr ""
+"Helaas is de Pro licentie al geïnstalleerd op dit domein. De Pro Trial "
+"licentie kan slechts één keer geïnstalleerd worden."
+
+#: bws_menu.php:143 class-bws-settings.php:908
+msgid "The license key is valid."
+msgstr "De licentiesleutel is geldig."
+
+#: bws_menu.php:145 class-bws-settings.php:912
+msgid "Your license will expire on"
+msgstr "Uw licentie vervalt op"
+
+#: bws_menu.php:147
+msgid "Congratulations! Pro Membership license is activated successfully."
+msgstr ""
+
+#: bws_menu.php:154 class-bws-settings.php:1028
+msgid ""
+"Something went wrong. Try again later or upload the plugin manually. We are "
+"sorry for inconvenience."
+msgstr ""
+"Er is iets fout gegaan. Probeer het later opnieuw of upload de plugin "
+"handmatig. Het spijt ons voor ongemak."
+
+#: bws_menu.php:164
+msgid "Please enter your license key."
+msgstr "Vul alstublieft uw licentiesleutel in."
+
+#: bws_menu.php:175
+msgid "Not set"
+msgstr "Niet ingesteld"
+
+#: bws_menu.php:177
+msgid "On"
+msgstr "Aan"
+
+#: bws_menu.php:177
+msgid "Off"
+msgstr "Uit"
+
+#: bws_menu.php:178 bws_menu.php:179 bws_menu.php:180 bws_menu.php:181
+#: bws_menu.php:182 bws_menu.php:183 bws_menu.php:192
+msgid "N/A"
+msgstr "N/A"
+
+#: bws_menu.php:183
+#, fuzzy
+#| msgid " Mb"
+msgid "Mb"
+msgstr "Mb"
+
+#: bws_menu.php:184 bws_menu.php:185 bws_menu.php:186 bws_menu.php:190
+msgid "Yes"
+msgstr "Ja"
+
+#: bws_menu.php:184 bws_menu.php:185 bws_menu.php:186 bws_menu.php:190
+msgid "No"
+msgstr "Nee"
+
+#: bws_menu.php:197
+msgid "WordPress Environment"
+msgstr "WordPress Omgeving"
+
+#: bws_menu.php:199
+msgid "Home URL"
+msgstr "Home URL"
+
+#: bws_menu.php:200
+msgid "Website URL"
+msgstr "Website URL"
+
+#: bws_menu.php:201
+msgid "WP Version"
+msgstr "WP Versiie"
+
+#: bws_menu.php:202
+msgid "WP Multisite"
+msgstr "WP Multisite"
+
+#: bws_menu.php:203
+msgid "WP Memory Limit"
+msgstr "WP Memory Limit"
+
+#: bws_menu.php:204
+msgid "Active Theme"
+msgstr "Activeer Thema"
+
+#: bws_menu.php:204 bws_menu.php:249 bws_menu.php:252
+#, php-format
+msgid "by %s"
+msgstr "by %s"
+
+#: bws_menu.php:208
+msgid "Server Environment"
+msgstr "Server Omgeving"
+
+#: bws_menu.php:210
+msgid "Operating System"
+msgstr "Besturingssysteem"
+
+#: bws_menu.php:211
+msgid "Server"
+msgstr "Server"
+
+#: bws_menu.php:212
+msgid "PHP Version"
+msgstr "PHP Versiie"
+
+#: bws_menu.php:213
+msgid "PHP Allow URL fopen"
+msgstr "PHP Allow URL fopen"
+
+#: bws_menu.php:214
+msgid "PHP Memory Limit"
+msgstr "PHP Memory Limit"
+
+#: bws_menu.php:215
+msgid "Memory Usage"
+msgstr "Memory Usage"
+
+#: bws_menu.php:216
+msgid "PHP Max Upload Size"
+msgstr "PHP Max Upload Size"
+
+#: bws_menu.php:217
+msgid "PHP Max Post Size"
+msgstr "PHP Max Post Size"
+
+#: bws_menu.php:218
+msgid "PHP Max Script Execute Time"
+msgstr "PHP Max Script Execute Time"
+
+#: bws_menu.php:219
+msgid "PHP Exif support"
+msgstr "PHP Exif support"
+
+#: bws_menu.php:220
+msgid "PHP IPTC support"
+msgstr "PHP IPTC support"
+
+#: bws_menu.php:221
+msgid "PHP XML support"
+msgstr "PHP XML support"
+
+#: bws_menu.php:227
+msgid "Database"
+msgstr "Database"
+
+#: bws_menu.php:229
+msgid "WP DB version"
+msgstr "WP DB version"
+
+#: bws_menu.php:230
+msgid "MySQL version"
+msgstr "MySQL version"
+
+#: bws_menu.php:231
+msgid "SQL Mode"
+msgstr "SQL Mode"
+
+#: bws_menu.php:235
+msgid "Active Plugins"
+msgstr "Active Plugins"
+
+#: bws_menu.php:240
+msgid "Inactive Plugins"
+msgstr "Inactive Plugins"
+
+#: bws_menu.php:261
+msgid "Please enter a valid email address."
+msgstr "Gelieve een geldig e-mailadres in te geven."
+
+#: bws_menu.php:263
+#, php-format
+msgid "Email with system info is sent to %s."
+msgstr ""
+
+#: bws_menu.php:267
+msgid "Thank you for contacting us."
+msgstr "Bedankt voor het contact met ons opnemen."
+
+#: bws_menu.php:290
+msgid "Sorry, email message could not be delivered."
+msgstr "Sorry, e-mailbericht kon niet worden geleverd."
+
+#: bws_menu.php:306 bws_menu.php:310 bws_menu.php:359 deprecated.php:26
+msgid "Plugins"
+msgstr "Plugins"
+
+#: bws_menu.php:307 bws_menu.php:311 bws_menu.php:587 deprecated.php:27
+msgid "Themes"
+msgstr "Thema's"
+
+#: bws_menu.php:308 bws_menu.php:312 bws_menu.php:617
+msgid "System status"
+msgstr "Systeem status"
+
+#: bws_menu.php:316
+msgid "Support"
+msgstr "Support"
+
+#: bws_menu.php:317
+msgid "Manage purchased licenses & subscriptions"
+msgstr "Beheerde licenties en abonnementen beheren"
+
+#: bws_menu.php:325
+#, php-format
+msgid "Get Access to %s+ Premium Plugins"
+msgstr "Krijg toegang tot %s+ Premium plugins"
+
+#: bws_menu.php:327
+msgid "Subscribe to Pro Membership"
+msgstr "Abonneer je op de Pro Membership"
+
+#: bws_menu.php:335 bws_menu.php:346 class-bws-settings.php:822
+#: deprecated.php:123
+msgid "Check license key"
+msgstr "Controleer de licentiesleutel"
+
+#: bws_menu.php:338
+msgid "Enter your license key"
+msgstr "Vul uw licentiesleutel in"
+
+#: bws_menu.php:344 bws_menu.php:539 bws_menu.php:548
+#: class-bws-settings.php:801 deprecated.php:155 deprecated.php:163
+#: deprecated.php:240 deprecated.php:249
+msgid "Activate"
+msgstr "Activateer"
+
+#: bws_menu.php:360
+msgid "Upload Plugin"
+msgstr "Upload Plugin"
+
+#: bws_menu.php:364
+#, php-format
+msgid ""
+"The plugin generated %d characters of <strong>unexpected output</strong> "
+"during activation. If you notice &#8220;headers already sent&#8221; "
+"messages, problems with syndication feeds or other issues, try deactivating "
+"or removing this plugin."
+msgstr ""
+"De plugin genereerde %d tekens van <strong>onverwachte uitvoer</strong> "
+"tijdens de activering. Als merkt dat er headers al verstuurd zijn, problemen "
+"met syndicationfeeds of andere problemen zijn; probeer deze plugin uit te "
+"schakelen of te verwijderen."
+
+#: bws_menu.php:366
+msgid ""
+"Plugin could not be activated because it triggered a <strong>fatal error</"
+"strong>."
+msgstr ""
+"Plugin kan niet geactiveerd worden omdat het er <strong>fatal error</strong> "
+"zich voordoet."
+
+#: bws_menu.php:369
+msgid "Plugin <strong>activated</strong>."
+msgstr "Plugin <strong>geactiveerd</strong>."
+
+#: bws_menu.php:383
+#, fuzzy
+#| msgid "Upload Plugin"
+msgid "Download Pro Plugin"
+msgstr "Upload Plugin"
+
+#: bws_menu.php:385 class-bws-settings.php:759
+msgid "Your Pro plugin is ready"
+msgstr ""
+
+#: bws_menu.php:387 class-bws-settings.php:761
+msgid "Your plugin has been zipped, and now is ready to download."
+msgstr ""
+
+#: bws_menu.php:390 class-bws-settings.php:764
+msgid "Download Now"
+msgstr ""
+
+#: bws_menu.php:394 class-bws-settings.php:768
+#, fuzzy
+#| msgid "Installing the plugin"
+msgid "Need help installing the plugin?"
+msgstr "De plugin installeren"
+
+#: bws_menu.php:396 class-bws-settings.php:770
+msgid "How to install WordPress plugin from your admin Dashboard (ZIP archive)"
+msgstr ""
+
+#: bws_menu.php:399 class-bws-settings.php:774
+#, fuzzy
+#| msgid "Let's get started"
+msgid "Get Started"
+msgstr "Laten we aan de slag gaan"
+
+#: bws_menu.php:405 class-bws-settings.php:780
+msgid "Knowledge Base"
+msgstr ""
+
+#: bws_menu.php:408
+msgid "Licenses & Domains"
+msgstr ""
+
+#: bws_menu.php:411
+#, fuzzy
+#| msgid "Login to Client Area"
+msgid "Client Area"
+msgstr "Inloggen op client gebied"
+
+#: bws_menu.php:413
+msgid "Return to BestWebSoft Panel"
+msgstr "Terug naar het BestWebSoft Paneel"
+
+#: bws_menu.php:420 bws_menu.php:440 bws_menu.php:569
+msgid "All"
+msgstr "Alle"
+
+#: bws_menu.php:423 bws_menu.php:606
+msgid "Installed"
+msgstr "Geinstalleerd"
+
+#: bws_menu.php:426
+msgid "Not Installed"
+msgstr "Niet geinstalleerd"
+
+#: bws_menu.php:433
+msgid "Filter results"
+msgstr "Filter resultaten"
+
+#: bws_menu.php:436 bws_menu.php:565
+msgid "Category"
+msgstr "Categorieen"
+
+#: bws_menu.php:500
+msgid "Not installed"
+msgstr "Niet geinstalleerd"
+
+#: bws_menu.php:504
+msgid "Renew to get updates"
+msgstr "Vernieuw om updates te verkrijgen"
+
+#: bws_menu.php:507
+#, php-format
+msgid "Update to v %s"
+msgstr "Update naar v %s"
+
+#: bws_menu.php:519 bws_menu.php:542
+msgid "Get Pro"
+msgstr ""
+
+#: bws_menu.php:525 class-bws-settings.php:192 class-bws-settings.php:1091
+msgid "Upgrade to Pro"
+msgstr "Upgrade naar Pro"
+
+#: bws_menu.php:539 bws_menu.php:548
+msgid "Activate this plugin"
+msgstr "Activateer deze plugin"
+
+#: bws_menu.php:551
+msgid "Install this plugin"
+msgstr "Installeer deze plugin"
+
+#: bws_menu.php:551
+msgid "Install Now"
+msgstr "Installeer nu"
+
+#: bws_menu.php:560
+msgid "Nothing found. Try another criteria."
+msgstr "Niks gevonden. Probeer een ander criteria."
+
+#: bws_menu.php:597
+#, php-format
+msgid "By %s"
+msgstr "By %s"
+
+#: bws_menu.php:604
+msgid "Already Installed"
+msgstr "Reeds geinstalleerd"
+
+#: bws_menu.php:614
+msgid "Browse More WordPress Themes"
+msgstr ""
+
+#: bws_menu.php:623
+msgid "Send to support"
+msgstr "Stuur uw vraag"
+
+#: bws_menu.php:630
+msgid "Send to custom email &#187;"
+msgstr "Verzend naar aangepaste e-mail &#187;"
+
+#: class-bws-settings.php:167
+msgid "Information"
+msgstr "Informatie"
+
+#: class-bws-settings.php:179
+msgid "Inactive"
+msgstr "Inactief"
+
+#: class-bws-settings.php:187
+msgid "Expired"
+msgstr "Verlopen"
+
+#: class-bws-settings.php:190
+#, php-format
+msgid "%s day(-s) left"
+msgstr "%s dag(-en) over"
+
+#: class-bws-settings.php:196
+#, php-format
+msgid "Expired on %s"
+msgstr "Verlopen op %s"
+
+#: class-bws-settings.php:196
+msgid "Renew Now"
+msgstr "Vernieuw nu"
+
+#: class-bws-settings.php:198
+msgid "Active"
+msgstr "Actief"
+
+#: class-bws-settings.php:203
+msgid "License"
+msgstr "Licentie"
+
+#: class-bws-settings.php:206
+msgid "Status"
+msgstr "Status"
+
+#: class-bws-settings.php:210
+msgid "Version"
+msgstr "Versiie"
+
+#: class-bws-settings.php:323
+msgid "All plugin settings were restored."
+msgstr "Alle plugin-instellingen zijn hersteld."
+
+#: class-bws-settings.php:463
+msgid "Custom Code"
+msgstr "Maatwerk Code"
+
+#: class-bws-settings.php:467
+msgid "You do not have sufficient permissions to edit plugins for this site."
+msgstr ""
+"U heeft niet voldoende permissies om plugins voor deze website te bewerken."
+
+#: class-bws-settings.php:472
+msgid "These styles will be added to the header on all pages of your site."
+msgstr ""
+"Deze stijlen worden toegevoegd aan de koptekst op alle pagina's van uw "
+"website."
+
+#: class-bws-settings.php:475
+#, php-format
+msgid ""
+"This PHP code will be hooked to the %s action and will be printed on front "
+"end only."
+msgstr ""
+"Deze PHP-code wordt aangesloten op de %s actie en zal alleen op de website "
+"worden getoond."
+
+#: class-bws-settings.php:478
+msgid "These code will be added to the header on all pages of your site."
+msgstr ""
+"Deze code wordt toegevoegd aan de koptekst op alle pagina's van uw website."
+
+#: class-bws-settings.php:486
+#, php-format
+msgid ""
+"You need to make this files writable before you can save your changes. See "
+"%s the Codex %s for more information."
+msgstr ""
+"U moet deze bestanden schrijfrechten geven voordat u de wijzigingen kunt "
+"opslaan. Zie %s de Codex %s voor meer informatie."
+
+#: class-bws-settings.php:496
+msgid "Browsing"
+msgstr "Browsing"
+
+#: class-bws-settings.php:501
+#, php-format
+msgid "Activate custom %s code."
+msgstr "Activateer maatwerk %s code."
+
+#: class-bws-settings.php:509
+#, php-format
+msgid "Learn more about %s"
+msgstr "Leer meer over %s"
+
+#: class-bws-settings.php:571
+msgid "Miscellaneous Settings"
+msgstr "Diversen instellingen"
+
+#: class-bws-settings.php:580 class-bws-settings.php:635
+#, php-format
+msgid ""
+"It is prohibited to change %s settings on this site in the %s network "
+"settings."
+msgstr ""
+"Het is verboden om %s instellingen op deze website te wijzigen in de %s "
+"netwerkinstellingen."
+
+#: class-bws-settings.php:583 class-bws-settings.php:638
+#, php-format
+msgid ""
+"It is prohibited to view %s settings on this site in the %s network settings."
+msgstr ""
+"Het is verboden om %s instellingen op deze website te bekijken in de %s "
+"netwerkinstellingen."
+
+#: class-bws-settings.php:592
+msgid "Pro Options"
+msgstr "Pro Opties"
+
+#: class-bws-settings.php:596
+msgid "Enable to display plugin Pro options."
+msgstr "Schakel in om  plugin Pro opties te zien."
+
+#: class-bws-settings.php:602
+msgid "Track Usage"
+msgstr "Track gebruik"
+
+#: class-bws-settings.php:606
+msgid ""
+"Enable to allow tracking plugin usage anonymously in order to make it better."
+msgstr ""
+"Activeer het gebruik van anonieme tracking van de bijbehorende plug-in, om "
+"het product beter te maken."
+
+#: class-bws-settings.php:611
+msgid "Default Settings"
+msgstr "Standaard instellingen"
+
+#: class-bws-settings.php:613
+msgid "Restore Settings"
+msgstr "Instellingen herstellen"
+
+#: class-bws-settings.php:614
+msgid "This will restore plugin settings to defaults."
+msgstr ""
+"Dit zal de plugininstellingen herstellen naar de standaardinstellingen."
+
+#: class-bws-settings.php:626
+msgid "Import / Export"
+msgstr "Import / Export"
+
+#: class-bws-settings.php:744
+msgid "License Key"
+msgstr "Licentiesleutel"
+
+#: class-bws-settings.php:803
+#, php-format
+msgid "Enter your license key to activate %s and get premium plugin features."
+msgstr ""
+"Voer uw licentiesleutel in om %s te activeren en premium-pluginfuncties te "
+"krijgen."
+
+#: class-bws-settings.php:806 class-bws-settings.php:1014 deprecated.php:243
+msgid ""
+"Unfortunately, you have exceeded the number of available tries per day. "
+"Please, upload the plugin manually."
+msgstr ""
+"Helaas heeft u het aantal beschikbare pogingen per dag overschreden. Gelieve "
+"de plugin handmatig te uploaden."
+
+#: class-bws-settings.php:809 deprecated.php:234
+#, php-format
+msgid "Start Your Free %s-Day Trial Now"
+msgstr "Start nu uw gratis %s dag trial"
+
+#: class-bws-settings.php:824
+msgid ""
+"If necessary, you can check if the license key is correct or reenter it in "
+"the field below."
+msgstr ""
+"Indien nodig kunt u controleren of de licentiesleutel juist is of u voert "
+"het opnieuw in het onderstaande veld."
+
+#: class-bws-settings.php:833
+msgid "Manage License Settings"
+msgstr "Beheer licentie instellingen"
+
+#: class-bws-settings.php:835
+msgid "Login to Client Area"
+msgstr "Inloggen op client gebied"
+
+#: class-bws-settings.php:837
+msgid ""
+"Manage active licenses, download BWS products, and view your payment history "
+"using BestWebSoft Client Area."
+msgstr ""
+"Beheer actieve licenties, download BWS-producten en bekijk uw de "
+"betalingsgeschiedenis met behulp van de BestWebSoft Klanten Omgeving."
+
+#: class-bws-settings.php:895 class-bws-settings.php:1012
+msgid "This license key is bound to another site."
+msgstr "Deze licentiesleutel is gebonden aan een andere website."
+
+#: class-bws-settings.php:897
+msgid ""
+"This license key is valid, but Your license has expired. If you want to "
+"update our plugin in future, you should extend the license."
+msgstr ""
+"Deze licentiesleutel is geldig, maar uw licentie is verlopen. Als u onze "
+"plugin in de toekomst wilt bijwerken, moet u de licentie verlengen."
+
+#: class-bws-settings.php:899
+msgid "Unfortunately, you have exceeded the number of available tries."
+msgstr "Helaas heeft u het aantal beschikbare pogingen overschreden."
+
+#: class-bws-settings.php:901
+msgid ""
+"Unfortunately, the Pro Trial licence was already installed to this domain. "
+"The Pro Trial license can be installed only once."
+msgstr ""
+"Helaas, de Pro Trial licentie was al geïnstalleerd op dit domein. De Pro "
+"Trial License kan helaas maar eenmalig gebruikt worden."
+
+#: class-bws-settings.php:906
+msgid "The Pro Trial license key is valid."
+msgstr "De Pro Trial licentiesleutel is geldig."
+
+#: class-bws-settings.php:919 deprecated.php:142
+#, php-format
+msgid ""
+"In order to continue using the plugin it is necessary to buy a %s license."
+msgstr ""
+"Om door te gaan met de plugin is het nodig om een %s licentie te kopen."
+
+#: class-bws-settings.php:1016
+#, php-format
+msgid ""
+"Unfortunately, Your license has expired. To continue getting top-priority "
+"support and plugin updates, you should extend it in your %s."
+msgstr ""
+
+#: class-bws-settings.php:1065
+msgid "Please, enter Your license key"
+msgstr "Vul alstublieft uw licentiesleutel in"
+
+#: class-bws-settings.php:1078
+msgid "Need Help?"
+msgstr "Hulp nodig?"
+
+#: class-bws-settings.php:1080
+msgid "Read the Instruction"
+msgstr "Lees de instructie"
+
+#: class-bws-settings.php:1084
+msgid "Watch the Video"
+msgstr "Bekijk de Video"
+
+#: class-bws-settings.php:1095
+msgid "Start Your Free Trial"
+msgstr "Begin uw gratis proefperiode"
+
+#: class-bws-settings.php:1130
+#, fuzzy
+#| msgid "Suggest a Feature"
+msgid "Request a Feature"
+msgstr "Deel een idee"
+
+#: class-bws-settings.php:1135
+#, php-format
+msgid "How can we improve %s?"
+msgstr ""
+
+#: class-bws-settings.php:1137
+msgid "We look forward to hear your ideas."
+msgstr ""
+
+#: class-bws-settings.php:1139
+msgid "Describe your idea"
+msgstr ""
+
+#: class-bws-settings.php:1142 deactivation-form.php:120
+msgid "Send website data and allow to contact me back"
+msgstr ""
+
+#: class-bws-settings.php:1147
+msgid "Submit"
+msgstr ""
+
+#: class-bws-settings.php:1148 deactivation-form.php:127
+msgid "Processing"
+msgstr ""
+
+#: class-bws-settings.php:1149
+msgid "Thank you!"
+msgstr ""
+
+#: deactivation-form.php:22
+msgid "Need help? We are ready to answer your questions."
+msgstr ""
+
+#: deactivation-form.php:22
+msgid "Contact Support"
+msgstr ""
+
+#: deactivation-form.php:27
+msgid "The plugin is not working"
+msgstr ""
+
+#: deactivation-form.php:33
+msgid "The plugin didn't work as expected"
+msgstr ""
+
+#: deactivation-form.php:39
+msgid "The plugin suddenly stopped working"
+msgstr ""
+
+#: deactivation-form.php:46
+msgid "The plugin broke my site"
+msgstr ""
+
+#: deactivation-form.php:53
+msgid "I couldn't understand how to get it work"
+msgstr ""
+
+#: deactivation-form.php:60
+msgid "I found a better plugin"
+msgstr ""
+
+#: deactivation-form.php:66
+msgid "The plugin is great, but I need specific feature that you don't support"
+msgstr ""
+
+#: deactivation-form.php:72
+msgid "I no longer need the plugin"
+msgstr ""
+
+#: deactivation-form.php:78
+msgid "It's a temporary deactivation, I'm just debugging an issue"
+msgstr ""
+
+#: deactivation-form.php:84
+msgid "Other"
+msgstr "Anders"
+
+#: deactivation-form.php:93
+msgid "Quick Feedback"
+msgstr ""
+
+#: deactivation-form.php:95
+msgid "If you have a moment, please let us know why you are deactivating"
+msgstr ""
+
+#: deactivation-form.php:125
+msgid "Submit and Deactivate"
+msgstr ""
+
+#: deactivation-form.php:126
+msgid "Skip and Deactivate"
+msgstr ""
+
+#: deactivation-form.php:272
+msgid "Please tell us the reason so we can improve it."
+msgstr ""
+
+#: deprecated.php:28
+msgid "System Status"
+msgstr "Systeem status"
+
+#: deprecated.php:119
+msgid ""
+"If necessary, you can check if the license key is correct or reenter it in "
+"the field below. You can find your license key on your personal page - "
+"Client Area - on our website"
+msgstr ""
+"Indien nodig kunt u controleren of de licentiesleutel juist is of u voert "
+"het opnieuw in het onderstaande veld. U vindt uw licentiesleutel op uw "
+"persoonlijke omgeving - Klanten Omgeving - via onze website"
+
+#: deprecated.php:119
+msgid ""
+"(your username is the email address specified during the purchase). If "
+"necessary, please submit \"Lost your password?\" request."
+msgstr ""
+"(Uw gebruikersnaam is het e-mailadres dat is opgegeven tijdens de aankoop). "
+"Indien nodig, verstuur alstublieft \"Verstuur uw wachtwoord?\" Verzoek."
+
+#: deprecated.php:142
+msgid "After that, you can activate it by entering your license key."
+msgstr "Daarna kunt u activeren door uw licentiesleutel in te voeren."
+
+#: deprecated.php:145 deprecated.php:228
+msgid "License key can be found in the"
+msgstr "Licentiesleutel is te vinden in de"
+
+#: deprecated.php:147 deprecated.php:230
+msgid "(your username is the email address specified during the purchase)."
+msgstr ""
+"(Uw gebruikersnaam is het e-mailadres dat is opgegeven tijdens de aankoop)."
+
+#: deprecated.php:170
+msgid ""
+"Congratulations! The Pro license of the plugin is activated successfully."
+msgstr ""
+"Hartelijk gefeliciteerd! De Pro-licentie van de plugin is succesvol "
+"geactiveerd."
+
+#: deprecated.php:172 deprecated.php:210
+msgid "Please, go to"
+msgstr "Ga aub naar"
+
+#: deprecated.php:172 deprecated.php:210
+msgid "the setting page"
+msgstr "de instellingen"
+
+#: deprecated.php:187
+msgid "Restore all plugin settings to defaults"
+msgstr "Herstel alle plugin-instellingen naar de standaardinstellingen"
+
+#: deprecated.php:189
+msgid "Restore settings"
+msgstr "Herstel instellingen"
+
+#: deprecated.php:208
+msgid ""
+"Congratulations! Pro version of the plugin is  installed and activated "
+"successfully."
+msgstr ""
+"Hartelijk gefeliciteerd! De Pro-versie van de plugin is succesvol "
+"geïnstalleerd en geactiveerd."
+
+#: deprecated.php:217
+msgid "Show Pro features"
+msgstr "Toon de Pro functies"
+
+#: deprecated.php:224
+msgid "Enter your license key to install and activate"
+msgstr "Voer uw licentiesleutel in om te installeren en te activeren"
+
+#: deprecated.php:226
+msgid "version of the plugin."
+msgstr "versie van de plugin."
+
+#: product_list.php:8
+msgid "Admin Tools"
+msgstr ""
+
+#: product_list.php:9
+msgid "Content"
+msgstr ""
+
+#: product_list.php:10
+msgid "eCommerce"
+msgstr ""
+
+#: product_list.php:11
+msgid "Marketing"
+msgstr ""
+
+#: product_list.php:12
+msgid "Navigation"
+msgstr ""
+
+#: product_list.php:13
+msgid "Recommended"
+msgstr "Aanbevolen"
+
+#: product_list.php:14
+msgid "Security"
+msgstr "Veiligheid"
+
+#: product_list.php:15
+msgid "SEO"
+msgstr ""
+
+#: product_list.php:16
+msgid "SMM"
+msgstr ""
+
+#: product_list.php:23
+msgid "Give a birth for your bike rental and booking WordPress website."
+msgstr ""
+
+#: product_list.php:35
+msgid "Best secure captcha plugin to protect your WordPress forms."
+msgstr ""
+
+#: product_list.php:45
+msgid "Create your own rental website for car renting and booking."
+msgstr ""
+
+#: product_list.php:57
+msgid ""
+"Add columns with custom content to WordPress website pages, posts, widgets, "
+"etc."
+msgstr ""
+
+#: product_list.php:64
+msgid ""
+"Allow customers to reach you using secure contact form plugin any website "
+"must have."
+msgstr ""
+
+#: product_list.php:74
+msgid "Add unlimited number of contact forms to WordPress website."
+msgstr ""
+
+#: product_list.php:84
+msgid "Save and manage Contact Form messages. Never lose important data."
+msgstr ""
+
+#: product_list.php:94
+msgid "Add unlimited custom pages to WordPress admin dashboard."
+msgstr ""
+
+#: product_list.php:104
+msgid ""
+"Add custom post types and taxonomies to WordPress website search results."
+msgstr ""
+
+#: product_list.php:114
+msgid "Add PayPal and 2CO donate buttons to receive charity payments."
+msgstr ""
+
+#: product_list.php:121
+msgid ""
+"Get latest error log messages to diagnose website problems. Define and fix "
+"issues faster."
+msgstr ""
+
+#: product_list.php:128
+msgid ""
+"Add Facebook Follow, Like, and Share buttons to WordPress posts, pages, and "
+"widgets."
+msgstr ""
+
+#: product_list.php:138
+msgid ""
+"Add beautiful galleries, albums & images to your WordPress website in a few "
+"clicks."
+msgstr ""
+
+#: product_list.php:148
+msgid ""
+"Stronger security solution which protects your WordPress website from hacks "
+"and unauthorized login attempts."
+msgstr ""
+
+#: product_list.php:158
+msgid ""
+"Add Adsense ads to WordPress website pages, posts, custom posts, search "
+"results, categories, tags, and widgets."
+msgstr ""
+
+#: product_list.php:168
+msgid "Add Google Analytics code to WordPress website and track basic stats."
+msgstr ""
+
+#: product_list.php:178
+msgid "Protect WordPress website forms from spam entries with reCaptcha."
+msgstr ""
+
+#: product_list.php:188
+msgid "Add customized Google maps to WordPress posts, pages and widgets."
+msgstr ""
+
+#: product_list.php:198
+msgid ""
+"Generate and add XML sitemap to WordPress website. Help search engines index "
+"your blog."
+msgstr ""
+
+#: product_list.php:208
+msgid ""
+"Replace external WordPress website links with Google shortlinks and track "
+"click stats."
+msgstr ""
+
+#: product_list.php:215
+msgid ""
+"Protect WordPress website – allow and deny access for certain IP addresses, "
+"hostnames, etc."
+msgstr ""
+
+#: product_list.php:225
+msgid ""
+"Create your personal job board and listing WordPress website. Search jobs, "
+"submit CV/resumes, choose candidates."
+msgstr ""
+
+#: product_list.php:232
+msgid ""
+"Protect WordPress website against brute force attacks. Limit rate of login "
+"attempts."
+msgstr ""
+
+#: product_list.php:242
+msgid ""
+"Add LinkedIn Share and Follow buttons to WordPress posts, pages and widgets. "
+"5 plugins included – profile, insider, etc."
+msgstr ""
+
+#: product_list.php:252
+msgid ""
+"Translate WordPress website content to other languages manually. Create "
+"multilingual pages, posts, widgets, menus, etc."
+msgstr ""
+
+#: product_list.php:262
+msgid ""
+"Add customizable pagination to WordPress website. Split long content to "
+"multiple pages for better navigation."
+msgstr ""
+
+#: product_list.php:272
+msgid ""
+"Generate PDF files and print WordPress posts/pages. Customize document "
+"header/footer styles and appearance."
+msgstr ""
+
+#: product_list.php:282
+msgid ""
+"Add Pinterest Follow, Pin It buttons and profile widgets (Pin, Board, "
+"Profile) to WordPress posts, pages and widgets."
+msgstr ""
+
+#: product_list.php:292
+msgid ""
+"Create your personal portfolio WordPress website. Manage and showcase past "
+"projects to get more clients."
+msgstr ""
+
+#: product_list.php:302
+msgid "Export WordPress posts to CSV file format easily. Configure data order."
+msgstr ""
+
+#: product_list.php:312
+msgid ""
+"Add extra fields to default WordPress user profile. The easiest way to "
+"create and manage additional custom values."
+msgstr ""
+
+#: product_list.php:322
+msgid ""
+"Add and display HTML advertisement banner on WordPress website. Customize "
+"bar styles and appearance."
+msgstr ""
+
+#: product_list.php:332
+msgid ""
+"Add customizable quotes and tips blocks to WordPress posts, pages and "
+"widgets."
+msgstr ""
+
+#: product_list.php:339
+msgid ""
+"Add rating plugin to your WordPress website to receive feedback from your "
+"customers."
+msgstr ""
+
+#: product_list.php:349
+msgid ""
+"Create your personal real estate WordPress website. Sell, rent and buy "
+"properties. Add, search and browse listings easily."
+msgstr ""
+
+#: product_list.php:359
+msgid ""
+"Add related, featured, latest, and popular posts to your WordPress website. "
+"Connect your blog readers with a relevant content."
+msgstr ""
+
+#: product_list.php:366
+msgid ""
+"Send bulk email messages to WordPress users. Custom templates, advanced "
+"settings and detailed reports."
+msgstr ""
+
+#: product_list.php:376
+msgid ""
+"The best responsive slider plugin for your WordPress website. Create "
+"beautifully animated slides just in a few clicks."
+msgstr ""
+
+#: product_list.php:383
+msgid ""
+"Configure SMTP server to receive email messages from WordPress to Gmail, "
+"Yahoo, Hotmail and other services."
+msgstr ""
+
+#: product_list.php:390
+msgid ""
+"Add social media buttons and widgets to WordPress posts, pages and widgets. "
+"FB, Twitter, Pinterest, LinkedIn."
+msgstr ""
+
+#: product_list.php:400
+msgid ""
+"Add social media login, registration, and commenting to your WordPress "
+"website."
+msgstr ""
+
+#: product_list.php:407
+msgid ""
+"Add email newsletter sign up form to WordPress posts, pages and widgets. "
+"Collect data and subscribe your users."
+msgstr ""
+
+#: product_list.php:417
+msgid ""
+"Add testimonials and feedbacks from your customers to WordPress website "
+"posts, pages, and widgets."
+msgstr ""
+
+#: product_list.php:424
+msgid ""
+"Best timesheet plugin for WordPress. Track employee time, streamline "
+"attendance and generate reports."
+msgstr ""
+
+#: product_list.php:434
+msgid ""
+"Add Twitter Follow, Tweet, Hashtag, and Mention buttons to WordPress posts "
+"and pages."
+msgstr ""
+
+#: product_list.php:444
+msgid ""
+"Automatically check and update WordPress website core with all installed "
+"plugins and themes to the latest versions."
+msgstr ""
+
+#: product_list.php:454
+msgid ""
+"Powerful user role management plugin for WordPress website. Create, edit, "
+"copy, and delete user roles."
+msgstr ""
+
+#: product_list.php:464
+msgid ""
+"Display live count of online visitors who are currently browsing your "
+"WordPress website."
+msgstr ""
+
+#: product_list.php:474
+msgid ""
+"Backup and export Zendesk Help Center content automatically to your "
+"WordPress website database."
+msgstr ""
+
+#~ msgid "Installing Plugin"
+#~ msgstr "Installatie Plugin bezig"
+
+#~ msgid "Downloading install package from"
+#~ msgstr "Installatiepakket downloaden vanaf"
+
+#~ msgid ""
+#~ "Failed to download the zip archive. Please, upload the plugin manually"
+#~ msgstr ""
+#~ "Het ziparchief kon niet worden geladen. Gelieve de plugin handmatig te "
+#~ "uploaden"
+
+#~ msgid "Unpacking the package"
+#~ msgstr "Uitpakken van het pakket"
+
+#~ msgid "Failed to open the zip archive. Please, upload the plugin manually"
+#~ msgstr ""
+#~ "Kan het zip-bestand niet openen. Gelieve de plugin handmatig te uploaden"
+
+#~ msgid ""
+#~ "Your server does not support either ZipArchive or Phar. Please, upload "
+#~ "the plugin manually"
+#~ msgstr ""
+#~ "Uw server ondersteunt geen ZipArchive of Phar. Gelieve de plugin "
+#~ "handmatig te uploaden"
+
+#~ msgid "The plugin %s is successfully installed."
+#~ msgstr "De plugin %s is succesvol geïnstalleerd."
+
+#~ msgid "UploadDir is not writable. Please, upload the plugin manually"
+#~ msgstr ""
+#~ "UploadDir is kan niet worden weggeschreven. Gelieve de plugin handmatig "
+#~ "te uploaden"
+
+#~ msgid "Activate Plugin"
+#~ msgstr "Activateer Plugin"
+
+#~ msgid "Congratulations! Pro license is activated successfully."
+#~ msgstr "Hartelijk gefeliciteerd! De Pro licentie is succesvol geactiveerd."
+
+#~ msgid "You will be automatically redirected to the %s in %s seconds."
+#~ msgstr "U wordt automatisch doorgestuurd naar %s in %s seconden."
+
+#~ msgid "Settings page"
+#~ msgstr "Instellingen"
+
+#~ msgid "Please, enter your license key"
+#~ msgstr "Vul alstublieft uw licentiesleutel in"
+
+#~ msgid "You will be redirected automatically in 5 seconds."
+#~ msgstr "U wordt na 5 seconden automatisch doorverwezen."
+
+#~ msgid "Check premium options on the plugin settings page!"
+#~ msgstr "Controleer de premiumopties op de pagina met Plugin-instellingen!"
+
+#~ msgid "File %s edited successfully."
+#~ msgstr "Bestand %s is succesvol bewerkt"
+
+#~ msgid "Not enough permissions to create or update the file"
+#~ msgstr "Niet genoeg rechten om het bestand te maken of aan te passen"
+
+#~ msgid "Not enough permissions to create the file"
+#~ msgstr "Niet genoeg rechten om het bestand te maken"
+
+#~ msgid "Editing"
+#~ msgstr "Bewerken"
+
+#~ msgid "Congratulations! Pro Membership license is  activated successfully."
+#~ msgstr ""
+#~ "Hartelijk gefeliciteerd! Uw Pro Membership licentie is succesvol "
+#~ "geactiveerd."
+
+#~ msgid "Email with system info is sent to"
+#~ msgstr "E-mail met systeeminformatie wordt verzonden naar"
+
+#~ msgid "Browse Free WordPress Themes"
+#~ msgstr "Browse Gratis WordPress Themas"
+
+#~ msgid ""
+#~ "You can use one license of the Pro plugin for one domain only. Please "
+#~ "check and edit your license or domain if necessary using you personal "
+#~ "Client Area. We strongly recommend you to solve the problem within 24 "
+#~ "hours, otherwise the Pro plugin will be deactivated."
+#~ msgstr ""
+#~ "U kunt één licentie van de Pro-plugin gebruiken voor één domein. "
+#~ "Controleer en bewerk uw licentie of domein indien nodig op uw "
+#~ "persoonlijke klantenomgeving. We raden u aan om het probleem binnen 24 "
+#~ "uur op te lossen, anders wordt de Pro-plugin gedeactiveerd."
+
+#~ msgid "Insert"
+#~ msgstr "Invoegen"
+
+#~ msgid "Advertisement"
+#~ msgstr "Advertentie"
+
+#~ msgid "Content & Media"
+#~ msgstr "Inhoud & Media"
+
+#~ msgid "Management"
+#~ msgstr "Beheer"
+
+#~ msgid "Site Stats"
+#~ msgstr "Website statistieken"
+
+#~ msgid "Social"
+#~ msgstr "Sociaal"
+
+#~ msgid "Utilities"
+#~ msgstr "Voorzieningen"

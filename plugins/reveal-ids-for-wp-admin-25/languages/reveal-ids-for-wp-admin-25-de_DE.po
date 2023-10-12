@@ -1,0 +1,99 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Reveal IDs v1.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-11-28 20:44:11+0000\n"
+"Last-Translator: Oliver Schlöbe <webmaster@schloebe.de>\n"
+"Language-Team: Oliver Schlöbe <webmaster@schloebe.de>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: GERMANY\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: D:/schloebeweb/xampp/htdocs/wordpresssource/plugins/reveal-ids-for-wp-admin-25/trunk\n"
+"X-Textdomain-Support: yes"
+
+#: authorplugins.inc.php:32
+#@ default
+msgid "Visit plugin homepage"
+msgstr ""
+
+#: authorplugins.inc.php:35
+#@ default
+msgid "plugin"
+msgstr ""
+
+#: authorplugins.inc.php:35
+#@ default
+msgid "Version"
+msgstr ""
+
+#: authorplugins.inc.php:35
+#@ default
+msgid "Author"
+msgstr ""
+
+#: reveal-ids-for-wp-admin-25.php:221
+#@ default
+msgid "ID"
+msgstr "ID"
+
+#: reveal-ids-for-wp-admin-25.php:339
+#@ reveal-ids-for-wp-admin-25
+msgid "More of my WordPress plugins"
+msgstr "Weitere meiner WordPress Plugins"
+
+#: reveal-ids-for-wp-admin-25.php:344
+#@ reveal-ids-for-wp-admin-25
+msgid "You may also be interested in some of my other plugins:"
+msgstr "Es könnten Sie ebenfalls einige meiner weiteren Plugins interessieren:"
+
+#: reveal-ids-for-wp-admin-25.php:345
+#@ reveal-ids-for-wp-admin-25
+msgid "Show other plugins by this author inline &raquo;"
+msgstr "Weitere Plugins dieses Autors zeigen &raquo;"
+
+#: reveal-ids-for-wp-admin-25.php:366
+#@ reveal-ids-for-wp-admin-25
+msgid "Help"
+msgstr "Hilfe"
+
+#: reveal-ids-for-wp-admin-25.php:376
+#@ reveal-ids-for-wp-admin-25
+msgid "If you are new to using this plugin or cant understand what all these settings do, please read the documentation at <a href=\"http://www.schloebe.de/wordpress/simple-yearly-archive-plugin/\" target=\"_blank\">http://www.schloebe.de/wordpress/reveal-ids-for-wp-admin-25-plugin/</a>"
+msgstr "Falls Sie dieses Plugin zum ersten Mal benutzen und nicht wissen, was all diese Optionen machen, schauen Sie bitte in die Dokumentation auf <a href=\"http://www.schloebe.de/wordpress/reveal-ids-for-wp-admin-25-plugin/\" target=\"_blank\">http://www.schloebe.de/wordpress/reveal-ids-for-wp-admin-25-plugin/</a>"
+
+#: reveal-ids-for-wp-admin-25.php:221
+#@ reveal-ids-for-wp-admin-25
+msgid "Enhanced by Reveal IDs Plugin"
+msgstr "Erweitert durch das Reveal IDs-Plugin"
+
+#: reveal-ids-for-wp-admin-25.php:315
+#: reveal-ids-for-wp-admin-25.php:317
+#: reveal-ids-for-wp-admin-25.php:333
+#@ reveal-ids-for-wp-admin-25
+msgid "Reveal IDs"
+msgstr "Reveal IDs"
+
+#: reveal-ids-for-wp-admin-25.php:358
+#@ reveal-ids-for-wp-admin-25
+msgid "More plugins at: <a class=\"button rbutton\" href=\"http://www.schloebe.de/portfolio/\" target=\"_blank\">www.schloebe.de</a>"
+msgstr "Mehr Plugins auf: <a class=\"button rbutton\" href=\"http://www.schloebe.de/portfolio/\" target=\"_blank\">www.schloebe.de</a>"
+
+#: reveal-ids-for-wp-admin-25.php:371
+#@ reveal-ids-for-wp-admin-25
+msgid "All options to enable/disable the display of IDs have been removed in version 1.3.0! If you would like to hide the ID column on a specific panel, just remove it in the options panel."
+msgstr "Alle Optionen, um die ID-Anzeige zu de-/aktivieren, wurden in Version 1.3.0 entfernt! Wenn Sie die ID-Spalte ausblenden m&ouml;chten, tun Sie dies über das Options-Menü oben rechts auf jeder Seite."
+
+#: reveal-ids-for-wp-admin-25.php:411
+#, php-format
+#@ reveal-ids-for-wp-admin-25
+msgid "<strong>Reveal IDs</strong> 1.3.0 and above require at least WordPress 3.0! If you're still using a WP version prior to 3.0, please <a href='%s'>use Reveal IDs version 1.2.7</a>! Consider updating to the latest WP version for your own safety!"
+msgstr "<strong>Reveal IDs</strong> in der Version 1.3.0 und h&ouml;her benötigt mindestens WordPress 3.0! Wenn Sie WordPress älter als Version 3.0 nutzen, <a href='%s'>verwenden Sie bitte Reveal IDs in der Version 1.2.7!</a> Updaten Sie auf die aktuellste WP-Version zu Ihrer eigenen Sicherheit!"
+

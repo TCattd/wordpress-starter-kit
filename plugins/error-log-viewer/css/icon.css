@@ -1,0 +1,8 @@
+/* Error Log Viewer icon */
+#toplevel_page_rrrlgvwr .wp-menu-image {
+	font-family: 'bwsicons' !important;
+}
+#toplevel_page_rrrlgvwr .wp-menu-image:before {
+	content: "\e90c";
+	font-family: 'bwsicons' !important;
+}
