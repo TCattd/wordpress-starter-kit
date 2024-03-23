@@ -1,0 +1,549 @@
+# Copyright (C) 2020 DoLogin Security
+# This file is distributed under the same license as the DoLogin Security package.
+msgid ""
+msgstr ""
+"Project-Id-Version: DoLogin Security 2.9.3\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dologin\n"
+"POT-Creation-Date: 2020-09-22 15:03:53+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: src/admin.cls.php:67 src/admin.cls.php:74 src/gui.cls.php:136
+msgid "Dologin Security Phone"
+msgstr ""
+
+#: src/admin.cls.php:87
+msgid "Generate Login Link"
+msgstr ""
+
+#: src/admin.cls.php:102 tpl/entry.tpl.php:7
+msgid "Settings"
+msgstr ""
+
+#: src/admin.cls.php:142
+msgid "Options saved successfully!"
+msgstr ""
+
+#: src/auth.cls.php:391
+msgid "Cleared %d record(s) successfully!"
+msgstr ""
+
+#: src/cli.cls.php:32
+msgid "Expired"
+msgstr ""
+
+#: src/cli.cls.php:55
+msgid "No related user."
+msgstr ""
+
+#: src/cli.cls.php:77
+msgid "No ID to delete."
+msgstr ""
+
+#: src/f.cls.php:104
+msgid "Folder does not exist: %s"
+msgstr ""
+
+#: src/f.cls.php:111
+msgid "Can not create folder: %1$s. Error: %2$s"
+msgstr ""
+
+#: src/f.cls.php:117
+msgid "Folder is not writable: %s."
+msgstr ""
+
+#: src/f.cls.php:123 src/f.cls.php:127
+msgid "File %s is not writable."
+msgstr ""
+
+#: src/f.cls.php:134
+msgid "Failed to write to %s."
+msgstr ""
+
+#: src/gui.cls.php:116
+msgid "Dynamic Code"
+msgstr ""
+
+#: src/gui.cls.php:244
+msgid "OFF"
+msgstr ""
+
+#: src/gui.cls.php:245 src/lang.cls.php:60
+msgid "ON"
+msgstr ""
+
+#: src/lang.cls.php:32
+msgid "Please try after %ds."
+msgstr ""
+
+#: src/lang.cls.php:36
+msgid "No Dologin Security phone number set under your profile."
+msgstr ""
+
+#: src/lang.cls.php:40
+msgid "No phone number under this user profile."
+msgstr ""
+
+#: src/lang.cls.php:44
+msgid "Empty username/password."
+msgstr ""
+
+#: src/lang.cls.php:48
+msgid "Your IP is not in the whitelist."
+msgstr ""
+
+#: src/lang.cls.php:52
+msgid "Your IP is in the blacklist."
+msgstr ""
+
+#: src/lang.cls.php:56
+msgid "Too many failed login attempts. Please try later."
+msgstr ""
+
+#: src/lang.cls.php:64
+msgid "%s attempt(s) remaining."
+msgstr ""
+
+#: src/lang.cls.php:68
+msgid "Dynamic code is required."
+msgstr ""
+
+#: src/lang.cls.php:72
+msgid "Dynamic code is not correct."
+msgstr ""
+
+#: src/lang.cls.php:76
+msgid "Please check the reCAPTCHA box."
+msgstr ""
+
+#: src/lang.cls.php:81
+msgid "The secret parameter is missing."
+msgstr ""
+
+#: src/lang.cls.php:85
+msgid "The secret parameter is invalid or malformed."
+msgstr ""
+
+#: src/lang.cls.php:89
+msgid "The response parameter is missing."
+msgstr ""
+
+#: src/lang.cls.php:93
+msgid "The response parameter is invalid or malformed."
+msgstr ""
+
+#: src/lang.cls.php:97
+msgid "The request is invalid or malformed."
+msgstr ""
+
+#: src/lang.cls.php:101
+msgid ""
+"The response is no longer valid: either is too old or has been used "
+"previously."
+msgstr ""
+
+#. #-#-#-#-#  dologin.pot (DoLogin Security 2.9.3)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: src/lang.cls.php:109 tpl/entry.tpl.php:15
+msgid "DoLogin Security"
+msgstr ""
+
+#: src/sms.cls.php:178
+msgid "Dynamic Code:%1$s.(Tag:%2$s) From: "
+msgstr ""
+
+#: src/util.cls.php:199
+msgid "just now"
+msgstr ""
+
+#: src/util.cls.php:199
+msgid "right now"
+msgstr ""
+
+#: src/util.cls.php:201
+msgid " %s ago"
+msgstr ""
+
+#: src/util.cls.php:229
+msgid "&laquo;"
+msgstr ""
+
+#: src/util.cls.php:230
+msgid "&raquo;"
+msgstr ""
+
+#: tpl/entry.tpl.php:8 tpl/pswdless.tpl.php:8
+msgid "Passwordless Login"
+msgstr ""
+
+#: tpl/entry.tpl.php:9 tpl/log.tpl.php:14
+msgid "Login Attempts Log"
+msgstr ""
+
+#: tpl/entry.tpl.php:49
+msgid "Rate Us!"
+msgstr ""
+
+#: tpl/log.tpl.php:18
+msgid "Clear records older than one month"
+msgstr ""
+
+#: tpl/log.tpl.php:22
+msgid "Total"
+msgstr ""
+
+#: tpl/log.tpl.php:30 tpl/pswdless.tpl.php:20
+msgid "Date"
+msgstr ""
+
+#: tpl/log.tpl.php:31
+msgid "IP"
+msgstr ""
+
+#: tpl/log.tpl.php:32
+msgid "GeoLocation"
+msgstr ""
+
+#: tpl/log.tpl.php:33
+msgid "Login As"
+msgstr ""
+
+#: tpl/log.tpl.php:34
+msgid "Gateway"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:12
+msgid "Generate Links in Users List"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:21
+msgid "User"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:22
+msgid "Link"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:23
+msgid "Created By"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:24
+msgid "Count"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:25
+msgid "Last Used At"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:26
+msgid "Expired At"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:27
+msgid "One Time Usage"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:28
+msgid "Status"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:37
+msgid "Click to copy"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:44
+msgid "+7 Days"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:54
+msgid "Active"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:56
+msgid "Disabled"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:67
+msgid "Here you can generate login links and manage them."
+msgstr ""
+
+#: tpl/pswdless.tpl.php:70
+msgid ""
+"Call the function %s to generate one passwordless login link for the current "
+"user."
+msgstr ""
+
+#: tpl/pswdless.tpl.php:72
+msgid ""
+"Call the function %1$s to generate a passwordless login link for the user "
+"which ID is %2$s."
+msgstr ""
+
+#: tpl/pswdless.tpl.php:74
+msgid "The generated one-time used link will be expired after 7 days."
+msgstr ""
+
+#: tpl/pswdless.tpl.php:76
+msgid "Define const %s to avoid redirecting to setting page after installtion."
+msgstr ""
+
+#: tpl/pswdless.tpl.php:83
+msgid "List all passwordless links"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:85
+msgid "Generate a passwordless link for one username (for the login name %s)"
+msgstr ""
+
+#: tpl/pswdless.tpl.php:87
+msgid "Delete a passwordless link w/ the ID in list (for the record w/ ID %s)"
+msgstr ""
+
+#: tpl/pswdless_cfm.tpl.php:10
+msgid "Notice"
+msgstr ""
+
+#: tpl/pswdless_cfm.tpl.php:12
+msgid "You will login as the following user"
+msgstr ""
+
+#: tpl/pswdless_cfm.tpl.php:18
+msgid "Note: this is a one time usage link."
+msgstr ""
+
+#: tpl/pswdless_cfm.tpl.php:24
+msgid "Click here to login"
+msgstr ""
+
+#: tpl/setting.tpl.php:13
+msgid "Limit Login Attempt Settings"
+msgstr ""
+
+#: tpl/setting.tpl.php:17
+msgid "Lockout"
+msgstr ""
+
+#: tpl/setting.tpl.php:19
+msgid "Allowed retries"
+msgstr ""
+
+#: tpl/setting.tpl.php:20
+msgid "minutes lockout"
+msgstr ""
+
+#: tpl/setting.tpl.php:22
+msgid ""
+"If hit %1$s maximum retries in %2$s minutes, the login attempt from that IP "
+"will be temporarily disabled."
+msgstr ""
+
+#: tpl/setting.tpl.php:28
+msgid "Short Code Auth Settings"
+msgstr ""
+
+#: tpl/setting.tpl.php:32
+msgid "Two Step SMS Auth"
+msgstr ""
+
+#: tpl/setting.tpl.php:36
+msgid "Verify free text code for each login attempt."
+msgstr ""
+
+#: tpl/setting.tpl.php:37
+msgid "Users need to setup the Dologin Phone number in their profile."
+msgstr ""
+
+#: tpl/setting.tpl.php:38
+msgid "The phone number need to specify the coutry calling codes."
+msgstr ""
+
+#: tpl/setting.tpl.php:39
+msgid "Text message is free sent by API from %s."
+msgstr ""
+
+#: tpl/setting.tpl.php:45
+msgid "Force SMS Auth Validation"
+msgstr ""
+
+#: tpl/setting.tpl.php:49
+msgid ""
+"If enabled this, any user without phone set in profile will not be able to "
+"login."
+msgstr ""
+
+#: tpl/setting.tpl.php:50
+msgid "Click here to set your Dologin Security phone number"
+msgstr ""
+
+#: tpl/setting.tpl.php:52
+msgid ""
+"You need to setup your Dologin Phone number before enabling this setting to "
+"avoid yourself being blocked from next time login."
+msgstr ""
+
+#: tpl/setting.tpl.php:56
+msgid "Test SMS message"
+msgstr ""
+
+#: tpl/setting.tpl.php:58
+msgid "This will send a test text message to your phone number."
+msgstr ""
+
+#: tpl/setting.tpl.php:65
+msgid "reCAPTCHA Settings"
+msgstr ""
+
+#: tpl/setting.tpl.php:69
+msgid "Google reCAPTCHA"
+msgstr ""
+
+#: tpl/setting.tpl.php:73 tpl/setting.tpl.php:83 tpl/setting.tpl.php:94
+msgid "This will enable reCAPTCHA on %s page."
+msgstr ""
+
+#: tpl/setting.tpl.php:73
+msgid "Login"
+msgstr ""
+
+#: tpl/setting.tpl.php:79
+msgid "Google reCAPTCHA on Register Page"
+msgstr ""
+
+#: tpl/setting.tpl.php:83
+msgid "Register"
+msgstr ""
+
+#: tpl/setting.tpl.php:90
+msgid "Google reCAPTCHA on Lost Password Page"
+msgstr ""
+
+#: tpl/setting.tpl.php:94
+msgid "Lost Password"
+msgstr ""
+
+#: tpl/setting.tpl.php:100
+msgid "Google reCAPTCHA Keys"
+msgstr ""
+
+#: tpl/setting.tpl.php:105
+msgid "Site Key"
+msgstr ""
+
+#: tpl/setting.tpl.php:109
+msgid "Secret Key"
+msgstr ""
+
+#: tpl/setting.tpl.php:123
+msgid "<a %s>Click here</a> to generate keys from Google reCAPTCHA."
+msgstr ""
+
+#: tpl/setting.tpl.php:124
+msgid "Note: v2 supported only."
+msgstr ""
+
+#: tpl/setting.tpl.php:130
+msgid "General Settings"
+msgstr ""
+
+#: tpl/setting.tpl.php:134 tpl/setting.tpl.php:172
+msgid "Whitelist"
+msgstr ""
+
+#: tpl/setting.tpl.php:141
+msgid "Format"
+msgstr ""
+
+#: tpl/setting.tpl.php:142
+msgid "Both prefix and value are case insensitive."
+msgstr ""
+
+#: tpl/setting.tpl.php:143
+msgid "Spaces around comma/colon are allowed."
+msgstr ""
+
+#: tpl/setting.tpl.php:144
+msgid "One rule set per line."
+msgstr ""
+
+#: tpl/setting.tpl.php:147
+msgid "Prefix list"
+msgstr ""
+
+#: tpl/setting.tpl.php:149
+msgid "IP prefix with colon is optional. IP value support wildcard (*)."
+msgstr ""
+
+#: tpl/setting.tpl.php:151
+msgid "Use %s to append comments in the end of each line."
+msgstr ""
+
+#: tpl/setting.tpl.php:152
+msgid "Use %s to exclude one value."
+msgstr ""
+
+#: tpl/setting.tpl.php:156
+msgid "This will send a request to %s to get your public Geolocation info."
+msgstr ""
+
+#: tpl/setting.tpl.php:156
+msgid "Check My Geolocation Data"
+msgstr ""
+
+#: tpl/setting.tpl.php:165
+msgid "Blacklist"
+msgstr ""
+
+#: tpl/setting.tpl.php:172
+msgid "Same format as %s"
+msgstr ""
+
+#: tpl/setting.tpl.php:174 tpl/setting.tpl.php:175 tpl/setting.tpl.php:176
+#: tpl/setting.tpl.php:177 tpl/setting.tpl.php:178 tpl/setting.tpl.php:179
+msgid "Example"
+msgstr ""
+
+#: tpl/setting.tpl.php:175
+msgid "Dropped optional prefix"
+msgstr ""
+
+#: tpl/setting.tpl.php:179
+msgid "Match all visitors from US except the IP 1.2.3.4"
+msgstr ""
+
+#: tpl/setting.tpl.php:185
+msgid "GDPR Compliance"
+msgstr ""
+
+#: tpl/setting.tpl.php:189
+msgid ""
+"With this feature turned on, all logged IPs get obfuscated (md5-hashed)."
+msgstr ""
+
+#: tpl/setting.tpl.php:195
+msgid "Auto Upgrade"
+msgstr ""
+
+#: tpl/setting.tpl.php:199
+msgid "Enable this option to get the latest features at the first moment."
+msgstr ""
+
+#: tpl/setting.tpl.php:208 tpl/setting.tpl.php:209
+msgid "Save Changes"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid ""
+"Passwordless login. Free text SMS code for 2nd step verification login. "
+"GeoLocation (Continent/Country/City) or IP range to limit login attempts. "
+"Support Whitelist and Blacklist. Support WooCommerce. Login attempt limit. "
+"CLI supported for generating passwordless login."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WPDO"
+msgstr ""

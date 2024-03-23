@@ -7,7 +7,7 @@
 
 //enqueue js in footer, async
 add_action( 'wp_enqueue_scripts', function() {
-	wp_enqueue_script( 'glightbox',  "https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js#asyncload", array(), false, true );
+	wp_enqueue_script( 'glightbox',  "https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js", array(), false,  array('strategy' => 'async', 'in_footer' => true)  );
 } ,100);
 
 //add inline js in footer, defer execution
@@ -19,7 +19,7 @@ add_action( 'wp_footer', function(){
 		window.onload = function() { //after all page els are loaded 
 			
 			//find elements that need to be 'lightboxed'
-			var matches = document.querySelectorAll('#container-content-single a:not(.nolightbox) img, #container-content-page a:not(.nolightbox) img, .autolightbox a:not(.nolightbox) img');
+			var matches = document.querySelectorAll('#container-content-single a:not(.nolightbox) img:not(.nolightbox), #container-content-page a:not(.nolightbox) img:not(.nolightbox), .autolightbox a:not(.nolightbox) img:not(.nolightbox)');
 
 			//iterate and add the class
 			for (i=0; i<matches.length; i++) {

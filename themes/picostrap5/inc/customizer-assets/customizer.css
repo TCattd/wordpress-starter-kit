@@ -55,6 +55,8 @@ span.lpa svg  {
 	margin-right: 20px;
 }
 
+
+/*
 #cs-compiling-window {
   min-width: 300px;
   max-width: 600px;
@@ -65,12 +67,9 @@ span.lpa svg  {
   padding: 10px;
   text-align: left;
   background: #212337;
-  border: 3px solid #8e8e8e;
-  /* box-shadow: 0 0 0 2038px rgba(0, 0, 0, .7); */
-  height: 100%;
-  /* width: 50vw; */
-  overflow: visible;
-  /* margin: auto; */
+  border: 3px solid #8e8e8e; 
+  height: 100%; 
+  overflow: visible; 
   top: 0px;
   font-family: courier;
   bottom: 0;
@@ -100,6 +99,7 @@ span.lpa svg  {
 	cursor: pointer;
 	
 }
+*/
 
 #cs-recompiling-target {color: #b4b7b6;}
 #cs-recompiling-target a {word-break: break-all;}
@@ -124,7 +124,7 @@ div#compile-error:hover{
 }
 
 /*  SPINNING LOADER */
-
+/*
 .cs-chase {
   width: 40px;
   height: 40px;
@@ -180,24 +180,24 @@ div#compile-error:hover{
     transform: scale(1.0); 
   } 
 }
-
+*/
 /* FONT PICKER MODAL */
 body .font-picker .fp-modal {
-    display: none;
-    flex-flow: column;
-    position: fixed;
-    height: 100vh;
-    max-height: 100%; 
-    width: 400px;
-    max-width: 100%;
-    background: #fff;
-    z-index: 999999999;
-    box-shadow: 0 4px 5px rgba(0,0,0,.15);
-    border-radius: 4px;
-    left: 201px;
-    transform: translateX(-50%);
-    top: 0px;
-    bottom: 15px;
+  display: none;
+  flex-flow: column;
+  position: fixed;
+  height: 100vh;
+  max-height: 100%; 
+  width: 400px;
+  max-width: 100%;
+  background: #fff;
+  z-index: 999999999;
+  box-shadow: 0 4px 5px rgba(0,0,0,.15);
+  border-radius: 4px;
+  left: 201px;
+  transform: translateX(-50%);
+  top: 0px;
+  bottom: 15px;
 }
 /* hide italic font selection */
 body span.fp-pill.italic { display: none} 
@@ -251,12 +251,12 @@ body span.fp-pill.italic { display: none}
 #customize-control-headings_font_object {display: none;}
 
 /* VIDEO TUTORIAL LINKS  */
-
 .video-tutorial-link {
-  display:block;
-  text-align:right;
-  font-size: 12px;
-  margin:0 10px 10px;
+    display: block;
+    font-size: 11px;
+    position: absolute;
+    top: 9px;
+    right: 11px;
 }
 
 .video-tutorial-link:hover {
@@ -266,3 +266,34 @@ body span.fp-pill.italic { display: none}
 .video-tutorial-link:focus {
   box-shadow: none;
 }
+
+/* EXTRA CUSTOMIZER ACTIONS   */
+
+ .pico-extra-customizer-actions-wrap  {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 11px;
+ }
+
+/* TOOLBAR TO RESET, DOWNLOAD, UPLOAD */
+#bs-tools {
+  margin:10px 0 20px 5px;
+  background:#fff;
+  padding:10px 5px;
+  display:block
+}
+
+#bs-tools span {
+  display:block;margin-bottom:2px;
+}
+
+#bs-tools a {
+  display:inline-block; margin:0 5px 0 0;
+}
+
+
+/* DISABLED INPUTS */
+
+#_customize-input-picostrap_header_navbar_disabled,
+#_customize-input-picostrap_footer_disabled
+    {display: none;}

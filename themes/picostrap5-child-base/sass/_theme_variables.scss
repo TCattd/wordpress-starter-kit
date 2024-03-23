@@ -1,7 +1,8 @@
 // Use this file to overwrite the basic Bootstrap variables and add your own variables
 // To overwrite a Bootstrap variable you don´t have to touch the Bootstrap folder.
 // Just copy a variable from /sass/bootstrap5/_variables.scss, paste it here and edit the value.
-// Remember that to customize base color values and main variables, you can just launch the WordPress Customizer.
+// Remember that to customize base color values and main variables, you can just launch the WordPress Customizer
+// Editing this file in the CHILD THEME.
 
 // SOME EXPERIMENTS for your quick testing:
 //$primary:teal;
@@ -9,38 +10,19 @@
 
 
 
-// LET'S CUSTOMIZE SOME BOOTSTRAP VARIABLES 
-
-//CUSTOM SPACING UP TO 8
-$spacer: 1rem !default;
-$spacers: (
-  0: 0,
-  1: $spacer * .25,
-  2: $spacer * .5,
-  3: $spacer,
-  4: $spacer * 1.5,
-  5: $spacer * 3,
-  6: ($spacer * 4.5),  //added
-  7: ($spacer * 6), //added
-  8: ($spacer * 7.5), //added
-
-) !default;
-
-//ENABLE NEGATIVE MARGIN UTILITY CLASSES
-$enable-negative-margins: true;
-
-//CUSTOMIZE UTILITIES VIA UTILITIES API
-$utilities: (
-  "min-viewport-height": ( //ADD min-vh CLASSES
-    property: min-height,
-    class: min-vh,
-    responsive: true,
-    values: ( 
-      25: 25vh,
-      50: 50vh,
-      75: 75vh,
-      100: 100vh,
-    )
-  ),
-   
+//example from huemint
+/*
+$theme-colors: (
+    "light":      #dfddda,
+    "dark":       #190b25,
+    "primary":    #5151cf,
+    "secondary":  #7059ca,
+    "info":       #f34d94,
+    "accent1":    #2b415d,
+    "accent2":    #5f6799,
+    "accent3":    #a9aeb7,
+    "success":    #1fa463,
+    "warning":    #e1cc1f,
+    "danger":     #ef240f,
 );
+*/

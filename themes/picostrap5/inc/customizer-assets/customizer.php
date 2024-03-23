@@ -4,6 +4,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // ADD CUSTOM JS & CSS TO CUSTOMIZER //////////////////////////////////////////////////////////////////////////////////////////////////////////
+add_action( 'customize_controls_enqueue_scripts', 'picostrap_customize_enqueue' );
 function picostrap_customize_enqueue() {
 	wp_enqueue_script( 'custom-customize', get_template_directory_uri() . '/inc/customizer-assets/customizer.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
 	 
@@ -12,22 +13,28 @@ function picostrap_customize_enqueue() {
 		'picostrap_ajax_obj',
 		array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
-			'nonce'    => wp_create_nonce( 'picostrap_livereload' ),
+			'nonce'    => wp_create_nonce( 'picostrap_save_css_bundle' ),
 		)
 	);
 	
-	
-	
-	wp_enqueue_script( 'custom-customize-lib', get_template_directory_uri() . '/inc/customizer-assets/customizer-vars.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
+	wp_enqueue_script( 'custom-customize-lib', get_template_directory_uri() . '/inc/customizer-assets/customizer-constants.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
 	wp_enqueue_style( 'custom-customize', get_template_directory_uri() . '/inc/customizer-assets/customizer.css', array(), rand(0,1000)   );
 	
+	//palette generator
+	wp_enqueue_script( 'palette-generator', get_template_directory_uri() . '/inc/customizer-assets/palette-generator.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
+	wp_enqueue_style( 'palette-generator', get_template_directory_uri() . '/inc/customizer-assets/palette-generator.css', array(), rand(0,1000)   );
+	
+	//style guide
+	wp_enqueue_script( 'style-guide', get_template_directory_uri() . '/inc/customizer-assets/style-guide.js', array( 'jquery' ), rand(0,1000), true );
+ 
 	//fontpicker
 	wp_enqueue_script( 'fontpicker', get_template_directory_uri() . '/inc/customizer-assets/fontpicker/jquery.fontpicker.min.js', array( 'jquery', 'customize-controls' ), rand(0,1000), true );
 	wp_enqueue_style( 'fontpicker', get_template_directory_uri() . '/inc/customizer-assets/fontpicker/jquery.fontpicker.min.css', array(), rand(0,1000) );
 }
-add_action( 'customize_controls_enqueue_scripts', 'picostrap_customize_enqueue' );
+
 
 //one more file for live preview
+/*
 add_action( 'customize_preview_init', function(){
 	wp_enqueue_script( 
 		  'picostrap-themecustomizer',			//Give the script an ID
@@ -37,7 +44,7 @@ add_action( 'customize_preview_init', function(){
 		  true						//Put script in footer?
 	);
 });
-
+*/
 
 //ADD BODY CLASSES  //////////////////////////////////////////////////////////////////////////////////////////////////////////
 add_filter( 'body_class', 'picostrap_config_body_classes' );
@@ -48,6 +55,8 @@ function picostrap_config_body_classes( $classes ) {
 	
 	$classes[]="picostrap_header_navbar_position_".get_theme_mod('picostrap_header_navbar_position');
 	$classes[]="picostrap_header_navbar_color_choice_".get_theme_mod('picostrap_header_navbar_color_choice');
+
+    if (get_theme_mod("enable_topbar")) $classes[]="picostrap_topbar_enabled";
 	
 	return $classes;
 }
@@ -63,14 +72,18 @@ function picostrap_filter_head() {
 ///MAIN SETTING: DECLARE ALL SCSS VARIABLES TO HANDLE IN THE CUSTOMIZER
 if(!function_exists("picostrap_get_scss_variables_array")):
 	function picostrap_get_scss_variables_array(){
+		
 		$live_preview_message = '
 		<span class="lpa">
 			<svg viewBox="0 0 24 24"> <path fill="currentColor" d="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" /></svg>
 			Live Preview
 		</span>';
+		
+		$live_preview_message=''; //disable it
+
 		return array(
 			"colors" => array( //  $variable_name => $variable_props
-				'$body-bg' => array('type' => 'color', 'comment' => $live_preview_message),
+				'$body-bg' => array('type' => 'color', 'newgroup' => 'Base Colors', 'comment' => $live_preview_message),
 				'$body-color' => array('type' => 'color', 'comment' => $live_preview_message),
 				'$link-color' => array('type' => 'color', 'comment' => $live_preview_message),
 				//'$link-decoration' => array('type' => 'text'),
@@ -557,7 +570,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 
 				$wp_customize->add_setting($variable_slug, array(
 					"default" => $default,
-					"transport" => (in_array($variable_slug, array('SCSSvar_font-family-base','SCSSvar_headings-font-family')) )  ? "refresh" : "postMessage",
+					"transport" => (0 && in_array($variable_slug, array('SCSSvar_font-family-base','SCSSvar_headings-font-family')) )  ? "refresh" : "postMessage",
 					//"default" => "1rem",
 					//'sanitize_callback' => 'picostrap_sanitize_rem'
 				));
@@ -616,246 +629,312 @@ function picostrap_theme_customize_register_extras($wp_customize) {
     ));
 	
     //   NAVBAR SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
-	$wp_customize->add_section("nav", array(
-        "title" => __("Main Navigation Bar", 'picostrap5'),
-        "priority" => 60,
-    ));
-	
-	// HEADER NAVBAR EXPAND ON BREAKPOINT
-	$wp_customize->add_setting("picostrap_header_navbar_expand", array(
-        "default" => "navbar-expand-md",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_header_navbar_expand",
-        array(
-            'label' => __('Navbar Expansion', 'picostrap5'),
-            'section' => 'nav',
-            'type'     => 'radio',
-			'description' => __('Navbar is Collapsed on mobile, and expands to a full blown menubar on chosen breakpoint', 'picostrap5'),
-			'choices'  => array(
-				'navbar-expand-none'  => 'Never expand, keep always collapsed', 
-				'navbar-expand-sm'  => 'Expand on SM and upper',
-				'navbar-expand-md'  => 'Expand on MD and upper',
-				'navbar-expand-lg'  => 'Expand on LG and upper',
-				'navbar-expand-xl'  => 'Expand on XL and upper',
-				'navbar-expand-xxl'  => 'Expand on XXL and upper',
-				)
-        )
-    ));
+	if (function_exists('lc_custom_header')) {
+        $wp_customize->add_section("nav", array(
+            "title" => __("Main Navigation Bar [Disabled]", 'picostrap5'),
+            "priority" => 60,
+        ));
 
-	// HEADER NAVBAR POSITION
-	$wp_customize->add_setting("picostrap_header_navbar_position", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_header_navbar_position",
-        array(
-            'label' => __('Navbar Position', 'picostrap5'),
-            'section' => 'nav',
-            'type'     => 'radio',
-			'choices'  => array(
-				''  => 'Standard Static Top',
-				'fixed-top' => 'Fixed on Top',
-				'fixed-bottom'  => 'Fixed on Bottom',
-				'd-none'  => 'No Navbar', 
-				)
-        )
-    ));
+        // Just a message
+        $wp_customize->add_setting("picostrap_header_navbar_disabled", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_header_navbar_disabled",
+            array(
+                'label' => __('You have enabled the LiveCanvas option to handle header, so these options are disabled.', 'picostrap5'),
+                'section' => 'nav',
+            )
+        ));
 
-	//DETECT PAGE SCROLL
-	$wp_customize->add_setting("enable_detect_page_scroll", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "enable_detect_page_scroll",
-        array(
-            "label" => __("Enable Page Scrolling Detection", 'picostrap5'),
-			"description" => __("Publish and exit the Customizer to see the effect. Adds a scroll-position-at-top / scroll-position-not-at-top class to the BODY element according to scroll position. Customize via CSS. Use with Navbar Position set to Fixed for best results. <!--  <a target='_blank' href='#'>Tutorial Coming Soon</a> --> ", 'picostrap5'),
-            "section" => "nav", 
-            'type'     => 'checkbox',
-			)
-	));
+    } else {
+        $wp_customize->add_section("nav", array(
+            "title" => __("Main Navigation Bar", 'picostrap5'),
+            "priority" => 60,
+        ));
+        
+        // HEADER NAVBAR EXPAND ON BREAKPOINT
+        $wp_customize->add_setting("picostrap_header_navbar_expand", array(
+            "default" => "navbar-expand-md",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_header_navbar_expand",
+            array(
+                'label' => __('Navbar Expansion', 'picostrap5'),
+                'section' => 'nav',
+                'type'     => 'radio',
+                'description' => __('Navbar is Collapsed on mobile, and expands to a full blown menubar on chosen breakpoint', 'picostrap5'),
+                'choices'  => array(
+                    'navbar-expand-none'  => 'Never expand, keep always collapsed', 
+                    'navbar-expand-sm'  => 'Expand on SM and upper',
+                    'navbar-expand-md'  => 'Expand on MD and upper',
+                    'navbar-expand-lg'  => 'Expand on LG and upper',
+                    'navbar-expand-xl'  => 'Expand on XL and upper',
+                    'navbar-expand-xxl'  => 'Expand on XXL and upper',
+                    )
+            )
+        ));
 
+        // HEADER NAVBAR POSITION
+        $wp_customize->add_setting("picostrap_header_navbar_position", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_header_navbar_position",
+            array(
+                'label' => __('Navbar Position', 'picostrap5'),
+                'section' => 'nav',
+                'type'     => 'radio',
+                'choices'  => array(
+                    ''  => 'Standard Static Top',
+                    'fixed-top' => 'Fixed on Top',
+                    'fixed-bottom'  => 'Fixed on Bottom',
+                    'd-none'  => 'No Navbar', 
+                    )
+            )
+        ));
 
-	//HEADERNAVBAR COLOR CHOICE
-	$wp_customize->add_setting("picostrap_header_navbar_color_choice", array(
-        'default' => 'bg-dark',
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_header_navbar_color_choice",
-        array(
-            'label' => __('Navbar Background Color', 'picostrap5'),
-            'section' => 'nav',
-            'type'     => 'radio',
-			'choices'  => array(
-				'bg-primary'	=> 'Primary',	
-				'bg-secondary'	=> 'Secondary',	
-				'bg-success' 	=> 'Success', 	
-				'bg-info' 		=> 'Info', 		
-				'bg-warning' 	=> 'Warning', 	
-				'bg-danger' 	=> 'Danger', 	
-				'bg-light' 	=> 'Light', 	
-				'bg-dark' 		=> 'Dark', 		
-				'bg-transparent' 		=> 'Transparent' 
-				)
-        )
-    ));
-	
-	//HEADERNAVBAR COLOR SCHEME
-	$wp_customize->add_setting("picostrap_header_navbar_color_scheme", array(
-        'default' => 'navbar-dark',
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_header_navbar_color_scheme",
-        array(
-            'label' => __('Color Scheme (Menubar links)', 'picostrap5'),
-            'section' => 'nav',
-			'type'     => 'radio',
-			'choices'  => array(
-				''  => 'Default',
-				'navbar-light' => 'Light (Dark links)',
-				'navbar-dark' => 'Dark (Light links)', 
-				)
-        )
-    ));
-	
-	//SEARCH FORM
-	$wp_customize->add_setting("enable_search_form", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "enable_search_form",
-        array(
-            "label" => __("Enable Search Form", 'picostrap5'),
-            "section" => "nav", 
-            'type'     => 'checkbox',
-			)
-	));
+        //DETECT PAGE SCROLL
+        $wp_customize->add_setting("enable_detect_page_scroll", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "enable_detect_page_scroll",
+            array(
+                "label" => __("Enable Page Scrolling Detection", 'picostrap5'),
+                "description" => __("Publish and exit the Customizer to see the effect. Adds a scroll-position-at-top / scroll-position-not-at-top class to the BODY element according to scroll position. Customize via CSS. Use with Navbar Position set to Fixed for best results. <!--  <a target='_blank' href='#'>Tutorial Coming Soon</a> --> ", 'picostrap5'),
+                "section" => "nav", 
+                'type'     => 'checkbox',
+                )
+        ));
 
 
-	//  TOPBAR SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
-	$wp_customize->add_section("topbar", array(
-        "title" => __("Optional Topbar", 'picostrap5'),
-        "priority" => 60,
-    ));
-	
-	//ENABLE TOPBAR
-	$wp_customize->add_setting("enable_topbar", array(
-        "default" => "",
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "enable_topbar",
-        array(
-            "label" => __("Enable Topbar", 'picostrap5'),
-			"description" => __("Requires Navbar position set to 'Standard static top'", 'picostrap5'),
-            "section" => "topbar", 
-            'type'     => 'checkbox',
-			)
-    ));
-	
-	//TOPBAR TEXT
-	$wp_customize->add_setting("topbar_content", array(
-        "default" => "",
-        "transport" => "postMessage",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "topbar_content",
-        array(
-            "label" => __("Topbar Text / HTML", 'picostrap5'),
-            "section" => "topbar",
-            'type'     => 'textarea',
-        )
-    ));
-	
-	//TOPBAR BG COLOR CHOICE
-	$wp_customize->add_setting("topbar_bg_color_choice", array(
-        'default' => 'bg-light',
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "topbar_bg_color_choice",
-        array(
-            'label' => __('Topbar Background Color', 'picostrap5'),
-            'section' => 'topbar',
-            'type'     => 'radio',
-			'choices'  => array(
-				'bg-primary'	=> 'Primary',	
-				'bg-secondary'	=> 'Secondary',	
-				'bg-success' 	=> 'Success', 	
-				'bg-info' 		=> 'Info', 		
-				'bg-warning' 	=> 'Warning', 	
-				'bg-danger' 	=> 'Danger', 	
-				'bg-light' 	=> 'Light', 	
-				'bg-dark' 		=> 'Dark', 		
-				'bg-transparent' 		=> 'Transparent'
-				)
-        )
-    ));
-	
-	//TOPBAR TEXT COLOR CHOICE
-	$wp_customize->add_setting("topbar_text_color_choice", array(
-        'default' => 'text-dark',
-        "transport" => "refresh",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "topbar_text_color_choice",
-        array(
-            'label' => __('Topbar Text Color', 'picostrap5'),
-            'section' => 'topbar',
-            'type'     => 'radio',
-			'choices'  => array(
-				'text-primary'	=> 'Primary',	
-				'text-secondary'	=> 'Secondary',	
-				'text-success' 	=> 'Success', 	
-				'text-info' 		=> 'Info', 		
-				'text-warning' 	=> 'Warning', 	
-				'text-danger' 	=> 'Danger', 	
-				'text-light' 	=> 'Light', 	
-				'text-dark' 		=> 'Dark', 		
-				)
-        )
-    ));
-	
+        //HEADERNAVBAR COLOR CHOICE
+        $wp_customize->add_setting("picostrap_header_navbar_color_choice", array(
+            'default' => 'bg-dark',
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_header_navbar_color_choice",
+            array(
+                'label' => __('Navbar Background Color', 'picostrap5'),
+                'section' => 'nav',
+                'type'     => 'select',
+                'choices'  => array(
+                    'bg-primary'	=> 'Primary',	
+                    'bg-primary-subtle'	=> 'Primary Subtle',
+                    'bg-secondary'	=> 'Secondary',	
+                    'bg-secondary-subtle'	=> 'Secondary Subtle',	
+                    'bg-success' 	=> 'Success', 	
+                    'bg-success-subtle' 	=> 'Success Subtle', 	
+                    'bg-info' 		=> 'Info', 	
+                    'bg-info-subtle' 		=> 'Info Subtle', 		
+                    'bg-warning' 	=> 'Warning', 	
+                    'bg-warning-subtle' 	=> 'Warning Subtle', 
+                    'bg-danger' 	=> 'Danger', 
+                    'bg-danger-subtle' 	=> 'Danger Subtle', 	
+                    'bg-light' 	=> 'Light', 
+                    'bg-light-subtle' 	=> 'Light Subtle', 	
+                    'bg-dark' 		=> 'Dark',
+                    'bg-dark-subtle' 		=> 'Dark Subtle', 		
+                    'bg-transparent' 		=> 'Transparent' 
+                    )
+            )
+        ));
+        
+        //HEADERNAVBAR COLOR SCHEME
+        $wp_customize->add_setting("picostrap_header_navbar_color_scheme_attr", array(
+            'default' => 'dark',
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_header_navbar_color_scheme_attr",
+            array(
+                'label' => __('Color Scheme (Menubar links)', 'picostrap5'),
+                'section' => 'nav',
+                'type'     => 'radio',
+                'choices'  => array(
+                    '' => 'None (Body color links)',
+                    'light' => 'Light (Dark links)',
+                    'dark' => 'Dark (Light links)', 
+                )
+            )
+        ));
+        
+        //SEARCH FORM
+        $wp_customize->add_setting("enable_search_form", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "enable_search_form",
+            array(
+                "label" => __("Enable Search Form", 'picostrap5'),
+                "section" => "nav", 
+                'type'     => 'checkbox',
+                )
+        ));
+
+        //DARK MODE SWITCH
+        $wp_customize->add_setting("enable_dark_mode_switch", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "enable_dark_mode_switch",
+            array(
+                "label" => __("Enable Dark Mode Switch", 'picostrap5'),
+                "section" => "nav", 
+                'type'     => 'checkbox',
+                )
+        ));
+
+
+        //  TOPBAR SECTION //////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $wp_customize->add_section("topbar", array(
+            "title" => __("Optional Topbar", 'picostrap5'),
+            "priority" => 60,
+        ));
+        
+        //ENABLE TOPBAR
+        $wp_customize->add_setting("enable_topbar", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "enable_topbar",
+            array(
+                "label" => __("Enable Topbar", 'picostrap5'),
+                "description" => __("Requires Navbar position set to 'Standard static top'", 'picostrap5'),
+                "section" => "topbar", 
+                'type'     => 'checkbox',
+                )
+        ));
+        
+        //TOPBAR TEXT
+        $wp_customize->add_setting("topbar_content", array(
+            "default" => "",
+            "transport" => "postMessage",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "topbar_content",
+            array(
+                "label" => __("Topbar Text / HTML", 'picostrap5'),
+                "section" => "topbar",
+                'type'     => 'textarea',
+            )
+        ));
+        
+        //TOPBAR BG COLOR CHOICE
+        $wp_customize->add_setting("topbar_bg_color_choice", array(
+            'default' => 'bg-light',
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "topbar_bg_color_choice",
+            array(
+                'label' => __('Topbar Background Color', 'picostrap5'),
+                'section' => 'topbar',
+                'type'     => 'radio',
+                'choices'  => array(
+                    'bg-primary'	=> 'Primary',	
+                    'bg-secondary'	=> 'Secondary',	
+                    'bg-success' 	=> 'Success', 	
+                    'bg-info' 		=> 'Info', 		
+                    'bg-warning' 	=> 'Warning', 	
+                    'bg-danger' 	=> 'Danger', 	
+                    'bg-light' 	=> 'Light', 	
+                    'bg-dark' 		=> 'Dark', 		
+                    'bg-transparent' 		=> 'Transparent'
+                    )
+            )
+        ));
+        
+        //TOPBAR TEXT COLOR CHOICE
+        $wp_customize->add_setting("topbar_text_color_choice", array(
+            'default' => 'text-dark',
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "topbar_text_color_choice",
+            array(
+                'label' => __('Topbar Text Color', 'picostrap5'),
+                'section' => 'topbar',
+                'type'     => 'radio',
+                'choices'  => array(
+                    'text-primary'	=> 'Primary',	
+                    'text-secondary'	=> 'Secondary',	
+                    'text-success' 	=> 'Success', 	
+                    'text-info' 		=> 'Info', 		
+                    'text-warning' 	=> 'Warning', 	
+                    'text-danger' 	=> 'Danger', 	
+                    'text-light' 	=> 'Light', 	
+                    'text-dark' 		=> 'Dark', 		
+                    )
+            )
+        ));
+    } //end else
 	
 	//ADD SECTION FOR FOOTER  //////////////////////////////////////////////////////////////////////////////////////////////////////////
-	$wp_customize->add_section("footer", array(
-        "title" => __("Footer", 'picostrap5'),
-        "priority" => 100,
-    ));
-	
-	//FOOTER TEXT
-	$wp_customize->add_setting("picostrap_footer_text", array(
-        "default" => "",
-        "transport" => "postMessage",
-    ));
-	$wp_customize->add_control(new WP_Customize_Control(
-        $wp_customize,
-        "picostrap_footer_text",
-        array(
-			"label" => __("Footer Text", 'picostrap5'),
-			"description"  => "THIS SIMPLE FIELD can contain HTML and is displayed into the 'colophon', the very bottom of the site. <br><br>TO BUILD A MORE COMPLEX FOOTER, USE THE WIDGETED AREA. <br>To enable it, populate it from the backend's <a target='_blank' href='".admin_url('widgets.php')."'>Widgets page</a>",
-            "section" => "footer",
-            'type'     => 'textarea',
-			 
-        )
-    ));
+	if (function_exists('lc_custom_footer')) {
+        $wp_customize->add_section("footer", array(
+            "title" => __("Footer [Disabled]", 'picostrap5'),
+            "priority" => 100,
+        ));
+
+        // Just a message
+        $wp_customize->add_setting("picostrap_footer_disabled", array(
+            "default" => "",
+            "transport" => "refresh",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_footer_disabled",
+            array(
+                'label' => __('You have enabled the LiveCanvas option to handle footer, so these options are disabled.', 'picostrap5'),
+                'section' => 'footer',
+            )
+        ));
+
+    } else {
+        $wp_customize->add_section("footer", array(
+            "title" => __("Footer", 'picostrap5'),
+            "priority" => 100,
+        ));
+        
+        //FOOTER TEXT
+        $wp_customize->add_setting("picostrap_footer_text", array(
+            "default" => "",
+            "transport" => "postMessage",
+        ));
+        $wp_customize->add_control(new WP_Customize_Control(
+            $wp_customize,
+            "picostrap_footer_text",
+            array(
+                "label" => __("Footer Text", 'picostrap5'),
+                "description"  => "THIS SIMPLE FIELD can contain HTML and is displayed into the 'colophon', the very bottom of the site. <br><br>TO BUILD A MORE COMPLEX FOOTER, USE THE WIDGETED AREA. <br>To enable it, populate it from the backend's <a target='_blank' href='".admin_url('widgets.php')."'>Widgets page</a>",
+                "section" => "footer",
+                'type'     => 'textarea',
+                
+            )
+        ));
+    } //end else
 	
 	// ADD SECTION FOR SINGLE POST & ARCHIVES //////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$wp_customize->add_section("singleposts", array(
@@ -1020,7 +1099,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 	//ADD BODY FONT OBJECT - hidden by CSS
 	$wp_customize->add_setting("body_font_object", array(
         "default" => "",
-		"transport" => "refresh",
+		"transport" => "postMessage",
     ));
 	$wp_customize->add_control(new WP_Customize_Control(
         $wp_customize,
@@ -1036,7 +1115,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 	//ADD HEADINGS FONT OBJECT - hidden by CSS
 	$wp_customize->add_setting("headings_font_object", array(
         "default" => "",
-		"transport" => "refresh",
+		"transport" => "postMessage",
     ));
 	$wp_customize->add_control(new WP_Customize_Control(
         $wp_customize,
@@ -1052,8 +1131,8 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 	//ADD FONT LOADING HEADER CODE  
 	$wp_customize->add_setting("picostrap_fonts_header_code", array(
         "default" => "",
-		"transport" => "refresh",
-        //"transport" => "postMessage", // and no custom js is added: so no live page update is done, how it should be - but causes unstable behaviour
+		//"transport" => "refresh",
+        "transport" => "postMessage", // and no custom js is added: so no live page update is done, how it should be - but causes unstable behaviour
     ));
 	$wp_customize->add_control(new WP_Customize_Control(
         $wp_customize,
@@ -1179,7 +1258,8 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 			)
     ));
 
-	//DISABLE LIVERELOAD
+	//DISABLE LIVERELOAD (no more necessary)
+	/*
 	$wp_customize->add_setting("picostrap_disable_livereload", array(
         "default" => "",
         "transport" => "refresh",
@@ -1194,6 +1274,7 @@ function picostrap_theme_customize_register_extras($wp_customize) {
             'type'     => 'checkbox',
 			)
 	));
+	*/
 
 	//BACK TO TOP
 	$wp_customize->add_setting("enable_back_to_top", array(
@@ -1227,8 +1308,6 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 			)
 	));
 	
-
-
 	//TOOLTIPS
 	$wp_customize->add_setting("enable_tooltips", array(
         "default" => "",
@@ -1238,8 +1317,8 @@ function picostrap_theme_customize_register_extras($wp_customize) {
         $wp_customize,
         "enable_tooltips",
         array(
-            "label" => __("Enable Tooltips", 'picostrap5'),
-			"description" => __("Adds inline <a target='_blank' href='https://getbootstrap.com/docs/5.2/components/tooltips/#enable-tooltips'>two rows of JavaScript</a> to enable Boostrap 5 tooltips. Publish and exit the Customizer to see the change.", 'picostrap5'),
+            "label" => __("Enable Tooltips & Popovers", 'picostrap5'),
+			"description" => __("Adds inline <a target='_blank' href='https://getbootstrap.com/docs/5.2/components/tooltips/#enable-tooltips'>two rows of JavaScript</a> to enable Boostrap 5 tooltips and popovers. Publish and exit the Customizer to see the change.", 'picostrap5'),
             "section" => "extras", 
             'type'     => 'checkbox',
 			)
@@ -1253,8 +1332,8 @@ function picostrap_theme_customize_register_extras($wp_customize) {
 
 
 
-
-/////////// LIVE CUSTOMIZER HELPER FOR CSS  VARIABLES ///////////
+/*
+/////////// LIVE CUSTOMIZER HELPER FOR CSS  VARIABLES - now unused ///////////
 
 // if we are in customizer preview iframe,
 // add some CSS that alters the bootstrap css variables,
@@ -1273,7 +1352,7 @@ add_action( 'wp_head', function  () {
 				--bs-body-font-family: "<?php echo get_theme_mod("SCSSvar_font-family-base") ?>" !important;
 			<?php endif ?>
 
-		} /* close :root */
+		}  
 		
 		h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 			<?php if (get_theme_mod("SCSSvar_headings-font-family")): ?>
@@ -1284,4 +1363,5 @@ add_action( 'wp_head', function  () {
 	</style>
 	<?php
 } );
- 
+*/
+

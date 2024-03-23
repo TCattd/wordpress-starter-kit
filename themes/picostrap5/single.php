@@ -6,19 +6,34 @@ defined( 'ABSPATH' ) || exit;
 get_header();
 
 
+// Loop through posts if there are any
+if (have_posts()):
+    while (have_posts()): the_post();
 
-
-if ( have_posts() ) : 
-    while ( have_posts() ) : the_post();
+        // Check if the post has a featured image
+        if (has_post_thumbnail()) {  
+            ?>
+            <div class="container-fluid d-flex p-0 bg-body" style="height:50vh;">
+                <?php
+                // Output the featured image with custom classes and styles
+                the_post_thumbnail('full', [
+                    'class' => 'img-fluid w-100 h-100',
+                    'style' => 'object-fit:cover;',
+                    'alt' => esc_attr(get_post_meta(get_post_thumbnail_id() , '_wp_attachment_image_alt', true)), 
+                ]);
+                ?>
+            </div>
+        <?php
+        } else {
+            // Default block if no featured image is found
+            ?>
+            <div class="container-fluid d-flex py-6"></div>
+        <?php
+        }
+        ?>
     
-    if (get_the_post_thumbnail_url()){ 
-        ?><div class="d-flex container-fluid" style="height:50vh;background:url(<?php echo get_the_post_thumbnail_url(); ?>)  center / cover no-repeat;"></div>
-    <?php } else {
-        ?><div class="d-flex container-fluid" style="height:20vh;"></div>
-    <?php } ?>
-    
-    <div id="container-content-single" class="container p-5 bg-light" style="margin-top:-100px">
-        <div class="row text-center">
+    <div id="container-content-single" class="container position-relative p-5 bg-body text-body-emphasis shadow mt-lg-n7 rounded" >
+        <div class="row text-center mb-2">
             
             <div class="col-md-12">
                 <?php 
@@ -40,14 +55,14 @@ if ( have_posts() ) :
                 
                 <?php if (!get_theme_mod("singlepost_disable_date") OR !get_theme_mod("singlepost_disable_author")  ): ?>
                     <div class="post-meta" id="single-post-meta">
-                        <p class="lead text-secondary">
+                        <p class="lead opacity-75">
                             
                             <?php if (!get_theme_mod("singlepost_disable_date") ): ?>
                                 <span class="post-date"><?php the_date(); ?> </span>
                             <?php endif; ?>
 
                             <?php if (!get_theme_mod("singlepost_disable_author") ): ?>
-                                <span class="text-secondary post-author"> <?php _e( 'by', 'picostrap5' ) ?> <?php the_author(); ?></span>
+                                <span class="post-author"> <?php _e( 'by', 'picostrap5' ) ?> <?php the_author(); ?></span>
                             <?php endif; ?>
                         </p>
                     </div> 

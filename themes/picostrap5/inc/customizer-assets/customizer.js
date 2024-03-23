@@ -1,5 +1,26 @@
 (function($) {
 
+	//DEBOUNCE UTILITY
+	function debounce(func, wait, immediate) {
+		var timeout;
+
+		return function executedFunction() {
+			var context = this;
+			var args = arguments;
+
+			var later = function () {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+
+			if (callNow) func.apply(context, args);
+		};
+	};
+
 	//FUNCTION TO LOOP ALL COLOR WIDGETS AND SHOW CURRENT COLOR grabbing the exposed css variable from page
 	function ps_get_page_colors(){
         
@@ -13,7 +34,6 @@
 
             color_name = $(el).find(".customize-control-description .variable-name").text().replace("(", "").replace(")", "").replace("$", "--bs-");
             var color_value = getComputedStyle(document.querySelector("#customize-preview iframe").contentWindow.document.documentElement).getPropertyValue(color_name);
-
             //console.log(color_name+color_value);
 
 			//append if not already present add a small widget for feedback
@@ -25,25 +45,18 @@
         
     }
 	
-	
-	function ps_recompile_css_bundle(){
-		//SAVE PREVIEW IFRAME SRC
-		preview_iframe_src=$("#customize-preview iframe").attr("src");
-		if (preview_iframe_src===undefined) preview_iframe_src=$("#customize-preview iframe").attr("data-src");
-		//console.log("Preview iFrame URL: "+preview_iframe_src); //for debug
-		
-		//SHOW WINDOW	
-		$("#cs-compiling-window").fadeIn();
-		$('#cs-loader').show();
-				
-		$("#cs-recompiling-target").html("<h1 style='display:block;text-align:center'>Recompiling SASS...</h1>"); 
-		
-		//AJAX CALL
+	function ps_save_css_bundle(){
 
-		//build the request
+		//build the request to send via AJAX POST
 		const formdata = new FormData();
+		const theCss = document.querySelector('#customize-preview iframe').contentWindow.document.querySelector('#picosass-injected-style')?.innerHTML;
+		if (   !theCss  || theCss.trim() == '') {
+			console.log("No CSS saving necessary, aborting ps_save_css_bundle");
+			return false;
+		}
 		formdata.append("nonce", picostrap_ajax_obj.nonce);
-		formdata.append("action", "picostrap_recompile_sass");
+		formdata.append("action", "picostrap_save_css_bundle");
+		formdata.append("css", theCss);
 		fetch(picostrap_ajax_obj.ajax_url, {
 			method: "POST",
 			credentials: "same-origin",
@@ -54,40 +67,14 @@
 		}).then(response => response.text())
 			.then(response => {
 				
-				//hide preload
-				$('#cs-loader').hide();
-
-				//show feedback
-				var theCloseButton =" <button style='font-size:30px;width:100%' class='cs-close-compiling-window'>OK </button> ";
-				$("#cs-recompiling-target").html(response + theCloseButton);
-
-				//reload preview iframe 
-				$("#customize-preview iframe").attr("src", preview_iframe_src);
-
-				//upon preview iframe loaded, fetch colors
-				$("#customize-preview iframe").on("load", function () {
-					console.log('Preview iframe loaded');
-
-					//reload the CSS, bust the cache
-					var iframeDoc = document.querySelector('#customize-preview iframe').contentWindow.document;
-					url = iframeDoc.querySelector('#picostrap-styles-css').href;
-					iframeDoc.querySelector('#picostrap-styles-css').href = url;
-
-					//get page colors and paint UX
-					ps_get_page_colors();
-				});
+				console.log("Saved successfully: " + response);
 				 
-
 			}).catch(function (err) {
-				console.log("picostrap_recompile_sass Error: "+err);
+				console.log("ps_save_css_bundle Error: "+err);
 			}); 
-
-		
-		//RESET FLAG
-		scss_recompile_is_necessary=false;
 			
-	} //END FUNCTION ps_recompile_css_bundle
-
+	} //END FUNCTION  
+	
 		
 	function ps_is_a_google_font(fontFamilyName){
 		const google_fonts = JSON.parse(google_fonts_json);
@@ -127,9 +114,10 @@
 			var separator_char = ""; 
 			if (first_part != "" && second_part != "") separator_char = "&"; 
 
+			window.fontLoadingUrl = 'https://fonts.googleapis.com/css2?' + first_part + separator_char + second_part +'&display=swap'
 			html_code += '<link rel="preconnect" href="https://fonts.googleapis.com">\n';
 			html_code += '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n';
-			html_code += '<link href="https://fonts.googleapis.com/css2?'+first_part+separator_char+second_part+'&display=swap" rel="stylesheet">\n';
+			html_code += '<link href="' + window.fontLoadingUrl + '" rel="stylesheet">\n';
 			
 			//an example: https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,800;1,800&family=Roboto:wght@100;300&display=swap 
 		}
@@ -137,30 +125,105 @@
 		//disable alternative font source checkbox
 		$("#_customize-input-picostrap_fonts_use_alternative_font_source").prop("checked",false);
 
-		console.log(html_code);
+		//console.log(html_code);
 		
 		//populate the textarea with the result
 		$("#_customize-input-picostrap_fonts_header_code").val(html_code).change();
 
 	} // end function 
 		
-	
 
+	// FUNCTION TO PREPARE THE SCSS CODE assigning all the variables according to  THE WIDGETS VALUES
+	function getMainSass() {
+
+		var sass = '';
+		
+		// loop all input text widgets that have values matched to SCSS vars
+		var els = document.querySelectorAll(`[id^='customize-control-SCSSvar'] input[type='text']:not(.cs-fontpicker-input)`);
+
+		for (var i = 0; i < els.length; i++) {
+
+			//for debug purpose, give them a bg color 
+			//els[i].style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+			if (els[i].value) {
+
+				let name = els[i].closest("li").getAttribute("id").replace("customize-control-SCSSvar_", "");
+
+				//console.log(name + " " + els[i].value);
+				
+				sass += `$${name}: ${els[i].value}; `;
+				
+			} //end if value 
+
+		}
+
+		// loop all checkbox text widgets that have values matched to SCSS vars
+		var els = document.querySelectorAll(`[id^='customize-control-SCSSvar'] input[type='checkbox']`);
+
+		for (var i = 0; i < els.length; i++) {
+
+			//for debug purpose, give them a bg color 
+			//els[i].style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+			let name = els[i].closest("li").getAttribute("id").replace("customize-control-SCSSvar_", "");
+				
+			sass += `$${name}: ${(els[i].checked ? 'true' : 'false')}; `;
+		}
+
+		//console.log('Variables Sass code: ' + sass);
+
+		return sass + " @import 'main'; ";
+	}
+
+	// FUNCTION TO REUPDATE THE SCSS FIELD AND RETRIGGER COMPILER
+	function updateScssPreview() {
+
+		var iframeDoc = document.querySelector('#customize-preview iframe').contentWindow.document;
+
+		//build the full SCSS with variables and main import
+		var newsass = getMainSass();
+
+		console.log('Update SCSS code to: \n' + newsass);
+
+		iframeDoc.querySelector('#the-scss').innerHTML = newsass; 
+		
+		function compilingFinished(compiled) { 
+			//console.log(compiled);
+			// show publishing action buttons
+			document.querySelector('#customize-save-button-wrapper').removeAttribute('hidden');
+			ps_get_page_colors(); 
+		}
+
+		//hide publishing action buttons
+		document.querySelector('#customize-save-button-wrapper').setAttribute('hidden', '');
+
+		//trigger picosass compiler
+		document.querySelector('#customize-preview iframe').contentWindow.Picosass.Compile({}, compilingFinished); 
+	
+		//update font loading code as well, if necessary
+		if (window.fontLoadingUrl){
+			console.log("Update font loading code to add " + window.fontLoadingUrl);
+			var style = document.createElement('link');
+			style.href = window.fontLoadingUrl;
+			style.type = 'text/css';
+			style.rel = 'stylesheet';
+			iframeDoc.head.append(style);
+		}
+
+	}
+
+	//DEBOUNCED VERSION OF THE ABOVE
+	var updateScssPreviewDebounced = debounce(function () {
+		updateScssPreview();
+	}, 1250);
 
 	////////////////////////////////////////// DOCUMENT READY //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	$(document).ready(function() {
 		
-		//TESTBED
+		//TESTBED for G fontsx
 		//console.log(ps_is_a_google_font("ABeeZee"));
 		//console.log(ps_is_a_google_font("Nunito"));
-
-		//SET DEFAULT
-		scss_recompile_is_necessary=false;
-				
-		//ADD COMPILING WINDOW AND LOADING MESSAGE TO HTML BODY
-		var the_loader='<div class="cs-chase">  <div class="cs-chase-dot"></div>  <div class="cs-chase-dot"></div>  <div class="cs-chase-dot"></div>  <div class="cs-chase-dot"></div>  <div class="cs-chase-dot"></div>  <div class="cs-chase-dot"></div></div>';
-		var html = "<div id='cs-compiling-window' hidden> <span class='cs-closex'>Close X</span> <div id='cs-loader'> " + the_loader +" </div> <div id='cs-recompiling-target'></div></div>";
-		$("body").append(html);
 		
 		//hide useless bg color widget
 		$("#customize-control-background_color").hide();
@@ -170,19 +233,23 @@
 			$(el).closest("li.customize-control").prepend(" <h1>"+$(el).text()+"</h1><hr> ");
 		}); //end each
 		
-		//ADD H1 SUBTITLE for BS COLORS
-		$("#customize-control-SCSSvar_primary h1").css("padding-bottom", "0").append('<p class="pico-text-suggestion" >Live Preview is not possible for Bootstrap Theme Colors. Click the Publish button to view the changes.</p>');
- 
 		//ADD COLORS HEADING 
 		$("#customize-control-enable_back_to_top").prepend(" <h1>Opt-in extra features</h1><hr> ");
 		
 		//add codemirror to header field - does not work
 		//wp.codeEditor.initialize(jQuery('#_customize-input-picostrap_header_code'));
-			
-		//ON MOUSEDOWN ON PUBLISH / SAVE BUTTON, (before saving)  
+
+		//NOW UNUSED -- ON MOUSEDOWN ON PUBLISH / SAVE BUTTON, (before saving)
+		/*
 		$("body").on("mousedown", "#customize-save-button-wrapper #save", function() {
-			console.log("Clicked Publish");
+			console.log("Clicked Publish"); 
+			const compilerFeedback = document.querySelector('#customize-preview iframe').contentWindow.document.querySelector('#picosass-output-feedback').innerHTML;
+			if (compilerFeedback.includes('Compiling') || compilerFeedback.includes('error')) {
+				alert("Please publish after compilation has completed successfully.");
+				return false;
+			}
 		});			
+		*/
 
 		//CHECK IF USING VINTAGE GOOGLE FONTS API V1, REBUILD FONT IMPORT CODE
 		if ($("#_customize-input-picostrap_fonts_header_code").val().includes('https://fonts.googleapis.com/css?')){
@@ -192,25 +259,22 @@
 		
 		//////////////////// LISTEN TO CUSTOMIZER CHANGES ////////////////////////
 
-		//ON CHANGES OF CUSTOMIZER, FOR RELEVANT FIELDS, UPDATE SCSS OR FONT SNIPPET ///////////////////
+ 		//upon changing of widgets that refer to SCSS variables, trigger a function to updateScssPreview
+		//these options use postMessage and all is handled by us in JS
 		wp.customize.bind('change', function (setting) {
 
-			//console.log(setting.id + " has changed value");
-
-			//if some field containing scssvar is changed, we'll have to recompile
-			if (setting.id.includes("SCSSvar")) scss_recompile_is_necessary = true;
-
+			if (setting.id.includes("SCSSvar")) {
+				updateScssPreviewDebounced();
+			}
 		});
 
-		//CLEANEST VANILLA EXAMPLE FOR INTERCEPTING MORE CUSTOMIZER CHANGES, FOR FUTURE REFERENCE
-		/*
-		wp.customize('picostrap_fonts_header_code', function (value) {
-			value.bind(function (newval) {
-				console.log(newval);
-			});
-		});
-		*/
+        // If user navigates inside preview, rebuild and apply SCSS
+        wp.customize.previewer.bind('url', function (newUrl) {
+            console.log('Preview URL changed to: ' + newUrl);
+            updateScssPreviewDebounced();
+        });
 
+      
 		//////////// USER ACTIONS / UX HELPERS /////////////////
 		
 		//ON CLICK LINK TO REGENERATE FONT LOADING CODE, DO IT
@@ -243,20 +307,14 @@
 			}
 		});	
 		
-		//AFTER PUBLISHING CUSTOMIZER CHANGES, RECOMPILE SCSS
+		//AFTER PUBLISHING CUSTOMIZER CHANGES, SAVE SCSS & CSS
 		wp.customize.bind('saved', function( /* data */ ) {
-			if (scss_recompile_is_necessary)  ps_recompile_css_bundle();
+			ps_save_css_bundle();
 		});
 				
 		// USER CLICKS ON COLORS SECTION: run  get page colors routine
 		$("body").on("click", "#accordion-section-colors", function() {
 			ps_get_page_colors();
-		});
-			
-		//USER CLICKS CLOSE COMPILING WINDOW
-		$("body").on("click",".cs-close-compiling-window,.cs-closex, #compile-error",function(){
-			//$(".customize-controls-close").click();
-			$("#cs-compiling-window").fadeOut();
 		});
 		
 		//USER CLICKS ENABLE TOPBAR: SET A NICE HTML DEFAULT
@@ -284,15 +342,13 @@
 
 		// FONT COMBINATIONS SELECT ////////////////////////////////////////////
 
-		//ADD THE UI: append link to show FONT COMBINATIONs
-		$("#customize-control-SCSSvar_font-family-base h1").append(" <a href='#' id='cs-show-combi' style='float: right;  font-size: 10px;text-decoration: none;user-select: none;'>Font Combinations...</button>");
-
-		//ADD THE UI: the SELECT
+		//ADD UI: the SELECT for FONT BASE
 		$("li#customize-control-SCSSvar_font-family-base").prepend(ps_font_combinations_select);
 
 		//USER CLICKS SHOW FONT COMBINATIONS: show the select
 		$("body").on("click", "#cs-show-combi", function () {
 			//$(".customize-controls-close").click();
+            $(this).toggleClass("active");
 			$("#cs-font-combi").slideToggle();
 		});
 
@@ -353,19 +409,17 @@
 			ps_update_fonts_import_code_snippet();
 		});
 
-		
-		
 		//FONT PICKER ///////////////////////////////////////////////////////////////////
 
 		var csFontPickerOptions = ({
 			variants: true,
 			onSelect: fontHasBeenSelected,
-			localFonts: theLocalFonts //defined in customizer-vars.js file
+			localFonts: theLocalFonts //defined in customizer-constants.js file
 		});
 
 		var csFontPickerButton = " <button class='cs-open-fontpicker button button-secondary' style='float:right;'>Font Picker...</button>";
 
-		//INIT FONTPICKERs
+		//INITIALIZE FONTPICKERs
 
 		//append field and initialize Fontpicker for BASE FONT
 		$("label[for=_customize-input-SCSSvar_font-family-base]").append(csFontPickerButton).closest(".customize-control").append("<div hidden><input id='cs-fontpicker-input-base' class='cs-fontpicker-input' type='text' value=''></div>");
@@ -449,15 +503,13 @@
 		/// VIDEO TUTORIAL LINKS ////////////////////////
 
 		function pico_add_video_link (section_name, video_url){
-			const videoTutIcon = '<svg style="vertical-align: middle; height:13px; width: 13px; margin-right: 5px; margin-top: -1px; " xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" fill="currentColor" viewBox="0 0 16 16" style="" lc-helper="svg-icon"><path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"></path><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"></path></svg>';
-			$("#sub-accordion-" + section_name + " li:first ").after("<a class='video-tutorial-link' href='" + video_url + "' target='_blank'>" + videoTutIcon + "Watch Video</a> ");
+            $("#sub-accordion-" + section_name + " .customize-section-title .customize-control-notifications-container").after("<a class='video-tutorial-link' href='" + video_url + "' target='_blank'>" + videoTutIcon + "Watch Video</a> ");
 		}
 
-		pico_add_video_link("section-colors", "https://youtu.be/SwDrR-FmzkE&t=63s");
+		//pico_add_video_link("section-colors", "https://youtu.be/SwDrR-FmzkE&t=63s");
 		pico_add_video_link("section-typography", "https://youtu.be/SwDrR-FmzkE&t=86s");
 		pico_add_video_link("section-components", "https://youtu.be/SwDrR-FmzkE&t=149s");
 		pico_add_video_link("section-buttons", "https://youtu.be/SwDrR-FmzkE&t=169s");
-		//pico_add_video_link("section-buttons-forms", "https://youtu.be/SwDrR-FmzkE&t=169s");
 		pico_add_video_link("section-nav", "https://youtu.be/aY7JmxBe76Y&t=26s");
 		pico_add_video_link("section-topbar", "https://youtu.be/aY7JmxBe76Y&t=225s");
 		pico_add_video_link("panel-nav_menus", "https://youtu.be/aY7JmxBe76Y&t=325s");
@@ -468,8 +520,171 @@
 		pico_add_video_link("section-addcode", "https://www.youtube.com/watch?v=dmsUpFJwDW8&t=100s");
 		pico_add_video_link("section-extras", "https://www.youtube.com/watch?v=dmsUpFJwDW8&t=411s");
 
+
+
+
+
+		 
+
+		//// BOOTSTRAP VARIABLES TOOLBOX ////
+
+		//ADD TOOLS MINIPANEL TO RESET / LOAD / DOWNLOAD BOOTSTRAP / SCSS VARS
+        $("li#accordion-section-publish_settings").before(`
 		
-		///COLOR PALETTE GENERATOR /////
+			<div id='bs-tools'>
+				<span>Bootstrap Variables:</span>
+				<a class='reset-scss-vars' href='#'> Reset All</a> 
+				<a class='download-scss-vars' href='#'> Download JSON </a> 
+				<a class='upload-scss-vars' href='#' > Upload JSON </a>
+				
+				<input type="file" id="fileInput" accept=".json" style="display: none;">
+			</div>
+		`);
+
+		//ON CLICK OF BOOTSTRAP RESET VARS LINK
+		$("body").on("click", ".reset-scss-vars", function (e) {
+			e.preventDefault();		 
+			console.log("reset scss vars");
+			// loop all input text widgets that have values matched to SCSS vars
+			var els = document.querySelectorAll(`[id^='customize-control-SCSSvar'] input`);
+
+			for (var i = 0; i < els.length; i++) {
+
+				//for debug purpose, give them a bg color 
+				//els[i].style.backgroundColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+
+				switch (els[i].getAttribute("type")) {
+					case 'text':
+					case 'textarea': 
+						//trick to revive color picker					
+						els[i].value = "#fff";
+						els[i].dispatchEvent(new Event('change'));
+
+						els[i].value = ''; 
+						break;
+
+					case 'checkbox':
+						els[i].checked = (els[i].id.includes('enable-rfs') || els[i].id.includes('enable-rounded') || els[i].id.includes('enable-text-shades') || els[i].id.includes('enable-bg-shades')) ? true : false;
+						break;
+
+					default:
+						//console.error('Unsupported control  : ' + els[i].id);
+						break;
+				}
+
+				els[i].dispatchEvent(new Event('change'));
+			}	
+
+			updateScssPreviewDebounced();
+			ps_update_fonts_import_code_snippet();
+	 
+		});// end onClick  
+
+		//ON CLICK ON DOWNLOAD VARS AS JSON
+		$("body").on("click", ".download-scss-vars", function (e) {
+			e.preventDefault();
+
+			let sass = getMainSass().replace("@import 'main'; ","");
+ 
+			// Step 1: Parse SASS variable into a JavaScript object
+			const sassObject = {};
+			sass.split(';').forEach(pair => {
+				const [key, value] = pair.split(':');
+				if (key && value) {
+					sassObject[key.trim()] = value.trim();
+				}
+			});
+
+			// Step 2: Convert JavaScript object to JSON string
+			const jsonContent = JSON.stringify(sassObject, null, 2);
+
+			// Step 3: Create a Blob with JSON data
+			const blob = new Blob([jsonContent], { type: 'application/json' });
+
+			// Step 4: Create a URL for the Blob
+			const url = URL.createObjectURL(blob);
+
+			// Step 5: Create an invisible <a> element
+			const a = document.createElement('a');
+			a.style.display = 'none';
+			document.body.appendChild(a);
+
+			// Step 6: Trigger a click event on the <a> element to initiate download
+			a.href = url;
+			a.download = 'picostrap_bs_variables.json';
+			a.click();
+
+			// Clean up by revoking the URL
+			URL.revokeObjectURL(url);
+
+		});// end onClick  
+
+		//ON CLICK ON DOWNLOAD VARS AS JSON
+		$("body").on("click", ".upload-scss-vars", function (e) {
+			e.preventDefault();
+			fileInput.click();
+		});// end onClick    
+
+		//HANDLE WHEN FILE UPLOADED
+		document.querySelector('#fileInput').addEventListener('change', (event) => {
+			document.querySelector(".reset-scss-vars").click();
+			const selectedFile = event.target.files[0];
+			if (selectedFile) {
+				const reader = new FileReader();
+
+				reader.onload = function (event) {
+					//try {
+					const jsonData = JSON.parse(event.target.result.replaceAll('SCSSvar_','$'));				 
+
+						// Loop through each property in the parsed JSON data
+						for (const property in jsonData) {
+							if (jsonData.hasOwnProperty(property)) {
+								// Perform an action for each property
+								console.log( `${property}: ${jsonData[property]}`);
+								const theInputEl = document.querySelector('#' + property.replace('$', 'customize-control-SCSSvar_') + ' input');
+								if (!theInputEl) continue;	
+								switch (theInputEl.getAttribute("type")) {
+									case 'text':
+									case 'textarea': 
+										//trick to revive color picker	
+										theInputEl.value ="#fff";
+										theInputEl.dispatchEvent(new Event('change'));
+										
+										theInputEl.value = jsonData[property];
+										break;
+
+									case 'checkbox':
+										theInputEl.checked = (jsonData[property]=='true') ? true : false;
+										break;
+
+									default: 
+										break;
+								}
+								
+								theInputEl.dispatchEvent(new Event('change'));
+							}
+						}
+
+						updateScssPreviewDebounced();
+						ps_update_fonts_import_code_snippet();
+						 
+
+					//} catch (error) {						alert('Error parsing JSON file.');					}
+				};
+
+				reader.readAsText(selectedFile);
+			}
+
+			// Reset the file input to allow re-uploading the same file
+			event.target.value = null;
+		});
+
+
+		 
+ 
+ 
+
+		///COLOR PALETTE GENERATOR UNUSED BUT COULD BE USEFUL /////
 		/*
 		//ADD COLOR PALETTE GENERATOR
 		var html = "<a href='#' class='generate-palette'>Generate palette from this </a>";
@@ -494,42 +709,4 @@
 
 
 	
-	
-
-	
-
-	/*
-
-	function picostrap_make_customizations_to_customizer(){
-
-		//$("#sub-accordion-section-colors").append("HEELLLOO");
-
-		$('iframe').on('load', function(){
-			picostrap_highlight_menu();
-		});
-
-	}
-
-	function picostrap_highlight_menu() {
-
-		if($("iframe").contents().find("body").hasClass("archive")) {
-			jQuery("li#accordion-section-archives h3").css("background","#ffcc99");
-		}
-
-		if($("iframe").contents().find("body").hasClass("single-post")) {
-			jQuery("li#accordion-section-singleposts h3").css("background","#ffcc99");
-		}
-	}
-
-	setTimeout(function(){
-		picostrap_make_customizations_to_customizer();
-
-	}, 1000);
-
-
-	*/
- 
-	
-	
- 
 })(jQuery);

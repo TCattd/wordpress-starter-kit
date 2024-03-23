@@ -10,8 +10,8 @@ defined( 'ABSPATH' ) || exit;
 
 //SUPPORT FUNCTIONS FOR DETERMINING THE RIGHT CSS BUNDLE FILENAME AND LOCATION
 function picostrap_get_css_url (){
-    //onboarding
-    if(get_theme_mod("picostrap_scss_last_filesmod_timestamp_v2",0)==0) return get_stylesheet_directory_uri() . '/'. picostrap_get_css_optional_subfolder_name() . picostrap_get_base_css_filename(); 
+    //onboarding: if no CSS custom bundle was created, serve the default one
+    if (get_theme_mod("css_bundle_version_number", 0) == 0) return get_stylesheet_directory_uri() . '/'. picostrap_get_css_optional_subfolder_name() . picostrap_get_base_css_filename(); 
 
     //standard case
     return get_stylesheet_directory_uri() . '/' . picostrap_get_css_optional_subfolder_name() . picostrap_get_complete_css_filename(); 
@@ -43,17 +43,21 @@ function picostrap_get_css_version(){
 add_action( 'wp_enqueue_scripts',  function  () {
  
     //ENQUEUE THE CSS FILE
-    wp_enqueue_style( 'picostrap-styles', picostrap_get_css_url(), array(), picostrap_get_css_version()); 
+    wp_enqueue_style( 'picostrap-styles', picostrap_get_css_url() . '#handlecsserror', array(), picostrap_get_css_version()); 
     
 });
 
-///ADD THE MAIN JS FILE
+///ADD THE MAIN JS FILES
 //enqueue js in footer, async
 add_action( 'wp_enqueue_scripts', function() {
 
+    //MAIN BOOTSTRAP JS
     //want to override file in child theme? use get_stylesheet_directory_uri in place of get_template_directory_uri 
     //this was done for compatibility reasons towards older child themes
-    wp_enqueue_script( 'bootstrap5', get_template_directory_uri() . "/js/bootstrap.bundle.min.js#deferload", array(), null, true );
+    wp_enqueue_script( 'bootstrap5', get_template_directory_uri() . "/js/bootstrap.bundle.min.js", array(), null, array('strategy' => 'defer', 'in_footer' => true) );
+
+    //DARK MODE SWITCH SUPPORT
+    if (get_theme_mod('enable_dark_mode_switch')) wp_enqueue_script( 'dark-mode-switch', get_template_directory_uri() . "/js/dark-mode-switch.js", array(), null,  array('strategy' => 'defer', 'in_footer' => true) );
     
 } ,100);
 
@@ -82,29 +86,16 @@ function picostrap_add_header_chrome_color() {
 	<?php endif;
 }
 
-//Utils for ASYNC / DEFER. Read more at https://pagespeedchecklist.com/async-and-defer
-//JS ASYNC ENQUEUE: add an async load option 
-function picostrap_async_scripts($url){
-    if ( strpos( $url, '#asyncload') === false )
+//CSS error handling ENQUEUE: if CSS bundle file is not found, trigger recompile
+function picostrap_add_css_error_handling($url){
+    if ( strpos( $url, '#handlecsserror') === false )
         return $url;
-    else if ( is_admin() )
-        return str_replace( '#asyncload', '', $url );
+    else if ( !current_user_can('administrator') or isset($_GET['compile_sass']))
+        return str_replace( '#handlecsserror', '', $url );
     else
-	return str_replace( '#asyncload', '', $url )."' async='async"; 
+	return str_replace( '#handlecsserror', '', $url )."' onerror='alert(\"CSS bundle not found. Rebuilding.\");location.href=\"?compile_sass=1&sass_nocache=1\""; 
     }
-add_filter( 'clean_url', 'picostrap_async_scripts', 11, 1 );
-
-//JS defer ENQUEUE: add an defer load option 
-function picostrap_defer_scripts($url){
-    if ( strpos( $url, '#deferload') === false )
-        return $url;
-    else if ( is_admin() )
-        return str_replace( '#deferload', '', $url );
-    else
-	return str_replace( '#deferload', '', $url )."' defer='defer"; 
-    }
-add_filter( 'clean_url', 'picostrap_defer_scripts', 11, 1 );
-
+add_filter( 'clean_url', 'picostrap_add_css_error_handling', 11, 1 );
 
 //UNRENDER-BLOCK CSS 
 // as per https://www.phpied.com/faster-wordpress-rendering-with-3-lines-of-configuration/
